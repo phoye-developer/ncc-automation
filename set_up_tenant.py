@@ -1,0 +1,214 @@
+from config import *
+from deepgram import *
+from ncc_disposition import *
+from ncc_user_profile import *
+from ncc_user_profile_disposition import *
+from ncc_queue import *
+from ncc_workflow import *
+from ncc_service import *
+from ncc_campaign import *
+from dialogflow import *
+
+
+def set_up_tenant(ncc_location: str, ncc_token: str):
+    """
+    This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
+    """
+
+    disposition_ids = []
+
+    # Select vertical
+    print()
+    print("Please select a vertical.")
+    choice = ""
+    while choice == "":
+        print()
+        print("1. General")
+        print("2. Healthcare")
+        print("3. FinServ")
+        print()
+        choice = input("Vertical: ")
+        print()
+        if choice == "1":
+            dispositions = general_dispositions
+            queues = general_queues
+            intents = general_intents
+        elif choice == "2":
+            dispositions = general_dispositions + hc_dispositions
+            queues = general_queues + hc_queues
+            intents = general_intents + hc_intents
+        elif choice == "3":
+            dispositions = general_dispositions + finserv_dispositions
+            queues = general_queues + finserv_queues
+            intents = general_intents + finserv_intents
+        else:
+            choice = ""
+            print("Invalid choice. Please try again.")
+
+    # Create dispositions
+    for disposition in dispositions:
+        print(f'Searching for "{disposition}" disposition...', end="")
+        disposition_id = search_dispositions(ncc_location, ncc_token, disposition)
+        if disposition_id == "":
+            print("none found.")
+            print(f'Creating "{disposition}" disposition...', end="")
+            disposition_id = create_disposition(ncc_location, ncc_token, disposition)
+            if disposition_id != "":
+                print("success!")
+                disposition_ids.append(disposition_id)
+            else:
+                print("failed.")
+        else:
+            print("found.")
+            disposition_ids.append(disposition_id)
+
+    # Assign user profiles to dispositions
+    for user_profile in user_profiles:
+        print(f'Searching for "{user_profile}" user profile...', end="")
+        user_profile_id = search_user_profiles(ncc_location, ncc_token, user_profile)
+        if user_profile_id != "":
+            print("found.")
+            for disposition_id in disposition_ids:
+                print(
+                    f'Checking if disposition ID {disposition_id} is assigned to "{user_profile}" user profile...',
+                    end="",
+                )
+                success = search_user_profile_dispositions(
+                    ncc_location, ncc_token, disposition_id, user_profile_id
+                )
+                if success:
+                    print("assigned.")
+                else:
+                    print("not assigned.")
+                    print(
+                        f'Assigning disposition ID {disposition_id} to "{user_profile}" user profile...',
+                        end="",
+                    )
+                    user_profile_disposition_id = create_user_profile_disposition(
+                        ncc_location, ncc_token, user_profile_id, disposition_id
+                    )
+                    if user_profile_disposition_id != "":
+                        print("success!")
+                    else:
+                        print("failed.")
+        else:
+            print(f'"{user_profile}" user profile not found.')
+
+    # Create queues
+    for queue in queues:
+        print(f'Searching for "{queue}" queue...', end="")
+        queue_id = search_queues(ncc_location, ncc_token, queue)
+        if queue_id == "":
+            print("none found.")
+            print(f'Creating "{queue}" queue...', end="")
+            queue_id = create_queue(ncc_location, ncc_token, queue)
+            if queue_id != "":
+                print("success!")
+            else:
+                print("failed.")
+        else:
+            print("found.")
+
+    # Create workflow
+    print('Searching for "Test Workflow" workflow...', end="")
+    workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    if workflow_id == "":
+        print("none found.")
+        print('Creating "Test Workflow" workflow...', end="")
+        workflow_id = create_workflow(ncc_location, ncc_token, "Test Workflow")
+        if workflow_id != "":
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Create Deepgram API key
+    print('Searching for "Test Key" Deepgram API key...', end="")
+    deepgram_api_key_id = search_deepgram_api_keys(
+        deepgram_project_id, deepgram_main_api_key, "Test Key"
+    )
+    if deepgram_api_key_id == "":
+        print("none found.")
+        print("Creating new Deepgram API key...", end="")
+        deepgram_api_key = create_deepgram_api_key(
+            deepgram_project_id, deepgram_main_api_key
+        )
+        if deepgram_api_key != "":
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Create real-time transcription service
+    print(
+        'Searching for "Test Deepgram Real-Time Transcription" service...',
+        end="",
+    )
+    real_time_transcription_service_id = search_services(
+        ncc_location,
+        ncc_token,
+        "Test Deepgram Real-Time Transcription",
+        "REALTIME_ANALYSIS",
+    )
+    if real_time_transcription_service_id == "":
+        print("none found.")
+        print(
+            'Creating "Test Deepgram Real-Time Transcription" service...',
+            end="",
+        )
+        real_time_transcription_service_id = create_real_time_transcription_service(
+            ncc_location,
+            ncc_token,
+            "Test Deepgram Real-Time Transcription",
+            deepgram_api_key,
+        )
+        if real_time_transcription_service_id != "":
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Create campaign
+    print('Searching for "Test Campaign" campaign...', end="")
+    campaign_id = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+    if campaign_id == "":
+        print("none found.")
+        print('Creating "Test Campaign" campaign...', end="")
+        campaign_id = create_campaign(
+            ncc_location,
+            ncc_token,
+            "Test Campaign",
+            workflow_id,
+            real_time_transcription_service_id,
+        )
+        if campaign_id != "":
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Create Dialogflow intent
+    for intent in intents:
+        print(f'Searching for "{intent["intent"]}" intent...', end="")
+        success = search_intents(intent["intent"])
+        if success:
+            print("found.")
+        else:
+            print("not found.")
+            print(f'Creating "{intent["intent"]}" intent...', end="")
+            success = create_intent(
+                intent["intent"],
+                intent["training_phrases"],
+                intent["action"],
+                intent["messages"],
+                intent["webhook_state"],
+                intent["end_interaction"],
+            )
+            if success:
+                print("success!")
+            else:
+                print("failed.")

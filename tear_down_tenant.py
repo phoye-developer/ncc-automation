@@ -1,0 +1,129 @@
+from config import *
+from deepgram import *
+from ncc_disposition import *
+from ncc_user_profile import *
+from ncc_user_profile_disposition import *
+from ncc_queue import *
+from ncc_workflow import *
+from ncc_service import *
+from ncc_campaign import *
+from dialogflow import *
+
+
+def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
+    """
+    This function deletes many of the entities created for the given NCC tenant.
+    """
+    print()
+
+    # Delete campaign
+    print('Searching for "Test Campaign" campaign...', end="")
+    campaign_id = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+    if campaign_id != "":
+        print("found.")
+        print('Deleting "Test Campaign" campaign...', end="")
+        success = delete_campaign(ncc_location, ncc_token, campaign_id)
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("not found.")
+
+    # Delete real-time transcription service
+    print('Searching for "Test Deepgram Real-Time Transcription" service...', end="")
+    real_time_transcription_service_id = search_services(
+        ncc_location,
+        ncc_token,
+        "Test Deepgram Real-Time Transcription",
+        "REALTIME_ANALYSIS",
+    )
+    if real_time_transcription_service_id != "":
+        print("found.")
+        print('Deleting "Test Deepgram Real-Time Transcription" service...', end="")
+        success = delete_service(
+            ncc_location, ncc_token, real_time_transcription_service_id
+        )
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("not found.")
+
+    # Delete Deepgram API key
+    print('Searching for "Test Key" Deepgram API key...', end="")
+    deepgram_api_key_id = search_deepgram_api_keys(
+        deepgram_project_id, deepgram_main_api_key, "Test Key"
+    )
+    if deepgram_api_key_id != "":
+        print("found.")
+        print(f'Deleting "Test Key" Deepgram API key...', end="")
+        success = delete_deepgram_api_key(
+            deepgram_project_id, deepgram_main_api_key, deepgram_api_key_id
+        )
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("not found.")
+
+    # Delete workflow
+    print('Searching for "Test Workflow" workflow...', end="")
+    workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    if workflow_id != "":
+        print("found.")
+        print('Deleting "Test Workflow" workflow...', end="")
+        success = delete_workflow(ncc_location, ncc_token, workflow_id)
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("not found.")
+
+    # Delete queues
+    print('Searching for queues with "Test " prefix...', end="")
+    test_queue_ids = get_queues(ncc_location, ncc_token)
+    if len(test_queue_ids) > 0:
+        print(f"found {len(test_queue_ids)} queues.")
+    else:
+        print("none found.")
+    for test_queue_id in test_queue_ids:
+        print(f"Deleting queue ID {test_queue_id}...", end="")
+        success = delete_queue(ncc_location, ncc_token, test_queue_id)
+        if success:
+            print("success!")
+        else:
+            print("failed")
+
+    # Delete dispositions
+    print('Searching for dispositions with "Test " prefix...', end="")
+    test_disposition_ids = get_dispositions(ncc_location, ncc_token)
+    if len(test_disposition_ids) > 0:
+        print(f"found {len(test_disposition_ids)} dispositions.")
+    else:
+        print("none found.")
+    for test_disposition_id in test_disposition_ids:
+        print(f"Deleting disposition ID {test_disposition_id}...", end="")
+        success = delete_disposition(ncc_location, ncc_token, test_disposition_id)
+        if success:
+            print("success!")
+        else:
+            print("failed")
+
+    # Delete Dialogflow intents
+    print('Searching for Dialogflow intents with "Test_" prefix...', end="")
+    intent_list = get_intents()
+    if len(intent_list) > 0:
+        print(f"found {len(intent_list)} intent(s).")
+        for intent in intent_list:
+            print(f'Deleting "{intent.display_name}" intent...', end="")
+            success = delete_intent(intent.name)
+            if success:
+                print("success!")
+            else:
+                print("failed.")
+    else:
+        print("no intents found.")
