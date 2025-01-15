@@ -97,6 +97,23 @@ def create_disposition(ncc_location: str, ncc_token: str, disposition_name: str)
     return disposition_id
 
 
+def assign_rest_call_to_dispositon(
+    ncc_location: str, ncc_token: str, rest_call_id: str, disposition_id: str
+):
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps({"restcallId": rest_call_id})
+    headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
+    conn.request(
+        "PATCH", f"/data/api/types/disposition/{disposition_id}", payload, headers
+    )
+    res = conn.getresponse()
+    if res.status == 200:
+        success = True
+    conn.close()
+    return success
+
+
 def delete_disposition(ncc_location: str, ncc_token: str, disposition_id: str) -> bool:
     """
     This function deletes a disposition with the specified disposition ID.

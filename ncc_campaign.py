@@ -111,6 +111,24 @@ def create_campaign(
     return campaign_id
 
 
+def assign_survey_to_campaign(
+    ncc_location: str, ncc_token: str, survey_id: str, campaign_id: str
+) -> bool:
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps({"surveyId": survey_id})
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    conn.request("PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        success = True
+    conn.close()
+    return success
+
+
 def delete_campaign(ncc_location: str, ncc_token: str, campaign_id: str) -> bool:
     """
     This function deletes a campaign with the specified campaign ID.
