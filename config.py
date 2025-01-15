@@ -39,6 +39,576 @@ finserv_queues = [
     "Test Accounts",
 ]
 
+hubspot_survey_body = {
+    "hideSurveyBoxShadown": False,
+    "type": "full",
+    "showFooter": False,
+    "surveythemeId": "5f6784bc8fbed55422effb9b",
+    "showTabs": True,
+    "showBottomNavigatorPage": False,
+    "height": 1130,
+    "debug": False,
+    "localizations": {
+        "name": {
+            "en": {
+                "language": "en",
+                "value": "Test HubSpot"
+            }
+        }
+    },
+    "showHeader": False,
+    "allowTabinationMandatoryFields": False,
+    "entryPanelId": "6568d29611501e41ad52c81d",
+    "layout": {
+        "elements": [
+            {
+                "icon": "icon-ui-panel",
+                "name": "Panel",
+                "description": "Basic component to display content in a survey",
+                "type": "panel",
+                "component": "panel",
+                "elements": [
+                    {
+                        "icon": "icon-ui-panel",
+                        "name": "Panel",
+                        "description": "Basic component to display content in a survey",
+                        "type": "panel",
+                        "component": "panel",
+                        "elements": [
+                            {
+                                "icon": "icon-ui-text",
+                                "name": "Text",
+                                "description": "Displays direct text to the customer",
+                                "type": "label",
+                                "component": "label",
+                                "elements": [],
+                                "properties": {
+                                    "label": "<strong>HubSpot Information</strong>",
+                                    "fontSize": 18,
+                                    "margin": "8px",
+                                    "alignment": "center"
+                                },
+                                "_id": "6568d2c4a60469f242e09c33",
+                                "selected": False,
+                                "show": True
+                            },
+                            {
+                                "icon": "icon-ui-text",
+                                "name": "Text",
+                                "description": "Displays direct text to the customer",
+                                "type": "label",
+                                "component": "label",
+                                "elements": [],
+                                "properties": {
+                                    "label": "Thank you for calling ${workitem.data.companyName}. My name is _. How can I help you today?",
+                                    "fontSize": 16,
+                                    "width": "95%",
+                                    "alignment": "center",
+                                    "condition": "${workitem.type} == 'InboundCall'"
+                                },
+                                "_id": "65ea549972b85bedb9e21bc4",
+                                "selected": False,
+                                "show": True
+                            }
+                        ],
+                        "properties": {
+                            "label": "",
+                            "labelAlignment": "left",
+                            "labelFontSize": "24",
+                            "descriptionAlignment": "left",
+                            "descriptionFontSize": "24",
+                            "alignment": "justify",
+                            "canCollapse": False,
+                            "state": False,
+                            "scroll": False,
+                            "showScrollbar": False,
+                            "vertical": "fit",
+                            "direction": "column",
+                            "panelShadow": False,
+                            "showOverlay": False,
+                            "showHeader": False,
+                            "allowPanelInDashboard": False
+                        },
+                        "_id": "6568d301fafdb453c286c263",
+                        "selected": False,
+                        "show": True
+                    },
+                    {
+                        "icon": "icon-ui-panel",
+                        "name": "Panel",
+                        "description": "Basic component to display content in a survey",
+                        "type": "panel",
+                        "component": "panel",
+                        "elements": [
+                            {
+                                "icon": "icon-ui-input",
+                                "name": "Input",
+                                "description": "A box for the customer to enter information",
+                                "type": "input",
+                                "component": "input",
+                                "elements": [],
+                                "properties": {
+                                    "label": "First Name",
+                                    "labelInReport": "firstName",
+                                    "fontSize": "14",
+                                    "width": "100%",
+                                    "margin": "8px",
+                                    "fieldname": "firstName",
+                                    "defaultValue": "${workitem.data.hubSpotFirstName}",
+                                    "mandatory": False,
+                                    "readOnly": True,
+                                    "validateOnInput": False,
+                                    "sensitiveData": False,
+                                    "saveToLocalStorage": False
+                                },
+                                "_id": "6568d3ade17f756c6978be2d",
+                                "selected": False,
+                                "show": True
+                            },
+                            {
+                                "icon": "icon-ui-input",
+                                "name": "Input",
+                                "description": "A box for the customer to enter information",
+                                "type": "input",
+                                "component": "input",
+                                "elements": [],
+                                "properties": {
+                                    "label": "Last Name",
+                                    "labelInReport": "lastName",
+                                    "fontSize": "14",
+                                    "width": "100%",
+                                    "margin": "8px",
+                                    "fieldname": "lastName",
+                                    "defaultValue": "${workitem.data.hubSpotLastName}",
+                                    "mandatory": False,
+                                    "readOnly": True,
+                                    "validateOnInput": False,
+                                    "sensitiveData": False,
+                                    "saveToLocalStorage": False
+                                },
+                                "_id": "6570ab7dc4edc2a9af3097a4",
+                                "selected": False,
+                                "show": True
+                            },
+                            {
+                                "icon": "icon-ui-input",
+                                "name": "Input",
+                                "description": "A box for the customer to enter information",
+                                "type": "input",
+                                "component": "input",
+                                "elements": [],
+                                "properties": {
+                                    "label": "Phone",
+                                    "labelInReport": "phone",
+                                    "fontSize": "14",
+                                    "width": "100%",
+                                    "margin": "8px",
+                                    "fieldname": "phone",
+                                    "defaultValue": "${workitem.data.phone}",
+                                    "mandatory": False,
+                                    "readOnly": True,
+                                    "validateOnInput": False,
+                                    "sensitiveData": False,
+                                    "saveToLocalStorage": False
+                                },
+                                "_id": "6568d4005c8b218f2803ecee",
+                                "selected": False,
+                                "show": True
+                            }
+                        ],
+                        "properties": {
+                            "label": "",
+                            "labelAlignment": "left",
+                            "labelFontSize": "24",
+                            "descriptionAlignment": "left",
+                            "descriptionFontSize": "24",
+                            "alignment": "justify",
+                            "canCollapse": False,
+                            "state": False,
+                            "scroll": False,
+                            "showScrollbar": False,
+                            "vertical": "fit",
+                            "direction": "column",
+                            "margin": "8px",
+                            "panelShadow": False,
+                            "showOverlay": False,
+                            "showHeader": False,
+                            "allowPanelInDashboard": False
+                        },
+                        "_id": "6568d32e7590d268980778f1",
+                        "selected": False,
+                        "show": True
+                    },
+                    {
+                        "icon": "icon-auto-accept-interaction",
+                        "name": "Action",
+                        "description": "Calls APIs and Thrio dispositions",
+                        "type": "action",
+                        "component": "action",
+                        "elements": [],
+                        "properties": {
+                            "label": "View Contact",
+                            "fontSize": 24,
+                            "buttonWidth": "95%",
+                            "buttonPadding": "10px",
+                            "buttonMargin": "10px",
+                            "type": "newTab",
+                            "url": "https://app.hubspot.com/contacts/8294123/record/0-1/${workitem.data.hubSpotId}",
+                            "onEvent": "onButtonClick",
+                            "useProxy": False,
+                            "windowName": "Contact",
+                            "properties": [],
+                            "headers": [],
+                            "successVariables": [],
+                            "onSuccess": "none",
+                            "errorVariables": [],
+                            "onError": "none",
+                            "hideApplication": False
+                        },
+                        "_id": "65e8f8326d1b7d9ff73fee3d",
+                        "selected": False,
+                        "show": True
+                    }
+                ],
+                "properties": {
+                    "label": "",
+                    "labelAlignment": "left",
+                    "labelFontSize": "24",
+                    "descriptionAlignment": "left",
+                    "descriptionFontSize": "24",
+                    "tabLabel": "Main",
+                    "alignment": "justify",
+                    "canCollapse": False,
+                    "state": False,
+                    "scroll": False,
+                    "showScrollbar": False,
+                    "vertical": "full",
+                    "direction": "column",
+                    "margin": "8px",
+                    "panelShadow": False,
+                    "showOverlay": False,
+                    "showHeader": False,
+                    "allowPanelInDashboard": False,
+                    "main": True
+                },
+                "_id": "6568d29611501e41ad52c81d",
+                "panelId": "refId1701367439506",
+                "selected": False,
+                "show": True
+            },
+            {
+                "icon": "icon-ui-panel",
+                "name": "Panel",
+                "description": "Basic component to display content in a survey",
+                "type": "panel",
+                "component": "panel",
+                "elements": [
+                    {
+                        "icon": "icon-next-survey",
+                        "name": "Move To Survey",
+                        "description": "Moves to a different survey",
+                        "type": "survey",
+                        "component": "survey",
+                        "elements": [],
+                        "properties": {
+                            "label": "SPAA - Payment",
+                            "fontSize": 20,
+                            "buttonPadding": "8px",
+                            "buttonMargin": "8px",
+                            "variables": [],
+                            "dataVariables": [
+                                {
+                                    "label": "lastName",
+                                    "value": "${surveyInformation.lastName.value}"
+                                },
+                                {
+                                    "label": "email",
+                                    "value": "${surveyInformation.email.value}"
+                                },
+                                {
+                                    "label": "phone",
+                                    "value": "${surveyInformation.phone.value}"
+                                },
+                                {
+                                    "label": "firstName",
+                                    "value": "${surveyInformation.firstName.value}"
+                                }
+                            ],
+                            "surveyId": "65b16a40dcd0f136cfd8c2f6",
+                            "expansions": {
+                                "surveyId": {
+                                    "name": "SPAA - Payment V4"
+                                }
+                            },
+                            "_working": False
+                        },
+                        "_id": "65c27c53e132a976ad1e2a47",
+                        "selected": False,
+                        "show": True
+                    }
+                ],
+                "properties": {
+                    "label": "SPAA",
+                    "labelAlignment": "left",
+                    "labelFontSize": "24",
+                    "descriptionAlignment": "left",
+                    "descriptionFontSize": "24",
+                    "tabLabel": "SPAA",
+                    "alignment": "justify",
+                    "canCollapse": False,
+                    "state": False,
+                    "scroll": False,
+                    "showScrollbar": False,
+                    "vertical": "full",
+                    "direction": "column",
+                    "panelShadow": False,
+                    "showOverlay": False,
+                    "showHeader": False,
+                    "allowPanelInDashboard": False,
+                    "main": True
+                },
+                "_id": "65c27c3abddd7278c9f3adea",
+                "panelId": "refId1707244416013",
+                "selected": False,
+                "show": True
+            }
+        ],
+        "footer": {
+            "icon": "icon-ui-footer",
+            "name": "Footer",
+            "description": "Displays navigation buttons at the bottom of a survey",
+            "type": "footer",
+            "component": "footer",
+            "elements": [],
+            "properties": {
+                "type": "iconButton",
+                "icon": "icon-next",
+                "size": "24"
+            },
+            "_id": "6568d292a5df5f52dc30e84b"
+        },
+        "header": {
+            "icon": "icon-ui-header",
+            "name": "Header",
+            "description": "Displays navigation buttons at the top of a survey",
+            "type": "header",
+            "component": "header",
+            "elements": [],
+            "properties": {
+                "showPrevious": False,
+                "showOptions": False,
+                "icon": "icon-next",
+                "showClose": False,
+                "size": "24",
+                "titleFontSize": "24"
+            },
+            "_id": "6568d292a4e94559fe3b3a61"
+        },
+        "overlay": {
+            "icon": "icon-ui-panels",
+            "name": "Overlay Panel",
+            "description": "This panel will always be visible and allow the user to minimise or maxime it.",
+            "type": "overlay",
+            "component": "overlay",
+            "elements": [],
+            "properties": {
+                "label": "Overlay Panel",
+                "labelAlignment": "left",
+                "labelFontSize": "24",
+                "descriptionAlignment": "left",
+                "descriptionFontSize": "24",
+                "alignment": "justify",
+                "canCollapse": False,
+                "state": False,
+                "scroll": False,
+                "vertical": "full",
+                "direction": "column",
+                "height": 80
+            },
+            "_id": "6568d292414caef39be57858"
+        }
+    },
+    "name": "Test HubSpot",
+    "width": 700,
+    "showTopNavigatorPage": False,
+    "usePanelShadow": False,
+    "font": "Rubik:400,400i,700;Rubik, sans-serif"
+}
+zendesk_survey_body = {
+    "overlayTitle": "",
+    "hideSurveyBoxShadown": False,
+    "type": "full",
+    "showFooter": False,
+    "surveythemeId": "5c6ac608c32fd448ed08038b",
+    "showTabs": True,
+    "showBottomNavigatorPage": False,
+    "height": 700,
+    "debug": False,
+    "localizations": {
+        "name": {
+            "en": {
+                "language": "en",
+                "value": "Test Zendesk"
+            }
+        }
+    },
+    "showHeader": False,
+    "allowTabinationMandatoryFields": True,
+    "entryPanelId": "6643d7aaac0c7120501d5236",
+    "layout": {
+        "elements": [
+            {
+                "icon": "icon-survey",
+                "name": "Panel",
+                "description": "Basic component to display content in a survey",
+                "type": "panel",
+                "component": "panel",
+                "elements": [
+                    {
+                        "icon": "icon-ui-input",
+                        "name": "Input",
+                        "description": "A box for the customer to enter information",
+                        "type": "input",
+                        "component": "input",
+                        "elements": [],
+                        "properties": {
+                            "label": "Name:",
+                            "labelInReport": "name",
+                            "fontSize": 24,
+                            "assistance": "The contact's first and last name, if known.",
+                            "width": "",
+                            "margin": "10px",
+                            "fieldname": "name",
+                            "defaultValue": "${workitem.data?.name || \"Not found or unconfirmed\"}",
+                            "mandatory": False,
+                            "readOnly": False,
+                            "validateOnInput": False,
+                            "sensitiveData": False,
+                            "saveToLocalStorage": False
+                        },
+                        "_id": "6643da58be3b4842c2254275",
+                        "selected": False,
+                        "show": True
+                    },
+                    {
+                        "icon": "icon-auto-watchloop",
+                        "name": "Action",
+                        "description": "Calls APIs and Thrio dispositions",
+                        "type": "action",
+                        "component": "action",
+                        "elements": [],
+                        "properties": {
+                            "label": "Show Contact",
+                            "fontSize": 24,
+                            "buttonWidth": "100%",
+                            "buttonPadding": "10px",
+                            "buttonMargin": "10px",
+                            "condition": "workitem.data.contactId != null",
+                            "type": "newTab",
+                            "url": "https://d3v-phoye.zendesk.com/agent/users/${workitem.data.contactId}/requested_tickets",
+                            "onEvent": "onButtonClick",
+                            "useProxy": False,
+                            "windowName": "Zendesk",
+                            "properties": [],
+                            "headers": [],
+                            "successVariables": [],
+                            "errorVariables": [],
+                            "hideApplication": False
+                        },
+                        "_id": "6643df7ba9cf906971e9c961",
+                        "selected": False,
+                        "show": True
+                    }
+                ],
+                "properties": {
+                    "label": "",
+                    "labelAlignment": "left",
+                    "labelFontSize": "24",
+                    "descriptionAlignment": "left",
+                    "descriptionFontSize": "24",
+                    "tabLabel": "Main",
+                    "alignment": "justify",
+                    "canCollapse": False,
+                    "state": False,
+                    "scroll": False,
+                    "showScrollbar": False,
+                    "vertical": "full",
+                    "direction": "column",
+                    "panelShadow": False,
+                    "showOverlay": False,
+                    "showHeader": False,
+                    "titleHeader": "",
+                    "allowPanelInDashboard": False,
+                    "main": True
+                },
+                "_id": "6643d7aaac0c7120501d5236",
+                "panelId": "refId1715697954366",
+                "selected": False,
+                "show": True
+            }
+        ],
+        "footer": {
+            "icon": "icon-ui-footer",
+            "name": "Footer",
+            "description": "Displays navigation buttons at the bottom of a survey",
+            "type": "footer",
+            "component": "footer",
+            "elements": [],
+            "properties": {
+                "type": "iconButton",
+                "icon": "icon-next",
+                "size": "24"
+            },
+            "_id": "6643d79f79f8b689d794d559"
+        },
+        "header": {
+            "icon": "icon-ui-header",
+            "name": "Header",
+            "description": "Displays navigation buttons at the top of a survey",
+            "type": "header",
+            "component": "header",
+            "elements": [],
+            "properties": {
+                "showPrevious": False,
+                "showOptions": False,
+                "icon": "icon-next",
+                "showClose": False,
+                "size": "24",
+                "titleFontSize": "24"
+            },
+            "_id": "6643d79f8f20684d04e5249e"
+        },
+        "overlay": {
+            "icon": "icon-ui-panels",
+            "name": "Overlay Panel",
+            "description": "This panel will always be visible and allow the user to minimise or maxime it.",
+            "type": "overlay",
+            "component": "overlay",
+            "elements": [],
+            "properties": {
+                "label": "Overlay Panel",
+                "labelAlignment": "left",
+                "labelFontSize": "24",
+                "descriptionAlignment": "left",
+                "descriptionFontSize": "24",
+                "alignment": "justify",
+                "canCollapse": False,
+                "state": False,
+                "scroll": False,
+                "vertical": "full",
+                "direction": "column",
+                "height": 80
+            },
+            "_id": "6643d79fed1327b08ac410de"
+        }
+    },
+    "name": "Test Zendesk",
+    "width": 380,
+    "showTopNavigatorPage": False,
+    "usePanelShadow": False,
+    "font": "Roboto:400,400i,700;Roboto, sans-serif"
+}
+
 # Google Dialogflow
 google_dialogflow_parent = "projects/rosy-proposal-446621-a5/agent"
 

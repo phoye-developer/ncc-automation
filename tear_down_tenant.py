@@ -7,6 +7,8 @@ from ncc_queue import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
+from ncc_survey import *
+from ncc_rest_call import *
 from dialogflow import *
 
 
@@ -112,6 +114,36 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("success!")
         else:
             print("failed")
+
+    # Delete surveys
+    print('Searching for surveys with "Test " prefix...', end="")
+    test_survey_ids = get_surveys(ncc_location, ncc_token)
+    if len(test_survey_ids) > 0:
+        print(f"found {len(test_survey_ids)} survey(s).")
+    else:
+        print("none found.")
+    for test_survey_id in test_survey_ids:
+        print(f"Deleting survey ID {test_survey_id}...", end="")
+        success = delete_survey(ncc_location, ncc_token, test_survey_id)
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete REST API objects
+    print('Searching for REST API call objects with "Test " prefix...', end="")
+    test_rest_call_ids = get_rest_calls(ncc_location, ncc_token)
+    if len(test_rest_call_ids) > 0:
+        print(f"found {len(test_rest_call_ids)} REST API call object(s).")
+    else:
+        print("none found.")
+    for test_rest_call_id in test_rest_call_ids:
+        print(f"Deleting REST API call object ID {test_rest_call_id}...", end="")
+        success = delete_rest_call(ncc_location, ncc_token, test_rest_call_id)
+        if success:
+            print("success!")
+        else:
+            print("failed.")
 
     # Delete Dialogflow intents
     print('Searching for Dialogflow intents with "Test_" prefix...', end="")
