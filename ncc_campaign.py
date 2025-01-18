@@ -37,6 +37,7 @@ def create_campaign(
     ncc_location: str,
     ncc_token: str,
     campaign_name: str,
+    survey_id: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
 ) -> str:
@@ -73,7 +74,7 @@ def create_campaign(
             "outboundANI": False,
             "userRecordingsFileNameFormat": "",
             "addresses": [],
-            "surveyId": "66c540b6c1e79a57d4c4b947",
+            "surveyId": survey_id,
             "useForEmail": False,
             "defaultExtension": True,
             "recordingEventsTranscription": True,
