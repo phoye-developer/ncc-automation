@@ -4,9 +4,11 @@ from ncc_disposition import *
 from ncc_user_profile import *
 from ncc_user_profile_disposition import *
 from ncc_queue import *
+from ncc_survey import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
+from ncc_campaign_disposition import *
 from dialogflow import *
 
 
@@ -109,11 +111,25 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         else:
             print("found.")
 
+    # Create survey
+    print('Searching for "Test Main - User" survey...', end="")
+    survey_id = search_surveys(ncc_location, ncc_token, "Test Main - User")
+    if survey_id == "":
+        print("not found.")
+        print('Creating "Test Main - User" survey...', end="")
+        survey_id = create_survey(
+            ncc_location, ncc_token, "Test Main - User", main_user_survey_body
+        )
+        if survey_id != "":
+            print("success!")
+        else:
+            print("failed.")
+
     # Create workflow
     print('Searching for "Test Workflow" workflow...', end="")
     workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
     if workflow_id == "":
-        print("none found.")
+        print("not found.")
         print('Creating "Test Workflow" workflow...', end="")
         workflow_id = create_workflow(ncc_location, ncc_token, "Test Workflow")
         if workflow_id != "":
@@ -181,6 +197,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             ncc_location,
             ncc_token,
             "Test Campaign",
+            survey_id,
             workflow_id,
             real_time_transcription_service_id,
         )
@@ -190,6 +207,21 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             print("failed.")
     else:
         print("found.")
+
+    # Assign dispositions to campaign
+    if campaign_id != "":
+        for disposition_id in disposition_ids:
+            print(
+                f'Assigning disposition ID {disposition_id} to "Test Campaign"...',
+                end="",
+            )
+            success = create_campaign_disposition(
+                ncc_location, ncc_token, campaign_id, disposition_id
+            )
+            if success:
+                print("success!")
+            else:
+                print("failed.")
 
     # Create Dialogflow intent
     for intent in intents:
