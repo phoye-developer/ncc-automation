@@ -54,7 +54,7 @@ def create_campaign(
             "userRecordings": False,
             "recordingAnalysisMinDuration": "0",
             "recordingAnalysisLanguages": "",
-            "recordingAnalysisServiceId": "62f5f778a4a0a35b078738f7",
+            "recordingAnalysisServiceId": real_time_transcription_service_id,
             "defaultOutbound": True,
             "useForSMS": True,
             "complianceRecordings": False,
@@ -65,8 +65,7 @@ def create_campaign(
             "filterOnLeads": "",
             "recordingAnalysisEndTime": 1439,
             "localizations": {
-                "name": {"en": {"language": "en", "value": campaign_name}},
-                "description": {"en": {"language": "en", "value": "Voice, Chat, SMS"}},
+                "name": {"en": {"language": "en", "value": campaign_name}}
             },
             "useForExtension": True,
             "spoofANICompanyDirectory": False,
@@ -81,7 +80,6 @@ def create_campaign(
             "ftpFilenameFormat": "",
             "recordingAnalysisMaxDuration": "86400",
             "useForPredictive": False,
-            "name": campaign_name,
             "useForOutbound": True,
             "callerId": "+16232590432",
             "priorityCallbacks": False,
@@ -97,6 +95,28 @@ def create_campaign(
             "useForFax": False,
             "disableRecordingOnTwoParty": False,
             "workflowId": workflow_id,
+            "expansions": {
+                "realtimeAnalysisServiceId": {
+                    "localizations": {
+                        "name": {
+                            "en": {
+                                "language": "en",
+                                "value": "Test Deepgram Real-Time Transcription",
+                            }
+                        }
+                    }
+                },
+                "recordingAnalysisServiceId": {
+                    "localizations": {
+                        "name": {
+                            "en": {
+                                "language": "en",
+                                "value": "Test Deepgram Real-Time Transcription",
+                            }
+                        }
+                    }
+                },
+            },
         }
     )
     headers = {
