@@ -5,6 +5,7 @@ from ncc_user_profile import *
 from ncc_user_profile_disposition import *
 from ncc_queue import *
 from ncc_workflow import *
+from ncc_function import *
 from ncc_service import *
 from ncc_campaign import *
 from ncc_survey import *
@@ -73,8 +74,9 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete workflow
     print('Searching for "Test Workflow" workflow...', end="")
-    workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
-    if workflow_id != "":
+    workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    if workflow != {}:
+        workflow_id = workflow["_id"]
         print("found.")
         print('Deleting "Test Workflow" workflow...', end="")
         success = delete_workflow(ncc_location, ncc_token, workflow_id)
@@ -84,6 +86,23 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("failed.")
     else:
         print("not found.")
+
+    # Delete functions
+    print('Searching for functions with "Test " prefix...', end="")
+    test_functions = get_functions(ncc_location, ncc_token)
+    if len(test_functions) > 0:
+        print(f"found {len(test_functions)} function(s).")
+    else:
+        print("none found.")
+    for test_function in test_functions:
+        test_function_name = test_function["name"]
+        test_function_id = test_function["_id"]
+        print(f'Deleting "{test_function_name}" function...', end="")
+        success = delete_function(ncc_location, ncc_token, test_function_id)
+        if success:
+            print("success!")
+        else:
+            print("failed")
 
     # Delete queues
     print('Searching for queues with "Test " prefix...', end="")

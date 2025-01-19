@@ -1647,6 +1647,633 @@ zendesk_survey_body = {
     "font": "Roboto:400,400i,700;Roboto, sans-serif"
 }
 
+# Functions
+post_call_phone_survey_function_body = {
+    "states": {
+        "663e916aeeaf8e1203cadff6": {
+        "category": "Standard",
+        "campaignStateId": "663e916aeeaf8e1203cadff6",
+        "actions": [
+            {
+            "category": "Action",
+            "title": "Terminate",
+            "name": "Terminate",
+            "type": "terminate",
+            "description": "Terminate",
+            "icon": "./assets/svg/icon-terminate",
+            "svg": "",
+            "color": "#FFFFFF",
+            "fig": "Rectangle",
+            "properties": {
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                }
+            }
+            }
+        ],
+        "objectType": "campaignstate",
+        "key": "663e916aeeaf8e1203cadff6",
+        "_id": "663e916aeeaf8e1203cadff6",
+        "description": "End State",
+        "name": "End State",
+        "location": "200 100",
+        "transitions": [],
+        "__gohashid": 125718
+        },
+        "start-state": {
+        "category": "Begin",
+        "campaignStateId": "start-state",
+        "actions": [
+            {
+            "name": "Transition to Satisfaction Question state",
+            "description": "Transition to another state",
+            "properties": {
+                "condition": {
+                "conditionType": "AND",
+                "expressions": [
+                    {
+                    "operator": "==",
+                    "leftExpression": "workitem.data.postCallSurvey",
+                    "rightExpression": "'Yes'"
+                    }
+                ]
+                },
+                "stateId": "663e91857ae9cf28ad8b6a0e",
+                "description": "Transition to another state"
+            },
+            "type": "transition",
+            "_selected": True,
+            "transitionId": "refId1715372160467",
+            "id": "refId1715372160731",
+            "icon": "icon-transition"
+            },
+            {
+            "name": "Transition to End state",
+            "description": "Transition to another state",
+            "properties": {
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "stateId": "663e916aeeaf8e1203cadff6",
+                "description": "Transition to another state"
+            },
+            "type": "transition",
+            "_selected": False,
+            "transitionId": "refId1715372160545",
+            "id": "refId1715372160732",
+            "icon": "icon-transition"
+            }
+        ],
+        "transitions": [
+            {
+            "name": "Transition to Satisfaction Question state",
+            "id": "refId1715372160467",
+            "__gohashid": 161861
+            },
+            {
+            "name": "Transition to End state",
+            "id": "refId1715372160545",
+            "__gohashid": 161866
+            }
+        ],
+        "objectType": "campaignstate",
+        "key": "start-state",
+        "_id": "start-state",
+        "description": "Begin State",
+        "name": "Begin State",
+        "location": "0 0",
+        "__gohashid": 125719
+        },
+        "663e91857ae9cf28ad8b6a0e": {
+        "category": "Standard",
+        "objectType": "campaignstate",
+        "campaignStateId": "663e91857ae9cf28ad8b6a0e",
+        "name": "Satisfaction Question",
+        "description": "Newly Created State",
+        "actions": [
+            {
+            "name": "Ask if satisfied",
+            "description": "Play Collect using Text-To-Speech",
+            "properties": {
+                "description": "",
+                "voiceName": "en-US-Wavenet-F",
+                "voiceGender": "female",
+                "text": "If you are satisfied with our service today, press 1. Otherwise, press 2.",
+                "numberDigits": 1,
+                "terminationKey": "#",
+                "timeoutInSeconds": "3",
+                "dlpOption": False,
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                }
+            },
+            "type": "googlettscollect",
+            "_selected": True,
+            "id": "refId1715372161199",
+            "icon": "icon-tts"
+            },
+            {
+            "name": "Set satisfied to 'Yes'",
+            "description": "",
+            "properties": {
+                "rightExpression": "'Yes'",
+                "variableName": "satisfied",
+                "asObject": False,
+                "dlpOption": False,
+                "wfmOption": False,
+                "dashboard": False,
+                "condition": {
+                "conditionType": "AND",
+                "expressions": [
+                    {
+                    "leftExpression": "workitem.digits",
+                    "operator": "==",
+                    "rightExpression": "'1'"
+                    }
+                ]
+                }
+            },
+            "type": "savevariable",
+            "_selected": False,
+            "id": "refId1715372161200",
+            "icon": "icon-save"
+            },
+            {
+            "name": "Set satisfied to 'No'",
+            "description": "",
+            "properties": {
+                "rightExpression": "'No'",
+                "variableName": "satisfied",
+                "asObject": False,
+                "dlpOption": False,
+                "wfmOption": False,
+                "dashboard": False,
+                "condition": {
+                "conditionType": "AND",
+                "expressions": [
+                    {
+                    "leftExpression": "workitem.digits",
+                    "operator": "==",
+                    "rightExpression": "'2'"
+                    }
+                ]
+                }
+            },
+            "type": "savevariable",
+            "_selected": False,
+            "id": "refId1715372161201",
+            "icon": "icon-save"
+            },
+            {
+            "name": "Transition to Would Recommend Question state",
+            "description": "Transition to another state",
+            "properties": {
+                "description": "Transition to another state",
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "stateId": "663e988e4d369b08b589db5d"
+            },
+            "type": "transition",
+            "_selected": False,
+            "transitionId": "refId1715372160478",
+            "id": "refId1715372161202",
+            "icon": "icon-transition"
+            }
+        ],
+        "_id": "663e91857ae9cf28ad8b6a0e",
+        "key": "663e91857ae9cf28ad8b6a0e",
+        "location": "439 -348",
+        "transitions": [
+            {
+            "name": "Transition to Would Recommend Question state",
+            "id": "refId1715372160478",
+            "__gohashid": 161912
+            }
+        ],
+        "__gohashid": 125720
+        },
+        "663e988e4d369b08b589db5d": {
+        "category": "Standard",
+        "objectType": "campaignstate",
+        "campaignStateId": "663e988e4d369b08b589db5d",
+        "name": "Would Recommend Question",
+        "description": "Newly Created State",
+        "actions": [
+            {
+            "name": "Ask if would recommend",
+            "description": "Play Collect using Text-To-Speech",
+            "properties": {
+                "voiceName": "en-US-Wavenet-F",
+                "voiceGender": "female",
+                "text": "If you would recommend us to a friend, press 1. Otherwise, press 2.",
+                "numberDigits": 1,
+                "terminationKey": "#",
+                "timeoutInSeconds": "3",
+                "dlpOption": False,
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "description": ""
+            },
+            "type": "googlettscollect",
+            "_selected": True,
+            "id": "refId1715372161221",
+            "icon": "icon-tts"
+            },
+            {
+            "name": "Set wouldRecommend to 'Yes'",
+            "description": "",
+            "properties": {
+                "rightExpression": "'Yes'",
+                "variableName": "wouldRecommend",
+                "asObject": False,
+                "dlpOption": False,
+                "wfmOption": False,
+                "dashboard": False,
+                "condition": {
+                "conditionType": "AND",
+                "expressions": [
+                    {
+                    "leftExpression": "workitem.digits",
+                    "operator": "==",
+                    "rightExpression": "'1'"
+                    }
+                ]
+                }
+            },
+            "type": "savevariable",
+            "_selected": False,
+            "id": "refId1715372161222",
+            "icon": "icon-save"
+            },
+            {
+            "name": "Set wouldRecommend to 'No'",
+            "description": "",
+            "properties": {
+                "rightExpression": "'No'",
+                "variableName": "wouldRecommend",
+                "asObject": False,
+                "dlpOption": False,
+                "wfmOption": False,
+                "dashboard": False,
+                "condition": {
+                "conditionType": "AND",
+                "expressions": [
+                    {
+                    "leftExpression": "workitem.digits",
+                    "operator": "==",
+                    "rightExpression": "'2'"
+                    }
+                ]
+                }
+            },
+            "type": "savevariable",
+            "_selected": False,
+            "id": "refId1715372161223",
+            "icon": "icon-save"
+            },
+            {
+            "name": "Transition to Rate Level state",
+            "description": "Transition to another state",
+            "properties": {
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "stateId": "663e993649840a312e2d8c42",
+                "description": "Transition to another state"
+            },
+            "type": "transition",
+            "_selected": False,
+            "transitionId": "refId1715372161068",
+            "id": "refId1715372161224",
+            "icon": "icon-transition"
+            }
+        ],
+        "_id": "663e988e4d369b08b589db5d",
+        "key": "663e988e4d369b08b589db5d",
+        "location": "701 -229",
+        "transitions": [
+            {
+            "name": "Transition to Rate Level state",
+            "id": "refId1715372161068",
+            "__gohashid": 161958
+            }
+        ],
+        "__gohashid": 141373
+        },
+        "663e993649840a312e2d8c42": {
+        "category": "Standard",
+        "objectType": "campaignstate",
+        "campaignStateId": "663e993649840a312e2d8c42",
+        "name": "Rate Level Question",
+        "description": "Newly Created State",
+        "actions": [
+            {
+            "name": "Ask level of service",
+            "description": "Play Collect using Text-To-Speech",
+            "properties": {
+                "voiceName": "en-US-Wavenet-F",
+                "voiceGender": "female",
+                "text": "On a scale of 1 to 5, with 5 being the best, how would you rate our service today?",
+                "numberDigits": 1,
+                "terminationKey": "#",
+                "timeoutInSeconds": "3",
+                "dlpOption": False,
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "description": ""
+            },
+            "type": "googlettscollect",
+            "_selected": True,
+            "id": "refId1715372161245",
+            "icon": "icon-tts"
+            },
+            {
+            "name": "Set levelOfService",
+            "description": "",
+            "properties": {
+                "rightExpression": "workitem.digits",
+                "variableName": "levelOfService",
+                "asObject": False,
+                "dlpOption": False,
+                "wfmOption": False,
+                "dashboard": False,
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                }
+            },
+            "type": "savevariable",
+            "_selected": False,
+            "id": "refId1715372161246",
+            "icon": "icon-save"
+            },
+            {
+            "name": "Transition to Goodbye state",
+            "description": "Transition to another state",
+            "properties": {
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "stateId": "663e99f1167f22fb88d6eda2",
+                "points": {
+                "__gohashid": 154128,
+                "_isFrozen": True,
+                "s": [
+                    {
+                    "x": 1039,
+                    "y": -70.80957565307621,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1049,
+                    "y": -70.80957565307621,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1052,
+                    "y": -70.80957565307621,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1052,
+                    "y": -252,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1218,
+                    "y": -252,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1218,
+                    "y": -255.816015625,
+                    "_isFrozen": True
+                    },
+                    {
+                    "x": 1218,
+                    "y": -245.816015625,
+                    "_isFrozen": True
+                    }
+                ],
+                "Ja": 7
+                },
+                "description": ""
+            },
+            "type": "transition",
+            "_selected": False,
+            "transitionId": "refId1715372161120",
+            "id": "refId1715372161247",
+            "icon": "icon-transition"
+            }
+        ],
+        "_id": "663e993649840a312e2d8c42",
+        "key": "663e993649840a312e2d8c42",
+        "location": "956 -97",
+        "transitions": [
+            {
+            "name": "Transition to Goodbye state",
+            "id": "refId1715372161120",
+            "__gohashid": 162004
+            }
+        ],
+        "__gohashid": 144569
+        },
+        "663e99f1167f22fb88d6eda2": {
+        "category": "Standard",
+        "objectType": "campaignstate",
+        "campaignStateId": "663e99f1167f22fb88d6eda2",
+        "name": "Goodbye",
+        "description": "Newly Created State",
+        "actions": [
+            {
+            "icon": "icon-tts",
+            "name": "Synthesize Text via Google TTS",
+            "description": "Convert Text into Audio using Google's Text-To-Speech",
+            "properties": {
+                "voiceName": "en-US-Wavenet-F",
+                "text": "Thank you for taking our brief survey and have a great day!",
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                }
+            },
+            "type": "googletts",
+            "_selected": True
+            },
+            {
+            "name": "Transition to End state",
+            "description": "Transition to another state",
+            "properties": {
+                "condition": {
+                "conditionType": "NONE",
+                "expressions": [
+                    {
+                    "operator": "=="
+                    }
+                ]
+                },
+                "stateId": "663e916aeeaf8e1203cadff6",
+                "description": "Transition to another state"
+            },
+            "type": "transition",
+            "_selected": False,
+            "transitionId": "refId1715372161283",
+            "icon": "icon-transition",
+            "id": "refId1715372161750"
+            }
+        ],
+        "_id": "663e99f1167f22fb88d6eda2",
+        "key": "663e99f1167f22fb88d6eda2",
+        "location": "1218 -223",
+        "transitions": [
+            {
+            "name": "Transition to End state",
+            "id": "refId1715372161283",
+            "__gohashid": 162050
+            }
+        ],
+        "__gohashid": 153652
+        }
+    },
+    "showInDashboardOption": False,
+    "name": "Test Post-Call Phone Survey",
+    "localizations": {
+        "name": {
+        "en": {
+            "language": "en",
+            "value": "Test Post-Call Phone Survey"
+        }
+        }
+    }
+}
+
+# Workflows
+main_workflow = {
+    "maxActions": 10000,
+    "localizations": {
+        "name": {"en": {"language": "en", "value": ""}}
+    },
+    "states": {
+        "67875b41a4c102ae206943b9": {
+            "category": "Standard",
+            "campaignStateId": "67875b41a4c102ae206943b9",
+            "actions": [
+                {
+                    "category": "Action",
+                    "title": "Terminate",
+                    "name": "Terminate",
+                    "type": "terminate",
+                    "description": "Terminate",
+                    "icon": "./assets/svg/icon-terminate",
+                    "svg": "",
+                    "color": "#FFFFFF",
+                    "fig": "Rectangle",
+                    "properties": {
+                        "condition": {
+                            "conditionType": "NONE",
+                            "expressions": [{"operator": "=="}],
+                        }
+                    },
+                }
+            ],
+            "objectType": "campaignstate",
+            "key": "67875b41a4c102ae206943b9",
+            "_id": "67875b41a4c102ae206943b9",
+            "description": "End State",
+            "name": "End State",
+            "location": "200 100",
+        },
+        "start-state": {
+            "category": "Begin",
+            "campaignStateId": "start-state",
+            "actions": [
+                {
+                    "category": "Action",
+                    "title": "Transition",
+                    "name": "Start",
+                    "type": "transition",
+                    "description": "Transition to another state",
+                    "icon": "./assets/svg/icon-transition",
+                    "svg": "",
+                    "color": "#FFFFFF",
+                    "fig": "Rectangle",
+                    "properties": {
+                        "condition": {
+                            "conditionType": "NONE",
+                            "expressions": [{"operator": "=="}],
+                        },
+                        "stateId": "67875b41a4c102ae206943b9",
+                        "name": "Start",
+                    },
+                }
+            ],
+            "transitions": [
+                {"name": "Start", "id": "67875b41b3d8f1feceadbf9f"}
+            ],
+            "objectType": "campaignstate",
+            "key": "start-state",
+            "_id": "start-state",
+            "description": "Begin State",
+            "name": "Begin State",
+            "location": "0 0",
+        },
+    },
+    "finalWorkitemStateId": "67875b41a4c102ae206943b9",
+    "finalUserStateId": "67875b41a4c102ae206943b9",
+    "name": "",
+}
+
 # Google Dialogflow
 google_dialogflow_parent = "projects/rosy-proposal-446621-a5/agent"
 

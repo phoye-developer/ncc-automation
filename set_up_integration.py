@@ -21,7 +21,7 @@ def set_up_integration(ncc_location: str, ncc_token: str):
         print("1. HubSpot")
         print("2. Zendesk")
         print()
-        choice = input("System: ")
+        choice = input("Command: ")
         print()
         if choice == "1":
             hubspot_access_token = input("Access token: ")

@@ -1,16 +1,18 @@
 import getpass
 from authentication import *
 from set_up_tenant import *
-from tear_down_tenant import *
+from set_up_feature import *
 from set_up_integration import *
+from tear_down_tenant import *
 
 
 def display_main_menu():
     print()
     print("1. Set up tenant")
-    print("2. Set up integration")
-    print("3. Tear down tenant")
-    print("4. Exit")
+    print("2. Set up feature")
+    print("3. Set up integration")
+    print("4. Tear down tenant")
+    print("5. Exit")
     print()
 
 
@@ -31,16 +33,18 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "4":
+            while choice != "5":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
                     set_up_tenant(ncc_location, ncc_token)
                 elif choice == "2":
-                    set_up_integration(ncc_location, ncc_token)
+                    set_up_feature(ncc_location, ncc_token)
                 elif choice == "3":
-                    tear_down_tenant(ncc_location, ncc_token)
+                    set_up_integration(ncc_location, ncc_token)
                 elif choice == "4":
+                    tear_down_tenant(ncc_location, ncc_token)
+                elif choice == "5":
                     pass
                 else:
                     print("You did not make a valid choice.")

@@ -3,11 +3,27 @@ import urllib.parse
 import json
 
 
-def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> str:
+def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
+    """
+    This function fetches the details for a specific workflow.
+    """
+    workflow = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    conn.request("GET", f"/data/api/types/workflow/{workflow_id}", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        data = res.read().decode("utf-8")
+        workflow = json.loads(data)
+    return workflow
+
+
+def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> dict:
     """
     This function searches for an existing workflow with the same name as the intended new workflow.
     """
-    workflow_id = ""
+    workflow = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -27,91 +43,22 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> s
             results = json_data["objects"]
             for result in results:
                 if result["name"] == workflow_name:
-                    workflow_id = result["workflowId"]
+                    workflow = result
                     break
     conn.close()
-    return workflow_id
+    return workflow
 
 
-def create_workflow(ncc_location: str, ncc_token: str, workflow_name: str) -> str:
+def create_workflow(
+    ncc_location: str, ncc_token: str, workflow_body: dict, workflow_name: str
+) -> str:
     workflow_id = ""
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "maxActions": 10000,
-            "localizations": {
-                "name": {"en": {"language": "en", "value": workflow_name}}
-            },
-            "states": {
-                "67875b41a4c102ae206943b9": {
-                    "category": "Standard",
-                    "campaignStateId": "67875b41a4c102ae206943b9",
-                    "actions": [
-                        {
-                            "category": "Action",
-                            "title": "Terminate",
-                            "name": "Terminate",
-                            "type": "terminate",
-                            "description": "Terminate",
-                            "icon": "./assets/svg/icon-terminate",
-                            "svg": "",
-                            "color": "#FFFFFF",
-                            "fig": "Rectangle",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                }
-                            },
-                        }
-                    ],
-                    "objectType": "campaignstate",
-                    "key": "67875b41a4c102ae206943b9",
-                    "_id": "67875b41a4c102ae206943b9",
-                    "description": "End State",
-                    "name": "End State",
-                    "location": "200 100",
-                },
-                "start-state": {
-                    "category": "Begin",
-                    "campaignStateId": "start-state",
-                    "actions": [
-                        {
-                            "category": "Action",
-                            "title": "Transition",
-                            "name": "Start",
-                            "type": "transition",
-                            "description": "Transition to another state",
-                            "icon": "./assets/svg/icon-transition",
-                            "svg": "",
-                            "color": "#FFFFFF",
-                            "fig": "Rectangle",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "67875b41a4c102ae206943b9",
-                                "name": "Start",
-                            },
-                        }
-                    ],
-                    "transitions": [
-                        {"name": "Start", "id": "67875b41b3d8f1feceadbf9f"}
-                    ],
-                    "objectType": "campaignstate",
-                    "key": "start-state",
-                    "_id": "start-state",
-                    "description": "Begin State",
-                    "name": "Begin State",
-                    "location": "0 0",
-                },
-            },
-            "finalWorkitemStateId": "67875b41a4c102ae206943b9",
-            "finalUserStateId": "67875b41a4c102ae206943b9",
-            "name": workflow_name,
-        }
-    )
+
+    workflow_body["localizations"]["name"]["en"]["value"] = workflow_name
+    workflow_body["name"] = workflow_name
+
+    payload = json.dumps(workflow_body)
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",
@@ -225,6 +172,117 @@ def assign_rest_call_to_workflow(
     if res.status == 200:
         success = True
     conn.close()
+    return success
+
+
+def add_extend_call_component(
+    ncc_location: str, ncc_token: str, workflow_id: str, function_id: str
+) -> bool:
+    """
+    This function adds the Extend Call component to the Begin State of the specified workflow.
+    """
+    success = False
+    workflow = get_workflow(ncc_location, ncc_token, workflow_id)
+    if workflow != {}:
+        states = workflow["states"]
+        for state_key in states:
+            if state_key == "start-state":
+                actions = states[state_key]["actions"]
+                actions.insert(
+                    0,
+                    {
+                        "name": "Extend Call",
+                        "description": "Extend Call",
+                        "properties": {
+                            "functionId": function_id,
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "operator": "==",
+                                        "leftExpression": "workitem.type",
+                                        "rightExpression": "'InboundCall'",
+                                    }
+                                ],
+                            },
+                            "expansions": {
+                                "functionId": {"name": "Test Post-Call Survey"}
+                            },
+                            "_working": False,
+                        },
+                        "type": "aftercallivr",
+                        "_selected": False,
+                        "icon": "icon-play-voicemail-greeting",
+                        "id": "refId1715372161608",
+                    },
+                )
+    success = update_workflow(ncc_location, ncc_token, workflow_id, workflow)
+    return success
+
+
+def add_sms_message_consumer_survey_link(
+    ncc_location: str, ncc_token: str, workflow_id: str
+) -> bool:
+    """
+    This function adds the SMS Message Consumer component to the End State of the specified workflow.
+    """
+    success = False
+    workflow = get_workflow(ncc_location, ncc_token, workflow_id)
+    if workflow != {}:
+        states = workflow["states"]
+        for state_key in states:
+            if state_key == "67875b41a4c102ae206943b9":
+                actions = states[state_key]["actions"]
+                actions.insert(
+                    0,
+                    {
+                        "icon": "icon-ai-message",
+                        "name": "Send Survey Link",
+                        "description": "",
+                        "properties": {
+                            "description": "",
+                            "message": "Thank you for contacting us! To take a brief survey, go to https://www.mysurveysite.com?workitem_id=${workitem.workitemId}",
+                            "toAddress": "workitem.from",
+                            "fromAddress": "workitem.to",
+                            "createNewWorkitem": False,
+                            "condition": {
+                                "conditionType": "OR",
+                                "expressions": [
+                                    {
+                                        "operator": "==",
+                                        "leftExpression": "workitem.type",
+                                        "rightExpression": "'InboundCall'",
+                                    },
+                                    {
+                                        "operator": "==",
+                                        "leftExpression": "workitem.type",
+                                        "rightExpression": "'InboundSMS'",
+                                    },
+                                ],
+                            },
+                        },
+                        "type": "smsmessageconsumer",
+                        "_selected": False,
+                    },
+                )
+    success = update_workflow(ncc_location, ncc_token, workflow_id, workflow)
+    return success
+
+
+def update_workflow(
+    ncc_location: str, ncc_token: str, workflow_id: str, workflow_body: dict
+) -> bool:
+    """
+    This function updates an NCC workflow with the specified workflow ID and workflow body.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(workflow_body)
+    headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
+    conn.request("PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        success = True
     return success
 
 
