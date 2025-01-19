@@ -29,7 +29,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         print("2. Healthcare")
         print("3. FinServ")
         print()
-        choice = input("Vertical: ")
+        choice = input("Command: ")
         print()
         if choice == "1":
             dispositions = general_dispositions
@@ -124,19 +124,24 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             print("success!")
         else:
             print("failed.")
+    else:
+        print("found.")
 
     # Create workflow
     print('Searching for "Test Workflow" workflow...', end="")
-    workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
-    if workflow_id == "":
+    workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    if workflow == {}:
         print("not found.")
         print('Creating "Test Workflow" workflow...', end="")
-        workflow_id = create_workflow(ncc_location, ncc_token, "Test Workflow")
+        workflow_id = create_workflow(
+            ncc_location, ncc_token, main_workflow, "Test Workflow"
+        )
         if workflow_id != "":
             print("success!")
         else:
             print("failed.")
     else:
+        workflow_id = workflow["_id"]
         print("found.")
 
     # Create Deepgram API key
