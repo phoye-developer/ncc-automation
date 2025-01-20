@@ -122,8 +122,9 @@ def set_up_integration(ncc_location: str, ncc_token: str):
 
     # Assign "search contacts" REST API call object to "Test Workflow"
     print('Searching for "Test Workflow"...', end="")
-    workflow_id = search_workflows(ncc_location, ncc_token, "Test Workflow")
-    if workflow_id != "":
+    workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    if workflow != {}:
+        workflow_id = workflow["_id"]
         print("found.")
         print(
             f'Assigning "{search_contacts_name}" to "Test Workflow" workflow...', end=""
