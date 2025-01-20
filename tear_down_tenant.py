@@ -151,14 +151,14 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete REST API objects
     print('Searching for REST API call objects with "Test " prefix...', end="")
-    test_rest_call_ids = get_rest_calls(ncc_location, ncc_token)
-    if len(test_rest_call_ids) > 0:
-        print(f"found {len(test_rest_call_ids)} REST API call object(s).")
+    rest_calls = get_rest_calls(ncc_location, ncc_token)
+    if len(rest_calls) > 0:
+        print(f"found {len(rest_calls)} REST API call object(s).")
     else:
         print("none found.")
-    for test_rest_call_id in test_rest_call_ids:
-        print(f"Deleting REST API call object ID {test_rest_call_id}...", end="")
-        success = delete_rest_call(ncc_location, ncc_token, test_rest_call_id)
+    for rest_call in rest_calls:
+        print(f'Deleting "{rest_call["name"]}" REST API call object...', end="")
+        success = delete_rest_call(ncc_location, ncc_token, rest_call["_id"])
         if success:
             print("success!")
         else:
