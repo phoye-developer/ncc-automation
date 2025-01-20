@@ -3,11 +3,11 @@ import urllib.parse
 import json
 
 
-def get_dispositions(ncc_location: str, ncc_token: str) -> str:
+def get_dispositions(ncc_location: str, ncc_token: str) -> list:
     """
     This function fetches a list of dispositions present on the Nextiva Contact Center tenant.
     """
-    test_disposition_ids = []
+    dispositions = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -22,17 +22,17 @@ def get_dispositions(ncc_location: str, ncc_token: str) -> str:
             for result in results:
                 disposition_name = result["name"]
                 if disposition_name[0:5] == "Test ":
-                    test_disposition_ids.append(result["dispositionId"])
-    return test_disposition_ids
+                    dispositions.append(result)
+    return dispositions
 
 
 def search_dispositions(
     ncc_location: str, ncc_token: str, disposition_name: str
-) -> str:
+) -> dict:
     """
     This function searches for an existing disposition with the same name as the intended new disposition.
     """
-    disposition_id = ""
+    disposition = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -52,13 +52,15 @@ def search_dispositions(
             results = json_data["objects"]
             for result in results:
                 if result["name"] == disposition_name:
-                    disposition_id = result["dispositionId"]
+                    disposition = result
                     break
     conn.close()
-    return disposition_id
+    return disposition
 
 
-def create_disposition(ncc_location: str, ncc_token: str, disposition_name: str) -> str:
+def create_disposition(
+    ncc_location: str, ncc_token: str, disposition_name: str
+) -> dict:
     """
     This function creates a disposition with a specified name.
     """
@@ -91,15 +93,14 @@ def create_disposition(ncc_location: str, ncc_token: str, disposition_name: str)
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        disposition_id = json_data["dispositionId"]
+        disposition = json.loads(data)
     conn.close()
-    return disposition_id
+    return disposition
 
 
 def assign_rest_call_to_dispositon(
     ncc_location: str, ncc_token: str, rest_call_id: str, disposition_id: str
-):
+) -> bool:
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps({"restcallId": rest_call_id})

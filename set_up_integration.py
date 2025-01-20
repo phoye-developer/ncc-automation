@@ -145,16 +145,16 @@ def set_up_integration(ncc_location: str, ncc_token: str):
 
     # Assign "log activity" REST API call object to all dispositions
     print('Searching for dispositions with "Test " prefix...', end="")
-    test_disposition_ids = get_dispositions(ncc_location, ncc_token)
-    if len(test_disposition_ids) > 0:
-        print(f"found {len(test_disposition_ids)} disposition(s).")
-        for test_disposition_id in test_disposition_ids:
+    dispositions = get_dispositions(ncc_location, ncc_token)
+    if len(dispositions) > 0:
+        print(f"found {len(dispositions)} disposition(s).")
+        for disposition in dispositions:
             print(
-                f'Assigning "{log_workitem_name}" REST API call object to disposition ID {test_disposition_id}...',
+                f'Assigning "{log_workitem_name}" REST API call object to "{disposition["name"]}" disposition...',
                 end="",
             )
             success = assign_rest_call_to_dispositon(
-                ncc_location, ncc_token, log_workitem_rest_call_id, test_disposition_id
+                ncc_location, ncc_token, log_workitem_rest_call_id, disposition["_id"]
             )
             if success:
                 print("success!")
