@@ -17,8 +17,6 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
     This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
     """
 
-    disposition_ids = []
-
     # Select vertical
     print()
     print("Please select a vertical.")
@@ -50,19 +48,17 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
     # Create dispositions
     for disposition in dispositions:
         print(f'Searching for "{disposition}" disposition...', end="")
-        disposition_id = search_dispositions(ncc_location, ncc_token, disposition)
-        if disposition_id == "":
+        result = search_dispositions(ncc_location, ncc_token, disposition)
+        if result == {}:
             print("none found.")
             print(f'Creating "{disposition}" disposition...', end="")
-            disposition_id = create_disposition(ncc_location, ncc_token, disposition)
-            if disposition_id != "":
+            disposition = create_disposition(ncc_location, ncc_token, disposition)
+            if disposition != {}:
                 print("success!")
-                disposition_ids.append(disposition_id)
             else:
                 print("failed.")
         else:
             print("found.")
-            disposition_ids.append(disposition_id)
 
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
@@ -70,24 +66,25 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         user_profile_id = search_user_profiles(ncc_location, ncc_token, user_profile)
         if user_profile_id != "":
             print("found.")
-            for disposition_id in disposition_ids:
+            dispositions = get_dispositions(ncc_location, ncc_token)
+            for disposition in dispositions:
                 print(
-                    f'Checking if disposition ID {disposition_id} is assigned to "{user_profile}" user profile...',
+                    f'Checking if "{disposition["name"]}" disposition is assigned to "{user_profile}" user profile...',
                     end="",
                 )
                 success = search_user_profile_dispositions(
-                    ncc_location, ncc_token, disposition_id, user_profile_id
+                    ncc_location, ncc_token, disposition["_id"], user_profile_id
                 )
                 if success:
                     print("assigned.")
                 else:
                     print("not assigned.")
                     print(
-                        f'Assigning disposition ID {disposition_id} to "{user_profile}" user profile...',
+                        f'Assigning "{disposition["name"]}" disposition to "{user_profile}" user profile...',
                         end="",
                     )
                     user_profile_disposition_id = create_user_profile_disposition(
-                        ncc_location, ncc_token, user_profile_id, disposition_id
+                        ncc_location, ncc_token, user_profile_id, disposition["_id"]
                     )
                     if user_profile_disposition_id != "":
                         print("success!")
@@ -215,18 +212,30 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
 
     # Assign dispositions to campaign
     if campaign_id != "":
-        for disposition_id in disposition_ids:
+        dispositions = get_dispositions(ncc_location, ncc_token)
+        for disposition in dispositions:
             print(
-                f'Assigning disposition ID {disposition_id} to "Test Campaign"...',
+                f'Checking if "{disposition["name"]}" disposition is assigned to "Test Campaign" campaign...',
                 end="",
             )
-            success = create_campaign_disposition(
-                ncc_location, ncc_token, campaign_id, disposition_id
+            success = search_campaign_dispositions(
+                ncc_location, ncc_token, campaign_id, disposition["_id"]
             )
-            if success:
-                print("success!")
+            if not success:
+                print("not found.")
+                print(
+                    f'Assigning "{disposition["name"]}" disposition to "Test Campaign" campaign...',
+                    end="",
+                )
+                success = create_campaign_disposition(
+                    ncc_location, ncc_token, campaign_id, disposition["_id"]
+                )
+                if success:
+                    print("success!")
+                else:
+                    print("failed.")
             else:
-                print("failed.")
+                print("assigned.")
 
     # Create Dialogflow intent
     for intent in intents:

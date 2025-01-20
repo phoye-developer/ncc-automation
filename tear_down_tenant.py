@@ -121,14 +121,14 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete dispositions
     print('Searching for dispositions with "Test " prefix...', end="")
-    test_disposition_ids = get_dispositions(ncc_location, ncc_token)
-    if len(test_disposition_ids) > 0:
-        print(f"found {len(test_disposition_ids)} dispositions.")
+    dispositions = get_dispositions(ncc_location, ncc_token)
+    if len(dispositions) > 0:
+        print(f"found {len(dispositions)} dispositions.")
     else:
         print("none found.")
-    for test_disposition_id in test_disposition_ids:
-        print(f"Deleting disposition ID {test_disposition_id}...", end="")
-        success = delete_disposition(ncc_location, ncc_token, test_disposition_id)
+    for disposition in dispositions:
+        print(f'Deleting "{disposition["name"]}" disposition...', end="")
+        success = delete_disposition(ncc_location, ncc_token, disposition["_id"])
         if success:
             print("success!")
         else:
