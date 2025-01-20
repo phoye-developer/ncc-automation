@@ -130,7 +130,11 @@ def set_up_integration(ncc_location: str, ncc_token: str):
             f'Assigning "{search_contacts_name}" to "Test Workflow" workflow...', end=""
         )
         success = assign_rest_call_to_workflow(
-            ncc_location, ncc_token, search_contacts_rest_call_id, workflow_id
+            ncc_location,
+            ncc_token,
+            search_contacts_rest_call_id,
+            workflow_id,
+            search_contacts_name,
         )
         if success:
             print("success!")
