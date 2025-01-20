@@ -73,7 +73,11 @@ def create_workflow(
 
 
 def assign_rest_call_to_workflow(
-    ncc_location: str, ncc_token: str, rest_call_id: str, workflow_id: str
+    ncc_location: str,
+    ncc_token: str,
+    rest_call_id: str,
+    workflow_id: str,
+    rest_call_name: str,
 ):
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
@@ -127,6 +131,7 @@ def assign_rest_call_to_workflow(
                                 "restCallId": rest_call_id,
                                 "_working": False,
                                 "description": "Search Contacts",
+                                "expansions": {"restCallId": {"name": rest_call_name}},
                             },
                             "type": "restapi",
                             "_selected": True,
