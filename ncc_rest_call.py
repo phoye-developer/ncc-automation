@@ -3,11 +3,11 @@ import urllib.parse
 import json
 
 
-def get_rest_calls(ncc_location: str, ncc_token: str) -> str:
+def get_rest_calls(ncc_location: str, ncc_token: str) -> list:
     """
     This function fetches a list of REST API call objects present on the Nextiva Contact Center tenant.
     """
-    test_rest_calls = []
+    rest_calls = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -22,15 +22,15 @@ def get_rest_calls(ncc_location: str, ncc_token: str) -> str:
             for result in results:
                 rest_call_name = result["name"]
                 if rest_call_name[0:5] == "Test ":
-                    test_rest_calls.append(result["_id"])
-    return test_rest_calls
+                    rest_calls.append(result)
+    return rest_calls
 
 
-def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> str:
+def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> dict:
     """
     This function searches for an existing REST API call object with the same name as the intended new REST API call object.
     """
-    rest_call_id = ""
+    rest_call = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -50,19 +50,19 @@ def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) ->
             results = json_data["objects"]
             for result in results:
                 if result["name"] == rest_call_name:
-                    rest_call_id = result["_id"]
+                    rest_call = result
                     break
     conn.close()
-    return rest_call_id
+    return rest_call
 
 
 def hubspot_create_search_contacts_rest_call(
     ncc_location: str, ncc_token: str, hubspot_access_token: str, rest_call_name: str
-) -> str:
+) -> dict:
     """
     This function creates a REST API call object to search for contacts in HubSpot.
     """
-    rest_call_id = ""
+    rest_call = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -105,19 +105,18 @@ def hubspot_create_search_contacts_rest_call(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        rest_call_id = json_data["_id"]
+        rest_call = json.loads(data)
     conn.close()
-    return rest_call_id
+    return rest_call
 
 
 def hubspot_create_activity_rest_call(
     ncc_location: str, ncc_token: str, hubspot_access_token: str, rest_call_name: str
-) -> str:
+) -> dict:
     """
     This function creates a REST API call object to create an activity in HubSpot.
     """
-    rest_call_id = ""
+    rest_call = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -160,10 +159,9 @@ def hubspot_create_activity_rest_call(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        rest_call_id = json_data["_id"]
+        rest_call = json.loads(data)
     conn.close()
-    return rest_call_id
+    return rest_call
 
 
 def zendesk_create_search_contacts_rest_call(
@@ -172,11 +170,11 @@ def zendesk_create_search_contacts_rest_call(
     zendesk_username: str,
     zendesk_password: str,
     rest_call_name: str,
-) -> str:
+) -> dict:
     """
     This function creates a REST API call object to search for contacts in Zendesk.
     """
-    rest_call_id = ""
+    rest_call = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -212,10 +210,9 @@ def zendesk_create_search_contacts_rest_call(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        rest_call_id = json_data["_id"]
+        rest_call = json.loads(data)
     conn.close()
-    return rest_call_id
+    return rest_call
 
 
 def zendesk_create_ticket_rest_call(
@@ -224,11 +221,11 @@ def zendesk_create_ticket_rest_call(
     zendesk_username: str,
     zendesk_password: str,
     rest_call_name: str,
-) -> str:
+) -> dict:
     """
     This function creates a REST API call object to create a ticket in Zendesk.
     """
-    rest_call_id = ""
+    rest_call = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -265,10 +262,9 @@ def zendesk_create_ticket_rest_call(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        rest_call_id = json_data["_id"]
+        rest_call = json.loads(data)
     conn.close()
-    return rest_call_id
+    return rest_call
 
 
 def delete_rest_call(ncc_location: str, ncc_token: str, rest_call_id: str) -> bool:

@@ -45,36 +45,36 @@ def set_up_integration(ncc_location: str, ncc_token: str):
     # Create "search contacts" REST API call object
     print(f'Searching for "{search_contacts_name}" REST API object...', end="")
     if system_name == "Test HubSpot":
-        search_contacts_rest_call_id = search_rest_calls(
+        search_contacts_rest_call = search_rest_calls(
             ncc_location, ncc_token, search_contacts_name
         )
-        if search_contacts_rest_call_id == "":
+        if search_contacts_rest_call == {}:
             print("not found.")
             print(f'Creating "{search_contacts_name}" REST API object...', end="")
-            search_contacts_rest_call_id = hubspot_create_search_contacts_rest_call(
+            search_contacts_rest_call = hubspot_create_search_contacts_rest_call(
                 ncc_location, ncc_token, hubspot_access_token, search_contacts_name
             )
-            if search_contacts_rest_call_id != "":
+            if search_contacts_rest_call != {}:
                 print("success!")
             else:
                 print("failed.")
         else:
             print("found.")
     elif system_name == "Test Zendesk":
-        search_contacts_rest_call_id = search_rest_calls(
+        search_contacts_rest_call = search_rest_calls(
             ncc_location, ncc_token, search_contacts_name
         )
-        if search_contacts_rest_call_id == "":
+        if search_contacts_rest_call == {}:
             print("not found.")
             print(f'Creating "{search_contacts_name}" REST API object...', end="")
-            search_contacts_rest_call_id = zendesk_create_search_contacts_rest_call(
+            search_contacts_rest_call = zendesk_create_search_contacts_rest_call(
                 ncc_location,
                 ncc_token,
                 zendesk_username,
                 zendesk_password,
                 search_contacts_name,
             )
-            if search_contacts_rest_call_id != "":
+            if search_contacts_rest_call != {}:
                 print("success!")
             else:
                 print("failed.")
@@ -84,36 +84,36 @@ def set_up_integration(ncc_location: str, ncc_token: str):
     # Create "log activity" REST API call object
     print(f'Searching for "{log_workitem_name}" REST API object...', end="")
     if system_name == "Test HubSpot":
-        log_workitem_rest_call_id = search_rest_calls(
+        log_workitem_rest_call = search_rest_calls(
             ncc_location, ncc_token, log_workitem_name
         )
-        if log_workitem_rest_call_id == "":
+        if log_workitem_rest_call == {}:
             print("not found.")
             print(f'Creating "{log_workitem_name}" REST API object...', end="")
-            log_workitem_rest_call_id = hubspot_create_activity_rest_call(
+            log_workitem_rest_call = hubspot_create_activity_rest_call(
                 ncc_location, ncc_token, hubspot_access_token, log_workitem_name
             )
-            if log_workitem_rest_call_id != "":
+            if log_workitem_rest_call != {}:
                 print("success!")
             else:
                 print("failed.")
         else:
             print("found.")
     elif system_name == "Test Zendesk":
-        log_workitem_rest_call_id = search_rest_calls(
+        log_workitem_rest_call = search_rest_calls(
             ncc_location, ncc_token, log_workitem_name
         )
-        if log_workitem_rest_call_id == "":
+        if log_workitem_rest_call == {}:
             print("not found.")
             print(f'Creating "{log_workitem_name}" REST API object...', end="")
-            log_workitem_rest_call_id = zendesk_create_ticket_rest_call(
+            log_workitem_rest_call = zendesk_create_ticket_rest_call(
                 ncc_location,
                 ncc_token,
                 zendesk_username,
                 zendesk_password,
                 log_workitem_name,
             )
-            if log_workitem_rest_call_id != "":
+            if log_workitem_rest_call != {}:
                 print("success!")
             else:
                 print("failed.")
@@ -124,7 +124,6 @@ def set_up_integration(ncc_location: str, ncc_token: str):
     print('Searching for "Test Workflow"...', end="")
     workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
     if workflow != {}:
-        workflow_id = workflow["_id"]
         print("found.")
         print(
             f'Assigning "{search_contacts_name}" to "Test Workflow" workflow...', end=""
@@ -132,8 +131,8 @@ def set_up_integration(ncc_location: str, ncc_token: str):
         success = assign_rest_call_to_workflow(
             ncc_location,
             ncc_token,
-            search_contacts_rest_call_id,
-            workflow_id,
+            search_contacts_rest_call["_id"],
+            workflow["_id"],
             search_contacts_name,
         )
         if success:
@@ -154,7 +153,10 @@ def set_up_integration(ncc_location: str, ncc_token: str):
                 end="",
             )
             success = assign_rest_call_to_dispositon(
-                ncc_location, ncc_token, log_workitem_rest_call_id, disposition["_id"]
+                ncc_location,
+                ncc_token,
+                log_workitem_rest_call["_id"],
+                disposition["_id"],
             )
             if success:
                 print("success!")
