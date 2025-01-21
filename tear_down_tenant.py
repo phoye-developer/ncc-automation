@@ -35,18 +35,16 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete real-time transcription service
     print('Searching for "Test Deepgram Real-Time Transcription" service...', end="")
-    real_time_transcription_service_id = search_services(
+    service = search_services(
         ncc_location,
         ncc_token,
         "Test Deepgram Real-Time Transcription",
         "REALTIME_ANALYSIS",
     )
-    if real_time_transcription_service_id != "":
+    if service != {}:
         print("found.")
         print('Deleting "Test Deepgram Real-Time Transcription" service...', end="")
-        success = delete_service(
-            ncc_location, ncc_token, real_time_transcription_service_id
-        )
+        success = delete_service(ncc_location, ncc_token, service["_id"])
         if success:
             print("success!")
         else:
