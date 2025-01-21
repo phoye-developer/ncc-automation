@@ -3,11 +3,11 @@ import urllib.parse
 import json
 
 
-def get_surveys(ncc_location: str, ncc_token: str) -> str:
+def get_surveys(ncc_location: str, ncc_token: str) -> list:
     """
     This function fetches a list of surveys present on the Nextiva Contact Center tenant.
     """
-    test_survey_ids = []
+    surveys = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -22,15 +22,15 @@ def get_surveys(ncc_location: str, ncc_token: str) -> str:
             for result in results:
                 survey_name = result["name"]
                 if survey_name[0:5] == "Test ":
-                    test_survey_ids.append(result["surveyId"])
-    return test_survey_ids
+                    surveys.append(result)
+    return surveys
 
 
-def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> str:
+def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
     """
     This function searches for an existing survey with the same name as the intended new survey.
     """
-    survey_id = ""
+    survey = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -50,19 +50,19 @@ def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> str:
             results = json_data["objects"]
             for result in results:
                 if result["name"] == survey_name:
-                    survey_id = result["surveyId"]
+                    survey = result
                     break
     conn.close()
-    return survey_id
+    return survey
 
 
 def create_survey(
     ncc_location: str, ncc_token: str, survey_name: str, survey_body: dict
-) -> str:
+) -> dict:
     """
     This function creates a survey with a specified name.
     """
-    survey_id = ""
+    survey = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(survey_body)
     headers = {
@@ -73,10 +73,9 @@ def create_survey(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        survey_id = json_data["surveyId"]
+        survey = json.loads(data)
     conn.close()
-    return survey_id
+    return survey
 
 
 def delete_survey(ncc_location: str, ncc_token: str, survey_id: str) -> bool:

@@ -167,12 +167,12 @@ def set_up_integration(ncc_location: str, ncc_token: str):
 
     # Create survey
     print(f'Searching for "{system_name}" survey...', end="")
-    survey_id = search_surveys(ncc_location, ncc_token, system_name)
-    if survey_id == "":
+    survey = search_surveys(ncc_location, ncc_token, system_name)
+    if survey == {}:
         print("not found.")
         print(f'Creating "{system_name}" survey...', end="")
-        survey_id = create_survey(ncc_location, ncc_token, system_name, survey_body)
-        if survey_id != "":
+        survey = create_survey(ncc_location, ncc_token, system_name, survey_body)
+        if survey != {}:
             print("success!")
         else:
             print("failed.")
@@ -180,17 +180,17 @@ def set_up_integration(ncc_location: str, ncc_token: str):
         print("found.")
 
     # Assign survey to campaign
-    if survey_id != "":
+    if survey != {}:
         print('Searching for "Test Campaign" campaign...', end="")
-        campaign_id = search_campaigns(ncc_location, ncc_token, "Test Campaign")
-        if campaign_id != "":
+        campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+        if campaign != {}:
             print("found.")
             print(
                 f'Assigning "{system_name}" survey to "Test Campaign" campaign...',
                 end="",
             )
             success = assign_survey_to_campaign(
-                ncc_location, ncc_token, survey_id, campaign_id
+                ncc_location, ncc_token, survey["_id"], campaign["_id"]
             )
             if success:
                 print("success!")
