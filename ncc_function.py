@@ -4,11 +4,11 @@ import json
 from config import *
 
 
-def get_functions(ncc_location: str, ncc_token: str) -> str:
+def get_functions(ncc_location: str, ncc_token: str) -> list:
     """
     This function fetches a list of NCC functions present on the Nextiva Contact Center tenant.
     """
-    test_functions = []
+    functions = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -23,8 +23,8 @@ def get_functions(ncc_location: str, ncc_token: str) -> str:
             for result in results:
                 function_name = result["name"]
                 if function_name[0:5] == "Test ":
-                    test_functions.append(result)
-    return test_functions
+                    functions.append(result)
+    return functions
 
 
 def search_functions(ncc_location: str, ncc_token: str, function_name: str) -> dict:
