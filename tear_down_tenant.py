@@ -136,14 +136,14 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete surveys
     print('Searching for surveys with "Test " prefix...', end="")
-    test_survey_ids = get_surveys(ncc_location, ncc_token)
-    if len(test_survey_ids) > 0:
-        print(f"found {len(test_survey_ids)} survey(s).")
+    surveys = get_surveys(ncc_location, ncc_token)
+    if len(surveys) > 0:
+        print(f"found {len(surveys)} survey(s).")
     else:
         print("none found.")
-    for test_survey_id in test_survey_ids:
-        print(f"Deleting survey ID {test_survey_id}...", end="")
-        success = delete_survey(ncc_location, ncc_token, test_survey_id)
+    for survey in surveys:
+        print(f'Deleting "{survey["name"]}" survey...', end="")
+        success = delete_survey(ncc_location, ncc_token, survey["_id"])
         if success:
             print("success!")
         else:

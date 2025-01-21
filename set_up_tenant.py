@@ -110,14 +110,14 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
 
     # Create survey
     print('Searching for "Test Main - User" survey...', end="")
-    survey_id = search_surveys(ncc_location, ncc_token, "Test Main - User")
-    if survey_id == "":
+    survey = search_surveys(ncc_location, ncc_token, "Test Main - User")
+    if survey == {}:
         print("not found.")
         print('Creating "Test Main - User" survey...', end="")
-        survey_id = create_survey(
+        survey = create_survey(
             ncc_location, ncc_token, "Test Main - User", main_user_survey_body
         )
-        if survey_id != "":
+        if survey != {}:
             print("success!")
         else:
             print("failed.")
@@ -199,7 +199,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             ncc_location,
             ncc_token,
             "Test Campaign",
-            survey_id,
+            survey["_id"],
             workflow_id,
             real_time_transcription_service_id,
         )
