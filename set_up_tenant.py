@@ -96,12 +96,12 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
     # Create queues
     for queue in queues:
         print(f'Searching for "{queue}" queue...', end="")
-        queue_id = search_queues(ncc_location, ncc_token, queue)
-        if queue_id == "":
+        result = search_queues(ncc_location, ncc_token, queue)
+        if result == {}:
             print("none found.")
             print(f'Creating "{queue}" queue...', end="")
-            queue_id = create_queue(ncc_location, ncc_token, queue)
-            if queue_id != "":
+            result = create_queue(ncc_location, ncc_token, queue)
+            if result != {}:
                 print("success!")
             else:
                 print("failed.")

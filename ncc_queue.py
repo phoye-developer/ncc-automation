@@ -3,11 +3,11 @@ import urllib.parse
 import json
 
 
-def get_queues(ncc_location: str, ncc_token: str) -> str:
+def get_queues(ncc_location: str, ncc_token: str) -> list:
     """
     This function fetches a list of queues present on the Nextiva Contact Center tenant.
     """
-    test_queue_ids = []
+    queues = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -22,15 +22,15 @@ def get_queues(ncc_location: str, ncc_token: str) -> str:
             for result in results:
                 queue_name = result["name"]
                 if queue_name[0:5] == "Test ":
-                    test_queue_ids.append(result["queueId"])
-    return test_queue_ids
+                    queues.append(result)
+    return queues
 
 
-def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> str:
+def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     """
     This function searches for an existing queue with the same name as the intended new queue.
     """
-    queue_id = ""
+    queue = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -50,17 +50,17 @@ def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> str:
             results = json_data["objects"]
             for result in results:
                 if result["name"] == queue_name:
-                    queue_id = result["queueId"]
+                    queue = result
                     break
     conn.close()
-    return queue_id
+    return queue
 
 
-def create_queue(ncc_location: str, ncc_token: str, queue_name: str) -> str:
+def create_queue(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     """
     This function creates a queue with the specified name.
     """
-    queue_id = ""
+    queue = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -89,10 +89,9 @@ def create_queue(ncc_location: str, ncc_token: str, queue_name: str) -> str:
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        queue_id = json_data["queueId"]
+        queue = json.loads(data)
     conn.close()
-    return queue_id
+    return queue
 
 
 def delete_queue(ncc_location: str, ncc_token: str, queue_id: str) -> bool:
