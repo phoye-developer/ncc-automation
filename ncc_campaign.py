@@ -3,18 +3,18 @@ import urllib.parse
 import json
 
 
-def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> str:
+def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> dict:
     """
     This function searches for an existing campaign with the specified name.
     """
-    campaign_id = ""
+    campaign = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    url_encoded_campaign_name = urllib.parse.quote(campaign_name)
+    url_encoded_name = urllib.parse.quote(campaign_name)
     conn.request(
         "GET",
-        f"/data/api/types/campaign?q={url_encoded_campaign_name}",
+        f"/data/api/types/campaign?q={url_encoded_name}",
         payload,
         headers,
     )
@@ -27,10 +27,10 @@ def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> s
             results = json_data["objects"]
             for result in results:
                 if result["name"] == campaign_name:
-                    campaign_id = result["campaignId"]
+                    campaign = result
                     break
     conn.close()
-    return campaign_id
+    return campaign
 
 
 def create_campaign(
@@ -40,11 +40,11 @@ def create_campaign(
     survey_id: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
-) -> str:
+) -> dict:
     """
     This function creates a campaign with the specified name.
     """
-    campaign_id = ""
+    campaign = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -127,9 +127,8 @@ def create_campaign(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        campaign_id = json_data["campaignId"]
-    return campaign_id
+        campaign = json.loads(data)
+    return campaign
 
 
 def assign_survey_to_campaign(

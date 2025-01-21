@@ -191,11 +191,11 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
 
     # Create campaign
     print('Searching for "Test Campaign" campaign...', end="")
-    campaign_id = search_campaigns(ncc_location, ncc_token, "Test Campaign")
-    if campaign_id == "":
+    campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+    if campaign == {}:
         print("none found.")
         print('Creating "Test Campaign" campaign...', end="")
-        campaign_id = create_campaign(
+        campaign = create_campaign(
             ncc_location,
             ncc_token,
             "Test Campaign",
@@ -203,7 +203,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             workflow_id,
             real_time_transcription_service_id,
         )
-        if campaign_id != "":
+        if campaign != {}:
             print("success!")
         else:
             print("failed.")
@@ -211,7 +211,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         print("found.")
 
     # Assign dispositions to campaign
-    if campaign_id != "":
+    if campaign != {}:
         dispositions = get_dispositions(ncc_location, ncc_token)
         for disposition in dispositions:
             print(
@@ -219,7 +219,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                 end="",
             )
             success = search_campaign_dispositions(
-                ncc_location, ncc_token, campaign_id, disposition["_id"]
+                ncc_location, ncc_token, campaign["_id"], disposition["_id"]
             )
             if not success:
                 print("not found.")
@@ -228,7 +228,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                     end="",
                 )
                 success = create_campaign_disposition(
-                    ncc_location, ncc_token, campaign_id, disposition["_id"]
+                    ncc_location, ncc_token, campaign["_id"], disposition["_id"]
                 )
                 if success:
                     print("success!")

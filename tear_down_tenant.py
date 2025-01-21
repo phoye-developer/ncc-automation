@@ -21,11 +21,11 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete campaign
     print('Searching for "Test Campaign" campaign...', end="")
-    campaign_id = search_campaigns(ncc_location, ncc_token, "Test Campaign")
-    if campaign_id != "":
+    campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+    if campaign != {}:
         print("found.")
         print('Deleting "Test Campaign" campaign...', end="")
-        success = delete_campaign(ncc_location, ncc_token, campaign_id)
+        success = delete_campaign(ncc_location, ncc_token, campaign["_id"])
         if success:
             print("success!")
         else:
