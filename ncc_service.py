@@ -5,11 +5,11 @@ import json
 
 def search_services(
     ncc_location: str, ncc_token: str, service_name: str, service_type: str
-) -> str:
+) -> dict:
     """
     This function searches for an existing service with the same name and type as the intended new service.
     """
-    service_id = ""
+    service = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -29,19 +29,19 @@ def search_services(
             results = json_data["objects"]
             for result in results:
                 if result["name"] == service_name and result["type"] == service_type:
-                    service_id = result["serviceId"]
+                    service = result
                     break
     conn.close()
-    return service_id
+    return service
 
 
 def create_real_time_transcription_service(
     ncc_location: str, ncc_token: str, ncc_service_name: str, deepgram_api_key: str
-) -> str:
+) -> dict:
     """
     This function creates an NCC REALTIME_ANALYSIS service with the specified name.
     """
-    real_time_transcription_service_id = ""
+    service = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -80,10 +80,9 @@ def create_real_time_transcription_service(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        real_time_transcription_service_id = json_data["serviceId"]
+        service = json.loads(data)
     conn.close()
-    return real_time_transcription_service_id
+    return service
 
 
 def delete_service(ncc_location: str, ncc_token: str, service_id: str) -> bool:

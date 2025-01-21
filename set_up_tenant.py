@@ -164,25 +164,25 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         'Searching for "Test Deepgram Real-Time Transcription" service...',
         end="",
     )
-    real_time_transcription_service_id = search_services(
+    service = search_services(
         ncc_location,
         ncc_token,
         "Test Deepgram Real-Time Transcription",
         "REALTIME_ANALYSIS",
     )
-    if real_time_transcription_service_id == "":
+    if service == {}:
         print("none found.")
         print(
             'Creating "Test Deepgram Real-Time Transcription" service...',
             end="",
         )
-        real_time_transcription_service_id = create_real_time_transcription_service(
+        service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
             "Test Deepgram Real-Time Transcription",
             deepgram_api_key,
         )
-        if real_time_transcription_service_id != "":
+        if service != {}:
             print("success!")
         else:
             print("failed.")
@@ -201,7 +201,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             "Test Campaign",
             survey["_id"],
             workflow_id,
-            real_time_transcription_service_id,
+            service["_id"],
         )
         if campaign != {}:
             print("success!")
