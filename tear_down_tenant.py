@@ -106,14 +106,14 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
 
     # Delete queues
     print('Searching for queues with "Test " prefix...', end="")
-    test_queue_ids = get_queues(ncc_location, ncc_token)
-    if len(test_queue_ids) > 0:
-        print(f"found {len(test_queue_ids)} queues.")
+    queues = get_queues(ncc_location, ncc_token)
+    if len(queues) > 0:
+        print(f"found {len(queues)} queue(s).")
     else:
         print("none found.")
-    for test_queue_id in test_queue_ids:
-        print(f"Deleting queue ID {test_queue_id}...", end="")
-        success = delete_queue(ncc_location, ncc_token, test_queue_id)
+    for queue in queues:
+        print(f'Deleting "{queue["name"]}" queue...', end="")
+        success = delete_queue(ncc_location, ncc_token, queue["_id"])
         if success:
             print("success!")
         else:
