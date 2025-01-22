@@ -4,7 +4,7 @@ import json
 
 def search_user_profile_dispositions(
     ncc_location: str, ncc_token: str, disposition_id: str, user_profile_id: str
-) -> list:
+) -> bool:
     """
     This function searches for a specified disposition ID in the userprofiledisposition objects.
     """
@@ -35,11 +35,11 @@ def search_user_profile_dispositions(
 
 def create_user_profile_disposition(
     ncc_location: str, ncc_token: str, user_profile_id: str, disposition_id: str
-) -> str:
+) -> dict:
     """
     This function assigns a user profile to a disposition.
     """
-    user_profile_disposition_id = ""
+    user_profile_disposition = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
@@ -55,7 +55,6 @@ def create_user_profile_disposition(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        user_profile_disposition_id = json_data["userprofiledispositionId"]
+        user_profile_disposition = json.loads(data)
     conn.close()
-    return user_profile_disposition_id
+    return user_profile_disposition

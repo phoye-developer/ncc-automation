@@ -83,10 +83,10 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                         f'Assigning "{disposition["name"]}" disposition to "{user_profile}" user profile...',
                         end="",
                     )
-                    user_profile_disposition_id = create_user_profile_disposition(
+                    user_profile_disposition = create_user_profile_disposition(
                         ncc_location, ncc_token, user_profile_id, disposition["_id"]
                     )
-                    if user_profile_disposition_id != "":
+                    if user_profile_disposition != {}:
                         print("success!")
                     else:
                         print("failed.")
