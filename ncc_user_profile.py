@@ -4,11 +4,11 @@ import json
 
 def search_user_profiles(
     ncc_location: str, ncc_token: str, user_profile_name: str
-) -> str:
+) -> dict:
     """
     This function searches for an existing user profile with the specified name.
     """
-    user_profile_id = ""
+    user_profile = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
@@ -27,7 +27,7 @@ def search_user_profiles(
             results = json_data["objects"]
             for result in results:
                 if result["name"] == user_profile_name:
-                    user_profile_id = result["userprofileId"]
+                    user_profile = result
                     break
     conn.close()
-    return user_profile_id
+    return user_profile

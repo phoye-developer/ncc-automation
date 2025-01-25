@@ -63,8 +63,8 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
         print(f'Searching for "{user_profile}" user profile...', end="")
-        user_profile_id = search_user_profiles(ncc_location, ncc_token, user_profile)
-        if user_profile_id != "":
+        result = search_user_profiles(ncc_location, ncc_token, user_profile)
+        if result != {}:
             print("found.")
             dispositions = get_dispositions(ncc_location, ncc_token)
             for disposition in dispositions:
@@ -73,7 +73,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                     end="",
                 )
                 success = search_user_profile_dispositions(
-                    ncc_location, ncc_token, disposition["_id"], user_profile_id
+                    ncc_location, ncc_token, disposition["_id"], result["_id"]
                 )
                 if success:
                     print("assigned.")
@@ -84,7 +84,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                         end="",
                     )
                     user_profile_disposition = create_user_profile_disposition(
-                        ncc_location, ncc_token, user_profile_id, disposition["_id"]
+                        ncc_location, ncc_token, result["_id"], disposition["_id"]
                     )
                     if user_profile_disposition != {}:
                         print("success!")
@@ -130,15 +130,15 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
     if workflow == {}:
         print("not found.")
         print('Creating "Test Workflow" workflow...', end="")
-        workflow_id = create_workflow(
+        workflow = create_workflow(
             ncc_location, ncc_token, main_workflow, "Test Workflow"
         )
-        if workflow_id != "":
+        if workflow != {}:
             print("success!")
         else:
             print("failed.")
     else:
-        workflow_id = workflow["_id"]
+        workflow = workflow["_id"]
         print("found.")
 
     # Create Deepgram API key
@@ -200,7 +200,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             ncc_token,
             "Test Campaign",
             survey["_id"],
-            workflow_id,
+            workflow["_id"],
             service["_id"],
         )
         if campaign != {}:
