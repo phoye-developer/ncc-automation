@@ -4,6 +4,7 @@ from ncc_disposition import *
 from ncc_user_profile import *
 from ncc_user_profile_disposition import *
 from ncc_queue import *
+from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_workflow import *
 from ncc_service import *
@@ -41,15 +42,12 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         if choice == "1":
             dispositions = general_dispositions
             queues = general_queues
-            intents = general_intents
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
-            intents = general_intents + hc_intents
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
-            intents = general_intents + finserv_intents
         else:
             choice = ""
             print("Invalid choice. Please try again.")
@@ -60,7 +58,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         print(f'Searching for "{disposition}" disposition...', end="")
         result = search_dispositions(ncc_location, ncc_token, disposition)
         if result == {}:
-            print("none found.")
+            print("not found.")
             print(f'Creating "{disposition}" disposition...', end="")
             disposition = create_disposition(ncc_location, ncc_token, disposition)
             if disposition != {}:
@@ -119,6 +117,22 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         else:
             print("found.")
 
+    # Create survey theme
+    print(f'Searching for "Test Nextiva - Real" survey...', end="")
+    survey_theme = search_survey_themes(ncc_location, ncc_token, "Test Nextiva - Real")
+    if survey_theme == {}:
+        print("not found.")
+        print(f'Creating "Test Nextiva - Real" survey...', end="")
+        survey_theme = create_survey_theme(
+            ncc_location, ncc_token, "Test Nextiva - Real"
+        )
+        if survey_theme != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
     # Create survey
     print(f'Searching for "{campaign_name}" survey...', end="")
     survey = search_surveys(ncc_location, ncc_token, campaign_name)
@@ -126,7 +140,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         print("not found.")
         print(f'Creating "{campaign_name}" survey...', end="")
         survey = create_survey(
-            ncc_location, ncc_token, campaign_name, main_user_survey_body
+            ncc_location, ncc_token, campaign_name, main_user_survey_body, survey_theme
         )
         if survey != {}:
             print("success!")

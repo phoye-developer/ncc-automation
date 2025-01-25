@@ -57,7 +57,11 @@ def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
 
 
 def create_survey(
-    ncc_location: str, ncc_token: str, survey_name: str, survey_body: dict
+    ncc_location: str,
+    ncc_token: str,
+    survey_name: str,
+    survey_body: dict,
+    survey_theme: dict,
 ) -> dict:
     """
     This function creates a survey with a specified name.
@@ -65,6 +69,13 @@ def create_survey(
     survey = {}
     conn = http.client.HTTPSConnection(ncc_location)
     survey_body["localizations"]["name"]["en"]["value"] = survey_name
+    survey_body["surveythemeId"] = survey_theme["_id"]
+    survey_body["expansions"]["surveythemeId"]["localizations"]["name"]["en"][
+        "value"
+    ] = survey_theme["name"]
+    survey_body["expansions"]["surveythemeId"]["localizations"]["description"]["en"][
+        "value"
+    ] = survey_theme["description"]
     payload = json.dumps(survey_body)
     headers = {
         "Authorization": ncc_token,
