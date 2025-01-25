@@ -64,6 +64,7 @@ def create_survey(
     """
     survey = {}
     conn = http.client.HTTPSConnection(ncc_location)
+    survey_body["localizations"]["name"]["en"]["value"] = survey_name
     payload = json.dumps(survey_body)
     headers = {
         "Authorization": ncc_token,

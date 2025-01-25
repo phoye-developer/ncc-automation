@@ -20,18 +20,19 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     print()
 
     # Delete campaign
-    print('Searching for "Test Campaign" campaign...', end="")
-    campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
-    if campaign != {}:
-        print("found.")
-        print('Deleting "Test Campaign" campaign...', end="")
-        success = delete_campaign(ncc_location, ncc_token, campaign["_id"])
-        if success:
-            print("success!")
-        else:
-            print("failed.")
+    print('Searching for campaigns with "Test " prefix...', end="")
+    campaigns = get_campaigns(ncc_location, ncc_token)
+    if len(campaigns) > 0:
+        print(f"found {len(campaigns)} campaign(s).")
+        for campaign in campaigns:
+            print(f'Deleting "{campaign["name"]}" campaign...', end="")
+            success = delete_campaign(ncc_location, ncc_token, campaign["_id"])
+            if success:
+                print("success!")
+            else:
+                print("failed.")
     else:
-        print("not found.")
+        print("none found.")
 
     # Delete real-time transcription service
     print('Searching for "Test Deepgram Real-Time Transcription" service...', end="")
@@ -71,19 +72,19 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
         print("not found.")
 
     # Delete workflow
-    print('Searching for "Test Workflow" workflow...', end="")
-    workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
-    if workflow != {}:
-        workflow_id = workflow["_id"]
-        print("found.")
-        print('Deleting "Test Workflow" workflow...', end="")
-        success = delete_workflow(ncc_location, ncc_token, workflow_id)
-        if success:
-            print("success!")
-        else:
-            print("failed.")
+    print('Searching for workflows with "Test " prefix...', end="")
+    workflows = get_workflows(ncc_location, ncc_token)
+    if len(workflows) > 0:
+        print(f"found {len(workflows)} workflow(s).")
+        for workflow in workflows:
+            print(f'Deleting "{workflow["name"]}" workflow...', end="")
+            success = delete_workflow(ncc_location, ncc_token, workflow["_id"])
+            if success:
+                print("success!")
+            else:
+                print("failed.")
     else:
-        print("not found.")
+        print("none found.")
 
     # Delete functions
     print('Searching for functions with "Test " prefix...', end="")
@@ -161,18 +162,3 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("success!")
         else:
             print("failed.")
-
-    # Delete Dialogflow intents
-    print('Searching for Dialogflow intents with "Test_" prefix...', end="")
-    intent_list = get_intents()
-    if len(intent_list) > 0:
-        print(f"found {len(intent_list)} intent(s).")
-        for intent in intent_list:
-            print(f'Deleting "{intent.display_name}" intent...', end="")
-            success = delete_intent(intent.name)
-            if success:
-                print("success!")
-            else:
-                print("failed.")
-    else:
-        print("no intents found.")
