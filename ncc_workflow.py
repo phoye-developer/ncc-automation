@@ -51,8 +51,8 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
 
 def create_workflow(
     ncc_location: str, ncc_token: str, workflow_body: dict, workflow_name: str
-) -> str:
-    workflow_id = ""
+) -> dict:
+    workflow = {}
     conn = http.client.HTTPSConnection(ncc_location)
 
     workflow_body["localizations"]["name"]["en"]["value"] = workflow_name
@@ -67,9 +67,8 @@ def create_workflow(
     res = conn.getresponse()
     if res.status == 201:
         data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        workflow_id = json_data["workflowId"]
-    return workflow_id
+        workflow = json.loads(data)
+    return workflow
 
 
 def assign_rest_call_to_workflow(
@@ -78,7 +77,7 @@ def assign_rest_call_to_workflow(
     rest_call_id: str,
     workflow_id: str,
     rest_call_name: str,
-):
+) -> bool:
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
