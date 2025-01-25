@@ -1,6 +1,6 @@
 import getpass
 from authentication import *
-from set_up_tenant import *
+from set_up_campaign import *
 from set_up_feature import *
 from set_up_integration import *
 from tear_down_tenant import *
@@ -8,7 +8,7 @@ from tear_down_tenant import *
 
 def display_main_menu():
     print()
-    print("1. Set up tenant")
+    print("1. Set up campaign")
     print("2. Set up feature")
     print("3. Set up integration")
     print("4. Tear down tenant")
@@ -37,7 +37,7 @@ def main():
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
-                    set_up_tenant(ncc_location, ncc_token)
+                    set_up_campaign(ncc_location, ncc_token)
                 elif choice == "2":
                     set_up_feature(ncc_location, ncc_token)
                 elif choice == "3":

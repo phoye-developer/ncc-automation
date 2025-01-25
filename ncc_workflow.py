@@ -19,6 +19,29 @@ def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
     return workflow
 
 
+def get_workflows(ncc_location: str, ncc_token: str) -> list:
+    """
+    This function fetches a list of workflows present on the Nextiva Contact Center tenant.
+    """
+    workflows = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    conn.request("GET", "/data/api/types/workflow?q=Test%20", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        data = res.read().decode("utf-8")
+        json_data = json.loads(data)
+        total = json_data["total"]
+        if total > 0:
+            results = json_data["objects"]
+            for result in results:
+                workflow_name = result["name"]
+                if workflow_name[0:5] == "Test ":
+                    workflows.append(result)
+    return workflows
+
+
 def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> dict:
     """
     This function searches for an existing workflow with the same name as the intended new workflow.

@@ -3,6 +3,29 @@ import urllib.parse
 import json
 
 
+def get_campaigns(ncc_location: str, ncc_token: str) -> list:
+    """
+    This function fetches a list of campaigns present on the Nextiva Contact Center tenant.
+    """
+    campaigns = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    conn.request("GET", "/data/api/types/campaign?q=Test%20", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        data = res.read().decode("utf-8")
+        json_data = json.loads(data)
+        total = json_data["total"]
+        if total > 0:
+            results = json_data["objects"]
+            for result in results:
+                campaign_name = result["name"]
+                if campaign_name[0:5] == "Test ":
+                    campaigns.append(result)
+    return campaigns
+
+
 def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> dict:
     """
     This function searches for an existing campaign with the specified name.

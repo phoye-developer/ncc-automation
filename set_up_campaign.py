@@ -12,10 +12,19 @@ from ncc_campaign_disposition import *
 from dialogflow import *
 
 
-def set_up_tenant(ncc_location: str, ncc_token: str):
+def set_up_campaign(ncc_location: str, ncc_token: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
     """
+
+    # Enter campaign name
+    campaign_name = ""
+    while campaign_name == "":
+        print()
+        campaign_name = input("Campaign name: ")
+        if campaign_name == "":
+            print()
+            print("Invalid campaign name.")
 
     # Select vertical
     print()
@@ -46,6 +55,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             print("Invalid choice. Please try again.")
 
     # Create dispositions
+    dispositions_to_assign = []
     for disposition in dispositions:
         print(f'Searching for "{disposition}" disposition...', end="")
         result = search_dispositions(ncc_location, ncc_token, disposition)
@@ -55,10 +65,12 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             disposition = create_disposition(ncc_location, ncc_token, disposition)
             if disposition != {}:
                 print("success!")
+                dispositions_to_assign.append(disposition)
             else:
                 print("failed.")
         else:
             print("found.")
+            dispositions_to_assign.append(result)
 
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
@@ -66,8 +78,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         result = search_user_profiles(ncc_location, ncc_token, user_profile)
         if result != {}:
             print("found.")
-            dispositions = get_dispositions(ncc_location, ncc_token)
-            for disposition in dispositions:
+            for disposition in dispositions_to_assign:
                 print(
                     f'Checking if "{disposition["name"]}" disposition is assigned to "{user_profile}" user profile...',
                     end="",
@@ -109,13 +120,13 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             print("found.")
 
     # Create survey
-    print('Searching for "Test Main - User" survey...', end="")
-    survey = search_surveys(ncc_location, ncc_token, "Test Main - User")
+    print(f'Searching for "{campaign_name}" survey...', end="")
+    survey = search_surveys(ncc_location, ncc_token, campaign_name)
     if survey == {}:
         print("not found.")
-        print('Creating "Test Main - User" survey...', end="")
+        print(f'Creating "{campaign_name}" survey...', end="")
         survey = create_survey(
-            ncc_location, ncc_token, "Test Main - User", main_user_survey_body
+            ncc_location, ncc_token, campaign_name, main_user_survey_body
         )
         if survey != {}:
             print("success!")
@@ -125,13 +136,13 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         print("found.")
 
     # Create workflow
-    print('Searching for "Test Workflow" workflow...', end="")
-    workflow = search_workflows(ncc_location, ncc_token, "Test Workflow")
+    print(f'Searching for "{campaign_name}" workflow...', end="")
+    workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
         print("not found.")
-        print('Creating "Test Workflow" workflow...', end="")
+        print(f'Creating "{campaign_name}" workflow...', end="")
         workflow = create_workflow(
-            ncc_location, ncc_token, main_workflow, "Test Workflow"
+            ncc_location, ncc_token, main_workflow, campaign_name
         )
         if workflow != {}:
             print("success!")
@@ -190,15 +201,15 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
         print("found.")
 
     # Create campaign
-    print('Searching for "Test Campaign" campaign...', end="")
-    campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+    print(f'Searching for "{campaign_name}" campaign...', end="")
+    campaign = search_campaigns(ncc_location, ncc_token, campaign_name)
     if campaign == {}:
         print("none found.")
-        print('Creating "Test Campaign" campaign...', end="")
+        print(f'Creating "{campaign_name}" campaign...', end="")
         campaign = create_campaign(
             ncc_location,
             ncc_token,
-            "Test Campaign",
+            campaign_name,
             survey["_id"],
             workflow["_id"],
             service["_id"],
@@ -212,10 +223,9 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
 
     # Assign dispositions to campaign
     if campaign != {}:
-        dispositions = get_dispositions(ncc_location, ncc_token)
-        for disposition in dispositions:
+        for disposition in dispositions_to_assign:
             print(
-                f'Checking if "{disposition["name"]}" disposition is assigned to "Test Campaign" campaign...',
+                f'Checking if "{disposition["name"]}" disposition is assigned to "{campaign_name}" campaign...',
                 end="",
             )
             success = search_campaign_dispositions(
@@ -224,7 +234,7 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
             if not success:
                 print("not found.")
                 print(
-                    f'Assigning "{disposition["name"]}" disposition to "Test Campaign" campaign...',
+                    f'Assigning "{disposition["name"]}" disposition to "{campaign_name}" campaign...',
                     end="",
                 )
                 success = create_campaign_disposition(
@@ -236,25 +246,3 @@ def set_up_tenant(ncc_location: str, ncc_token: str):
                     print("failed.")
             else:
                 print("assigned.")
-
-    # Create Dialogflow intent
-    for intent in intents:
-        print(f'Searching for "{intent["intent"]}" intent...', end="")
-        success = search_intents(intent["intent"])
-        if success:
-            print("found.")
-        else:
-            print("not found.")
-            print(f'Creating "{intent["intent"]}" intent...', end="")
-            success = create_intent(
-                intent["intent"],
-                intent["training_phrases"],
-                intent["action"],
-                intent["messages"],
-                intent["webhook_state"],
-                intent["end_interaction"],
-            )
-            if success:
-                print("success!")
-            else:
-                print("failed.")
