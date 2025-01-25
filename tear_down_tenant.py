@@ -9,6 +9,7 @@ from ncc_function import *
 from ncc_service import *
 from ncc_campaign import *
 from ncc_survey import *
+from ncc_survey_theme import *
 from ncc_rest_call import *
 from dialogflow import *
 
@@ -143,6 +144,21 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     for survey in surveys:
         print(f'Deleting "{survey["name"]}" survey...', end="")
         success = delete_survey(ncc_location, ncc_token, survey["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete survey themes
+    print('Searching for survey themes with "Test " prefix...', end="")
+    survey_themes = get_survey_themes(ncc_location, ncc_token)
+    if len(survey_themes) > 0:
+        print(f"found {len(survey_themes)} survey theme(s).")
+    else:
+        print("none found.")
+    for survey_theme in survey_themes:
+        print(f'Deleting "{survey_theme["name"]}" survey theme...', end="")
+        success = delete_survey_theme(ncc_location, ncc_token, survey_theme["_id"])
         if success:
             print("success!")
         else:
