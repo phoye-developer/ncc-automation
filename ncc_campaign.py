@@ -98,26 +98,11 @@ def create_campaign(
             "expansions": {
                 "realtimeAnalysisServiceId": {
                     "localizations": {
-                        "name": {
-                            "en": {
-                                "language": "en",
-                                "value": "Test Deepgram Real-Time Transcription",
-                            }
-                        }
+                        "name": {"en": "Test Deepgram Real-Time Transcription"}
                     }
-                },
-                "recordingAnalysisServiceId": {
-                    "localizations": {
-                        "name": {
-                            "en": {
-                                "language": "en",
-                                "value": "Test Deepgram Real-Time Transcription",
-                            }
-                        }
-                    }
-                },
+                }
             },
-        }
+        },
     )
     headers = {
         "Authorization": ncc_token,
