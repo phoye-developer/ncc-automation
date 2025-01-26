@@ -118,11 +118,11 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             print("found.")
 
     # Create survey theme
-    print(f'Searching for "Test Nextiva - Real" survey...', end="")
+    print('Searching for "Test Nextiva - Real" survey...', end="")
     survey_theme = search_survey_themes(ncc_location, ncc_token, "Test Nextiva - Real")
     if survey_theme == {}:
         print("not found.")
-        print(f'Creating "Test Nextiva - Real" survey...', end="")
+        print('Creating "Test Nextiva - Real" survey...', end="")
         survey_theme = create_survey_theme(
             ncc_location, ncc_token, "Test Nextiva - Real"
         )

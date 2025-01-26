@@ -67,10 +67,7 @@ def create_survey_theme(
     payload = json.dumps(
         {
             "localizations": {
-                "name": {"en": {"language": "en", "value": "Test Nextiva - Real"}},
-                "description": {
-                    "en": {"language": "en", "value": "Nextiva Base Theme"}
-                },
+                "name": {"en": {"language": "en", "value": survey_theme_name}},
             },
             "type": "system",
             "theme": {
@@ -126,7 +123,9 @@ def create_survey_theme(
     return survey_theme
 
 
-def delete_survey_theme(ncc_location: str, ncc_token: str, survey_theme_id: str) -> bool:
+def delete_survey_theme(
+    ncc_location: str, ncc_token: str, survey_theme_id: str
+) -> bool:
     """
     This function deletes a survey theme with the specified survey theme ID.
     """
