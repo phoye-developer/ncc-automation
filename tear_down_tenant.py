@@ -1,13 +1,11 @@
 from config import *
 from authentication_info import *
-from deepgram import *
 from ncc_disposition import *
 from ncc_user_profile import *
 from ncc_user_profile_disposition import *
 from ncc_queue import *
 from ncc_workflow import *
 from ncc_function import *
-from ncc_service import *
 from ncc_campaign import *
 from ncc_survey import *
 from ncc_survey_theme import *
@@ -34,43 +32,6 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
                 print("failed.")
     else:
         print("none found.")
-
-    # Delete real-time transcription service
-    print('Searching for "Test Deepgram Real-Time Transcription" service...', end="")
-    service = search_services(
-        ncc_location,
-        ncc_token,
-        "Test Deepgram Real-Time Transcription",
-        "REALTIME_ANALYSIS",
-    )
-    if service != {}:
-        print("found.")
-        print('Deleting "Test Deepgram Real-Time Transcription" service...', end="")
-        success = delete_service(ncc_location, ncc_token, service["_id"])
-        if success:
-            print("success!")
-        else:
-            print("failed.")
-    else:
-        print("not found.")
-
-    # Delete Deepgram API key
-    print('Searching for "Test Key" Deepgram API key...', end="")
-    deepgram_api_key_id = search_deepgram_api_keys(
-        deepgram_project_id, deepgram_main_api_key, "Test Key"
-    )
-    if deepgram_api_key_id != "":
-        print("found.")
-        print(f'Deleting "Test Key" Deepgram API key...', end="")
-        success = delete_deepgram_api_key(
-            deepgram_project_id, deepgram_main_api_key, deepgram_api_key_id
-        )
-        if success:
-            print("success!")
-        else:
-            print("failed.")
-    else:
-        print("not found.")
 
     # Delete workflow
     print('Searching for workflows with "Test " prefix...', end="")

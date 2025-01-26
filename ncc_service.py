@@ -1,22 +1,18 @@
 import http.client
-import urllib.parse
 import json
 
 
-def search_services(
-    ncc_location: str, ncc_token: str, service_name: str, service_type: str
-) -> dict:
+def search_services(ncc_location: str, ncc_token: str, service_type: str) -> dict:
     """
-    This function searches for an existing service with the same name and type as the intended new service.
+    This function searches for an existing service with the same type as the intended new service.
     """
     service = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    url_encoded_name = urllib.parse.quote(service_name)
     conn.request(
         "GET",
-        f"/data/api/types/service?q={url_encoded_name}",
+        "/data/api/types/service",
         payload,
         headers,
     )
@@ -28,7 +24,7 @@ def search_services(
         if total > 0:
             results = json_data["objects"]
             for result in results:
-                if result["name"] == service_name and result["type"] == service_type:
+                if result["type"] == service_type:
                     service = result
                     break
     conn.close()
