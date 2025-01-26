@@ -16,11 +16,13 @@ def get_survey_themes(ncc_location: str, ncc_token: str) -> list:
     if res.status == 200:
         data = res.read().decode("utf-8")
         json_data = json.loads(data)
-        results = json_data["objects"]
-        for result in results:
-            survey_theme_name = result["name"]
-            if survey_theme_name[0:5] == "Test ":
-                survey_themes.append(result)
+        total = json_data["total"]
+        if total > 0:
+            results = json_data["objects"]
+            for result in results:
+                survey_theme_name = result["name"]
+                if survey_theme_name[0:5] == "Test ":
+                    survey_themes.append(result)
     return survey_themes
 
 

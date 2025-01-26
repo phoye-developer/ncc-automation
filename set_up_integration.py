@@ -182,7 +182,7 @@ def set_up_integration(ncc_location: str, ncc_token: str):
     # Assign survey to campaign
     if survey != {}:
         print('Searching for "Test Campaign" campaign...', end="")
-        campaign = search_campaigns(ncc_location, ncc_token, "Test Campaign")
+        campaign = search_campaigns_by_name(ncc_location, ncc_token, "Test Campaign")
         if campaign != {}:
             print("found.")
             print(

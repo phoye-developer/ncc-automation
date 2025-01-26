@@ -1,6 +1,7 @@
 from config import *
 from authentication_info import *
 from deepgram import *
+from ncc_pstn_number import *
 from ncc_disposition import *
 from ncc_user_profile import *
 from ncc_user_profile_disposition import *
@@ -29,10 +30,10 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
 
     # Select vertical
     print()
-    print("Please select a vertical.")
     choice = ""
     while choice == "":
-        print()
+        print("Please select a vertical.")
+        print("-------------------------")
         print("1. General")
         print("2. Healthcare")
         print("3. FinServ")
@@ -51,6 +52,41 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         else:
             choice = ""
             print("Invalid choice. Please try again.")
+            print()
+
+    # Select PSTN number
+    campaign_address = ""
+    pstn_numbers = get_pstn_numbers(ncc_location, ncc_token)
+    if len(pstn_numbers) > 0:
+        campaign_addresses_available = []
+        for index, pstn_number in enumerate(pstn_numbers):
+            success = search_campaigns_by_address(
+                ncc_location, ncc_token, pstn_number["name"]
+            )
+            if success:
+                pass
+            else:
+                campaign_addresses_available.append(pstn_number)
+    if len(campaign_addresses_available) > 0:
+        while campaign_address == "":
+            print("Please select a PSTN number:")
+            print("----------------------------")
+            for index, campaign_address_available in enumerate(
+                campaign_addresses_available
+            ):
+                print(f"{index + 1}. {campaign_address_available["name"]}")
+            print()
+            choice = input("Command: ")
+            choice = int(choice) - 1
+            try:
+                campaign_address = campaign_addresses_available[choice]["name"]
+                print()
+            except:
+                print()
+                print("Invalid choice.")
+                print()
+    else:
+        print("No phone numbers available.")
 
     # Create dispositions
     dispositions_to_assign = []
@@ -256,7 +292,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
 
     # Create campaign
     print(f'Searching for "{campaign_name}" campaign...', end="")
-    campaign = search_campaigns(ncc_location, ncc_token, campaign_name)
+    campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
     if campaign == {}:
         print("none found.")
         print(f'Creating "{campaign_name}" campaign...', end="")
@@ -267,6 +303,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             user_survey["_id"],
             chat_survey["_id"],
             qm_survey["_id"],
+            campaign_address,
             workflow["_id"],
             service["_id"],
         )
