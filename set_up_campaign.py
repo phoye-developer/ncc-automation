@@ -1,4 +1,5 @@
 from config import *
+from authentication_info import *
 from deepgram import *
 from ncc_disposition import *
 from ncc_user_profile import *
@@ -10,7 +11,6 @@ from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
 from ncc_campaign_disposition import *
-from dialogflow import *
 
 
 def set_up_campaign(ncc_location: str, ncc_token: str):
@@ -263,7 +263,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
     # Update chat survey campaign ID
     if campaign != {} and chat_survey != {}:
         print(
-            f'Updating {chat_survey["name"]} survey with campaign ID {campaign["_id"]}...',
+            f'Updating "{chat_survey["name"]}" survey with campaign ID {campaign["_id"]}...',
             end="",
         )
         success = update_chat_survey_campaign_id(
