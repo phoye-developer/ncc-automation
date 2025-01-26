@@ -8,6 +8,8 @@ from tear_down_tenant import *
 
 def display_main_menu():
     print()
+    print("Main Menu")
+    print("---------")
     print("1. Set up campaign")
     print("2. Set up feature")
     print("3. Set up integration")

@@ -51,9 +51,6 @@ main_user_survey_body = {
                 "name": {
                     "en": {"language": "en", "value": "Nextiva - Real"},
                 },
-                "description": {
-                    "en": {"language": "en", "value": "Nextiva Base Theme"},
-                },
             },
         }
     },
@@ -1031,9 +1028,6 @@ main_chat_survey_body = {
         "surveythemeId": {
             "localizations": {
                 "name": {"en": {"language": "en", "value": ""}},
-                "description": {
-                    "en": {"language": "en", "value": ""}
-                },
             }
         }
     },
