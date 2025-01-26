@@ -263,7 +263,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
     # Update chat survey campaign ID
     if campaign != {} and chat_survey != {}:
         print(
-            f'Updating "{chat_survey["name"]}" survey with campaign {campaign_name}...',
+            f'Updating "{chat_survey["name"]}" survey with "{campaign_name}" campaign...',
             end="",
         )
         success = update_chat_survey_campaign_id(
