@@ -26,7 +26,9 @@ def get_campaigns(ncc_location: str, ncc_token: str) -> list:
     return campaigns
 
 
-def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> dict:
+def search_campaigns_by_name(
+    ncc_location: str, ncc_token: str, campaign_name: str
+) -> dict:
     """
     This function searches for an existing campaign with the specified name.
     """
@@ -56,6 +58,40 @@ def search_campaigns(ncc_location: str, ncc_token: str, campaign_name: str) -> d
     return campaign
 
 
+def search_campaigns_by_address(
+    ncc_location: str, ncc_token: str, campaign_address: str
+) -> bool:
+    """
+    This function searches for an existing campaign with the specified address.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    conn.request(
+        "GET",
+        f"/data/api/types/campaign?q={campaign_address}",
+        payload,
+        headers,
+    )
+    res = conn.getresponse()
+    if res.status == 200:
+        data = res.read().decode("utf-8")
+        json_data = json.loads(data)
+        total = json_data["total"]
+        if total > 0:
+            results = json_data["objects"]
+            for result in results:
+                if "addresses" in result:
+                    addresses = result["addresses"]
+                    for address in addresses:
+                        if address == campaign_address:
+                            success = True
+                            break
+    conn.close()
+    return success
+
+
 def create_campaign(
     ncc_location: str,
     ncc_token: str,
@@ -63,6 +99,7 @@ def create_campaign(
     user_survey_id: str,
     chat_survey_id: str,
     qm_survey_id: str,
+    campaign_address: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
 ) -> dict:
@@ -98,7 +135,7 @@ def create_campaign(
             "complianceRecordingsFileNameFormat": "",
             "outboundANI": False,
             "userRecordingsFileNameFormat": "",
-            "addresses": [],
+            "addresses": [campaign_address],
             "surveyId": user_survey_id,
             "useForEmail": False,
             "defaultExtension": True,
@@ -107,7 +144,7 @@ def create_campaign(
             "recordingAnalysisMaxDuration": "86400",
             "useForPredictive": False,
             "useForOutbound": True,
-            "callerId": "",
+            "callerId": campaign_address,
             "priorityCallbacks": False,
             "recordingPercentage": 100,
             "description": "Voice, Chat, SMS",
