@@ -190,37 +190,35 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         workflow = workflow["_id"]
         print("found.")
 
-    # Create Deepgram API key
-    print('Searching for "Test Key" Deepgram API key...', end="")
-    deepgram_api_key_id = search_deepgram_api_keys(
-        deepgram_project_id, deepgram_main_api_key, "Test Key"
-    )
-    if deepgram_api_key_id == "":
-        print("none found.")
-        print("Creating new Deepgram API key...", end="")
-        deepgram_api_key = create_deepgram_api_key(
-            deepgram_project_id, deepgram_main_api_key
-        )
-        if deepgram_api_key != "":
-            print("success!")
-        else:
-            print("failed.")
-    else:
+    # Search for REALTIME_ANALYSIS service
+    print('Searching for "REALTIME_ANALYSIS" service...', end="")
+    service = search_services(ncc_location, ncc_token, "REALTIME_ANALYSIS")
+    if service != {}:
         print("found.")
+    else:
+        print("not found.")
+
+    # Create Deepgram API key
+    if service == {}:
+        print('Searching for "Test Key" Deepgram API key...', end="")
+        deepgram_api_key_id = search_deepgram_api_keys(
+            deepgram_project_id, deepgram_main_api_key, "Test Key"
+        )
+        if deepgram_api_key_id == "":
+            print("none found.")
+            print("Creating new Deepgram API key...", end="")
+            deepgram_api_key = create_deepgram_api_key(
+                deepgram_project_id, deepgram_main_api_key
+            )
+            if deepgram_api_key != "":
+                print("success!")
+            else:
+                print("failed.")
+        else:
+            print("found.")
 
     # Create real-time transcription service
-    print(
-        'Searching for "Test Deepgram Real-Time Transcription" service...',
-        end="",
-    )
-    service = search_services(
-        ncc_location,
-        ncc_token,
-        "Test Deepgram Real-Time Transcription",
-        "REALTIME_ANALYSIS",
-    )
-    if service == {}:
-        print("none found.")
+    if service == {} and deepgram_api_key != "":
         print(
             'Creating "Test Deepgram Real-Time Transcription" service...',
             end="",
@@ -235,8 +233,6 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             print("success!")
         else:
             print("failed.")
-    else:
-        print("found.")
 
     # Create campaign
     print(f'Searching for "{campaign_name}" campaign...', end="")
