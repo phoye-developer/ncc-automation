@@ -260,6 +260,20 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
     else:
         print("found.")
 
+    # Update chat survey campaign ID
+    if campaign != {} and chat_survey != {}:
+        print(
+            f'Updating {chat_survey["name"]} survey with campaign ID {campaign["_id"]}...',
+            end="",
+        )
+        success = update_chat_survey_campaign_id(
+            ncc_location, ncc_token, chat_survey["_id"], campaign["_id"]
+        )
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
     # Assign dispositions to campaign
     if campaign != {}:
         for disposition in dispositions_to_assign:
