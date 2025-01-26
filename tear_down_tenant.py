@@ -1,4 +1,5 @@
 from config import *
+from authentication_info import *
 from deepgram import *
 from ncc_disposition import *
 from ncc_user_profile import *
@@ -11,7 +12,6 @@ from ncc_campaign import *
 from ncc_survey import *
 from ncc_survey_theme import *
 from ncc_rest_call import *
-from dialogflow import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
