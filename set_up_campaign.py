@@ -133,16 +133,40 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
     else:
         print("found.")
 
-    # Create survey
-    print(f'Searching for "{campaign_name}" survey...', end="")
-    survey = search_surveys(ncc_location, ncc_token, campaign_name)
-    if survey == {}:
+    # Create user survey
+    print(f'Searching for "{campaign_name} - User" survey...', end="")
+    user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
+    if user_survey == {}:
         print("not found.")
-        print(f'Creating "{campaign_name}" survey...', end="")
-        survey = create_survey(
-            ncc_location, ncc_token, campaign_name, main_user_survey_body, survey_theme
+        print(f'Creating "{campaign_name} - User" survey...', end="")
+        user_survey = create_survey(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - User",
+            main_user_survey_body,
+            survey_theme,
         )
-        if survey != {}:
+        if user_survey != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Create chat survey
+    print(f'Searching for "{campaign_name} - Chat" survey...', end="")
+    chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
+    if chat_survey == {}:
+        print("not found.")
+        print(f'Creating "{campaign_name} - Chat" survey...', end="")
+        chat_survey = create_survey(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - Chat",
+            main_chat_survey_body,
+            survey_theme,
+        )
+        if chat_survey != {}:
             print("success!")
         else:
             print("failed.")
@@ -224,7 +248,8 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             ncc_location,
             ncc_token,
             campaign_name,
-            survey["_id"],
+            user_survey["_id"],
+            chat_survey["_id"],
             workflow["_id"],
             service["_id"],
         )
