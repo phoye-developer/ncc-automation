@@ -75,6 +75,9 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
 def create_workflow(
     ncc_location: str, ncc_token: str, workflow_body: dict, workflow_name: str
 ) -> dict:
+    """
+    This function creates a workflow in Nextiva Contact Center (NCC).
+    """
     workflow = {}
     conn = http.client.HTTPSConnection(ncc_location)
 
@@ -101,6 +104,9 @@ def assign_rest_call_to_workflow(
     workflow_id: str,
     rest_call_name: str,
 ) -> bool:
+    """
+    This function adds an Execute Rest component to a Nextiva Contact Center (NCC) workflow.
+    """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
