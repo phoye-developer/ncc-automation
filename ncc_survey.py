@@ -89,9 +89,6 @@ def create_survey(
     survey_body["expansions"]["surveythemeId"]["localizations"]["name"]["en"][
         "value"
     ] = survey_theme["name"]
-    survey_body["expansions"]["surveythemeId"]["localizations"]["description"]["en"][
-        "value"
-    ] = survey_theme["description"]
     payload = json.dumps(survey_body)
     headers = {
         "Authorization": ncc_token,
