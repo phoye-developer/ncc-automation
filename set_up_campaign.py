@@ -173,6 +173,26 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
     else:
         print("found.")
 
+    # Create QM survey
+    print(f'Searching for "{campaign_name} - QM" survey...', end="")
+    qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
+    if qm_survey == {}:
+        print("not found.")
+        print(f'Creating "{campaign_name} - QM" survey...', end="")
+        qm_survey = create_survey(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - QM",
+            main_qm_survey_body,
+            survey_theme,
+        )
+        if qm_survey != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
     # Create workflow
     print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -246,6 +266,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             campaign_name,
             user_survey["_id"],
             chat_survey["_id"],
+            qm_survey["_id"],
             workflow["_id"],
             service["_id"],
         )
