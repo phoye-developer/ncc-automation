@@ -50,7 +50,7 @@ def main():
                     pass
                 else:
                     print()
-                    print("You did not make a valid choice.")
+                    print("Invalid choice.")
         else:
             print()
             print("Authentication failed. Please try again.")
