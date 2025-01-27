@@ -21,7 +21,7 @@ def display_main_menu():
 def main():
     authenticated = False
     print(
-        "This computer system is the property of Nextiva, Inc. It is for authorized use only. By using this system, all users acknowledge notice of, and agree to comply with, Nextiva, Inc.'s Acceptable Use Policy (“AUP”). See https://www.nextiva.com/legal.html?doc=09 for details."
+        "This computer system is the property of Nextiva, Inc. It is for authorized use only. By using this system, all users acknowledge notice of, and agree to comply with, Nextiva, Inc.'s Acceptable Use Policy (“AUP”). See www.nextiva.com for details."
     )
     print()
     print("Please log in.")

@@ -56,6 +56,8 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
 
     # Select PSTN number
     campaign_address = ""
+    print("Searching for available PSTN numbers...")
+    print()
     pstn_numbers = get_pstn_numbers(ncc_location, ncc_token)
     if len(pstn_numbers) > 0:
         campaign_addresses_available = []
