@@ -49,6 +49,7 @@ def main():
                 elif choice == "5":
                     pass
                 else:
+                    print()
                     print("You did not make a valid choice.")
         else:
             print()
