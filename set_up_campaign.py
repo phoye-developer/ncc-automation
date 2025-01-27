@@ -51,7 +51,7 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             queues = general_queues + finserv_queues
         else:
             choice = ""
-            print("Invalid choice. Please try again.")
+            print("Invalid choice.")
             print()
 
     # Select PSTN number
