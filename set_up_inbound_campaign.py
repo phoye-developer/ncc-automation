@@ -14,7 +14,7 @@ from ncc_campaign import *
 from ncc_campaign_disposition import *
 
 
-def set_up_campaign(ncc_location: str, ncc_token: str):
+def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
     """
@@ -27,6 +27,15 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
         if campaign_name == "":
             print()
             print("Invalid campaign name.")
+
+    # Enter business name
+    business_name = ""
+    while business_name == "":
+        print()
+        business_name = input("Business name: ")
+        if business_name == "":
+            print()
+            print("Invalid business name.")
 
     # Select vertical
     print()
@@ -156,13 +165,15 @@ def set_up_campaign(ncc_location: str, ncc_token: str):
             print("found.")
 
     # Create survey theme
-    print('Searching for "Test Nextiva - Real" survey...', end="")
-    survey_theme = search_survey_themes(ncc_location, ncc_token, "Test Nextiva - Real")
+    print(f'Searching for "Test {business_name}" survey...', end="")
+    survey_theme = search_survey_themes(
+        ncc_location, ncc_token, f"Test {business_name}"
+    )
     if survey_theme == {}:
         print("not found.")
-        print('Creating "Test Nextiva - Real" survey...', end="")
+        print(f'Creating "Test {business_name}" survey...', end="")
         survey_theme = create_survey_theme(
-            ncc_location, ncc_token, "Test Nextiva - Real"
+            ncc_location, ncc_token, f"Test {business_name}"
         )
         if survey_theme != {}:
             print("success!")
