@@ -165,13 +165,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("found.")
 
     # Create survey theme
-    print(f'Searching for "Test {business_name}" survey...', end="")
+    print(f'Searching for "Test {business_name}" survey theme...', end="")
     survey_theme = search_survey_themes(
         ncc_location, ncc_token, f"Test {business_name}"
     )
     if survey_theme == {}:
         print("not found.")
-        print(f'Creating "Test {business_name}" survey...', end="")
+        print(f'Creating "Test {business_name}" survey theme...', end="")
         survey_theme = create_survey_theme(
             ncc_location, ncc_token, f"Test {business_name}"
         )
