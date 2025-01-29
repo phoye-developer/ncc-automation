@@ -27,6 +27,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if campaign_name == "":
             print()
             print("Invalid campaign name.")
+        else:
+            campaign_name = f"Test {campaign_name}"
 
     # Enter business name
     business_name = ""
