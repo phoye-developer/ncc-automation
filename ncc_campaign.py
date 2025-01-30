@@ -100,8 +100,10 @@ def create_campaign(
     chat_survey_id: str,
     qm_survey_id: str,
     campaign_address: str,
+    campaign_caller_id: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
+    gen_ai_service_id: str,
 ) -> dict:
     """
     This function creates a campaign with the specified name.
@@ -124,7 +126,7 @@ def create_campaign(
             "loadLeadOnlyForThridPartySkill": False,
             "amdUnknownAsVoicemail": False,
             "useForProgressive": False,
-            "generativeAIServiceId": "641c589f9535e44e4b8b0c67",
+            "generativeAIServiceId": gen_ai_service_id,
             "filterOnLeads": "",
             "recordingAnalysisEndTime": 1439,
             "localizations": {
@@ -144,7 +146,7 @@ def create_campaign(
             "recordingAnalysisMaxDuration": "86400",
             "useForPredictive": False,
             "useForOutbound": True,
-            "callerId": campaign_address,
+            "callerId": campaign_caller_id,
             "priorityCallbacks": False,
             "recordingPercentage": 100,
             "description": "Voice, Chat, SMS",

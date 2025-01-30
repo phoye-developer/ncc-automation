@@ -8,6 +8,7 @@ from ncc_user_profile_disposition import *
 from ncc_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
+from ncc_classification import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -54,12 +55,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if choice == "1":
             dispositions = general_dispositions
             queues = general_queues
+            classifications = general_classifications
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
+            classifications = general_classifications + hc_classifications
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
+            classifications = general_classifications + finserv_classifications
         else:
             choice = ""
             print("Invalid choice.")
@@ -101,6 +105,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         print("No phone numbers available.")
 
+    # Select campaign caller ID
+    campaign_caller_id = ""
+    if len(pstn_numbers) > 0:
+        while campaign_caller_id == "":
+            print("Please select a caller ID number for this campaign:")
+            print("---------------------------------------------------")
+            for index, pstn_number in enumerate(pstn_numbers):
+                print(f"{index + 1}. {pstn_number["name"]}")
+            print()
+            choice = input("Command: ")
+            choice = int(choice) - 1
+            try:
+                campaign_caller_id = pstn_numbers[choice]["name"]
+                print()
+            except:
+                print()
+                print("Invalid choice.")
+                print()
+
     # Create dispositions
     dispositions_to_assign = []
     for disposition in dispositions:
@@ -113,11 +136,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if disposition != {}:
                 print("success!")
                 dispositions_to_assign.append(disposition)
+                tenant_id = disposition["tenantId"]
             else:
                 print("failed.")
         else:
             print("found.")
             dispositions_to_assign.append(result)
+            tenant_id = result["tenantId"]
 
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
@@ -244,33 +269,65 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         print("found.")
 
-    # Create workflow
-    print(f'Searching for "{campaign_name}" workflow...', end="")
-    workflow = search_workflows(ncc_location, ncc_token, campaign_name)
-    if workflow == {}:
+    # Search for TEXT_TO_SPEECH service
+    print('Searching for "TEXT_TO_SPEECH" service...', end="")
+    tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")
+    if tts_service != {}:
+        print("found.")
+    else:
         print("not found.")
-        print(f'Creating "{campaign_name}" workflow...', end="")
-        workflow = create_workflow(
-            ncc_location, ncc_token, main_workflow, campaign_name
+
+    # Create TEXT_TO_SPEECH service
+    if tts_service == {}:
+        print(
+            'Creating "Test Google - Text To Speech" service...',
+            end="",
         )
-        if workflow != {}:
+        tts_service = create_tts_service(
+            ncc_location, ncc_token, "Test Google - Text To Speech"
+        )
+        if tts_service != {}:
             print("success!")
         else:
             print("failed.")
-    else:
-        workflow = workflow["_id"]
+
+    # Search for GENERATIVE_AI service
+    print('Searching for "GENERATIVE_AI" service...', end="")
+    gen_ai_service = search_services(ncc_location, ncc_token, "GENERATIVE_AI")
+    if gen_ai_service != {}:
         print("found.")
+    else:
+        print("not found.")
+
+    # Create GENERATIVE_AI service
+    if gen_ai_service == {}:
+        print(
+            'Creating "Test Google - Generative AI" service...',
+            end="",
+        )
+        gen_ai_service = create_gen_ai_service(
+            ncc_location,
+            ncc_token,
+            "Test Google - Generative AI",
+            f"thrio-prod-{tenant_id}",
+        )
+        if gen_ai_service != {}:
+            print("success!")
+        else:
+            print("failed.")
 
     # Search for REALTIME_ANALYSIS service
     print('Searching for "REALTIME_ANALYSIS" service...', end="")
-    service = search_services(ncc_location, ncc_token, "REALTIME_ANALYSIS")
-    if service != {}:
+    real_time_transcription_service = search_services(
+        ncc_location, ncc_token, "REALTIME_ANALYSIS"
+    )
+    if real_time_transcription_service != {}:
         print("found.")
     else:
         print("not found.")
 
     # Create Deepgram API key
-    if service == {}:
+    if real_time_transcription_service == {}:
         print('Searching for "Test Key" Deepgram API key...', end="")
         deepgram_api_key_id = search_deepgram_api_keys(
             deepgram_project_id, deepgram_main_api_key, "Test Key"
@@ -288,22 +345,62 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             print("found.")
 
-    # Create real-time transcription service
-    if service == {} and deepgram_api_key != "":
+    # Create REALTIME_ANALYSIS service
+    if real_time_transcription_service == {} and deepgram_api_key != "":
         print(
             'Creating "Test Deepgram Real-Time Transcription" service...',
             end="",
         )
-        service = create_real_time_transcription_service(
+        real_time_transcription_service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
             "Test Deepgram Real-Time Transcription",
             deepgram_api_key,
         )
-        if service != {}:
+        if real_time_transcription_service != {}:
             print("success!")
         else:
             print("failed.")
+
+    # Create classifications
+    classifications_to_assign = []
+    for classification in classifications:
+        print(f'Searching for "{classification["name"]}" classification...', end="")
+        result = search_classifications(ncc_location, ncc_token, classification["name"])
+        if result == {}:
+            print("not found.")
+            print(f'Creating "{classification["name"]}" classification...', end="")
+            classification = create_classification(
+                ncc_location,
+                ncc_token,
+                classification["name"],
+                classification["phrases"],
+            )
+            if classification != {}:
+                print("success!")
+                classifications_to_assign.append(classification)
+            else:
+                print("failed.")
+        else:
+            print("found.")
+            classifications_to_assign.append(result)
+
+    # Create workflow
+    print(f'Searching for "{campaign_name}" workflow...', end="")
+    workflow = search_workflows(ncc_location, ncc_token, campaign_name)
+    if workflow == {}:
+        print("not found.")
+        print(f'Creating "{campaign_name}" workflow...', end="")
+        workflow = create_workflow(
+            ncc_location, ncc_token, main_workflow, campaign_name
+        )
+        if workflow != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        workflow = workflow["_id"]
+        print("found.")
 
     # Create campaign
     print(f'Searching for "{campaign_name}" campaign...', end="")
@@ -319,8 +416,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             chat_survey["_id"],
             qm_survey["_id"],
             campaign_address,
+            campaign_caller_id,
             workflow["_id"],
-            service["_id"],
+            real_time_transcription_service["_id"],
+            gen_ai_service["_id"],
         )
         if campaign != {}:
             print("success!")
