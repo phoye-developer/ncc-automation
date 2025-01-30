@@ -101,6 +101,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         print("No phone numbers available.")
 
+    # Select campaign caller ID
+    campaign_caller_id = ""
+    if len(pstn_numbers) > 0:
+        while campaign_caller_id == "":
+            print("Please select a caller ID number for this campaign:")
+            print("---------------------------------------------------")
+            for index, pstn_number in enumerate(pstn_numbers):
+                print(f"{index + 1}. {pstn_number["name"]}")
+            print()
+            choice = input("Command: ")
+            choice = int(choice) - 1
+            try:
+                campaign_caller_id = pstn_numbers[choice]["name"]
+                print()
+            except:
+                print()
+                print("Invalid choice.")
+                print()
+
     # Create dispositions
     dispositions_to_assign = []
     for disposition in dispositions:
@@ -368,6 +387,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             chat_survey["_id"],
             qm_survey["_id"],
             campaign_address,
+            campaign_caller_id,
             workflow["_id"],
             real_time_transcription_service["_id"],
             gen_ai_service["_id"],
