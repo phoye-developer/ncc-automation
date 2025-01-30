@@ -10,6 +10,7 @@ from ncc_campaign import *
 from ncc_survey import *
 from ncc_survey_theme import *
 from ncc_rest_call import *
+from ncc_classification import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
@@ -135,6 +136,21 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     for rest_call in rest_calls:
         print(f'Deleting "{rest_call["name"]}" REST API call object...', end="")
         success = delete_rest_call(ncc_location, ncc_token, rest_call["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete classifications
+    print('Searching for classifications with "Test " prefix...', end="")
+    classifications = get_classifications(ncc_location, ncc_token)
+    if len(classifications) > 0:
+        print(f"found {len(classifications)} classification(s).")
+    else:
+        print("none found.")
+    for classification in classifications:
+        print(f'Deleting "{classification["name"]}" classification...', end="")
+        success = delete_classification(ncc_location, ncc_token, classification["_id"])
         if success:
             print("success!")
         else:

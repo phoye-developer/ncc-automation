@@ -8,6 +8,7 @@ from ncc_user_profile_disposition import *
 from ncc_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
+from ncc_classification import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -54,12 +55,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if choice == "1":
             dispositions = general_dispositions
             queues = general_queues
+            classifications = general_classifications
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
+            classifications = general_classifications + hc_classifications
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
+            classifications = general_classifications + finserv_classifications
         else:
             choice = ""
             print("Invalid choice.")
@@ -312,23 +316,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             print("failed.")
 
-    # Create workflow
-    print(f'Searching for "{campaign_name}" workflow...', end="")
-    workflow = search_workflows(ncc_location, ncc_token, campaign_name)
-    if workflow == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name}" workflow...', end="")
-        workflow = create_workflow(
-            ncc_location, ncc_token, main_workflow, campaign_name
-        )
-        if workflow != {}:
-            print("success!")
-        else:
-            print("failed.")
-    else:
-        workflow = workflow["_id"]
-        print("found.")
-
     # Search for REALTIME_ANALYSIS service
     print('Searching for "REALTIME_ANALYSIS" service...', end="")
     real_time_transcription_service = search_services(
@@ -374,6 +361,46 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("success!")
         else:
             print("failed.")
+
+    # Create classifications
+    classifications_to_assign = []
+    for classification in classifications:
+        print(f'Searching for "{classification["name"]}" classification...', end="")
+        result = search_classifications(ncc_location, ncc_token, classification["name"])
+        if result == {}:
+            print("not found.")
+            print(f'Creating "{classification["name"]}" classification...', end="")
+            classification = create_classification(
+                ncc_location,
+                ncc_token,
+                classification["name"],
+                classification["phrases"],
+            )
+            if classification != {}:
+                print("success!")
+                classifications_to_assign.append(classification)
+            else:
+                print("failed.")
+        else:
+            print("found.")
+            classifications_to_assign.append(result)
+
+    # Create workflow
+    print(f'Searching for "{campaign_name}" workflow...', end="")
+    workflow = search_workflows(ncc_location, ncc_token, campaign_name)
+    if workflow == {}:
+        print("not found.")
+        print(f'Creating "{campaign_name}" workflow...', end="")
+        workflow = create_workflow(
+            ncc_location, ncc_token, main_workflow, campaign_name
+        )
+        if workflow != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        workflow = workflow["_id"]
+        print("found.")
 
     # Create campaign
     print(f'Searching for "{campaign_name}" campaign...', end="")
