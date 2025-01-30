@@ -244,6 +244,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         print("found.")
 
+    # Search for TEXT_TO_SPEECH service
+    print('Searching for "TEXT_TO_SPEECH" service...', end="")
+    tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")
+    if tts_service != {}:
+        print("found.")
+    else:
+        print("not found.")
+
+    # Create TEXT_TO_SPEECH service
+    if tts_service == {}:
+        print(
+            'Creating "Test Google - Text To Speech" service...',
+            end="",
+        )
+        tts_service = create_tts_service(
+            ncc_location, ncc_token, "Test Google - Text To Speech"
+        )
+        if tts_service != {}:
+            print("success!")
+        else:
+            print("failed.")
+
     # Create workflow
     print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -263,14 +285,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Search for REALTIME_ANALYSIS service
     print('Searching for "REALTIME_ANALYSIS" service...', end="")
-    service = search_services(ncc_location, ncc_token, "REALTIME_ANALYSIS")
-    if service != {}:
+    real_time_transcription_service = search_services(
+        ncc_location, ncc_token, "REALTIME_ANALYSIS"
+    )
+    if real_time_transcription_service != {}:
         print("found.")
     else:
         print("not found.")
 
     # Create Deepgram API key
-    if service == {}:
+    if real_time_transcription_service == {}:
         print('Searching for "Test Key" Deepgram API key...', end="")
         deepgram_api_key_id = search_deepgram_api_keys(
             deepgram_project_id, deepgram_main_api_key, "Test Key"
@@ -288,19 +312,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             print("found.")
 
-    # Create real-time transcription service
-    if service == {} and deepgram_api_key != "":
+    # Create REALTIME_ANALYSIS service
+    if real_time_transcription_service == {} and deepgram_api_key != "":
         print(
             'Creating "Test Deepgram Real-Time Transcription" service...',
             end="",
         )
-        service = create_real_time_transcription_service(
+        real_time_transcription_service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
             "Test Deepgram Real-Time Transcription",
             deepgram_api_key,
         )
-        if service != {}:
+        if real_time_transcription_service != {}:
             print("success!")
         else:
             print("failed.")
@@ -320,7 +344,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             qm_survey["_id"],
             campaign_address,
             workflow["_id"],
-            service["_id"],
+            real_time_transcription_service["_id"],
         )
         if campaign != {}:
             print("success!")

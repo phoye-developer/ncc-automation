@@ -81,6 +81,38 @@ def create_real_time_transcription_service(
     return service
 
 
+def create_tts_service(
+    ncc_location: str, ncc_token: str, ncc_service_name: str
+) -> dict:
+    """
+    This function creates an NCC TEXT_TO_SPEECH service with the specified name.
+    """
+    service = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {
+                "name": {"en": {"language": "en", "value": f"{ncc_service_name}"}},
+            },
+            "type": "TEXT_TO_SPEECH",
+            "enabled": True,
+            "provider": "GOOGLE",
+            "name": "Test Google - Text To Speech",
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    conn.request("POST", "/data/api/types/service/", payload, headers)
+    res = conn.getresponse()
+    if res.status == 201:
+        data = res.read().decode("utf-8")
+        service = json.loads(data)
+    conn.close()
+    return service
+
+
 def delete_service(ncc_location: str, ncc_token: str, service_id: str) -> bool:
     """
     This function deletes a service with the specified service ID.
