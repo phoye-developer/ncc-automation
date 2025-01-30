@@ -92,12 +92,62 @@ def create_tts_service(
     payload = json.dumps(
         {
             "localizations": {
-                "name": {"en": {"language": "en", "value": f"{ncc_service_name}"}},
+                "name": {"en": {"language": "en", "value": ncc_service_name}},
             },
             "type": "TEXT_TO_SPEECH",
             "enabled": True,
             "provider": "GOOGLE",
-            "name": "Test Google - Text To Speech",
+            "name": ncc_service_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    conn.request("POST", "/data/api/types/service/", payload, headers)
+    res = conn.getresponse()
+    if res.status == 201:
+        data = res.read().decode("utf-8")
+        service = json.loads(data)
+    conn.close()
+    return service
+
+
+def create_gen_ai_service(
+    ncc_location: str, ncc_token: str, ncc_service_name: str, ncc_project_id: str
+) -> dict:
+    """
+    This function creates an NCC GENERATIVE_AI service with the specified name.
+    """
+    service = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {
+                "name": {"en": {"language": "en", "value": ncc_service_name}}
+            },
+            "type": "GENERATIVE_AI",
+            "enabled": True,
+            "provider": "GOOGLE",
+            "name": ncc_service_name,
+            "parameters": [
+                {"key": "temperature", "value": "0"},
+                {"key": "maxOutputTokens", "value": "8192"},
+                {"key": "topP", "value": "1.0"},
+                {"key": "topK", "value": "40"},
+                {
+                    "key": "endpoint",
+                    "value": "us-central1-aiplatform.googleapis.com:443",
+                },
+                {"key": "project", "value": ncc_project_id},
+                {"key": "location", "value": "us-central1"},
+                {"key": "publisher", "value": "google"},
+                {"key": "model", "value": "gemini-1.0-pro"},
+                {
+                    "key": "content",
+                    "value": "Your input is the conversation transcript below. The conversation includes a customer and an agent. For this conversation, I'd like you to generate a short, HTML summary that meets the following criteria:  Headline: Briefly capture the essence of the conversation in a single sentence. Sentiment: Identify the overall sentiment of the customer and the agent throughout the conversation. Use separate bullets for each. Bullet Points: Summarize the key points of the conversation using HTML bullet points. The entire summary must be in HTML format. Please do not return the summary in markdown format. An example of the format of the response can be <html><head><title>...</title></head><body><h1>...</h1><h2>Headline:</h2><p>...</p><h2>Sentiment:</h2><ul><li><b>Customer:</b>...</li><li><b>Agent:</b>...</li></ul><h2>Key Points:</h2><ul><li>...</li><li>...</li><li>...</li><li>...</li></ul></body></html>",
+                },
+            ],
         }
     )
     headers = {

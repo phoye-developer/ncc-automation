@@ -102,6 +102,7 @@ def create_campaign(
     campaign_address: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
+    gen_ai_service_id: str,
 ) -> dict:
     """
     This function creates a campaign with the specified name.
@@ -124,7 +125,7 @@ def create_campaign(
             "loadLeadOnlyForThridPartySkill": False,
             "amdUnknownAsVoicemail": False,
             "useForProgressive": False,
-            "generativeAIServiceId": "641c589f9535e44e4b8b0c67",
+            "generativeAIServiceId": gen_ai_service_id,
             "filterOnLeads": "",
             "recordingAnalysisEndTime": 1439,
             "localizations": {

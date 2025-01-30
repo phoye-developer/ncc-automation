@@ -266,6 +266,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             print("failed.")
 
+    # Search for GENERATIVE_AI service
+    print('Searching for "GENERATIVE_AI" service...', end="")
+    gen_ai_service = search_services(ncc_location, ncc_token, "GENERATIVE_AI")
+    if gen_ai_service != {}:
+        print("found.")
+    else:
+        print("not found.")
+
+    # Create GENERATIVE_AI service
+    if gen_ai_service == {}:
+        print(
+            'Creating "Test Google - Generative AI" service...',
+            end="",
+        )
+        gen_ai_service = create_gen_ai_service(
+            ncc_location,
+            ncc_token,
+            "Test Google - Generative AI",
+            "thrio-prod-nextivaretaildemo",
+        )
+        if gen_ai_service != {}:
+            print("success!")
+        else:
+            print("failed.")
+
     # Create workflow
     print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -345,6 +370,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             campaign_address,
             workflow["_id"],
             real_time_transcription_service["_id"],
+            gen_ai_service["_id"],
         )
         if campaign != {}:
             print("success!")
