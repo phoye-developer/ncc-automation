@@ -132,11 +132,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if disposition != {}:
                 print("success!")
                 dispositions_to_assign.append(disposition)
+                tenant_id = disposition["tenantId"]
             else:
                 print("failed.")
         else:
             print("found.")
             dispositions_to_assign.append(result)
+            tenant_id = result["tenantId"]
 
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
@@ -303,7 +305,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location,
             ncc_token,
             "Test Google - Generative AI",
-            "thrio-prod-nextivaretaildemo",
+            f"thrio-prod-{tenant_id}",
         )
         if gen_ai_service != {}:
             print("success!")
