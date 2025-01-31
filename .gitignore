@@ -2,4 +2,5 @@ authentication_info.py
 __pycache__/*
 build/*
 dist/*
+.VSCodeCounter/*
 *.spec
