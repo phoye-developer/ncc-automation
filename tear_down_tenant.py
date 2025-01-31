@@ -11,6 +11,8 @@ from ncc_survey import *
 from ncc_survey_theme import *
 from ncc_rest_call import *
 from ncc_classification import *
+from ncc_scorecard import *
+from ncc_template import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
@@ -151,6 +153,36 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     for classification in classifications:
         print(f'Deleting "{classification["name"]}" classification...', end="")
         success = delete_classification(ncc_location, ncc_token, classification["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete scorecards
+    print('Searching for scorecards with "Test " prefix...', end="")
+    scorecards = get_scorecards(ncc_location, ncc_token)
+    if len(scorecards) > 0:
+        print(f"found {len(scorecards)} scorecard(s).")
+    else:
+        print("none found.")
+    for scorecard in scorecards:
+        print(f'Deleting "{scorecard["name"]}" scorecard...', end="")
+        success = delete_scorecard(ncc_location, ncc_token, scorecard["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete templates
+    print('Searching for templates with "Test " prefix...', end="")
+    templates = get_templates(ncc_location, ncc_token)
+    if len(templates) > 0:
+        print(f"found {len(templates)} template(s).")
+    else:
+        print("none found.")
+    for template in templates:
+        print(f'Deleting "{template["name"]}" template...', end="")
+        success = delete_template(ncc_location, ncc_token, template["_id"])
         if success:
             print("success!")
         else:
