@@ -64,7 +64,7 @@ def create_disposition(
     """
     This function creates a disposition with a specified name.
     """
-    disposition_id = ""
+    disposition = {}
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {

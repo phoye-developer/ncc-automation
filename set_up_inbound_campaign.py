@@ -9,6 +9,9 @@ from ncc_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_classification import *
+from ncc_scorecard import *
+from ncc_scorecard_classification import *
+from ncc_campaign_scorecard import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -385,6 +388,46 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("found.")
             classifications_to_assign.append(result)
 
+    # Create scorecard
+    print(f'Searching for "{campaign_name}" scorecard...', end="")
+    scorecard = search_scorecards(ncc_location, ncc_token, campaign_name)
+    if scorecard == {}:
+        print("not found.")
+        print(f'Creating "{campaign_name}" scorecard...', end="")
+        scorecard = create_scorecard(ncc_location, ncc_token, campaign_name)
+        if scorecard != {}:
+            print("success!")
+        else:
+            print("failed.")
+    else:
+        print("found.")
+
+    # Assign classifications to scorecard
+    if scorecard != {}:
+        for classification in classifications_to_assign:
+            print(
+                f'Checking if "{classification["name"]}" classification is assigned to "{scorecard["name"]}" scorecard...',
+                end="",
+            )
+            success = search_scorecard_classifications(
+                ncc_location, ncc_token, classification["_id"], scorecard["_id"]
+            )
+            if success:
+                print("assigned.")
+            else:
+                print("not assigned.")
+                print(
+                    f'Assigning "{classification["name"]}" classification to "{scorecard["name"]}" scorecard...',
+                    end="",
+                )
+                scorecard_classification = create_scorecard_classification(
+                    ncc_location, ncc_token, scorecard["_id"], classification["_id"]
+                )
+                if scorecard_classification != {}:
+                    print("success!")
+                else:
+                    print("failed.")
+
     # Create workflow
     print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -467,3 +510,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     print("failed.")
             else:
                 print("assigned.")
+
+    # Assign scorecard to campaign
+    if campaign != {} and scorecard != {}:
+        print(
+            f'Checking if "{scorecard["name"]}" scorecard is assigned to "{campaign_name}" campaign...',
+            end="",
+        )
+        success = search_campaign_scorecards(
+            ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
+        )
+        if not success:
+            print("not found.")
+            print(
+                f'Assigning "{scorecard["name"]}" scorecard to "{campaign_name}" campaign...',
+                end="",
+            )
+            success = create_campaign_scorecard(
+                ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
+            )
+            if success:
+                print("success!")
+            else:
+                print("failed.")
+        else:
+            print("assigned.")
