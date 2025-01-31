@@ -12,6 +12,8 @@ from ncc_classification import *
 from ncc_scorecard import *
 from ncc_scorecard_classification import *
 from ncc_campaign_scorecard import *
+from ncc_template import *
+from ncc_campaign_template import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -59,14 +61,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             dispositions = general_dispositions
             queues = general_queues
             classifications = general_classifications
+            templates = general_templates
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             classifications = general_classifications + hc_classifications
+            templates = general_templates + hc_templates
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             classifications = general_classifications + finserv_classifications
+            templates = general_templates + finserv_templates
         else:
             choice = ""
             print("Invalid choice.")
@@ -107,6 +112,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print()
     else:
         print("No phone numbers available.")
+        print()
 
     # Select campaign caller ID
     campaign_caller_id = ""
@@ -428,6 +434,29 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 else:
                     print("failed.")
 
+    # Create templates
+    templates_to_assign = []
+    for template in templates:
+        print(f'Searching for "{template["name"]}" template...', end="")
+        result = search_templates(ncc_location, ncc_token, template["name"])
+        if result == {}:
+            print("not found.")
+            print(f'Creating "{template["name"]}" template...', end="")
+            template = create_template(
+                ncc_location,
+                ncc_token,
+                template["name"],
+                template["body"],
+            )
+            if template != {}:
+                print("success!")
+                templates_to_assign.append(template)
+            else:
+                print("failed.")
+        else:
+            print("found.")
+            templates_to_assign.append(result)
+
     # Create workflow
     print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -496,7 +525,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 ncc_location, ncc_token, campaign["_id"], disposition["_id"]
             )
             if not success:
-                print("not found.")
+                print("not assigned.")
                 print(
                     f'Assigning "{disposition["name"]}" disposition to "{campaign_name}" campaign...',
                     end="",
@@ -521,7 +550,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
         )
         if not success:
-            print("not found.")
+            print("not assigned.")
             print(
                 f'Assigning "{scorecard["name"]}" scorecard to "{campaign_name}" campaign...',
                 end="",
@@ -535,3 +564,29 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print("failed.")
         else:
             print("assigned.")
+
+    # Assign templates to campaign
+    if campaign != {}:
+        for template in templates_to_assign:
+            print(
+                f'Checking if "{template["name"]}" template is assigned to "{campaign_name}" campaign...',
+                end="",
+            )
+            success = search_campaign_templates(
+                ncc_location, ncc_token, campaign["_id"], template["_id"]
+            )
+            if not success:
+                print("not assigned.")
+                print(
+                    f'Assigning "{template["name"]}" template to "{campaign_name}" campaign...',
+                    end="",
+                )
+                success = create_campaign_template(
+                    ncc_location, ncc_token, campaign["_id"], template["_id"]
+                )
+                if success:
+                    print("success!")
+                else:
+                    print("failed.")
+            else:
+                print("assigned.")
