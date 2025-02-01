@@ -4047,6 +4047,28 @@ general_templates = [
         "email": True,
         "name": "Test Payment Link",
     },
+    {
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Supervisor Request"}}
+        },
+        "assistance": True,
+        "chat": False,
+        "name": "Test Supervisor Request",
+        "sms": False,
+        "html": "I have a customer asking for a supervisor.",
+        "email": False,
+    },
+    {
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Refund Request"}}
+        },
+        "assistance": True,
+        "chat": False,
+        "name": "Test Refund Request",
+        "sms": False,
+        "html": "I have a customer asking for a refund.",
+        "email": False,
+    },
 ]
 hc_templates = []
 finserv_templates = []
