@@ -4024,28 +4024,28 @@ finserv_classifications = [
 
 general_templates = [
     {
-        "name": "Test Appointment Reminders",
-        "body": {
-            "localizations": {"name": {"en": {"language": "en", "value": ""}}},
-            "assistance": False,
-            "chat": False,
-            "name": "",
-            "sms": True,
-            "html": '<div style="font-size: 14px; font-family: Arial;">Hi ${firstName}. As a reminder, you have an appointment at ${description}. Reply back with any questions. See you then!</div>',
-            "email": False,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Appointment Reminders"}}
         },
+        "assistance": False,
+        "chat": False,
+        "name": "",
+        "sms": True,
+        "html": '<div style="font-size: 14px; font-family: Arial;">Hi ${firstName}. As a reminder, you have an appointment at ${description}. Reply back with any questions. See you then!</div>',
+        "email": False,
+        "name": "Test Appointment Reminders",
     },
     {
-        "name": "Test Payment Link",
-        "body": {
-            "localizations": {"name": {"en": {"language": "en", "value": ""}}},
-            "assistance": False,
-            "chat": True,
-            "name": "",
-            "sms": True,
-            "html": '<div style="font-size: 14px; font-family: Arial;">To make a payment, go to <a href="https://www.nextiva.com​">https://www.nextiva.com</a>.</div>',
-            "email": True,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Payment Link"}}
         },
+        "assistance": False,
+        "chat": True,
+        "name": "",
+        "sms": True,
+        "html": '<div style="font-size: 14px; font-family: Arial;">To make a payment, go to <a href="https://www.nextiva.com​">https://www.nextiva.com</a>.</div>',
+        "email": True,
+        "name": "Test Payment Link",
     },
 ]
 hc_templates = []

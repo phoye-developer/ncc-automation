@@ -59,7 +59,6 @@ def search_templates(ncc_location: str, ncc_token: str, template_name: str) -> d
 def create_template(
     ncc_location: str,
     ncc_token: str,
-    template_name: str,
     template_body: dict,
 ) -> dict:
     """
@@ -67,8 +66,6 @@ def create_template(
     """
     template = {}
     conn = http.client.HTTPSConnection(ncc_location)
-    template_body["localizations"]["name"]["en"]["value"] = template_name
-    template_body["name"] = template_name
     payload = json.dumps(template_body)
     headers = {
         "Authorization": ncc_token,
