@@ -1,3 +1,4 @@
+import logging
 from config import *
 from authentication_info import *
 from deepgram import *
@@ -24,6 +25,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
     """
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
     # Enter campaign name
     campaign_name = ""
@@ -133,97 +140,80 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print("Invalid choice.")
                 print()
 
+    logging.info("Starting...")
     # Create dispositions
     dispositions_to_assign = []
     for disposition in dispositions:
-        print(f'Searching for "{disposition}" disposition...', end="")
         result = search_dispositions(ncc_location, ncc_token, disposition)
         if result == {}:
-            print("not found.")
-            print(f'Creating "{disposition}" disposition...', end="")
-            disposition = create_disposition(ncc_location, ncc_token, disposition)
-            if disposition != {}:
-                print("success!")
-                dispositions_to_assign.append(disposition)
-                tenant_id = disposition["tenantId"]
+            result = create_disposition(ncc_location, ncc_token, disposition)
+            if result != {}:
+                logging.info(f'"{result["name"]}" disposition created.')
+                dispositions_to_assign.append(result)
+                tenant_id = result["tenantId"]
             else:
-                print("failed.")
+                logging.warning(f'"{disposition}" disposition not created.')
         else:
-            print("found.")
+            logging.info(f'"{result["name"]}" disposition already exists.')
             dispositions_to_assign.append(result)
             tenant_id = result["tenantId"]
 
     # Assign user profiles to dispositions
     for user_profile in user_profiles:
-        print(f'Searching for "{user_profile}" user profile...', end="")
         result = search_user_profiles(ncc_location, ncc_token, user_profile)
         if result != {}:
-            print("found.")
+            logging.info(f'"{user_profile}" user profile found.')
             for disposition in dispositions_to_assign:
-                print(
-                    f'Checking if "{disposition["name"]}" disposition is assigned to "{user_profile}" user profile...',
-                    end="",
-                )
                 success = search_user_profile_dispositions(
                     ncc_location, ncc_token, disposition["_id"], result["_id"]
                 )
                 if success:
-                    print("assigned.")
-                else:
-                    print("not assigned.")
-                    print(
-                        f'Assigning "{disposition["name"]}" disposition to "{user_profile}" user profile...',
-                        end="",
+                    logging.info(
+                        f'"{disposition["name"]}" disposition already assigned.'
                     )
+                else:
                     user_profile_disposition = create_user_profile_disposition(
                         ncc_location, ncc_token, result["_id"], disposition["_id"]
                     )
                     if user_profile_disposition != {}:
-                        print("success!")
+                        logging.info(f'"{disposition["name"]}" disposition assigned.')
                     else:
-                        print("failed.")
+                        logging.warning(
+                            f'"{disposition["name"]}" disposition not assigned.'
+                        )
         else:
-            print(f'"{user_profile}" user profile not found.')
+            logging.info(f'"{user_profile}" user profile not found.')
 
     # Create queues
     for queue in queues:
-        print(f'Searching for "{queue}" queue...', end="")
         result = search_queues(ncc_location, ncc_token, queue)
         if result == {}:
-            print("none found.")
-            print(f'Creating "{queue}" queue...', end="")
             result = create_queue(ncc_location, ncc_token, queue)
             if result != {}:
-                print("success!")
+                logging.info(f'"{result["name"]}" queue created.')
             else:
-                print("failed.")
+                logging.warning(f'"{result["name"]}" queue not created.')
         else:
-            print("found.")
+            logging.info(f'"{queue}" queue already exists.')
 
     # Create survey theme
-    print(f'Searching for "Test {business_name}" survey theme...', end="")
     survey_theme = search_survey_themes(
         ncc_location, ncc_token, f"Test {business_name}"
     )
     if survey_theme == {}:
-        print("not found.")
-        print(f'Creating "Test {business_name}" survey theme...', end="")
         survey_theme = create_survey_theme(
             ncc_location, ncc_token, f"Test {business_name}"
         )
         if survey_theme != {}:
-            print("success!")
+            logging.info(f'"Test {business_name}" survey theme created.')
         else:
-            print("failed.")
+            logging.warning(f'"Test {business_name}" survey theme not created.')
     else:
-        print("found.")
+        logging.info(f'"Test {business_name}" survey theme already exists.')
 
     # Create user survey
-    print(f'Searching for "{campaign_name} - User" survey...', end="")
     user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
     if user_survey == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name} - User" survey...', end="")
         user_survey = create_survey(
             ncc_location,
             ncc_token,
@@ -232,18 +222,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if user_survey != {}:
-            print("success!")
+            logging.info(f'"{campaign_name} - user" survey created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name} - user" survey not created.')
     else:
-        print("found.")
+        logging.info(f'"{campaign_name} - user" survey already exists.')
 
     # Create chat survey
-    print(f'Searching for "{campaign_name} - Chat" survey...', end="")
     chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
     if chat_survey == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name} - Chat" survey...', end="")
         chat_survey = create_survey(
             ncc_location,
             ncc_token,
@@ -252,18 +239,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if chat_survey != {}:
-            print("success!")
+            logging.info(f'"{campaign_name} - Chat" survey created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name} - Chat" survey not created.')
     else:
-        print("found.")
+        logging.info(f'"{campaign_name} - Chat" survey already exists.')
 
     # Create QM survey
-    print(f'Searching for "{campaign_name} - QM" survey...', end="")
     qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
     if qm_survey == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name} - QM" survey...', end="")
         qm_survey = create_survey(
             ncc_location,
             ncc_token,
@@ -272,48 +256,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if qm_survey != {}:
-            print("success!")
+            logging.info(f'"{campaign_name} - QM" survey created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name} - QM" survey not created.')
     else:
-        print("found.")
-
-    # Search for TEXT_TO_SPEECH service
-    print('Searching for "TEXT_TO_SPEECH" service...', end="")
-    tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")
-    if tts_service != {}:
-        print("found.")
-    else:
-        print("not found.")
+        logging.info(f'"{campaign_name} - QM" survey already exists')
 
     # Create TEXT_TO_SPEECH service
-    if tts_service == {}:
-        print(
-            'Creating "Test Google - Text To Speech" service...',
-            end="",
-        )
+    tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")
+    if tts_service != {}:
+        logging.info('"TEXT_TO_SPEECH" type service already exists.')
+    else:
         tts_service = create_tts_service(
             ncc_location, ncc_token, "Test Google - Text To Speech"
         )
         if tts_service != {}:
-            print("success!")
+            logging.info('"TEXT_TO_SPEECH" type service created.')
         else:
-            print("failed.")
-
-    # Search for GENERATIVE_AI service
-    print('Searching for "GENERATIVE_AI" service...', end="")
-    gen_ai_service = search_services(ncc_location, ncc_token, "GENERATIVE_AI")
-    if gen_ai_service != {}:
-        print("found.")
-    else:
-        print("not found.")
+            logging.warning('"TEXT_TO_SPEECH" type service not created.')
 
     # Create GENERATIVE_AI service
-    if gen_ai_service == {}:
-        print(
-            'Creating "Test Google - Generative AI" service...',
-            end="",
-        )
+    gen_ai_service = search_services(ncc_location, ncc_token, "GENERATIVE_AI")
+    if gen_ai_service != {}:
+        logging.info('"GENERATIVE_AI" type service already exists.')
+    else:
         gen_ai_service = create_gen_ai_service(
             ncc_location,
             ncc_token,
@@ -321,45 +287,34 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             f"thrio-prod-{tenant_id}",
         )
         if gen_ai_service != {}:
-            print("success!")
+            logging.info('"GENERATIVE_AI" type service created.')
         else:
-            print("failed.")
+            logging.warning('"GENERATIVE_AI" type service not created.')
 
     # Search for REALTIME_ANALYSIS service
-    print('Searching for "REALTIME_ANALYSIS" service...', end="")
     real_time_transcription_service = search_services(
         ncc_location, ncc_token, "REALTIME_ANALYSIS"
     )
     if real_time_transcription_service != {}:
-        print("found.")
+        logging.info('"REALTIME_ANALYSIS" type service already exists.')
     else:
-        print("not found.")
-
-    # Create Deepgram API key
-    if real_time_transcription_service == {}:
-        print('Searching for "Test Key" Deepgram API key...', end="")
+        # Create Deepgram API key
         deepgram_api_key_id = search_deepgram_api_keys(
             deepgram_project_id, deepgram_main_api_key, "Test Key"
         )
         if deepgram_api_key_id == "":
-            print("none found.")
-            print("Creating new Deepgram API key...", end="")
             deepgram_api_key = create_deepgram_api_key(
                 deepgram_project_id, deepgram_main_api_key
             )
             if deepgram_api_key != "":
-                print("success!")
+                logging.info('"Test Key" Deepgram API key created.')
             else:
-                print("failed.")
+                logging.warning('"Test Key" Deepgram API key not created.')
         else:
-            print("found.")
+            logging.info('"Test Key" Deepgram API key already exists.')
 
     # Create REALTIME_ANALYSIS service
     if real_time_transcription_service == {} and deepgram_api_key != "":
-        print(
-            'Creating "Test Deepgram Real-Time Transcription" service...',
-            end="",
-        )
         real_time_transcription_service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
@@ -367,18 +322,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             deepgram_api_key,
         )
         if real_time_transcription_service != {}:
-            print("success!")
+            logging.info('"Test Deepgram Real-Time Transcription" service created.')
         else:
-            print("failed.")
+            logging.warning(
+                '"Test Deepgram Real-Time Transcription" service not created.'
+            )
 
     # Create classifications
     classifications_to_assign = []
     for classification in classifications:
-        print(f'Searching for "{classification["name"]}" classification...', end="")
         result = search_classifications(ncc_location, ncc_token, classification["name"])
         if result == {}:
-            print("not found.")
-            print(f'Creating "{classification["name"]}" classification...', end="")
             classification = create_classification(
                 ncc_location,
                 ncc_token,
@@ -386,100 +340,86 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 classification["phrases"],
             )
             if classification != {}:
-                print("success!")
+                logging.info(f'"{classification["name"]}" classification created.')
                 classifications_to_assign.append(classification)
             else:
-                print("failed.")
+                logging.warning(
+                    f'"{classification["name"]}" classification not created.'
+                )
         else:
-            print("found.")
+            logging.info(f'"{classification["name"]}" classification already exists.')
             classifications_to_assign.append(result)
 
     # Create scorecard
-    print(f'Searching for "{campaign_name}" scorecard...', end="")
     scorecard = search_scorecards(ncc_location, ncc_token, campaign_name)
     if scorecard == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name}" scorecard...', end="")
         scorecard = create_scorecard(ncc_location, ncc_token, campaign_name)
         if scorecard != {}:
-            print("success!")
+            logging.info(f'"{campaign_name}" scorecard created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name}" scorecard not created.')
     else:
-        print("found.")
+        logging.info(f'"{campaign_name}" scorecard already exists.')
 
     # Assign classifications to scorecard
     if scorecard != {}:
         for classification in classifications_to_assign:
-            print(
-                f'Checking if "{classification["name"]}" classification is assigned to "{scorecard["name"]}" scorecard...',
-                end="",
-            )
             success = search_scorecard_classifications(
                 ncc_location, ncc_token, classification["_id"], scorecard["_id"]
             )
             if success:
-                print("assigned.")
-            else:
-                print("not assigned.")
-                print(
-                    f'Assigning "{classification["name"]}" classification to "{scorecard["name"]}" scorecard...',
-                    end="",
+                logging.info(
+                    f'"{classification["name"]}" classification already assigned to scorecard.'
                 )
+            else:
                 scorecard_classification = create_scorecard_classification(
                     ncc_location, ncc_token, scorecard["_id"], classification["_id"]
                 )
                 if scorecard_classification != {}:
-                    print("success!")
+                    logging.info(
+                        f'"{classification["name"]}" classification assigned to scorecard.'
+                    )
                 else:
-                    print("failed.")
+                    logging.warning(
+                        f'"{classification["name"]}" classification not assigned to scorecard.'
+                    )
 
     # Create templates
     templates_to_assign = []
     for template in templates:
-        print(f'Searching for "{template["name"]}" template...', end="")
         result = search_templates(ncc_location, ncc_token, template["name"])
         if result == {}:
-            print("not found.")
-            print(f'Creating "{template["name"]}" template...', end="")
-            template = create_template(
+            result = create_template(
                 ncc_location,
                 ncc_token,
                 template["name"],
                 template["body"],
             )
-            if template != {}:
-                print("success!")
-                templates_to_assign.append(template)
+            if result != {}:
+                logging.info(f'"{template["name"]}" template created.')
+                templates_to_assign.append(result)
             else:
-                print("failed.")
+                logging.warning(f'"{template["name"]}" template not created.')
         else:
-            print("found.")
+            logging.info(f'"{template["name"]}" template already exists.')
             templates_to_assign.append(result)
 
     # Create workflow
-    print(f'Searching for "{campaign_name}" workflow...', end="")
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
-        print("not found.")
-        print(f'Creating "{campaign_name}" workflow...', end="")
         workflow = create_workflow(
             ncc_location, ncc_token, main_workflow, campaign_name
         )
         if workflow != {}:
-            print("success!")
+            logging.info(f'"{campaign_name}" workflow created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name}" workflow not created.')
     else:
-        workflow = workflow["_id"]
-        print("found.")
+        logging.info(f'"{campaign_name}" workflow already exists.')
 
     # Create campaign
-    print(f'Searching for "{campaign_name}" campaign...', end="")
     campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
     if campaign == {}:
-        print("none found.")
-        print(f'Creating "{campaign_name}" campaign...', end="")
         campaign = create_campaign(
             ncc_location,
             ncc_token,
@@ -494,99 +434,84 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             gen_ai_service["_id"],
         )
         if campaign != {}:
-            print("success!")
+            logging.info(f'"{campaign_name}" campaign created.')
         else:
-            print("failed.")
+            logging.warning(f'"{campaign_name}" campaign not created.')
     else:
-        print("found.")
+        logging.info(f'"{campaign_name}" campaign already exists.')
 
     # Update chat survey campaign ID
     if campaign != {} and chat_survey != {}:
-        print(
-            f'Updating "{chat_survey["name"]}" survey with "{campaign_name}" campaign...',
-            end="",
-        )
         success = update_chat_survey_campaign_id(
             ncc_location, ncc_token, chat_survey["_id"], campaign["_id"]
         )
         if success:
-            print("success!")
+            logging.info(f'"{chat_survey["name"]}" survey updated with new campaign.')
         else:
-            print("failed.")
+            logging.warning(
+                f'"{chat_survey["name"]}" survey not updated with new campaign.'
+            )
 
     # Assign dispositions to campaign
     if campaign != {}:
         for disposition in dispositions_to_assign:
-            print(
-                f'Checking if "{disposition["name"]}" disposition is assigned to "{campaign_name}" campaign...',
-                end="",
-            )
             success = search_campaign_dispositions(
                 ncc_location, ncc_token, campaign["_id"], disposition["_id"]
             )
             if not success:
-                print("not assigned.")
-                print(
-                    f'Assigning "{disposition["name"]}" disposition to "{campaign_name}" campaign...',
-                    end="",
-                )
                 success = create_campaign_disposition(
                     ncc_location, ncc_token, campaign["_id"], disposition["_id"]
                 )
                 if success:
-                    print("success!")
+                    logging.info(
+                        f'"{disposition["name"]}" disposition assigned to campaign.'
+                    )
                 else:
-                    print("failed.")
+                    logging.warning(
+                        f'"{disposition["name"]}" disposition not assigned to campaign.'
+                    )
             else:
-                print("assigned.")
+                logging.info(
+                    f'"{disposition["name"]}" disposition already assigned to campaign.'
+                )
 
     # Assign scorecard to campaign
     if campaign != {} and scorecard != {}:
-        print(
-            f'Checking if "{scorecard["name"]}" scorecard is assigned to "{campaign_name}" campaign...',
-            end="",
-        )
         success = search_campaign_scorecards(
             ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
         )
         if not success:
-            print("not assigned.")
-            print(
-                f'Assigning "{scorecard["name"]}" scorecard to "{campaign_name}" campaign...',
-                end="",
-            )
             success = create_campaign_scorecard(
                 ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
             )
             if success:
-                print("success!")
+                logging.info(f'"{scorecard["name"]}" scorecard assigned to campaign.')
             else:
-                print("failed.")
+                logging.warning(
+                    f'"{scorecard["name"]}" scorecard not assigned to campaign.'
+                )
         else:
-            print("assigned.")
+            logging.info(
+                f'"{scorecard["name"]}" scorecard already assigned to campaign.'
+            )
 
     # Assign templates to campaign
     if campaign != {}:
         for template in templates_to_assign:
-            print(
-                f'Checking if "{template["name"]}" template is assigned to "{campaign_name}" campaign...',
-                end="",
-            )
             success = search_campaign_templates(
                 ncc_location, ncc_token, campaign["_id"], template["_id"]
             )
             if not success:
-                print("not assigned.")
-                print(
-                    f'Assigning "{template["name"]}" template to "{campaign_name}" campaign...',
-                    end="",
-                )
                 success = create_campaign_template(
                     ncc_location, ncc_token, campaign["_id"], template["_id"]
                 )
                 if success:
-                    print("success!")
+                    logging.info(f'"{template["name"]}" template assigned to campaign.')
                 else:
-                    print("failed.")
+                    logging.warning(
+                        f'"{template["name"]}" template not assigned to campaign.'
+                    )
             else:
-                print("assigned.")
+                logging.info(
+                    f'"{template["name"]}" template already assigned to campaign.'
+                )
