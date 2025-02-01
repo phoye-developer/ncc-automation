@@ -333,15 +333,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     for classification in classifications:
         result = search_classifications(ncc_location, ncc_token, classification["name"])
         if result == {}:
-            classification = create_classification(
-                ncc_location,
-                ncc_token,
-                classification["name"],
-                classification["phrases"],
-            )
-            if classification != {}:
+            result = create_classification(ncc_location, ncc_token, classification)
+            if result != {}:
                 logging.info(f'"{classification["name"]}" classification created.')
-                classifications_to_assign.append(classification)
+                classifications_to_assign.append(result)
             else:
                 logging.warning(
                     f'"{classification["name"]}" classification not created.'
