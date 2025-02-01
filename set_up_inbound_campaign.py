@@ -384,12 +384,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     for template in templates:
         result = search_templates(ncc_location, ncc_token, template["name"])
         if result == {}:
-            result = create_template(
-                ncc_location,
-                ncc_token,
-                template["name"],
-                template["body"],
-            )
+            result = create_template(ncc_location, ncc_token, template)
             if result != {}:
                 logging.info(f'"{template["name"]}" template created.')
                 templates_to_assign.append(result)
