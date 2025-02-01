@@ -43,13 +43,13 @@ main_user_survey_body = {
     "hideSurveyBoxShadown": False,
     "type": "full",
     "showFooter": False,
-    "surveythemeId": "66a907a77f0cd53e52709d2f",
+    "surveythemeId": "",
     "showTabs": True,
     "expansions": {
         "surveythemeId": {
             "localizations": {
                 "name": {
-                    "en": {"language": "en", "value": "Nextiva - Real"},
+                    "en": {"language": "en", "value": ""},
                 },
             },
         }
@@ -57,7 +57,7 @@ main_user_survey_body = {
     "showBottomNavigatorPage": False,
     "height": 700,
     "debug": False,
-    "localizations": {"name": {"en": {"language": "en", "value": "Test Main - User"}}},
+    "localizations": {"name": {"en": {"language": "en", "value": ""}}},
     "showHeader": False,
     "allowTabinationMandatoryFields": True,
     "entryPanelId": "66c540d6a14be123ae577468",
@@ -1036,7 +1036,6 @@ main_chat_survey_body = {
     "debug": True,
     "localizations": {
         "name": {"en": {"language": "en", "value": ""}},
-        "description": {"en": {"language": "en", "value": ""}},
     },
     "showHeader": False,
     "allowTabinationMandatoryFields": True,
@@ -2151,7 +2150,7 @@ hubspot_survey_body = {
     "showBottomNavigatorPage": False,
     "height": 1130,
     "debug": False,
-    "localizations": {"name": {"en": {"language": "en", "value": "Test HubSpot"}}},
+    "localizations": {"name": {"en": {"language": "en", "value": ""}}},
     "showHeader": False,
     "allowTabinationMandatoryFields": False,
     "entryPanelId": "6568d29611501e41ad52c81d",
@@ -2516,7 +2515,6 @@ hubspot_survey_body = {
             "_id": "6568d292414caef39be57858",
         },
     },
-    "name": "Test HubSpot",
     "width": 700,
     "showTopNavigatorPage": False,
     "usePanelShadow": False,
@@ -2532,7 +2530,7 @@ zendesk_survey_body = {
     "showBottomNavigatorPage": False,
     "height": 700,
     "debug": False,
-    "localizations": {"name": {"en": {"language": "en", "value": "Test Zendesk"}}},
+    "localizations": {"name": {"en": {"language": "en", "value": ""}}},
     "showHeader": False,
     "allowTabinationMandatoryFields": True,
     "entryPanelId": "6643d7aaac0c7120501d5236",
@@ -2679,7 +2677,6 @@ zendesk_survey_body = {
             "_id": "6643d79fed1327b08ac410de",
         },
     },
-    "name": "Test Zendesk",
     "width": 380,
     "showTopNavigatorPage": False,
     "usePanelShadow": False,
@@ -3976,36 +3973,52 @@ main_workflow = {
 
 general_classifications = [
     {
-        "name": "Test Opening",
-        "phrases": [
-            "Thanks for calling",
-            "Thank you for calling",
-            "Thank you for contacting us",
+        "data": [
+            "thank you for calling",
+            "thanks for calling",
+            "thank you for contacting",
+            "thanks for contacting",
         ],
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Opening"}}},
+        "name": "Test Opening",
     },
     {
+        "data": [
+            "have a great day",
+            "take care",
+            "enjoy the rest of your day",
+            "have a good one",
+        ],
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Closing"}}},
         "name": "Test Closing",
-        "phrases": ["Have a great day", "Take care", "Enjoy the rest of your day"],
     },
 ]
 hc_classifications = [
     {
-        "name": "Test Verification",
-        "phrases": [
+        "data": [
             "I need to verify your date of birth",
-            "Tell me your date of birth",
-            "Provide your date of birth",
+            "tell me your date of birth",
+            "provide your date of birth",
+            "may I have your date of birth",
         ],
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Verification"}}
+        },
+        "name": "Test Verification",
     }
 ]
 finserv_classifications = [
     {
-        "name": "Test Verification",
-        "phrases": [
+        "data": [
             "I need to verify your security PIN",
-            "Tell me your security PIN",
-            "Provide your security PIN",
+            "tell me your security PIN",
+            "provide your security PIN",
+            "may I have your security PIN",
         ],
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Verification"}}
+        },
+        "name": "Test Verification",
     }
 ]
 
