@@ -4086,3 +4086,54 @@ hc_topics = [
     "Test Policy and Coverage Issues",
 ]
 finserv_topics = []
+
+general_reports = [
+    {
+        "timezone": "America/Phoenix",
+        "range": {
+            "type": "thismonth",
+        },
+        "type": "AbandonDetail",
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Abandon Detail - This Month"}
+            }
+        },
+        "filters": {
+            "supervisedQueues": True,
+        },
+        "name": "Test Abandon Detail - This Month",
+    },
+    {
+        "timezone": "America/Phoenix",
+        "range": {
+            "type": "thisweek",
+        },
+        "type": "AbandonDetail",
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Abandon Detail - This Week"}
+            }
+        },
+        "filters": {
+            "supervisedQueues": True,
+        },
+        "name": "Test Abandon Detail - This Week",
+    },
+    {
+        "timezone": "America/Phoenix",
+        "range": {
+            "type": "today",
+        },
+        "type": "AbandonDetail",
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Abandon Detail - Today"}}
+        },
+        "filters": {
+            "supervisedQueues": True,
+        },
+        "name": "Test Abandon Detail - Today",
+    },
+]
+hc_reports = []
+finserv_reports = []
