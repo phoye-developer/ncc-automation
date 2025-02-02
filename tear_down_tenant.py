@@ -14,6 +14,7 @@ from ncc_classification import *
 from ncc_scorecard import *
 from ncc_template import *
 from ncc_topic import *
+from ncc_report import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
@@ -98,7 +99,7 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("success!")
         else:
             print("failed")
-    
+
     # Delete topics
     print('Searching for topics with "Test " prefix...', end="")
     topics = get_topics(ncc_location, ncc_token)
@@ -199,6 +200,21 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     for template in templates:
         print(f'Deleting "{template["name"]}" template...', end="")
         success = delete_template(ncc_location, ncc_token, template["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete reports
+    print('Searching for reports with "Test " prefix...', end="")
+    reports = get_reports(ncc_location, ncc_token)
+    if len(reports) > 0:
+        print(f"found {len(reports)} report(s).")
+    else:
+        print("none found.")
+    for report in reports:
+        print(f'Deleting "{report["name"]}" report...', end="")
+        success = delete_report(ncc_location, ncc_token, report["_id"])
         if success:
             print("success!")
         else:

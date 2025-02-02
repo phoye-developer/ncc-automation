@@ -20,6 +20,7 @@ from ncc_service import *
 from ncc_campaign import *
 from ncc_campaign_disposition import *
 from ncc_topic import *
+from ncc_report import *
 
 
 def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
@@ -71,18 +72,21 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             classifications = general_classifications
             templates = general_templates
             topics = general_topics
+            reports = general_reports
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             classifications = general_classifications + hc_classifications
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
+            reports = general_reports + hc_reports
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             classifications = general_classifications + finserv_classifications
             templates = general_templates + finserv_templates
             topics = general_topics + finserv_topics
+            reports = general_reports + finserv_reports
         else:
             choice = ""
             print("Invalid choice.")
@@ -521,3 +525,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 logging.info(
                     f'"{template["name"]}" template already assigned to campaign.'
                 )
+
+    # Create reports
+    for report in reports:
+        result = search_reports(ncc_location, ncc_token, report["name"])
+        if result == {}:
+            result = create_report(ncc_location, ncc_token, report)
+            if result != {}:
+                logging.info(f'"{report["name"]}" report created')
+            else:
+                logging.warning(f'"{report["name"]} report not created.')
+        else:
+            logging.info(f'"{report["name"]} report already exists.')
