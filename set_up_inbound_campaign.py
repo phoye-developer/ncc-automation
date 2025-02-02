@@ -19,11 +19,12 @@ from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
 from ncc_campaign_disposition import *
+from ncc_topic import *
 
 
 def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     """
-    This function performs the basic setup of a new Nextiva Contact Center (NCC) tenant.
+    This function performs the basic setup of a new Nextiva Contact Center (NCC) campaign.
     """
 
     logging.basicConfig(
@@ -69,16 +70,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             queues = general_queues
             classifications = general_classifications
             templates = general_templates
+            topics = general_topics
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             classifications = general_classifications + hc_classifications
             templates = general_templates + hc_templates
+            topics = general_topics + hc_topics
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             classifications = general_classifications + finserv_classifications
             templates = general_templates + finserv_templates
+            topics = general_topics + finserv_topics
         else:
             choice = ""
             print("Invalid choice.")
@@ -261,6 +265,18 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.warning(f'"{campaign_name} - QM" survey not created.')
     else:
         logging.info(f'"{campaign_name} - QM" survey already exists')
+
+    # Create topic
+    for topic in topics:
+        result = search_topics(ncc_location, ncc_token, topic)
+        if result == {}:
+            result = create_topic(ncc_location, ncc_token, topic)
+            if result != {}:
+                logging.info(f'"{topic}" topic created.')
+            else:
+                logging.warning(f'"{topic}" topic not created.')
+        else:
+            logging.info(f'"{topic}" topic already exists.')
 
     # Create TEXT_TO_SPEECH service
     tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")

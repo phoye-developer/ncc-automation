@@ -13,6 +13,7 @@ from ncc_rest_call import *
 from ncc_classification import *
 from ncc_scorecard import *
 from ncc_template import *
+from ncc_topic import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
@@ -97,6 +98,21 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("success!")
         else:
             print("failed")
+    
+    # Delete topics
+    print('Searching for topics with "Test " prefix...', end="")
+    topics = get_topics(ncc_location, ncc_token)
+    if len(topics) > 0:
+        print(f"found {len(topics)} topic(s).")
+    else:
+        print("none found.")
+    for topic in topics:
+        print(f'Deleting "{topic["name"]}" topic...', end="")
+        success = delete_topic(ncc_location, ncc_token, topic["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
 
     # Delete surveys
     print('Searching for surveys with "Test " prefix...', end="")

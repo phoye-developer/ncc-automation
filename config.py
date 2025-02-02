@@ -4072,3 +4072,17 @@ general_templates = [
 ]
 hc_templates = []
 finserv_templates = []
+
+general_topics = [
+    "Test Refund Requests",
+    "Test Data Privacy",
+    "Test Billing Issues",
+    "Test Escalations",
+    "Test Internal Process Issues",
+    "Test Legal or Ethical Issues",
+]
+hc_topics = [
+    "Test Medical Issues",
+    "Test Policy and Coverage Issues",
+]
+finserv_topics = []
