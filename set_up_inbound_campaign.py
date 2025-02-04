@@ -92,6 +92,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
+    # Select workflow_type
+    choice = ""
+    while choice == "":
+        print("Please select a workflow type.")
+        print("------------------------------")
+        print("1. IVA")
+        print("2. Non-IVA, DTMF")
+        print("3. Direct Line")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            workflow_type = iva_workflow
+        elif choice == "2":
+            workflow_type = non_iva_workflow
+        elif choice == "3":
+            workflow_type = direct_line_workflow
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
     # Select PSTN number
     campaign_address = ""
     print("Searching for available PSTN numbers...")
@@ -418,7 +440,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
         workflow = create_workflow(
-            ncc_location, ncc_token, main_workflow, campaign_name
+            ncc_location, ncc_token, workflow_type, campaign_name
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')
@@ -437,7 +459,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             user_survey["_id"],
             chat_survey["_id"],
             qm_survey["_id"],
-            campaign_address,
             campaign_caller_id,
             workflow["_id"],
             real_time_transcription_service["_id"],
@@ -449,6 +470,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.warning(f'"{campaign_name}" campaign not created.')
     else:
         logging.info(f'"{campaign_name}" campaign already exists.')
+
+    # Assign campaign address to campaign
+    if campaign != {} and campaign_address != "":
+        success = assign_address_to_campaign(
+            ncc_location, ncc_token, campaign_address, campaign["_id"]
+        )
+        if success:
+            logging.info(f'"{campaign_address}" assigned to campaign.')
+        else:
+            logging.warning(f'"{campaign_address}" not assigned to campaign.')
 
     # Update chat survey campaign ID
     if campaign != {} and chat_survey != {}:
