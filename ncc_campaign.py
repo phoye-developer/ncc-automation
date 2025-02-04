@@ -99,7 +99,6 @@ def create_campaign(
     user_survey_id: str,
     chat_survey_id: str,
     qm_survey_id: str,
-    campaign_address: str,
     campaign_caller_id: str,
     workflow_id: str,
     real_time_transcription_service_id: str,
@@ -137,7 +136,6 @@ def create_campaign(
             "complianceRecordingsFileNameFormat": "",
             "outboundANI": False,
             "userRecordingsFileNameFormat": "",
-            "addresses": [campaign_address],
             "surveyId": user_survey_id,
             "useForEmail": False,
             "defaultExtension": False,
@@ -179,6 +177,24 @@ def create_campaign(
         data = res.read().decode("utf-8")
         campaign = json.loads(data)
     return campaign
+
+
+def assign_address_to_campaign(
+    ncc_location: str, ncc_token: str, campaign_address: str, campaign_id: str
+) -> bool:
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps({"addresses": [campaign_address]})
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    conn.request("PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        success = True
+    conn.close()
+    return success
 
 
 def assign_survey_to_campaign(
