@@ -73,7 +73,11 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
 
 
 def create_workflow(
-    ncc_location: str, ncc_token: str, workflow_body: dict, workflow_name: str
+    ncc_location: str,
+    ncc_token: str,
+    workflow_body: dict,
+    workflow_name: str,
+    business_name: str,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC).
@@ -83,6 +87,17 @@ def create_workflow(
 
     workflow_body["localizations"]["name"]["en"]["value"] = workflow_name
     workflow_body["name"] = workflow_name
+
+    states = workflow_body["states"]
+    for state, value in enumerate(states):
+        if value == "start-state":
+            actions = states[value]["actions"]
+            for action in actions:
+                try:
+                    if action["properties"]["variableName"] == "companyName":
+                        action["properties"]["rightExpression"] = business_name
+                except:
+                    pass
 
     payload = json.dumps(workflow_body)
     headers = {

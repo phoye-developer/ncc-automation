@@ -440,7 +440,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
         workflow = create_workflow(
-            ncc_location, ncc_token, workflow_type, campaign_name
+            ncc_location, ncc_token, workflow_type, campaign_name, business_name
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')
