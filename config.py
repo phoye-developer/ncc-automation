@@ -4036,7 +4036,7 @@ iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "companyName",
-                        "rightExpression": "NEXT Healthcare",
+                        "rightExpression": "",
                         "variableName": "companyName",
                         "asObject": False,
                         "dlpOption": False,
@@ -8601,7 +8601,8 @@ iva_workflow = {
 }
 non_iva_workflow = {
     "maxActions": 10000,
-    "localizations": { "name": {"en": {"value": ""}},
+    "localizations": {
+        "name": {"en": {"value": ""}},
     },
     "states": {
         "655e5bff8000b3fefffccc6e": {
@@ -8661,6 +8662,27 @@ non_iva_workflow = {
             "category": "Begin",
             "campaignStateId": "start-state",
             "actions": [
+                {
+                    "name": "Save Variable",
+                    "description": "",
+                    "properties": {
+                        "description": "companyName",
+                        "rightExpression": "",
+                        "variableName": "companyName",
+                        "asObject": False,
+                        "dlpOption": False,
+                        "wfmOption": False,
+                        "dashboard": False,
+                        "condition": {
+                            "conditionType": "NONE",
+                            "expressions": [{"operator": "=="}],
+                        },
+                    },
+                    "type": "savevariable",
+                    "_selected": False,
+                    "id": "refId1738366172156",
+                    "icon": "icon-save",
+                },
                 {
                     "name": "Save Variable",
                     "description": "",
@@ -9001,7 +9023,7 @@ non_iva_workflow = {
                     "description": "Convert Text into Audio using Google's Text-To-Speech",
                     "properties": {
                         "voiceName": "en-US-Wavenet-F",
-                        "text": "Thank you for calling.",
+                        "text": "Thank you for calling ${workitem.data.companyName}.",
                         "condition": {
                             "conditionType": "NONE",
                             "expressions": [{"operator": "=="}],
@@ -10036,6 +10058,27 @@ direct_line_workflow = {
             "category": "Begin",
             "campaignStateId": "start-state",
             "actions": [
+                {
+                    "name": "Save Variable",
+                    "description": "",
+                    "properties": {
+                        "description": "companyName",
+                        "rightExpression": "",
+                        "variableName": "companyName",
+                        "asObject": False,
+                        "dlpOption": False,
+                        "wfmOption": False,
+                        "dashboard": False,
+                        "condition": {
+                            "conditionType": "NONE",
+                            "expressions": [{"operator": "=="}],
+                        },
+                    },
+                    "type": "savevariable",
+                    "_selected": False,
+                    "id": "refId1738366172156",
+                    "icon": "icon-save",
+                },
                 {
                     "name": "Save Variable",
                     "description": "",
