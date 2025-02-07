@@ -565,6 +565,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if result != {}:
                 logging.info(f'"{report["name"]}" report created')
             else:
-                logging.warning(f'"{report["name"]} report not created.')
+                logging.warning(f'"{report["name"]}" report not created.')
         else:
-            logging.info(f'"{report["name"]} report already exists.')
+            logging.info(f'"{report["name"]}" report already exists.')
