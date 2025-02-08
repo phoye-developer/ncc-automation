@@ -3,22 +3,178 @@ deepgram_project_id = "90b9d6eb-c8c6-46a9-a0d7-c35f585403c4"
 
 # NCC entities
 general_dispositions = [
-    "Test Billing",
-    "Test Customer Service",
-    "Test Callback",
-    "Test Block Number",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Billing"},
+            },
+        },
+        "name": "Test Billing",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Customer Service"},
+            },
+        },
+        "name": "Test Customer Service",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Callback"},
+            },
+        },
+        "name": "Test Callback",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Block Number"},
+            },
+        },
+        "name": "Test Block Number",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 hc_dispositions = [
-    "Test Refill Prescription",
-    "Test Schedule Appointment",
-    "Test Reschedule Appointment",
-    "Test Cancel Appointment",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Refill Prescription"},
+            },
+        },
+        "name": "Test Refill Prescription",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Schedule Appointment"},
+            },
+        },
+        "name": "Test Schedule Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Reschedule Appointment"},
+            },
+        },
+        "name": "Test Reschedule Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Cancel Appointment"},
+            },
+        },
+        "name": "Test Cancel Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 finserv_dispositions = [
-    "Test Credit Card Application",
-    "Test Loan Application",
-    "Test Open Account",
-    "Test Close Account",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Credit Card Application"},
+            },
+        },
+        "name": "Test Credit Card Application",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Loan Application"},
+            },
+        },
+        "name": "Test Loan Application",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Open Account"},
+            },
+        },
+        "name": "Test Open Account",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Close Account"},
+            },
+        },
+        "name": "Test Close Account",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]

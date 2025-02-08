@@ -177,7 +177,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Create dispositions
     dispositions_to_assign = []
     for disposition in dispositions:
-        result = search_dispositions(ncc_location, ncc_token, disposition)
+        result = search_dispositions(ncc_location, ncc_token, disposition["name"])
         if result == {}:
             result = create_disposition(ncc_location, ncc_token, disposition)
             if result != {}:
@@ -185,7 +185,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 dispositions_to_assign.append(result)
                 tenant_id = result["tenantId"]
             else:
-                logging.warning(f'"{disposition}" disposition not created.')
+                logging.warning(f'"{disposition["name"]}" disposition not created.')
         else:
             logging.info(f'"{result["name"]}" disposition already exists.')
             dispositions_to_assign.append(result)
