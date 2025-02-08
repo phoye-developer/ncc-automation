@@ -1,3 +1,4 @@
+import datetime
 import logging
 from config import *
 from authentication_info import *
@@ -27,6 +28,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) campaign.
     """
+
+    start_time = datetime.datetime.now()
 
     logging.basicConfig(
         level=logging.INFO,
@@ -568,3 +571,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 logging.warning(f'"{report["name"]}" report not created.')
         else:
             logging.info(f'"{report["name"]}" report already exists.')
+
+    duration = datetime.datetime.now() - start_time
+    logging.info(f"Duration: {str(duration)}")
