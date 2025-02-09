@@ -9352,100 +9352,6 @@ non_iva_workflow = {
                     "icon": "icon-tts",
                 },
                 {
-                    "name": "Save Variable",
-                    "description": "",
-                    "properties": {
-                        "asObject": True,
-                        "dlpOption": False,
-                        "wfmOption": False,
-                        "dashboard": False,
-                        "condition": {
-                            "conditionType": "NONE",
-                            "expressions": [{"operator": "=="}],
-                        },
-                        "description": "verifyContact",
-                        "rightExpression": "verifyContact",
-                        "variableName": "false",
-                    },
-                    "type": "savevariable",
-                    "_selected": False,
-                    "id": "refId1715372158868",
-                    "icon": "icon-save",
-                },
-                {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Search Contact",
-                        "functionId": "65afe1c16e054855bfa85c50",
-                        "condition": {
-                            "conditionType": "NONE",
-                            "expressions": [{"operator": "=="}],
-                        },
-                        "expansions": {"functionId": {"name": "Search Contact"}},
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1715372158869",
-                    "icon": "icon-function",
-                },
-                {
-                    "name": "Play Collect Google TTS",
-                    "description": "Play Collect using Text-To-Speech",
-                    "properties": {
-                        "description": "Correct Name",
-                        "voiceName": "en-US-Wavenet-F",
-                        "voiceGender": "neutral",
-                        "text": "Hi, thank you for calling Nextiva! I see that your name is ${workitem.data.contactInformation.FirstName} ${workitem.data.contactInformation.LastName}. If that is correct, press One.  If that is not correct, press Two.",
-                        "numberDigits": 1,
-                        "terminationKey": "#",
-                        "timeoutInSeconds": "3",
-                        "dlpOption": False,
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "operator": "==",
-                                    "leftExpression": "workitem.data.contactFound",
-                                    "rightExpression": "true",
-                                }
-                            ],
-                        },
-                    },
-                    "type": "googlettscollect",
-                    "_selected": False,
-                    "id": "refId1715372158870",
-                    "icon": "icon-tts",
-                },
-                {
-                    "name": "Save Variable",
-                    "description": "",
-                    "properties": {
-                        "asObject": True,
-                        "dlpOption": False,
-                        "wfmOption": False,
-                        "dashboard": False,
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "operator": "==",
-                                    "leftExpression": "workitem.digits",
-                                    "rightExpression": "'1'",
-                                }
-                            ],
-                        },
-                        "description": "verifyContact",
-                        "rightExpression": "verifyContact",
-                        "variableName": "true",
-                    },
-                    "type": "savevariable",
-                    "_selected": False,
-                    "id": "refId1715372158871",
-                    "icon": "icon-save",
-                },
-                {
                     "name": "Enter Queue from Expression",
                     "description": "",
                     "properties": {
@@ -9875,10 +9781,10 @@ non_iva_workflow = {
                     "name": "Play & Collect Digits",
                     "description": "",
                     "properties": {
-                        "description": "Nextiva - Music - 60",
+                        "description": "music accoustic1",
                         "loop": 1,
                         "numberDigits": 1,
-                        "promptId": "65d3877fd9ed19568eb2af06",
+                        "promptId": "6261a7ca399bc2244d354090",
                         "terminationKey": "#",
                         "timeoutInSeconds": "1",
                         "dlpOption": False,
@@ -9886,7 +9792,7 @@ non_iva_workflow = {
                             "conditionType": "NONE",
                             "expressions": [{"operator": "=="}],
                         },
-                        "expansions": {"promptId": {"name": "Nextiva - Music - 60"}},
+                        "expansions": {"promptId": {"name": "music accoustic1"}},
                         "_working": False,
                     },
                     "type": "playdigits",
@@ -9899,7 +9805,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Voicemail (1)",
-                        "functionId": "65afe16f39fd325f29b43464",
+                        "functionId": "62f5f778a4a0a35b07873919",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9923,7 +9829,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Callback (2)",
-                        "functionId": "65afe143dcd0f136cfd8c178",
+                        "functionId": "62f5f778a4a0a35b078738ff",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9943,40 +9849,13 @@ non_iva_workflow = {
                     "icon": "icon-function",
                 },
                 {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Send SMS Text (5)",
-                        "functionId": "66026beaf804c7392f373304",
-                        "functionExpression": "",
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "leftExpression": "workitem.digits",
-                                    "operator": "==",
-                                    "rightExpression": "'5'",
-                                }
-                            ],
-                        },
-                        "expansions": {
-                            "functionId": {"name": "Send SMS Text From Queue"}
-                        },
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1723781535540",
-                    "icon": "icon-function",
-                },
-                {
                     "name": "Play & Collect Digits",
                     "description": "",
                     "properties": {
-                        "description": "Nextiva - Hold",
+                        "description": "music accoustic1",
                         "loop": 1,
                         "numberDigits": 1,
-                        "promptId": "65d3877fd9ed19568eb2af06",
+                        "promptId": "6261a7ca399bc2244d354090",
                         "terminationKey": "#",
                         "timeoutInSeconds": "1",
                         "dlpOption": False,
@@ -9984,7 +9863,7 @@ non_iva_workflow = {
                             "conditionType": "NONE",
                             "expressions": [{"operator": "=="}],
                         },
-                        "expansions": {"promptId": {"name": "Nextiva - Music - 60"}},
+                        "expansions": {"promptId": {"name": "music accoustic1"}},
                         "_working": False,
                     },
                     "type": "playdigits",
@@ -9997,7 +9876,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Voicemail (1)",
-                        "functionId": "65afe16f39fd325f29b43464",
+                        "functionId": "62f5f778a4a0a35b07873919",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -10021,7 +9900,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Callback (2)",
-                        "functionId": "65afe143dcd0f136cfd8c178",
+                        "functionId": "62f5f778a4a0a35b078738ff",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -10038,33 +9917,6 @@ non_iva_workflow = {
                     "type": "function",
                     "_selected": False,
                     "id": "refId1723781535543",
-                    "icon": "icon-function",
-                },
-                {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Send SMS Text (5)",
-                        "functionId": "66026beaf804c7392f373304",
-                        "functionExpression": "",
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "leftExpression": "workitem.digits",
-                                    "operator": "==",
-                                    "rightExpression": "'5'",
-                                }
-                            ],
-                        },
-                        "expansions": {
-                            "functionId": {"name": "Send SMS Text From Queue"}
-                        },
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1723781535544",
                     "icon": "icon-function",
                 },
                 {
