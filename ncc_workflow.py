@@ -78,6 +78,7 @@ def create_workflow(
     workflow_body: dict,
     workflow_name: str,
     business_name: str,
+    queues: dict
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC).
@@ -96,6 +97,8 @@ def create_workflow(
                 try:
                     if action["properties"]["variableName"] == "companyName":
                         action["properties"]["rightExpression"] = business_name
+                    elif action["properties"]["variableName"] == "queueId":
+                        action["properties"]["rightExpression"] = queues["Test Customer Service"]
                 except:
                     pass
 

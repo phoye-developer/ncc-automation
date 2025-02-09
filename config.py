@@ -3,40 +3,352 @@ deepgram_project_id = "90b9d6eb-c8c6-46a9-a0d7-c35f585403c4"
 
 # NCC entities
 general_dispositions = [
-    "Test Billing",
-    "Test Customer Service",
-    "Test Callback",
-    "Test Block Number",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Billing"},
+            },
+        },
+        "name": "Test Billing",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Customer Service"},
+            },
+        },
+        "name": "Test Customer Service",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Callback"},
+            },
+        },
+        "name": "Test Callback",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Block Number"},
+            },
+        },
+        "name": "Test Block Number",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 hc_dispositions = [
-    "Test Refill Prescription",
-    "Test Schedule Appointment",
-    "Test Reschedule Appointment",
-    "Test Cancel Appointment",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Refill Prescription"},
+            },
+        },
+        "name": "Test Refill Prescription",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Schedule Appointment"},
+            },
+        },
+        "name": "Test Schedule Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Reschedule Appointment"},
+            },
+        },
+        "name": "Test Reschedule Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Cancel Appointment"},
+            },
+        },
+        "name": "Test Cancel Appointment",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 finserv_dispositions = [
-    "Test Credit Card Application",
-    "Test Loan Application",
-    "Test Open Account",
-    "Test Close Account",
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Credit Card Application"},
+            },
+        },
+        "name": "Test Credit Card Application",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Loan Application"},
+            },
+        },
+        "name": "Test Loan Application",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Open Account"},
+            },
+        },
+        "name": "Test Open Account",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Close Account"},
+            },
+        },
+        "name": "Test Close Account",
+        "forceSurveyValidation": False,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
 ]
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
 general_queues = [
-    "Test Billing",
-    "Test Customer Service",
-    "Test Sales",
-    "Test Technical Support",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Billing"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Billing",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Customer Service"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Customer Service",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Sales"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Sales",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Technical Support"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Technical Support",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 hc_queues = [
-    "Test Prescription Refills",
-    "Test Appointments",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Prescription Refills"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Prescription Refills",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Appointments"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Appointments",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 finserv_queues = [
-    "Test Credit Card Applications",
-    "Test Loan Applications",
-    "Test Accounts",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Credit Card Applications"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Credit Card Applications",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Loan Applications"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Loan Applications",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Accounts"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Accounts",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 
 main_user_survey_body = {
@@ -3902,7 +4214,10 @@ post_call_phone_survey_function_body = {
 # Workflows
 iva_workflow = {
     "maxActions": 10000,
-    "localizations": {"name": {"en": {"value": ""}}},
+    "localizations": {
+        "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "IVA Workflow"}},
+    },
     "states": {
         "67548667ca85e7eb0bed9d1d": {
             "category": "Standard",
@@ -8603,6 +8918,7 @@ non_iva_workflow = {
     "maxActions": 10000,
     "localizations": {
         "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "Non-IVA, DTMF Workflow"}},
     },
     "states": {
         "655e5bff8000b3fefffccc6e": {
@@ -8688,7 +9004,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "queueId",
-                        "rightExpression": "65d3a9fd7a804a20f6e1a587",
+                        "rightExpression": "",
                         "variableName": "queueId",
                         "asObject": False,
                         "dlpOption": False,
@@ -9034,100 +9350,6 @@ non_iva_workflow = {
                     "_selected": False,
                     "id": "refId1715372158867",
                     "icon": "icon-tts",
-                },
-                {
-                    "name": "Save Variable",
-                    "description": "",
-                    "properties": {
-                        "asObject": True,
-                        "dlpOption": False,
-                        "wfmOption": False,
-                        "dashboard": False,
-                        "condition": {
-                            "conditionType": "NONE",
-                            "expressions": [{"operator": "=="}],
-                        },
-                        "description": "verifyContact",
-                        "rightExpression": "verifyContact",
-                        "variableName": "false",
-                    },
-                    "type": "savevariable",
-                    "_selected": False,
-                    "id": "refId1715372158868",
-                    "icon": "icon-save",
-                },
-                {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Search Contact",
-                        "functionId": "65afe1c16e054855bfa85c50",
-                        "condition": {
-                            "conditionType": "NONE",
-                            "expressions": [{"operator": "=="}],
-                        },
-                        "expansions": {"functionId": {"name": "Search Contact"}},
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1715372158869",
-                    "icon": "icon-function",
-                },
-                {
-                    "name": "Play Collect Google TTS",
-                    "description": "Play Collect using Text-To-Speech",
-                    "properties": {
-                        "description": "Correct Name",
-                        "voiceName": "en-US-Wavenet-F",
-                        "voiceGender": "neutral",
-                        "text": "Hi, thank you for calling Nextiva! I see that your name is ${workitem.data.contactInformation.FirstName} ${workitem.data.contactInformation.LastName}. If that is correct, press One.  If that is not correct, press Two.",
-                        "numberDigits": 1,
-                        "terminationKey": "#",
-                        "timeoutInSeconds": "3",
-                        "dlpOption": False,
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "operator": "==",
-                                    "leftExpression": "workitem.data.contactFound",
-                                    "rightExpression": "true",
-                                }
-                            ],
-                        },
-                    },
-                    "type": "googlettscollect",
-                    "_selected": False,
-                    "id": "refId1715372158870",
-                    "icon": "icon-tts",
-                },
-                {
-                    "name": "Save Variable",
-                    "description": "",
-                    "properties": {
-                        "asObject": True,
-                        "dlpOption": False,
-                        "wfmOption": False,
-                        "dashboard": False,
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "operator": "==",
-                                    "leftExpression": "workitem.digits",
-                                    "rightExpression": "'1'",
-                                }
-                            ],
-                        },
-                        "description": "verifyContact",
-                        "rightExpression": "verifyContact",
-                        "variableName": "true",
-                    },
-                    "type": "savevariable",
-                    "_selected": False,
-                    "id": "refId1715372158871",
-                    "icon": "icon-save",
                 },
                 {
                     "name": "Enter Queue from Expression",
@@ -9559,10 +9781,10 @@ non_iva_workflow = {
                     "name": "Play & Collect Digits",
                     "description": "",
                     "properties": {
-                        "description": "Nextiva - Music - 60",
+                        "description": "music accoustic1",
                         "loop": 1,
                         "numberDigits": 1,
-                        "promptId": "65d3877fd9ed19568eb2af06",
+                        "promptId": "6261a7ca399bc2244d354090",
                         "terminationKey": "#",
                         "timeoutInSeconds": "1",
                         "dlpOption": False,
@@ -9570,7 +9792,7 @@ non_iva_workflow = {
                             "conditionType": "NONE",
                             "expressions": [{"operator": "=="}],
                         },
-                        "expansions": {"promptId": {"name": "Nextiva - Music - 60"}},
+                        "expansions": {"promptId": {"name": "music accoustic1"}},
                         "_working": False,
                     },
                     "type": "playdigits",
@@ -9583,7 +9805,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Voicemail (1)",
-                        "functionId": "65afe16f39fd325f29b43464",
+                        "functionId": "62f5f778a4a0a35b07873919",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9607,7 +9829,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Callback (2)",
-                        "functionId": "65afe143dcd0f136cfd8c178",
+                        "functionId": "62f5f778a4a0a35b078738ff",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9627,40 +9849,13 @@ non_iva_workflow = {
                     "icon": "icon-function",
                 },
                 {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Send SMS Text (5)",
-                        "functionId": "66026beaf804c7392f373304",
-                        "functionExpression": "",
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "leftExpression": "workitem.digits",
-                                    "operator": "==",
-                                    "rightExpression": "'5'",
-                                }
-                            ],
-                        },
-                        "expansions": {
-                            "functionId": {"name": "Send SMS Text From Queue"}
-                        },
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1723781535540",
-                    "icon": "icon-function",
-                },
-                {
                     "name": "Play & Collect Digits",
                     "description": "",
                     "properties": {
-                        "description": "Nextiva - Hold",
+                        "description": "music accoustic1",
                         "loop": 1,
                         "numberDigits": 1,
-                        "promptId": "65d3877fd9ed19568eb2af06",
+                        "promptId": "6261a7ca399bc2244d354090",
                         "terminationKey": "#",
                         "timeoutInSeconds": "1",
                         "dlpOption": False,
@@ -9668,7 +9863,7 @@ non_iva_workflow = {
                             "conditionType": "NONE",
                             "expressions": [{"operator": "=="}],
                         },
-                        "expansions": {"promptId": {"name": "Nextiva - Music - 60"}},
+                        "expansions": {"promptId": {"name": "music accoustic1"}},
                         "_working": False,
                     },
                     "type": "playdigits",
@@ -9681,7 +9876,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Voicemail (1)",
-                        "functionId": "65afe16f39fd325f29b43464",
+                        "functionId": "62f5f778a4a0a35b07873919",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9705,7 +9900,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "ACD Callback (2)",
-                        "functionId": "65afe143dcd0f136cfd8c178",
+                        "functionId": "62f5f778a4a0a35b078738ff",
                         "condition": {
                             "conditionType": "AND",
                             "expressions": [
@@ -9722,33 +9917,6 @@ non_iva_workflow = {
                     "type": "function",
                     "_selected": False,
                     "id": "refId1723781535543",
-                    "icon": "icon-function",
-                },
-                {
-                    "name": "Execute Function",
-                    "description": "",
-                    "properties": {
-                        "description": "Send SMS Text (5)",
-                        "functionId": "66026beaf804c7392f373304",
-                        "functionExpression": "",
-                        "condition": {
-                            "conditionType": "AND",
-                            "expressions": [
-                                {
-                                    "leftExpression": "workitem.digits",
-                                    "operator": "==",
-                                    "rightExpression": "'5'",
-                                }
-                            ],
-                        },
-                        "expansions": {
-                            "functionId": {"name": "Send SMS Text From Queue"}
-                        },
-                        "_working": False,
-                    },
-                    "type": "function",
-                    "_selected": False,
-                    "id": "refId1723781535544",
                     "icon": "icon-function",
                 },
                 {
@@ -10000,7 +10168,10 @@ non_iva_workflow = {
 }
 direct_line_workflow = {
     "maxActions": 10000,
-    "localizations": {"name": {"en": {"value": ""}}},
+    "localizations": {
+        "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "Direct Line Workflow"}},
+    },
     "states": {
         "66d8f9e3104729188ed41685": {
             "category": "Standard",

@@ -1,3 +1,4 @@
+import datetime
 import logging
 from config import *
 from authentication_info import *
@@ -27,6 +28,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) campaign.
     """
+
+    start_time = datetime.datetime.now()
 
     logging.basicConfig(
         level=logging.INFO,
@@ -174,7 +177,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Create dispositions
     dispositions_to_assign = []
     for disposition in dispositions:
-        result = search_dispositions(ncc_location, ncc_token, disposition)
+        result = search_dispositions(ncc_location, ncc_token, disposition["name"])
         if result == {}:
             result = create_disposition(ncc_location, ncc_token, disposition)
             if result != {}:
@@ -182,7 +185,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 dispositions_to_assign.append(result)
                 tenant_id = result["tenantId"]
             else:
-                logging.warning(f'"{disposition}" disposition not created.')
+                logging.warning(f'"{disposition["name"]}" disposition not created.')
         else:
             logging.info(f'"{result["name"]}" disposition already exists.')
             dispositions_to_assign.append(result)
@@ -215,16 +218,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'"{user_profile}" user profile not found.')
 
     # Create queues
+    queues_to_assign = {}
     for queue in queues:
-        result = search_queues(ncc_location, ncc_token, queue)
+        result = search_queues(ncc_location, ncc_token, queue["name"])
         if result == {}:
             result = create_queue(ncc_location, ncc_token, queue)
             if result != {}:
                 logging.info(f'"{result["name"]}" queue created.')
+                queues_to_assign[result["name"]] = result["_id"]
             else:
-                logging.warning(f'"{result["name"]}" queue not created.')
+                logging.warning("Queue not created.")
         else:
-            logging.info(f'"{queue}" queue already exists.')
+            logging.info(f'"{queue["name"]}" queue already exists.')
+            queues_to_assign[result["name"]] = result["_id"]
 
     # Create survey theme
     survey_theme = search_survey_themes(
@@ -440,7 +446,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
         workflow = create_workflow(
-            ncc_location, ncc_token, workflow_type, campaign_name, business_name
+            ncc_location,
+            ncc_token,
+            workflow_type,
+            campaign_name,
+            business_name,
+            queues_to_assign,
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')
@@ -568,3 +579,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 logging.warning(f'"{report["name"]}" report not created.')
         else:
             logging.info(f'"{report["name"]}" report already exists.')
+
+    duration = datetime.datetime.now() - start_time
+    logging.info(f"Duration: {str(duration)}")

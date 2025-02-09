@@ -59,32 +59,14 @@ def search_dispositions(
 
 
 def create_disposition(
-    ncc_location: str, ncc_token: str, disposition_name: str
+    ncc_location: str, ncc_token: str, disposition_body: dict
 ) -> dict:
     """
     This function creates a disposition with a specified name.
     """
     disposition = {}
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "name": disposition_name,
-            "useCampaignIdForDNC": False,
-            "resolved": False,
-            "localizations": {
-                "name": {
-                    "en": {
-                        "language": "en",
-                        "value": disposition_name,
-                    }
-                }
-            },
-            "forceSurveyValidation": False,
-            "forceContactAssignment": False,
-            "blockNumber": False,
-            "connectAgain": False,
-        }
-    )
+    payload = json.dumps(disposition_body)
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",

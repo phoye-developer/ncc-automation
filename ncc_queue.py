@@ -56,31 +56,13 @@ def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     return queue
 
 
-def create_queue(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
+def create_queue(ncc_location: str, ncc_token: str, queue_body: dict) -> dict:
     """
     This function creates a queue with the specified name.
     """
     queue = {}
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "blended": False,
-            "assignmentType": "fifo_across_all_queues",
-            "pushQueueDataInRealTime": True,
-            "hideInCompanyDirectory": False,
-            "disableSkills": False,
-            "noAnswerStatusAsAvailable": False,
-            "socialSLA": 3600,
-            "localizations": {"name": {"en": {"language": "en", "value": queue_name}}},
-            "slaCalculation": 1,
-            "emailSLA": 3600,
-            "realtimeAssignment": True,
-            "lifo": False,
-            "name": queue_name,
-            "voiceSLA": 30,
-            "chatSLA": 30,
-        }
-    )
+    payload = json.dumps(queue_body)
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",
