@@ -3,6 +3,7 @@ from authentication import *
 from set_up_inbound_campaign import *
 from set_up_feature import *
 from set_up_integration import *
+from set_up_agent import *
 from tear_down_tenant import *
 
 
@@ -55,7 +56,7 @@ def main():
                 elif choice == "4":
                     set_up_integration(ncc_location, ncc_token)
                 elif choice == "5":
-                    pass
+                    set_up_agent(ncc_location, ncc_token)
                 elif choice == "6":
                     pass
                 elif choice == "7":
