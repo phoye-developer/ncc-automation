@@ -16,6 +16,7 @@ from ncc_scorecard_classification import *
 from ncc_campaign_scorecard import *
 from ncc_template import *
 from ncc_campaign_template import *
+from ncc_function import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -258,11 +259,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if user_survey != {}:
-            logging.info(f'"{campaign_name} - user" survey created.')
+            logging.info(f'"{campaign_name} - User" survey created.')
         else:
-            logging.warning(f'"{campaign_name} - user" survey not created.')
+            logging.warning(f'"{campaign_name} - User" survey not created.')
     else:
-        logging.info(f'"{campaign_name} - user" survey already exists.')
+        logging.info(f'"{campaign_name} - User" survey already exists.')
 
     # Create chat survey
     chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
@@ -442,6 +443,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'"{template["name"]}" template already exists.')
             templates_to_assign.append(result)
 
+    # Create ACD Voicemail function
+    acd_voicemail_function = search_functions(ncc_location, ncc_token, "Test ACD Voicemail")
+    if acd_voicemail_function == {}:
+        acd_voicemail_function = create_function(ncc_location, ncc_token, acd_voicemail_function_body)
+        if acd_voicemail_function != {}:
+            logging.info(f'"Test ACD Voicemail" function created.')
+        else:
+            logging.warning(f'"Test ACD Voicemail" function not created.')
+    else:
+        logging.info(f'"Test ACD Voicemail" function already exists.')
+
+    # Create ACD Callback function
+    acd_callback_function = search_functions(ncc_location, ncc_token, "Test ACD Callback")
+    if acd_callback_function == {}:
+        acd_callback_function = create_function(ncc_location, ncc_token, acd_callback_function_body)
+        if acd_callback_function != {}:
+            logging.info(f'"Test ACD Callback" function created.')
+        else:
+            logging.warning(f'"Test ACD Callback" function not created.')
+    else:
+        logging.info(f'"Test ACD Callback" function already exists.')
+
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
@@ -452,6 +475,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             campaign_name,
             business_name,
             queues_to_assign,
+            acd_voicemail_function,
+            acd_callback_function
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')

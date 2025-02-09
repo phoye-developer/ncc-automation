@@ -78,7 +78,9 @@ def create_workflow(
     workflow_body: dict,
     workflow_name: str,
     business_name: str,
-    queues: dict
+    queues: dict,
+    acd_voicemail_function: dict,
+    acd_callback_function: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC).
@@ -98,7 +100,33 @@ def create_workflow(
                     if action["properties"]["variableName"] == "companyName":
                         action["properties"]["rightExpression"] = business_name
                     elif action["properties"]["variableName"] == "queueId":
-                        action["properties"]["rightExpression"] = queues["Test Customer Service"]
+                        action["properties"]["rightExpression"] = queues[
+                            "Test Customer Service"
+                        ]
+                except:
+                    pass
+        elif (
+            value == "6754d3e1cebccc1b46fb81b9"
+            or value == "65b01880267d5184c650aba5"
+            or value == "66d8fb13ad3c61caa09d1110"
+        ):
+            actions = states[value]["actions"]
+            for action in actions:
+                try:
+                    if action["properties"]["description"] == "ACD Voicemail (1)":
+                        action["properties"]["functionId"] = acd_voicemail_function[
+                            "_id"
+                        ]
+                        action["properties"]["expansions"]["functionId"]["name"] = (
+                            acd_voicemail_function["name"]
+                        )
+                    elif action["properties"]["description"] == "ACD Callback (2)":
+                        action["properties"]["functionId"] = acd_callback_function[
+                            "_id"
+                        ]
+                        action["properties"]["expansions"]["functionId"]["name"] = (
+                            acd_callback_function["name"]
+                        )
                 except:
                     pass
 
