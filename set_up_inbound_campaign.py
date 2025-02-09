@@ -218,19 +218,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'"{user_profile}" user profile not found.')
 
     # Create queues
-    queues_to_assign = []
+    queues_to_assign = {}
     for queue in queues:
         result = search_queues(ncc_location, ncc_token, queue["name"])
         if result == {}:
             result = create_queue(ncc_location, ncc_token, queue)
             if result != {}:
                 logging.info(f'"{result["name"]}" queue created.')
-                queues_to_assign.append(result)
+                queues_to_assign[result["name"]] = result["_id"]
             else:
                 logging.warning("Queue not created.")
         else:
             logging.info(f'"{queue["name"]}" queue already exists.')
-            queues_to_assign.append(result)
+            queues_to_assign[result["name"]] = result["_id"]
 
     # Create survey theme
     survey_theme = search_survey_themes(
@@ -446,7 +446,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
         workflow = create_workflow(
-            ncc_location, ncc_token, workflow_type, campaign_name, business_name
+            ncc_location,
+            ncc_token,
+            workflow_type,
+            campaign_name,
+            business_name,
+            queues_to_assign,
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')
