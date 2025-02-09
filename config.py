@@ -180,19 +180,175 @@ finserv_dispositions = [
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
 general_queues = [
-    "Test Billing",
-    "Test Customer Service",
-    "Test Sales",
-    "Test Technical Support",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Billing"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Billing",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Customer Service"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Customer Service",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Sales"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Sales",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Technical Support"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Technical Support",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 hc_queues = [
-    "Test Prescription Refills",
-    "Test Appointments",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Prescription Refills"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Prescription Refills",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Appointments"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Appointments",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 finserv_queues = [
-    "Test Credit Card Applications",
-    "Test Loan Applications",
-    "Test Accounts",
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Credit Card Applications"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Credit Card Applications",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Test Loan Applications"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Loan Applications",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Accounts"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Accounts",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
 ]
 
 main_user_survey_body = {
@@ -4058,7 +4214,10 @@ post_call_phone_survey_function_body = {
 # Workflows
 iva_workflow = {
     "maxActions": 10000,
-    "localizations": {"name": {"en": {"value": ""}}},
+    "localizations": {
+        "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "IVA Workflow"}},
+    },
     "states": {
         "67548667ca85e7eb0bed9d1d": {
             "category": "Standard",
@@ -8759,6 +8918,7 @@ non_iva_workflow = {
     "maxActions": 10000,
     "localizations": {
         "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "Non-IVA, DTMF Workflow"}},
     },
     "states": {
         "655e5bff8000b3fefffccc6e": {
@@ -8844,7 +9004,7 @@ non_iva_workflow = {
                     "description": "",
                     "properties": {
                         "description": "queueId",
-                        "rightExpression": "65d3a9fd7a804a20f6e1a587",
+                        "rightExpression": "",
                         "variableName": "queueId",
                         "asObject": False,
                         "dlpOption": False,
@@ -10156,7 +10316,10 @@ non_iva_workflow = {
 }
 direct_line_workflow = {
     "maxActions": 10000,
-    "localizations": {"name": {"en": {"value": ""}}},
+    "localizations": {
+        "name": {"en": {"value": ""}},
+        "description": {"en": {"value": "Direct Line Workflow"}},
+    },
     "states": {
         "66d8f9e3104729188ed41685": {
             "category": "Standard",

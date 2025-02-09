@@ -96,6 +96,8 @@ def create_workflow(
                 try:
                     if action["properties"]["variableName"] == "companyName":
                         action["properties"]["rightExpression"] = business_name
+                    elif action["properties"]["variableName"] == "queueId":
+                        action["properties"]["rightExpression"] = "My Queue ID"
                 except:
                     pass
 

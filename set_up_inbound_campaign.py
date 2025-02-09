@@ -218,16 +218,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'"{user_profile}" user profile not found.')
 
     # Create queues
+    queues_to_assign = []
     for queue in queues:
-        result = search_queues(ncc_location, ncc_token, queue)
+        result = search_queues(ncc_location, ncc_token, queue["name"])
         if result == {}:
             result = create_queue(ncc_location, ncc_token, queue)
             if result != {}:
                 logging.info(f'"{result["name"]}" queue created.')
+                queues_to_assign.append(result)
             else:
-                logging.warning(f'"{result["name"]}" queue not created.')
+                logging.warning("Queue not created.")
         else:
-            logging.info(f'"{queue}" queue already exists.')
+            logging.info(f'"{queue["name"]}" queue already exists.')
+            queues_to_assign.append(result)
 
     # Create survey theme
     survey_theme = search_survey_themes(
