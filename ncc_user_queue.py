@@ -2,11 +2,11 @@ import http.client
 import json
 
 
-def search_campaign_dispositions(
-    ncc_location: str, ncc_token: str, campaign_id: str, disposition_id: str
+def search_user_queues(
+    ncc_location: str, ncc_token: str, user_id: str, queue_id: str
 ) -> bool:
     """
-    This function searches for a specified disposition ID in the campaigndispositions objects.
+    This function searches for a specified queue ID in the userqueues objects.
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
@@ -14,7 +14,7 @@ def search_campaign_dispositions(
     headers = {"Authorization": ncc_token}
     conn.request(
         "GET",
-        f"/data/api/types/campaigndisposition?q={disposition_id}",
+        f"/data/api/types/userqueue?q={queue_id}",
         payload,
         headers,
     )
@@ -26,32 +26,32 @@ def search_campaign_dispositions(
         if total > 0:
             results = json_data["objects"]
             for result in results:
-                if result["campaignId"] == campaign_id:
+                if result["userId"] == user_id:
                     success = True
                     break
     conn.close()
     return success
 
 
-def create_campaign_disposition(
-    ncc_location: str, ncc_token: str, campaign_id: str, disposition_id: str
+def create_user_queue(
+    ncc_location: str, ncc_token: str, user_id: str, queue_id: str
 ) -> bool:
     """
-    This function assigns a disposition code to a campaign.
+    This function assigns a user to a queue.
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
-            "campaignId": campaign_id,
-            "dispositionId": disposition_id,
+            "userId": user_id,
+            "queueId": queue_id,
         }
     )
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/campaigndisposition/", payload, headers)
+    conn.request("POST", "/data/api/types/userqueue/", payload, headers)
     res = conn.getresponse()
     if res.status == 201:
         success = True
