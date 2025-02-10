@@ -8,6 +8,8 @@ from ncc_disposition import *
 from ncc_user_profile import *
 from ncc_user_profile_disposition import *
 from ncc_queue import *
+from ncc_user import *
+from ncc_user_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_classification import *
@@ -174,6 +176,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print("Invalid choice.")
                 print()
 
+    # Select whether to assign agents to queues
+    choice = ""
+    while choice == "":
+        print("Please select whether to assign all agents to all queues.")
+        print("---------------------------------------------------------")
+        print("1. Yes")
+        print("2. No")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            assign_agents = True
+        elif choice == "2":
+            assign_agents = False
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
     logging.info("Starting...")
     # Create dispositions
     dispositions_to_assign = []
@@ -232,6 +253,21 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'"{queue["name"]}" queue already exists.')
             queues_to_assign[result["name"]] = result["_id"]
+
+    # Assign agents to queues
+    if assign_agents and (len(queues_to_assign) > 0):
+        agents = get_users(ncc_location, ncc_token)
+        for agent in agents:
+            for key, value in queues_to_assign.items():
+                success = search_user_queues(ncc_location, ncc_token, agent["_id"], value)
+                if success:
+                    logging.info(f'"{agent["name"]}" agent already assigned to "{key}" queue.')
+                else:
+                    success = create_user_queue(ncc_location, ncc_token, agent["_id"], value)
+                    if success:
+                        logging.info(f'"{agent["name"]}" agent assigned to "{key}" queue.')
+                    else:
+                        logging.warning(f'"{agent["name"]}" agent not assigned to "{key}" queue.')
 
     # Create survey theme
     survey_theme = search_survey_themes(
@@ -444,9 +480,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             templates_to_assign.append(result)
 
     # Create ACD Voicemail function
-    acd_voicemail_function = search_functions(ncc_location, ncc_token, "Test ACD Voicemail")
+    acd_voicemail_function = search_functions(
+        ncc_location, ncc_token, "Test ACD Voicemail"
+    )
     if acd_voicemail_function == {}:
-        acd_voicemail_function = create_function(ncc_location, ncc_token, acd_voicemail_function_body)
+        acd_voicemail_function = create_function(
+            ncc_location, ncc_token, acd_voicemail_function_body
+        )
         if acd_voicemail_function != {}:
             logging.info(f'"Test ACD Voicemail" function created.')
         else:
@@ -455,9 +495,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         logging.info(f'"Test ACD Voicemail" function already exists.')
 
     # Create ACD Callback function
-    acd_callback_function = search_functions(ncc_location, ncc_token, "Test ACD Callback")
+    acd_callback_function = search_functions(
+        ncc_location, ncc_token, "Test ACD Callback"
+    )
     if acd_callback_function == {}:
-        acd_callback_function = create_function(ncc_location, ncc_token, acd_callback_function_body)
+        acd_callback_function = create_function(
+            ncc_location, ncc_token, acd_callback_function_body
+        )
         if acd_callback_function != {}:
             logging.info(f'"Test ACD Callback" function created.')
         else:
@@ -476,7 +520,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             business_name,
             queues_to_assign,
             acd_voicemail_function,
-            acd_callback_function
+            acd_callback_function,
         )
         if workflow != {}:
             logging.info(f'"{campaign_name}" workflow created.')
