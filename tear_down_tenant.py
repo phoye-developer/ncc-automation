@@ -15,6 +15,7 @@ from ncc_scorecard import *
 from ncc_template import *
 from ncc_topic import *
 from ncc_report import *
+from ncc_user import *
 
 
 def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
@@ -215,6 +216,21 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
     for report in reports:
         print(f'Deleting "{report["name"]}" report...', end="")
         success = delete_report(ncc_location, ncc_token, report["_id"])
+        if success:
+            print("success!")
+        else:
+            print("failed.")
+
+    # Delete users
+    print('Searching for users with "Test " prefix...', end="")
+    users = get_users(ncc_location, ncc_token)
+    if len(users) > 0:
+        print(f"found {len(users)} user(s).")
+    else:
+        print("none found.")
+    for user in users:
+        print(f'Deleting "{user["name"]}" user...', end="")
+        success = delete_user(ncc_location, ncc_token, user["_id"])
         if success:
             print("success!")
         else:

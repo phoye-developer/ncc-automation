@@ -20,8 +20,8 @@ def get_users(ncc_location: str, ncc_token: str) -> list:
         if total > 0:
             results = json_data["objects"]
             for result in results:
-                user_name = result["firstName"]
-                if user_name[0:5] == "Test ":
+                first_name = result["firstName"]
+                if first_name[0:5] == "Test ":
                     users.append(result)
     return users
 
