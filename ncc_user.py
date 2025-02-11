@@ -3,7 +3,7 @@ import urllib.parse
 import json
 
 
-def get_users(ncc_location: str, ncc_token: str) -> list:
+def get_users(ncc_location: str, ncc_token: str, user_profile_id: str) -> list:
     """
     This function fetches a list of users present on the Nextiva Contact Center (NCC) tenant.
     """
@@ -21,7 +21,10 @@ def get_users(ncc_location: str, ncc_token: str) -> list:
             results = json_data["objects"]
             for result in results:
                 first_name = result["firstName"]
-                if first_name[0:5] == "Test ":
+                if (
+                    first_name[0:5] == "Test "
+                    and result["userProfileId"] == user_profile_id
+                ):
                     users.append(result)
     return users
 
@@ -62,7 +65,12 @@ def search_users(
 
 
 def create_user(
-    ncc_location: str, ncc_token: str, first_name: str, last_name: str, email: str
+    ncc_location: str,
+    ncc_token: str,
+    first_name: str,
+    last_name: str,
+    email: str,
+    user_profile_id: str,
 ):
     """
     This function creates a new user in Nextiva Contact Center (NCC).
@@ -83,7 +91,7 @@ def create_user(
             "chatWelcome": "",
             "dialpadMode": "inline",
             "inboundSMSDurationNotification": False,
-            "userProfileId": "58616d6bd1cde33854f0563e",
+            "userProfileId": user_profile_id,
             "lastName": last_name,
             "acdAutoLogin": False,
             "inboundEmailDurationNotification": False,

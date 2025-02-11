@@ -237,7 +237,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             f'"{disposition["name"]}" disposition not assigned.'
                         )
         else:
-            logging.info(f'"{user_profile}" user profile not found.')
+            logging.warning(f'"{user_profile}" user profile not found.')
 
     # Create queues
     queues_to_assign = {}
@@ -256,18 +256,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Assign agents to queues
     if assign_agents and (len(queues_to_assign) > 0):
-        agents = get_users(ncc_location, ncc_token)
-        for agent in agents:
-            for key, value in queues_to_assign.items():
-                success = search_user_queues(ncc_location, ncc_token, agent["_id"], value)
-                if success:
-                    logging.info(f'"{agent["name"]}" agent already assigned to "{key}" queue.')
-                else:
-                    success = create_user_queue(ncc_location, ncc_token, agent["_id"], value)
-                    if success:
-                        logging.info(f'"{agent["name"]}" agent assigned to "{key}" queue.')
-                    else:
-                        logging.warning(f'"{agent["name"]}" agent not assigned to "{key}" queue.')
+        agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
+        if agent_user_profile != {}:
+            agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
+            if len(agents) > 0:
+                for agent in agents:
+                    for key, value in queues_to_assign.items():
+                        success = search_user_queues(ncc_location, ncc_token, agent["_id"], value)
+                        if success:
+                            logging.info(f'"{agent["name"]}" agent already assigned to "{key}" queue.')
+                        else:
+                            success = create_user_queue(ncc_location, ncc_token, agent["_id"], value)
+                            if success:
+                                logging.info(f'"{agent["name"]}" agent assigned to "{key}" queue.')
+                            else:
+                                logging.warning(f'"{agent["name"]}" agent not assigned to "{key}" queue.')
+            else:
+                logging.warning("No agents found to assign to queues.")
+        else:
+            logging.warning('"Agent" user profile not found.')
 
     # Create survey theme
     survey_theme = search_survey_themes(

@@ -222,16 +222,20 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
             print("failed.")
 
     # Delete users
-    print('Searching for users with "Test " prefix...', end="")
-    users = get_users(ncc_location, ncc_token)
-    if len(users) > 0:
-        print(f"found {len(users)} user(s).")
-    else:
-        print("none found.")
-    for user in users:
-        print(f'Deleting "{user["name"]}" user...', end="")
-        success = delete_user(ncc_location, ncc_token, user["_id"])
-        if success:
-            print("success!")
+    print('Searching for agent users with "Test " prefix...', end="")
+    agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
+    if agent_user_profile != {}:
+        agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
+        if len(agents) > 0:
+            print(f"found {len(agents)} agent user(s).")
         else:
-            print("failed.")
+            print("none found.")
+        for agent in agents:
+            print(f'Deleting "{agent["name"]}" agent user...', end="")
+            success = delete_user(ncc_location, ncc_token, agent["_id"])
+            if success:
+                print("success!")
+            else:
+                print("failed.")
+    else:
+        print('"Agent" user profile not found.')
