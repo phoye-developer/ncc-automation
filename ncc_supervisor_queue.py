@@ -2,11 +2,11 @@ import http.client
 import json
 
 
-def search_user_queues(
-    ncc_location: str, ncc_token: str, user_id: str, queue_id: str
+def search_supervisor_queues(
+    ncc_location: str, ncc_token: str, supervisor_id: str, queue_id: str
 ) -> bool:
     """
-    This function searches for a specified queue ID in the userqueue objects.
+    This function searches for a specified queue ID in the supervisorqueue objects.
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
@@ -14,7 +14,7 @@ def search_user_queues(
     headers = {"Authorization": ncc_token}
     conn.request(
         "GET",
-        f"/data/api/types/userqueue?q={queue_id}",
+        f"/data/api/types/supervisorqueue?q={queue_id}",
         payload,
         headers,
     )
@@ -26,24 +26,24 @@ def search_user_queues(
         if total > 0:
             results = json_data["objects"]
             for result in results:
-                if result["userId"] == user_id:
+                if result["userId"] == supervisor_id:
                     success = True
                     break
     conn.close()
     return success
 
 
-def create_user_queue(
-    ncc_location: str, ncc_token: str, user_id: str, queue_id: str
+def create_supervisor_queue(
+    ncc_location: str, ncc_token: str, supervisor_id: str, queue_id: str
 ) -> bool:
     """
-    This function assigns a user to a queue.
+    This function assigns a supervisor to a queue.
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
-            "userId": user_id,
+            "userId": supervisor_id,
             "queueId": queue_id,
         }
     )
@@ -51,7 +51,7 @@ def create_user_queue(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/userqueue/", payload, headers)
+    conn.request("POST", "/data/api/types/supervisorqueue/", payload, headers)
     res = conn.getresponse()
     if res.status == 201:
         success = True
