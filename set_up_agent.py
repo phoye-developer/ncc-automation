@@ -90,7 +90,7 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
-    # Select whether to assign agents to topics
+    # Select whether to assign agent to topics
     choice = ""
     while choice == "":
         print("Assign agent to all topics?")
