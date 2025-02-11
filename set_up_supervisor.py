@@ -6,6 +6,8 @@ from ncc_queue import *
 from ncc_user_queue import *
 from ncc_supervisor_user import *
 from ncc_supervisor_queue import *
+from ncc_campaign import *
+from ncc_supervisor_campaign import *
 
 
 def set_up_supervisor(ncc_location: str, ncc_token: str):
@@ -90,6 +92,25 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
+    # Select whether to assign all campaigns to the supervisor
+    choice = ""
+    while choice == "":
+        print("Assign supervisor to all campaigns?")
+        print("-----------------------------------")
+        print("1. Yes")
+        print("2. No")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            assign_to_campaigns = True
+        elif choice == "2":
+            assign_to_campaigns = False
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
     logging.info("Starting...")
     # Create supervisor
     supervisor = search_users(ncc_location, ncc_token, first_name, last_name)
@@ -156,7 +177,7 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{agent["firstName"]} {agent["lastName"]}" agent already assigned to "{first_name} {last_name}" supervisor.'
+                            f'"{agent["firstName"]} {agent["lastName"]}" already assigned to "{first_name} {last_name}".'
                         )
                     else:
                         success = create_supervisor_user(
@@ -164,16 +185,43 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{agent["firstName"]} {agent["lastName"]}" agent assigned to "{first_name} {last_name}" supervisor.'
+                                f'"{agent["firstName"]} {agent["lastName"]}" assigned to "{first_name} {last_name}".'
                             )
                         else:
                             logging.warning(
-                                f'"{agent["firstName"]} {agent["lastName"]}" agent not assigned to "{first_name} {last_name}" supervisor.'
+                                f'"{agent["firstName"]} {agent["lastName"]}" not assigned to "{first_name} {last_name}".'
                             )
             else:
                 logging.warning("No agents found for assignment.")
         else:
             logging.warning('"Agent" user profile not found.')
+
+    # Assign supervisor to campaigns
+    if supervisor != {} and assign_to_campaigns:
+        campaigns = get_campaigns(ncc_location, ncc_token)
+        if len(campaigns) > 0:
+            for campaign in campaigns:
+                success = search_supervisor_campaigns(
+                    ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
+                )
+                if success:
+                    logging.info(
+                        f'"{first_name} {last_name}" already assigned to "{campaign["name"]}" campaign.'
+                    )
+                else:
+                    success = create_supervisor_campaign(
+                        ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
+                    )
+                    if success:
+                        logging.info(
+                            f'"{first_name} {last_name}" assigned to "{campaign["name"]}" campaign.'
+                        )
+                    else:
+                        logging.warning(
+                            f'"{first_name} {last_name}" not assigned to "{campaign["name"]}" campaign'
+                        )
+        else:
+            logging.warning("No campaigns found for assignment.")
 
     duration = datetime.datetime.now() - start_time
     logging.info(f"Duration: {str(duration)}")
