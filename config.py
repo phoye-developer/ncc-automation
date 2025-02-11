@@ -44,6 +44,7 @@ general_dispositions = [
         "forceContactAssignment": False,
         "blockNumber": False,
         "connectAgain": False,
+        "action": "connectedPersonalCallback",
     },
     {
         "useCampaignIdForDNC": False,
