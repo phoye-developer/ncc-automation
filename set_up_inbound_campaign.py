@@ -761,7 +761,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                 f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor user not assigned to "{campaign["name"]}" campaign.'
                             )
             else:
-                logging.warning("No supervisors found to assign to queues.")
+                logging.warning("No supervisors found to assign to campaign.")
         else:
             logging.warning('"Supervisor" user profile not found.')
 
