@@ -181,8 +181,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Select whether to assign agents to queues
     choice = ""
     while choice == "":
-        print("Please select whether to assign all agents to all queues.")
-        print("---------------------------------------------------------")
+        print("Assign all agents to queues?")
+        print("----------------------------")
         print("1. Yes")
         print("2. No")
         print()
@@ -200,8 +200,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Select whether to assign supervisors to queues
     choice = ""
     while choice == "":
-        print("Please select whether to assign all supervisors to all queues.")
-        print("--------------------------------------------------------------")
+        print("Assign all supervisors to queues?")
+        print("---------------------------------")
         print("1. Yes")
         print("2. No")
         print()
@@ -219,8 +219,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Select whether to assign supervisors to the campaign
     choice = ""
     while choice == "":
-        print("Please select whether to assign all supervisors to the campaign.")
-        print("----------------------------------------------------------------")
+        print("Assign all supervisors to campaign?")
+        print("-----------------------------------")
         print("1. Yes")
         print("2. No")
         print()

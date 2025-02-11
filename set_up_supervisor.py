@@ -55,8 +55,8 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
     # Select whether to assign supervisors to queues
     choice = ""
     while choice == "":
-        print("Please select whether to assign the supervisor to all queues.")
-        print("-------------------------------------------------------------")
+        print("Assign supervisor to all queues?")
+        print("--------------------------------")
         print("1. Yes")
         print("2. No")
         print()
@@ -74,8 +74,8 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
     # Select whether to assign all agents to the supervisor
     choice = ""
     while choice == "":
-        print("Please select whether to assign all agents to the supervisor.")
-        print("-------------------------------------------------------------")
+        print("Assign all agents to supervisor?")
+        print("--------------------------------")
         print("1. Yes")
         print("2. No")
         print()

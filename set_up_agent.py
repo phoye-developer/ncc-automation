@@ -54,8 +54,8 @@ def set_up_agent(ncc_location: str, ncc_token: str):
     # Select whether to assign agents to queues
     choice = ""
     while choice == "":
-        print("Please select whether to assign agent to all queues.")
-        print("----------------------------------------------------")
+        print("Assign agent to all queues?")
+        print("---------------------------")
         print("1. Yes")
         print("2. No")
         print()
@@ -73,8 +73,8 @@ def set_up_agent(ncc_location: str, ncc_token: str):
     # Select whether to assign agents to supervisors
     choice = ""
     while choice == "":
-        print("Please select whether to assign agent to all supervisors.")
-        print("---------------------------------------------------------")
+        print("Assign agent to all supervisors?")
+        print("--------------------------------")
         print("1. Yes")
         print("2. No")
         print()
