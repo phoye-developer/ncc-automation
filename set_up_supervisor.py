@@ -156,7 +156,7 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{agent["firstName"]} {agent["lastName"]}" already assigned to "{first_name} {last_name}".'
+                            f'"{agent["firstName"]} {agent["lastName"]}" agent already assigned to "{first_name} {last_name}" supervisor.'
                         )
                     else:
                         success = create_supervisor_user(
@@ -164,11 +164,11 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{agent["firstName"]} {agent["lastName"]}" assigned to "{first_name} {last_name}".'
+                                f'"{agent["firstName"]} {agent["lastName"]}" agent assigned to "{first_name} {last_name}" supervisor.'
                             )
                         else:
                             logging.warning(
-                                f'"{agent["firstName"]} {agent["lastName"]}" not assigned to "{first_name} {last_name}".'
+                                f'"{agent["firstName"]} {agent["lastName"]}" agent not assigned to "{first_name} {last_name}" supervisor.'
                             )
             else:
                 logging.warning("No agents found for assignment.")
