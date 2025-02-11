@@ -221,17 +221,40 @@ def tear_down_tenant(ncc_location: str, ncc_token: str) -> str:
         else:
             print("failed.")
 
-    # Delete users
-    print('Searching for users with "Test " prefix...', end="")
-    users = get_users(ncc_location, ncc_token)
-    if len(users) > 0:
-        print(f"found {len(users)} user(s).")
-    else:
-        print("none found.")
-    for user in users:
-        print(f'Deleting "{user["name"]}" user...', end="")
-        success = delete_user(ncc_location, ncc_token, user["_id"])
-        if success:
-            print("success!")
+    # Delete agents
+    print('Searching for agent users with "Test " prefix...', end="")
+    agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
+    if agent_user_profile != {}:
+        agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
+        if len(agents) > 0:
+            print(f"found {len(agents)} agent user(s).")
         else:
-            print("failed.")
+            print("none found.")
+        for agent in agents:
+            print(f'Deleting "{agent["name"]}" agent user...', end="")
+            success = delete_user(ncc_location, ncc_token, agent["_id"])
+            if success:
+                print("success!")
+            else:
+                print("failed.")
+    else:
+        print('"Agent" user profile not found.')
+
+    # Delete supervisors
+    print('Searching for supervisor users with "Test " prefix...', end="")
+    supervisor_user_profile = search_user_profiles(ncc_location, ncc_token, "Supervisor")
+    if supervisor_user_profile != {}:
+        supervisors = get_users(ncc_location, ncc_token, supervisor_user_profile["_id"])
+        if len(supervisors) > 0:
+            print(f"found {len(supervisors)} supervisor user(s).")
+        else:
+            print("none found.")
+        for supervisor in supervisors:
+            print(f'Deleting "{supervisor["name"]}" supervisor user...', end="")
+            success = delete_user(ncc_location, ncc_token, supervisor["_id"])
+            if success:
+                print("success!")
+            else:
+                print("failed.")
+    else:
+        print('"Supervisor" user profile not found.')

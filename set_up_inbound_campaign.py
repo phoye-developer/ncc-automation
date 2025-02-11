@@ -10,6 +10,7 @@ from ncc_user_profile_disposition import *
 from ncc_queue import *
 from ncc_user import *
 from ncc_user_queue import *
+from ncc_supervisor_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_classification import *
@@ -18,6 +19,7 @@ from ncc_scorecard_classification import *
 from ncc_campaign_scorecard import *
 from ncc_template import *
 from ncc_campaign_template import *
+from ncc_supervisor_campaign import *
 from ncc_function import *
 from ncc_workflow import *
 from ncc_service import *
@@ -195,6 +197,44 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
+    # Select whether to assign supervisors to queues
+    choice = ""
+    while choice == "":
+        print("Please select whether to assign all supervisors to all queues.")
+        print("--------------------------------------------------------------")
+        print("1. Yes")
+        print("2. No")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            assign_supervisors_to_queues = True
+        elif choice == "2":
+            assign_supervisors_to_queues = False
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
+    # Select whether to assign supervisors to the campaign
+    choice = ""
+    while choice == "":
+        print("Please select whether to assign all supervisors to the campaign.")
+        print("----------------------------------------------------------------")
+        print("1. Yes")
+        print("2. No")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            assign_supervisors_to_campaign = True
+        elif choice == "2":
+            assign_supervisors_to_campaign = False
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
     logging.info("Starting...")
     # Create dispositions
     dispositions_to_assign = []
@@ -237,7 +277,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             f'"{disposition["name"]}" disposition not assigned.'
                         )
         else:
-            logging.info(f'"{user_profile}" user profile not found.')
+            logging.warning(f'"{user_profile}" user profile not found.')
 
     # Create queues
     queues_to_assign = {}
@@ -256,18 +296,71 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Assign agents to queues
     if assign_agents and (len(queues_to_assign) > 0):
-        agents = get_users(ncc_location, ncc_token)
-        for agent in agents:
-            for key, value in queues_to_assign.items():
-                success = search_user_queues(ncc_location, ncc_token, agent["_id"], value)
-                if success:
-                    logging.info(f'"{agent["name"]}" agent already assigned to "{key}" queue.')
-                else:
-                    success = create_user_queue(ncc_location, ncc_token, agent["_id"], value)
-                    if success:
-                        logging.info(f'"{agent["name"]}" agent assigned to "{key}" queue.')
-                    else:
-                        logging.warning(f'"{agent["name"]}" agent not assigned to "{key}" queue.')
+        agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
+        if agent_user_profile != {}:
+            agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
+            if len(agents) > 0:
+                for agent in agents:
+                    for key, value in queues_to_assign.items():
+                        success = search_user_queues(
+                            ncc_location, ncc_token, agent["_id"], value
+                        )
+                        if success:
+                            logging.info(
+                                f'"{agent["name"]}" agent already assigned to "{key}" queue.'
+                            )
+                        else:
+                            success = create_user_queue(
+                                ncc_location, ncc_token, agent["_id"], value
+                            )
+                            if success:
+                                logging.info(
+                                    f'"{agent["name"]}" agent assigned to "{key}" queue.'
+                                )
+                            else:
+                                logging.warning(
+                                    f'"{agent["name"]}" agent not assigned to "{key}" queue.'
+                                )
+            else:
+                logging.warning("No agents found to assign to queues.")
+        else:
+            logging.warning('"Agent" user profile not found.')
+
+    # Assign supervisors to queues
+    if assign_supervisors_to_queues and len(queues_to_assign) > 0:
+        supervisor_user_profile = search_user_profiles(
+            ncc_location, ncc_token, "Supervisor"
+        )
+        if supervisor_user_profile != {}:
+            supervisors = get_users(
+                ncc_location, ncc_token, supervisor_user_profile["_id"]
+            )
+            if len(supervisors) > 0:
+                for supervisor in supervisors:
+                    for key, value in queues_to_assign.items():
+                        success = search_supervisor_queues(
+                            ncc_location, ncc_token, supervisor["_id"], value
+                        )
+                        if success:
+                            logging.info(
+                                f'"{supervisor["name"]}" supervisor already assigned to "{key}" queue.'
+                            )
+                        else:
+                            success = create_supervisor_queue(
+                                ncc_location, ncc_token, supervisor["_id"], value
+                            )
+                            if success:
+                                logging.info(
+                                    f'"{supervisor["name"]}" supervisor assigned to "{key}" queue.'
+                                )
+                            else:
+                                logging.warning(
+                                    f'"{supervisor["name"]}" supervisor not assigned to "{key}" queue.'
+                                )
+            else:
+                logging.warning("No supervisors found to assign to queues.")
+        else:
+            logging.warning('"Supervisor" user profile not found.')
 
     # Create survey theme
     survey_theme = search_survey_themes(
@@ -636,6 +729,41 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 logging.info(
                     f'"{template["name"]}" template already assigned to campaign.'
                 )
+
+    # Assign supervisors to campaign
+    if campaign != {} and assign_supervisors_to_campaign:
+        supervisor_user_profile = search_user_profiles(
+            ncc_location, ncc_token, "Supervisor"
+        )
+        if supervisor_user_profile != {}:
+            supervisors = get_users(
+                ncc_location, ncc_token, supervisor_user_profile["_id"]
+            )
+            if len(supervisors) > 0:
+                for supervisor in supervisors:
+                    success = search_supervisor_campaigns(
+                        ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
+                    )
+                    if success:
+                        logging.info(
+                            f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor user already assigned to "{campaign["name"]}" campaign.'
+                        )
+                    else:
+                        success = create_supervisor_campaign(
+                            ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
+                        )
+                        if success:
+                            logging.info(
+                                f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor user assigned to "{campaign["name"]}" campaign.'
+                            )
+                        else:
+                            logging.warning(
+                                f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor user not assigned to "{campaign["name"]}" campaign.'
+                            )
+            else:
+                logging.warning("No supervisors found to assign to queues.")
+        else:
+            logging.warning('"Supervisor" user profile not found.')
 
     # Create reports
     for report in reports:

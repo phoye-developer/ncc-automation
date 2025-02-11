@@ -4,6 +4,7 @@ from set_up_inbound_campaign import *
 from set_up_feature import *
 from set_up_integration import *
 from set_up_agent import *
+from set_up_supervisor import *
 from tear_down_tenant import *
 
 
@@ -58,7 +59,7 @@ def main():
                 elif choice == "5":
                     set_up_agent(ncc_location, ncc_token)
                 elif choice == "6":
-                    pass
+                    set_up_supervisor(ncc_location, ncc_token)
                 elif choice == "7":
                     tear_down_tenant(ncc_location, ncc_token)
                 elif choice == "8":
