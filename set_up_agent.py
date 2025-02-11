@@ -5,6 +5,7 @@ from ncc_user import *
 from ncc_queue import *
 from ncc_user_queue import *
 from ncc_supervisor_user import *
+from ncc_topic import *
 
 
 def set_up_agent(ncc_location: str, ncc_token: str):
@@ -84,6 +85,25 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             assign_to_supervisors = True
         elif choice == "2":
             assign_to_supervisors = False
+        else:
+            choice = ""
+            print("Invalid choice.")
+            print()
+
+    # Select whether to assign agents to topics
+    choice = ""
+    while choice == "":
+        print("Assign agent to all topics?")
+        print("---------------------------")
+        print("1. Yes")
+        print("2. No")
+        print()
+        choice = input("Command: ")
+        print()
+        if choice == "1":
+            assign_to_topics = True
+        elif choice == "2":
+            assign_to_topics = False
         else:
             choice = ""
             print("Invalid choice.")
@@ -173,6 +193,35 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                 logging.warning("No supervisors found for assignment.")
         else:
             logging.warning('"Supervisor" user profile not found.')
+
+    # Assign agent to topics
+    if agent != {} and assign_to_topics:
+        topics = get_topics(ncc_location, ncc_token)
+        if len(topics) > 0:
+            for topic in topics:
+                if "users" in topic:
+                    users = topic["users"]
+                else:
+                    users = []
+                if agent["_id"] in users:
+                    logging.info(
+                        f'"{first_name} {last_name}" already assigned to "{topic["name"]}" topic.'
+                    )
+                else:
+                    users.append(agent["_id"])
+                    success = update_topic_users(
+                        ncc_location, ncc_token, topic["_id"], users
+                    )
+                    if success:
+                        logging.info(
+                            f'"{first_name} {last_name}" assigned to "{topic["name"]}" topic.'
+                        )
+                    else:
+                        logging.warning(
+                            f'"{first_name} {last_name}" not assigned to "{topic["name"]}" topic.'
+                        )
+        else:
+            logging.warning("No topics found for assignment.")
 
     duration = datetime.datetime.now() - start_time
     logging.info(f"Duration: {str(duration)}")

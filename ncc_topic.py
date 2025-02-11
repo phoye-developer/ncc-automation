@@ -76,6 +76,26 @@ def create_topic(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
     return topic
 
 
+def update_topic_users(
+    ncc_location: str, ncc_token: str, topic_id: str, users: list
+) -> bool:
+    """
+    This function updates the list of users assigned to a topic in Nextiva Contact Center (NCC).
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps({"users": users})
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    conn.request("PATCH", f"/data/api/types/topic/{topic_id}", payload, headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        success = True
+    return success
+
+
 def delete_topic(ncc_location: str, ncc_token: str, topic_id: str) -> bool:
     """
     This function deletes a topic with the specified topic ID.
@@ -84,9 +104,7 @@ def delete_topic(ncc_location: str, ncc_token: str, topic_id: str) -> bool:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request(
-        "DELETE", f"/data/api/types/topic/{topic_id}", payload, headers
-    )
+    conn.request("DELETE", f"/data/api/types/topic/{topic_id}", payload, headers)
     res = conn.getresponse()
     if res.status == 204:
         success = True
