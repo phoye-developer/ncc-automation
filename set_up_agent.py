@@ -13,8 +13,6 @@ def set_up_agent(ncc_location: str, ncc_token: str):
     This function creates an agent in Nextiva Contact Center (NCC) and assigns them to queues.
     """
 
-    start_time = datetime.datetime.now()
-
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
@@ -109,6 +107,8 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
+    start_time = datetime.datetime.now()
+
     logging.info("Starting...")
     # Create agent
     agent = search_users(ncc_location, ncc_token, first_name, last_name)
@@ -124,13 +124,13 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                 agent_user_profile["_id"],
             )
             if agent != {}:
-                logging.info(f'"{first_name} {last_name}" agent user created.')
+                logging.info(f'Agent "{first_name} {last_name}" created.')
             else:
-                logging.warning(f'"{first_name} {last_name}" agent user not created.')
+                logging.warning(f'Agent "{first_name} {last_name}" not created.')
         else:
-            logging.warning('"Agent" user profile not found.')
+            logging.warning('User profile "Agent" not found.')
     else:
-        logging.info(f'"{first_name} {last_name}" agent user already exists.')
+        logging.info(f'Agent "{first_name} {last_name}" already exists.')
 
     # Assign agent to queues
     if agent != {} and assign_to_queues:
@@ -142,7 +142,7 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                 )
                 if success:
                     logging.info(
-                        f'"{agent["name"]}" agent already assigned to "{queue["name"]}" queue.'
+                        f'Agent "{agent["name"]}" already assigned to queue "{queue["name"]}".'
                     )
                 else:
                     success = create_user_queue(
@@ -150,11 +150,11 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{agent["name"]}" agent assigned to "{queue["name"]}" queue.'
+                            f'Agent "{agent["name"]}" assigned to queue "{queue["name"]}".'
                         )
                     else:
                         logging.warning(
-                            f'"{agent["name"]}" agent not assigned to "{queue["name"]}" queue.'
+                            f'Agent "{agent["name"]}" not assigned to queue "{queue["name"]}".'
                         )
         else:
             logging.warning("No queues found for assignment.")
@@ -175,7 +175,7 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{first_name} {last_name}" already assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
+                            f'Agent "{first_name} {last_name}" already assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
                         )
                     else:
                         success = create_supervisor_user(
@@ -183,16 +183,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{first_name} {last_name}" assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
+                                f'Agent "{first_name} {last_name}" assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
                             )
                         else:
                             logging.warning(
-                                f'"{first_name} {last_name}" not assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
+                                f'Agent "{first_name} {last_name}" not assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
                             )
             else:
                 logging.warning("No supervisors found for assignment.")
         else:
-            logging.warning('"Supervisor" user profile not found.')
+            logging.warning('User profile "Supervisor" not found.')
 
     # Assign agent to topics
     if agent != {} and assign_to_topics:
@@ -205,7 +205,7 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                     users = []
                 if agent["_id"] in users:
                     logging.info(
-                        f'"{first_name} {last_name}" already assigned to "{topic["name"]}" topic.'
+                        f'Agent "{first_name} {last_name}" already assigned to topic "{topic["name"]}".'
                     )
                 else:
                     users.append(agent["_id"])
@@ -214,11 +214,11 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{first_name} {last_name}" assigned to "{topic["name"]}" topic.'
+                            f'Agent "{first_name} {last_name}" assigned to topic "{topic["name"]}".'
                         )
                     else:
                         logging.warning(
-                            f'"{first_name} {last_name}" not assigned to "{topic["name"]}" topic.'
+                            f'Agent "{first_name} {last_name}" not assigned to topic "{topic["name"]}".'
                         )
         else:
             logging.warning("No topics found for assignment.")

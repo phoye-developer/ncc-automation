@@ -34,8 +34,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     This function performs the basic setup of a new Nextiva Contact Center (NCC) campaign.
     """
 
-    start_time = datetime.datetime.now()
-
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
@@ -238,7 +236,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Select whether to assign agent to topics
     choice = ""
     while choice == "":
-        print("Assign agents to all topics?")
+        print("Assign all agents to topics?")
         print("----------------------------")
         print("1. Yes")
         print("2. No")
@@ -257,7 +255,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Select whether to assign supervisor to topics
     choice = ""
     while choice == "":
-        print("Assign supervisors to all topics?")
+        print("Assign all supervisors to topics?")
         print("---------------------------------")
         print("1. Yes")
         print("2. No")
@@ -273,6 +271,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("Invalid choice.")
             print()
 
+    start_time = datetime.datetime.now()
+
     logging.info("Starting...")
     # Create dispositions
     dispositions_to_assign = []
@@ -281,13 +281,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_disposition(ncc_location, ncc_token, disposition)
             if result != {}:
-                logging.info(f'"{result["name"]}" disposition created.')
+                logging.info(f'Disposition "{result["name"]}" created.')
                 dispositions_to_assign.append(result)
                 tenant_id = result["tenantId"]
             else:
-                logging.warning(f'"{disposition["name"]}" disposition not created.')
+                logging.warning(f'Disposition "{disposition["name"]}" not created.')
         else:
-            logging.info(f'"{result["name"]}" disposition already exists.')
+            logging.info(f'Disposition "{result["name"]}" already exists.')
             dispositions_to_assign.append(result)
             tenant_id = result["tenantId"]
 
@@ -295,27 +295,27 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     for user_profile in user_profiles:
         result = search_user_profiles(ncc_location, ncc_token, user_profile)
         if result != {}:
-            logging.info(f'"{user_profile}" user profile found.')
+            logging.info(f'User profile "{user_profile}" found.')
             for disposition in dispositions_to_assign:
                 success = search_user_profile_dispositions(
                     ncc_location, ncc_token, disposition["_id"], result["_id"]
                 )
                 if success:
                     logging.info(
-                        f'"{disposition["name"]}" disposition already assigned.'
+                        f'Disposition "{disposition["name"]}" already assigned.'
                     )
                 else:
                     user_profile_disposition = create_user_profile_disposition(
                         ncc_location, ncc_token, result["_id"], disposition["_id"]
                     )
                     if user_profile_disposition != {}:
-                        logging.info(f'"{disposition["name"]}" disposition assigned.')
+                        logging.info(f'Disposition "{disposition["name"]}" assigned.')
                     else:
                         logging.warning(
-                            f'"{disposition["name"]}" disposition not assigned.'
+                            f'Disposition "{disposition["name"]}" not assigned.'
                         )
         else:
-            logging.warning(f'"{user_profile}" user profile not found.')
+            logging.warning(f'User profile "{user_profile}" not found.')
 
     # Create queues
     queues_to_assign = {}
@@ -324,12 +324,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_queue(ncc_location, ncc_token, queue)
             if result != {}:
-                logging.info(f'"{result["name"]}" queue created.')
+                logging.info(f'Queue "{result["name"]}" created.')
                 queues_to_assign[result["name"]] = result["_id"]
             else:
-                logging.warning("Queue not created.")
+                logging.warning(f'Queue "{queue["name"]}" not created.')
         else:
-            logging.info(f'"{queue["name"]}" queue already exists.')
+            logging.info(f'Queue "{queue["name"]}" already exists.')
             queues_to_assign[result["name"]] = result["_id"]
 
     # Assign agents to queues
@@ -345,7 +345,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{agent["name"]}" agent already assigned to "{key}" queue.'
+                                f'Agent "{agent["name"]}" already assigned to "{key}" queue.'
                             )
                         else:
                             success = create_user_queue(
@@ -353,16 +353,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'"{agent["name"]}" agent assigned to "{key}" queue.'
+                                    f'Agent "{agent["name"]}" assigned to "{key}" queue.'
                                 )
                             else:
                                 logging.warning(
-                                    f'"{agent["name"]}" agent not assigned to "{key}" queue.'
+                                    f'Agent "{agent["name"]}" not assigned to "{key}" queue.'
                                 )
             else:
                 logging.warning("No agents found to assign to queues.")
         else:
-            logging.warning('"Agent" user profile not found.')
+            logging.warning('User profile "Agent" not found.')
 
     # Assign supervisors to queues
     if assign_supervisors_to_queues and len(queues_to_assign) > 0:
@@ -381,7 +381,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{supervisor["name"]}" supervisor already assigned to "{key}" queue.'
+                                f'Supervisor "{supervisor["name"]}" already assigned to "{key}" queue.'
                             )
                         else:
                             success = create_supervisor_queue(
@@ -389,16 +389,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'"{supervisor["name"]}" supervisor assigned to "{key}" queue.'
+                                    f'Supervisor "{supervisor["name"]}" assigned to "{key}" queue.'
                                 )
                             else:
                                 logging.warning(
-                                    f'"{supervisor["name"]}" supervisor not assigned to "{key}" queue.'
+                                    f'Supervisor "{supervisor["name"]}" not assigned to "{key}" queue.'
                                 )
             else:
                 logging.warning("No supervisors found to assign to queues.")
         else:
-            logging.warning('"Supervisor" user profile not found.')
+            logging.warning('User profile "Supervisor" not found.')
 
     # Create survey theme
     survey_theme = search_survey_themes(
@@ -409,11 +409,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, f"Test {business_name}"
         )
         if survey_theme != {}:
-            logging.info(f'"Test {business_name}" survey theme created.')
+            logging.info(f'Survey theme "Test {business_name}" created.')
         else:
-            logging.warning(f'"Test {business_name}" survey theme not created.')
+            logging.warning(f'Survey theme "Test {business_name}" not created.')
     else:
-        logging.info(f'"Test {business_name}" survey theme already exists.')
+        logging.info(f'Survey theme "Test {business_name}" already exists.')
 
     # Create user survey
     user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
@@ -426,11 +426,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if user_survey != {}:
-            logging.info(f'"{campaign_name} - User" survey created.')
+            logging.info(f'Survey "{campaign_name} - User" created.')
         else:
-            logging.warning(f'"{campaign_name} - User" survey not created.')
+            logging.warning(f'Survey "{campaign_name} - User" not created.')
     else:
-        logging.info(f'"{campaign_name} - User" survey already exists.')
+        logging.info(f'Survey "{campaign_name} - User" already exists.')
 
     # Create chat survey
     chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
@@ -443,11 +443,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if chat_survey != {}:
-            logging.info(f'"{campaign_name} - Chat" survey created.')
+            logging.info(f'Survey "{campaign_name} - Chat" created.')
         else:
-            logging.warning(f'"{campaign_name} - Chat" survey not created.')
+            logging.warning(f'Survey "{campaign_name} - Chat" not created.')
     else:
-        logging.info(f'"{campaign_name} - Chat" survey already exists.')
+        logging.info(f'Survey "{campaign_name} - Chat" already exists.')
 
     # Create QM survey
     qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
@@ -460,11 +460,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             survey_theme,
         )
         if qm_survey != {}:
-            logging.info(f'"{campaign_name} - QM" survey created.')
+            logging.info(f'Survey "{campaign_name} - QM" created.')
         else:
-            logging.warning(f'"{campaign_name} - QM" survey not created.')
+            logging.warning(f'Survey "{campaign_name} - QM" not created.')
     else:
-        logging.info(f'"{campaign_name} - QM" survey already exists')
+        logging.info(f'Survey "{campaign_name} - QM" already exists')
 
     # Create topics
     topics_to_assign = []
@@ -473,12 +473,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_topic(ncc_location, ncc_token, topic)
             if result != {}:
-                logging.info(f'"{topic}" topic created.')
+                logging.info(f'Topic "{topic}" created.')
                 topics_to_assign.append(result)
             else:
-                logging.warning(f'"{topic}" topic not created.')
+                logging.warning(f'Topic "{topic}" not created.')
         else:
-            logging.info(f'"{topic}" topic already exists.')
+            logging.info(f'Topic "{topic}" already exists.')
             topics_to_assign.append(result)
 
     # Assign agents to topics
@@ -495,7 +495,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             users = []
                         if agent["_id"] in users:
                             logging.info(
-                                f'"{agent["firstName"]} {agent["lastName"]}" already assigned to "{topic["name"]}" topic.'
+                                f'Agent "{agent["firstName"]} {agent["lastName"]}" already assigned to topic "{topic["name"]}".'
                             )
                         else:
                             users.append(agent["_id"])
@@ -504,22 +504,26 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'"{agent["firstName"]} {agent["lastName"]}" assigned to "{topic["name"]}" topic.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to topic "{topic["name"]}".'
                                 )
                             else:
                                 logging.warning(
-                                    f'"{agent["firstName"]} {agent["lastName"]}" not assigned to "{topic["name"]}" topic.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to topic "{topic["name"]}".'
                                 )
             else:
                 logging.warning("No agents found to assign to topics.")
         else:
-            logging.warning('"Agent" user profile not found.')
+            logging.warning('User profile "Agent" not found.')
 
     # Assign supervisors to topics
     if assign_supervisors_to_topics and (len(topics_to_assign) > 0):
-        supervisor_user_profile = search_user_profiles(ncc_location, ncc_token, "Supervisor")
+        supervisor_user_profile = search_user_profiles(
+            ncc_location, ncc_token, "Supervisor"
+        )
         if supervisor_user_profile != {}:
-            supervisors = get_users(ncc_location, ncc_token, supervisor_user_profile["_id"])
+            supervisors = get_users(
+                ncc_location, ncc_token, supervisor_user_profile["_id"]
+            )
             if len(supervisors) > 0:
                 for supervisor in supervisors:
                     for topic in topics_to_assign:
@@ -529,7 +533,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             users = []
                         if supervisor["_id"] in users:
                             logging.info(
-                                f'"{supervisor["firstName"]} {supervisor["lastName"]}" already assigned to "{topic["name"]}" topic.'
+                                f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" already assigned to topic "{topic["name"]}".'
                             )
                         else:
                             users.append(supervisor["_id"])
@@ -538,34 +542,34 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'"{supervisor["firstName"]} {supervisor["lastName"]}" assigned to "{topic["name"]}" topic.'
+                                    f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" assigned to topic "{topic["name"]}".'
                                 )
                             else:
                                 logging.warning(
-                                    f'"{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to "{topic["name"]}" topic.'
+                                    f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to topic "{topic["name"]}".'
                                 )
             else:
                 logging.warning("No supervisors found to assign to topics.")
         else:
-            logging.warning('"Supervisor" user profile not found.')
+            logging.warning('User profile "Supervisor" not found.')
 
     # Create TEXT_TO_SPEECH service
     tts_service = search_services(ncc_location, ncc_token, "TEXT_TO_SPEECH")
     if tts_service != {}:
-        logging.info('"TEXT_TO_SPEECH" type service already exists.')
+        logging.info('Service type "TEXT_TO_SPEECH" already exists.')
     else:
         tts_service = create_tts_service(
             ncc_location, ncc_token, "Test Google - Text To Speech"
         )
         if tts_service != {}:
-            logging.info('"TEXT_TO_SPEECH" type service created.')
+            logging.info('Service type "TEXT_TO_SPEECH" created.')
         else:
-            logging.warning('"TEXT_TO_SPEECH" type service not created.')
+            logging.warning('Service type "TEXT_TO_SPEECH" not created.')
 
     # Create GENERATIVE_AI service
     gen_ai_service = search_services(ncc_location, ncc_token, "GENERATIVE_AI")
     if gen_ai_service != {}:
-        logging.info('"GENERATIVE_AI" type service already exists.')
+        logging.info('Service type "GENERATIVE_AI" already exists.')
     else:
         gen_ai_service = create_gen_ai_service(
             ncc_location,
@@ -574,16 +578,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             f"thrio-prod-{tenant_id}",
         )
         if gen_ai_service != {}:
-            logging.info('"GENERATIVE_AI" type service created.')
+            logging.info('Service type "GENERATIVE_AI" created.')
         else:
-            logging.warning('"GENERATIVE_AI" type service not created.')
+            logging.warning('Service type "GENERATIVE_AI" not created.')
 
     # Search for REALTIME_ANALYSIS service
     real_time_transcription_service = search_services(
         ncc_location, ncc_token, "REALTIME_ANALYSIS"
     )
     if real_time_transcription_service != {}:
-        logging.info('"REALTIME_ANALYSIS" type service already exists.')
+        logging.info('Service type "REALTIME_ANALYSIS" already exists.')
     else:
         # Create Deepgram API key
         deepgram_api_key_id = search_deepgram_api_keys(
@@ -594,11 +598,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 deepgram_project_id, deepgram_main_api_key
             )
             if deepgram_api_key != "":
-                logging.info('"Test Key" Deepgram API key created.')
+                logging.info('Deepgram API key "Test Key" created.')
             else:
-                logging.warning('"Test Key" Deepgram API key not created.')
+                logging.warning('Deepgram API key "Test Key" not created.')
         else:
-            logging.info('"Test Key" Deepgram API key already exists.')
+            logging.info('Deepgram API key "Test Key" already exists.')
 
     # Create REALTIME_ANALYSIS service
     if real_time_transcription_service == {} and deepgram_api_key != "":
@@ -609,10 +613,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             deepgram_api_key,
         )
         if real_time_transcription_service != {}:
-            logging.info('"Test Deepgram Real-Time Transcription" service created.')
+            logging.info('Service "Test Deepgram Real-Time Transcription" created.')
         else:
             logging.warning(
-                '"Test Deepgram Real-Time Transcription" service not created.'
+                'Service "Test Deepgram Real-Time Transcription" not created.'
             )
 
     # Create classifications
@@ -622,14 +626,14 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_classification(ncc_location, ncc_token, classification)
             if result != {}:
-                logging.info(f'"{classification["name"]}" classification created.')
+                logging.info(f'Classification "{classification["name"]}" created.')
                 classifications_to_assign.append(result)
             else:
                 logging.warning(
-                    f'"{classification["name"]}" classification not created.'
+                    f'Classification "{classification["name"]}" not created.'
                 )
         else:
-            logging.info(f'"{classification["name"]}" classification already exists.')
+            logging.info(f'Classification "{classification["name"]}" already exists.')
             classifications_to_assign.append(result)
 
     # Create scorecard
@@ -637,11 +641,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     if scorecard == {}:
         scorecard = create_scorecard(ncc_location, ncc_token, campaign_name)
         if scorecard != {}:
-            logging.info(f'"{campaign_name}" scorecard created.')
+            logging.info(f'Scorecard "{campaign_name}" created.')
         else:
-            logging.warning(f'"{campaign_name}" scorecard not created.')
+            logging.warning(f'Scorecard "{campaign_name}" not created.')
     else:
-        logging.info(f'"{campaign_name}" scorecard already exists.')
+        logging.info(f'Scorecard "{campaign_name}" already exists.')
 
     # Assign classifications to scorecard
     if scorecard != {}:
@@ -651,7 +655,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             )
             if success:
                 logging.info(
-                    f'"{classification["name"]}" classification already assigned to scorecard.'
+                    f'Classification "{classification["name"]}" already assigned to scorecard.'
                 )
             else:
                 scorecard_classification = create_scorecard_classification(
@@ -659,11 +663,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 )
                 if scorecard_classification != {}:
                     logging.info(
-                        f'"{classification["name"]}" classification assigned to scorecard.'
+                        f'Classification "{classification["name"]}" assigned to scorecard.'
                     )
                 else:
                     logging.warning(
-                        f'"{classification["name"]}" classification not assigned to scorecard.'
+                        f'Classification "{classification["name"]}" not assigned to scorecard.'
                     )
 
     # Create templates
@@ -673,12 +677,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_template(ncc_location, ncc_token, template)
             if result != {}:
-                logging.info(f'"{template["name"]}" template created.')
+                logging.info(f'Template "{template["name"]}" created.')
                 templates_to_assign.append(result)
             else:
-                logging.warning(f'"{template["name"]}" template not created.')
+                logging.warning(f'Template "{template["name"]}" not created.')
         else:
-            logging.info(f'"{template["name"]}" template already exists.')
+            logging.info(f'Template "{template["name"]}" already exists.')
             templates_to_assign.append(result)
 
     # Create ACD Voicemail function
@@ -690,11 +694,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, acd_voicemail_function_body
         )
         if acd_voicemail_function != {}:
-            logging.info(f'"Test ACD Voicemail" function created.')
+            logging.info(f'Function "Test ACD Voicemail" created.')
         else:
-            logging.warning(f'"Test ACD Voicemail" function not created.')
+            logging.warning(f'Function "Test ACD Voicemail" not created.')
     else:
-        logging.info(f'"Test ACD Voicemail" function already exists.')
+        logging.info(f'Function "Test ACD Voicemail" already exists.')
 
     # Create ACD Callback function
     acd_callback_function = search_functions(
@@ -705,11 +709,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, acd_callback_function_body
         )
         if acd_callback_function != {}:
-            logging.info(f'"Test ACD Callback" function created.')
+            logging.info(f'Function "Test ACD Callback" created.')
         else:
-            logging.warning(f'"Test ACD Callback" function not created.')
+            logging.warning(f'Function "Test ACD Callback" not created.')
     else:
-        logging.info(f'"Test ACD Callback" function already exists.')
+        logging.info(f'Function "Test ACD Callback" already exists.')
 
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -725,11 +729,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             acd_callback_function,
         )
         if workflow != {}:
-            logging.info(f'"{campaign_name}" workflow created.')
+            logging.info(f'Workflow "{campaign_name}" created.')
         else:
-            logging.warning(f'"{campaign_name}" workflow not created.')
+            logging.warning(f'Workflow "{campaign_name}" not created.')
     else:
-        logging.info(f'"{campaign_name}" workflow already exists.')
+        logging.info(f'Workflow "{campaign_name}" already exists.')
 
     # Create campaign
     campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
@@ -747,11 +751,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             gen_ai_service["_id"],
         )
         if campaign != {}:
-            logging.info(f'"{campaign_name}" campaign created.')
+            logging.info(f'Campaign "{campaign_name}" created.')
         else:
-            logging.warning(f'"{campaign_name}" campaign not created.')
+            logging.warning(f'Campaign "{campaign_name}" not created.')
     else:
-        logging.info(f'"{campaign_name}" campaign already exists.')
+        logging.info(f'Campaign "{campaign_name}" already exists.')
 
     # Assign campaign address to campaign
     if campaign != {} and campaign_address != "":
@@ -759,9 +763,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, campaign_address, campaign["_id"]
         )
         if success:
-            logging.info(f'"{campaign_address}" assigned to campaign.')
+            logging.info(f'PSTN number "{campaign_address}" assigned to campaign.')
         else:
-            logging.warning(f'"{campaign_address}" not assigned to campaign.')
+            logging.warning(
+                f'PSTN number "{campaign_address}" not assigned to campaign.'
+            )
 
     # Update chat survey campaign ID
     if campaign != {} and chat_survey != {}:
@@ -769,10 +775,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             ncc_location, ncc_token, chat_survey["_id"], campaign["_id"]
         )
         if success:
-            logging.info(f'"{chat_survey["name"]}" survey updated with new campaign.')
+            logging.info(f'Survey "{chat_survey["name"]}" updated with new campaign.')
         else:
             logging.warning(
-                f'"{chat_survey["name"]}" survey not updated with new campaign.'
+                f'Survey "{chat_survey["name"]}" not updated with new campaign.'
             )
 
     # Assign dispositions to campaign
@@ -787,15 +793,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 )
                 if success:
                     logging.info(
-                        f'"{disposition["name"]}" disposition assigned to campaign.'
+                        f'Disposition "{disposition["name"]}" assigned to campaign.'
                     )
                 else:
                     logging.warning(
-                        f'"{disposition["name"]}" disposition not assigned to campaign.'
+                        f'Disposition "{disposition["name"]}" not assigned to campaign.'
                     )
             else:
                 logging.info(
-                    f'"{disposition["name"]}" disposition already assigned to campaign.'
+                    f'Disposition "{disposition["name"]}" already assigned to campaign.'
                 )
 
     # Assign scorecard to campaign
@@ -808,14 +814,14 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 ncc_location, ncc_token, campaign["_id"], scorecard["_id"]
             )
             if success:
-                logging.info(f'"{scorecard["name"]}" scorecard assigned to campaign.')
+                logging.info(f'Scorecard "{scorecard["name"]}" assigned to campaign.')
             else:
                 logging.warning(
-                    f'"{scorecard["name"]}" scorecard not assigned to campaign.'
+                    f'Scorecard "{scorecard["name"]}" not assigned to campaign.'
                 )
         else:
             logging.info(
-                f'"{scorecard["name"]}" scorecard already assigned to campaign.'
+                f'Scorecard "{scorecard["name"]}" already assigned to campaign.'
             )
 
     # Assign templates to campaign
@@ -829,14 +835,14 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     ncc_location, ncc_token, campaign["_id"], template["_id"]
                 )
                 if success:
-                    logging.info(f'"{template["name"]}" template assigned to campaign.')
+                    logging.info(f'Template "{template["name"]}" assigned to campaign.')
                 else:
                     logging.warning(
-                        f'"{template["name"]}" template not assigned to campaign.'
+                        f'Template "{template["name"]}" not assigned to campaign.'
                     )
             else:
                 logging.info(
-                    f'"{template["name"]}" template already assigned to campaign.'
+                    f'Template "{template["name"]}" already assigned to campaign.'
                 )
 
     # Assign supervisors to campaign
@@ -855,7 +861,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     )
                     if success:
                         logging.info(
-                            f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor already assigned to "{campaign["name"]}" campaign.'
+                            f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" already assigned to "{campaign["name"]}" campaign.'
                         )
                     else:
                         success = create_supervisor_campaign(
@@ -863,16 +869,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor assigned to "{campaign["name"]}" campaign.'
+                                f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" assigned to "{campaign["name"]}" campaign.'
                             )
                         else:
                             logging.warning(
-                                f'"{supervisor["firstName"]} {supervisor["lastName"]}" supervisor not assigned to "{campaign["name"]}" campaign.'
+                                f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to "{campaign["name"]}" campaign.'
                             )
             else:
                 logging.warning("No supervisors found to assign to campaign.")
         else:
-            logging.warning('"Supervisor" user profile not found.')
+            logging.warning('User profile "Supervisor" not found.')
 
     # Create reports
     for report in reports:
@@ -880,11 +886,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if result == {}:
             result = create_report(ncc_location, ncc_token, report)
             if result != {}:
-                logging.info(f'"{report["name"]}" report created')
+                logging.info(f'Report "{report["name"]}" created')
             else:
-                logging.warning(f'"{report["name"]}" report not created.')
+                logging.warning(f'Report "{report["name"]}" not created.')
         else:
-            logging.info(f'"{report["name"]}" report already exists.')
+            logging.info(f'Report "{report["name"]}" already exists.')
 
     duration = datetime.datetime.now() - start_time
     logging.info(f"Duration: {str(duration)}")
