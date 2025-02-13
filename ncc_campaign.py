@@ -11,18 +11,22 @@ def get_campaigns(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/campaign?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                campaign_name = result["name"]
-                if campaign_name[0:5] == "Test ":
-                    campaigns.append(result)
+    try:
+        conn.request("GET", "/data/api/types/campaign?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    campaign_name = result["name"]
+                    if campaign_name[0:5] == "Test ":
+                        campaigns.append(result)
+    except:
+        pass
+    conn.close()
     return campaigns
 
 
@@ -37,23 +41,26 @@ def search_campaigns_by_name(
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/campaign?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == campaign_name:
-                    campaign = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/campaign?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == campaign_name:
+                        campaign = result
+                        break
+    except:
+        pass
     conn.close()
     return campaign
 
@@ -68,26 +75,29 @@ def search_campaigns_by_address(
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request(
-        "GET",
-        f"/data/api/types/campaign?q={campaign_address}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if "addresses" in result:
-                    addresses = result["addresses"]
-                    for address in addresses:
-                        if address == campaign_address:
-                            success = True
-                            break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/campaign?q={campaign_address}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if "addresses" in result:
+                        addresses = result["addresses"]
+                        for address in addresses:
+                            if address == campaign_address:
+                                success = True
+                                break
+    except:
+        pass
     conn.close()
     return success
 
@@ -171,11 +181,15 @@ def create_campaign(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/campaign/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        campaign = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/campaign/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            campaign = json.loads(data)
+    except:
+        pass
+    conn.close()
     return campaign
 
 
@@ -189,10 +203,15 @@ def assign_address_to_campaign(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
     conn.close()
     return success
 
@@ -207,10 +226,15 @@ def assign_survey_to_campaign(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
     conn.close()
     return success
 
@@ -223,8 +247,14 @@ def delete_campaign(ncc_location: str, ncc_token: str, campaign_id: str) -> bool
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/campaign/{campaign_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/campaign/{campaign_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

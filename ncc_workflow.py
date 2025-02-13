@@ -135,11 +135,15 @@ def create_workflow(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/workflow/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        workflow = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/workflow/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
     return workflow
 
 
@@ -246,10 +250,15 @@ def assign_rest_call_to_workflow(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
     conn.close()
     return success
 
@@ -358,10 +367,16 @@ def update_workflow(
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(workflow_body)
     headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
-    conn.request("PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
     return success
 
 
@@ -373,8 +388,14 @@ def delete_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> bool
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/workflow/{workflow_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/workflow/{workflow_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

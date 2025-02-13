@@ -11,18 +11,22 @@ def get_dispositions(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/disposition?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                disposition_name = result["name"]
-                if disposition_name[0:5] == "Test ":
-                    dispositions.append(result)
+    try:
+        conn.request("GET", "/data/api/types/disposition?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    disposition_name = result["name"]
+                    if disposition_name[0:5] == "Test ":
+                        dispositions.append(result)
+    except:
+        pass
+    conn.close()
     return dispositions
 
 
@@ -37,23 +41,26 @@ def search_dispositions(
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(disposition_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/disposition?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == disposition_name:
-                    disposition = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/disposition?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == disposition_name:
+                        disposition = result
+                        break
+    except:
+        pass
     conn.close()
     return disposition
 
@@ -71,11 +78,14 @@ def create_disposition(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/disposition/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        disposition = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/disposition/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            disposition = json.loads(data)
+    except:
+        pass
     conn.close()
     return disposition
 
@@ -87,12 +97,15 @@ def assign_rest_call_to_dispositon(
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps({"restcallId": rest_call_id})
     headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
-    conn.request(
-        "PATCH", f"/data/api/types/disposition/{disposition_id}", payload, headers
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/disposition/{disposition_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
     conn.close()
     return success
 
@@ -105,10 +118,14 @@ def delete_disposition(ncc_location: str, ncc_token: str, disposition_id: str) -
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request(
-        "DELETE", f"/data/api/types/disposition/{disposition_id}", payload, headers
-    )
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/disposition/{disposition_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

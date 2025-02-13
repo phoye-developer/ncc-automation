@@ -11,11 +11,15 @@ def get_survey(ncc_location: str, ncc_token: str, survey_id: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", f"/data/api/types/survey/{survey_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        survey = json.loads(data)
+    try:
+        conn.request("GET", f"/data/api/types/survey/{survey_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            survey = json.loads(data)
+    except:
+        pass
+    conn.close()
     return survey
 
 
@@ -27,18 +31,22 @@ def get_surveys(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/survey?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                survey_name = result["name"]
-                if survey_name[0:5] == "Test ":
-                    surveys.append(result)
+    try:
+        conn.request("GET", "/data/api/types/survey?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    survey_name = result["name"]
+                    if survey_name[0:5] == "Test ":
+                        surveys.append(result)
+    except:
+        pass
+    conn.close()
     return surveys
 
 
@@ -51,23 +59,26 @@ def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(survey_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/survey?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == survey_name:
-                    survey = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/survey?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == survey_name:
+                        survey = result
+                        break
+    except:
+        pass
     conn.close()
     return survey
 
@@ -94,11 +105,14 @@ def create_survey(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/survey/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        survey = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/survey/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            survey = json.loads(data)
+    except:
+        pass
     conn.close()
     return survey
 
@@ -124,15 +138,19 @@ def update_chat_survey_campaign_id(
             "Authorization": ncc_token,
             "Content-Type": "application/json",
         }
-        conn.request(
-            "PATCH",
-            f"/data/api/types/survey/{survey_id}",
-            payload,
-            headers,
-        )
-        res = conn.getresponse()
-        if res.status == 200:
-            success = True
+        try:
+            conn.request(
+                "PATCH",
+                f"/data/api/types/survey/{survey_id}",
+                payload,
+                headers,
+            )
+            res = conn.getresponse()
+            if res.status == 200:
+                success = True
+        except:
+            pass
+        conn.close()
     return success
 
 
@@ -144,8 +162,12 @@ def delete_survey(ncc_location: str, ncc_token: str, survey_id: str) -> bool:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/survey/{survey_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request("DELETE", f"/data/api/types/survey/{survey_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

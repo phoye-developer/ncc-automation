@@ -11,18 +11,22 @@ def get_survey_themes(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/surveytheme?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                survey_theme_name = result["name"]
-                if survey_theme_name[0:5] == "Test ":
-                    survey_themes.append(result)
+    try:
+        conn.request("GET", "/data/api/types/surveytheme?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    survey_theme_name = result["name"]
+                    if survey_theme_name[0:5] == "Test ":
+                        survey_themes.append(result)
+    except:
+        pass
+    conn.close()
     return survey_themes
 
 
@@ -37,23 +41,26 @@ def search_survey_themes(
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(survey_theme_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/surveytheme?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == survey_theme_name:
-                    survey_theme = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/surveytheme?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == survey_theme_name:
+                        survey_theme = result
+                        break
+    except:
+        pass
     conn.close()
     return survey_theme
 
@@ -117,11 +124,15 @@ def create_survey_theme(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/surveytheme", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        survey_theme = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/surveytheme", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            survey_theme = json.loads(data)
+    except:
+        pass
+    conn.close()
     return survey_theme
 
 
@@ -135,10 +146,14 @@ def delete_survey_theme(
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request(
-        "DELETE", f"/data/api/types/surveytheme/{survey_theme_id}", payload, headers
-    )
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/surveytheme/{survey_theme_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

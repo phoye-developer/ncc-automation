@@ -11,18 +11,22 @@ def get_rest_calls(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/restcall?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                rest_call_name = result["name"]
-                if rest_call_name[0:5] == "Test ":
-                    rest_calls.append(result)
+    try:
+        conn.request("GET", "/data/api/types/restcall?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    rest_call_name = result["name"]
+                    if rest_call_name[0:5] == "Test ":
+                        rest_calls.append(result)
+    except:
+        pass
+    conn.close()
     return rest_calls
 
 
@@ -35,23 +39,26 @@ def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) ->
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(rest_call_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/restcall?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == rest_call_name:
-                    rest_call = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/restcall?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == rest_call_name:
+                        rest_call = result
+                        break
+    except:
+        pass
     conn.close()
     return rest_call
 
@@ -101,11 +108,14 @@ def hubspot_create_search_contacts_rest_call(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/restcall/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        rest_call = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
     conn.close()
     return rest_call
 
@@ -155,11 +165,14 @@ def hubspot_create_activity_rest_call(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/restcall/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        rest_call = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
     conn.close()
     return rest_call
 
@@ -206,11 +219,14 @@ def zendesk_create_search_contacts_rest_call(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/restcall/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        rest_call = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
     conn.close()
     return rest_call
 
@@ -258,11 +274,14 @@ def zendesk_create_ticket_rest_call(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/restcall/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        rest_call = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
     conn.close()
     return rest_call
 
@@ -275,8 +294,14 @@ def delete_rest_call(ncc_location: str, ncc_token: str, rest_call_id: str) -> bo
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/restcall/{rest_call_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/restcall/{rest_call_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

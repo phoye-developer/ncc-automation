@@ -11,18 +11,22 @@ def get_scorecards(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/scorecard?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                scorecard_name = result["name"]
-                if scorecard_name[0:5] == "Test ":
-                    scorecards.append(result)
+    try:
+        conn.request("GET", "/data/api/types/scorecard?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    scorecard_name = result["name"]
+                    if scorecard_name[0:5] == "Test ":
+                        scorecards.append(result)
+    except:
+        pass
+    conn.close()
     return scorecards
 
 
@@ -35,23 +39,26 @@ def search_scorecards(ncc_location: str, ncc_token: str, scorecard_name: str) ->
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(scorecard_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/scorecard?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == scorecard_name:
-                    scorecard = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/scorecard?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == scorecard_name:
+                        scorecard = result
+                        break
+    except:
+        pass
     conn.close()
     return scorecard
 
@@ -74,11 +81,14 @@ def create_scorecard(ncc_location: str, ncc_token: str, scorecard_name: str) -> 
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/scorecard/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        scorecard = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/scorecard/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            scorecard = json.loads(data)
+    except:
+        pass
     conn.close()
     return scorecard
 
@@ -91,10 +101,14 @@ def delete_scorecard(ncc_location: str, ncc_token: str, scorecard_id: str) -> bo
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request(
-        "DELETE", f"/data/api/types/scorecard/{scorecard_id}", payload, headers
-    )
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request(
+            "DELETE", f"/data/api/types/scorecard/{scorecard_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success
