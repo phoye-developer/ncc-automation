@@ -11,18 +11,22 @@ def get_queues(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/queue?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                queue_name = result["name"]
-                if queue_name[0:5] == "Test ":
-                    queues.append(result)
+    try:
+        conn.request("GET", "/data/api/types/queue?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    queue_name = result["name"]
+                    if queue_name[0:5] == "Test ":
+                        queues.append(result)
+    except:
+        pass
+    conn.close()
     return queues
 
 
@@ -35,23 +39,26 @@ def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(queue_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/queue?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == queue_name:
-                    queue = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/queue?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == queue_name:
+                        queue = result
+                        break
+    except:
+        pass
     conn.close()
     return queue
 
@@ -67,11 +74,14 @@ def create_queue(ncc_location: str, ncc_token: str, queue_body: dict) -> dict:
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/queue/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        queue = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/queue/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            queue = json.loads(data)
+    except:
+        pass
     conn.close()
     return queue
 
@@ -84,8 +94,12 @@ def delete_queue(ncc_location: str, ncc_token: str, queue_id: str) -> bool:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/queue/{queue_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request("DELETE", f"/data/api/types/queue/{queue_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

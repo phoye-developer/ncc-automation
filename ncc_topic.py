@@ -11,18 +11,22 @@ def get_topics(ncc_location: str, ncc_token: str) -> list:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/topic?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                topic_name = result["name"]
-                if topic_name[0:5] == "Test ":
-                    topics.append(result)
+    try:
+        conn.request("GET", "/data/api/types/topic?q=Test%20", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    topic_name = result["name"]
+                    if topic_name[0:5] == "Test ":
+                        topics.append(result)
+    except:
+        pass
+    conn.close()
     return topics
 
 
@@ -35,23 +39,26 @@ def search_topics(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(topic_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/topic?q={url_encoded_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == topic_name:
-                    topic = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/topic?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == topic_name:
+                        topic = result
+                        break
+    except:
+        pass
     conn.close()
     return topic
 
@@ -67,11 +74,14 @@ def create_topic(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("POST", "/data/api/types/topic/", payload, headers)
-    res = conn.getresponse()
-    if res.status == 201:
-        data = res.read().decode("utf-8")
-        topic = json.loads(data)
+    try:
+        conn.request("POST", "/data/api/types/topic/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            topic = json.loads(data)
+    except:
+        pass
     conn.close()
     return topic
 
@@ -89,10 +99,14 @@ def update_topic_users(
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
-    conn.request("PATCH", f"/data/api/types/topic/{topic_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        success = True
+    try:
+        conn.request("PATCH", f"/data/api/types/topic/{topic_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
     return success
 
 
@@ -104,8 +118,12 @@ def delete_topic(ncc_location: str, ncc_token: str, topic_id: str) -> bool:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("DELETE", f"/data/api/types/topic/{topic_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 204:
-        success = True
+    try:
+        conn.request("DELETE", f"/data/api/types/topic/{topic_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 204:
+            success = True
+    except:
+        pass
+    conn.close()
     return success

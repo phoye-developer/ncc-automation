@@ -14,10 +14,13 @@ def get_ncc_token(ncc_username: str, ncc_password: str) -> str:
     encoded_bytes = base64.b64encode(string_to_encode.encode("utf-8"))
     encoded_string = encoded_bytes.decode("utf-8")
     headers = {"Authorization": f"Basic {encoded_string}"}
-    conn.request("GET", "/provider/token-with-authorities", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
+    try:
+        conn.request("GET", "/provider/token-with-authorities", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+    except:
+        pass
     conn.close()
     return json_data
