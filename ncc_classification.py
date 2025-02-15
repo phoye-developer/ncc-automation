@@ -104,14 +104,23 @@ def search_campaign_classifications(
 def create_classification(
     ncc_location: str,
     ncc_token: str,
-    classification_body: dict,
+    classification_name: str,
+    classification_data: list,
 ) -> dict:
     """
     This function creates a classification in Nextiva Contact Center (NCC).
     """
     classification = {}
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(classification_body)
+    payload = json.dumps(
+        {
+            "data": classification_data,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": classification_name}}
+            },
+            "name": classification_name,
+        }
+    )
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",

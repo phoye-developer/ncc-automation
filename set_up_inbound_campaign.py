@@ -75,21 +75,23 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if choice == "1":
             dispositions = general_dispositions
             queues = general_queues
-            classifications = general_classifications
+            classifications = general_classifications.copy()
             templates = general_templates
             topics = general_topics
             reports = general_reports
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
-            classifications = general_classifications + hc_classifications
+            classifications = general_classifications.copy() + hc_classifications.copy()
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
             reports = general_reports + hc_reports
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
-            classifications = general_classifications + finserv_classifications
+            classifications = (
+                general_classifications.copy() + finserv_classifications.copy()
+            )
             templates = general_templates + finserv_templates
             topics = general_topics + finserv_topics
             reports = general_reports + finserv_reports
@@ -621,22 +623,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Create classifications
     classifications_to_assign = []
-    classifications_copy = classifications.copy()
-    for classification in classifications_copy:
-        result = search_classifications(ncc_location, ncc_token, classification["name"])
+    for classification in classifications:
+        result = search_classifications(
+            ncc_location, ncc_token, f"{campaign_name} - {classification["name"]}"
+        )
         if result == {}:
-            result = create_classification(ncc_location, ncc_token, classification)
+            result = create_classification(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - {classification["name"]}",
+                classification["data"],
+            )
             if result != {}:
-                logging.info(f'Classification "{classification["name"]}" created.')
+                logging.info(
+                    f'Classification "{campaign_name} - {classification["name"]}" created.'
+                )
                 classifications_to_assign.append(result)
             else:
                 logging.warning(
-                    f'Classification "{classification["name"]}" not created.'
+                    f'Classification "{campaign_name} - {classification["name"]}" not created.'
                 )
         else:
-            logging.info(f'Classification "{classification["name"]}" already exists.')
+            logging.info(
+                f'Classification "{campaign_name} - {classification["name"]}" already exists.'
+            )
             classifications_to_assign.append(result)
-    classifications_copy = []
 
     # Create scorecard
     scorecard = search_scorecards(ncc_location, ncc_token, campaign_name)

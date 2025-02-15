@@ -12594,8 +12594,7 @@ general_classifications = [
             "thank you for contacting",
             "thanks for contacting",
         ],
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Opening"}}},
-        "name": "Test Opening",
+        "name": "Opening",
     },
     {
         "data": [
@@ -12604,8 +12603,7 @@ general_classifications = [
             "enjoy the rest of your day",
             "have a good one",
         ],
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Closing"}}},
-        "name": "Test Closing",
+        "name": "Closing",
     },
 ]
 hc_classifications = [
@@ -12616,10 +12614,7 @@ hc_classifications = [
             "provide your date of birth",
             "may I have your date of birth",
         ],
-        "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Verification"}}
-        },
-        "name": "Test Verification",
+        "name": "Verification",
     }
 ]
 finserv_classifications = [
@@ -12630,10 +12625,7 @@ finserv_classifications = [
             "provide your security PIN",
             "may I have your security PIN",
         ],
-        "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Verification"}}
-        },
-        "name": "Test Verification",
+        "name": "Verification",
     }
 ]
 
