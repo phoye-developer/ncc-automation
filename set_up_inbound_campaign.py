@@ -75,21 +75,23 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if choice == "1":
             dispositions = general_dispositions
             queues = general_queues
-            classifications = general_classifications
+            classifications = general_classifications.copy()
             templates = general_templates
             topics = general_topics
             reports = general_reports
         elif choice == "2":
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
-            classifications = general_classifications + hc_classifications
+            classifications = general_classifications.copy() + hc_classifications.copy()
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
             reports = general_reports + hc_reports
         elif choice == "3":
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
-            classifications = general_classifications + finserv_classifications
+            classifications = (
+                general_classifications.copy() + finserv_classifications.copy()
+            )
             templates = general_templates + finserv_templates
             topics = general_topics + finserv_topics
             reports = general_reports + finserv_reports
@@ -110,11 +112,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         choice = input("Command: ")
         print()
         if choice == "1":
-            workflow_type = iva_workflow
+            workflow_type = "iva"
         elif choice == "2":
-            workflow_type = non_iva_workflow
+            workflow_type = "non_iva_dtmf"
         elif choice == "3":
-            workflow_type = direct_line_workflow
+            workflow_type = "direct_line"
         else:
             choice = ""
             print("Invalid choice.")
@@ -621,22 +623,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Create classifications
     classifications_to_assign = []
-    classifications_copy = classifications.copy()
-    for classification in classifications_copy:
-        result = search_classifications(ncc_location, ncc_token, classification["name"])
+    for classification in classifications:
+        result = search_classifications(
+            ncc_location, ncc_token, f"{campaign_name} - {classification["name"]}"
+        )
         if result == {}:
-            result = create_classification(ncc_location, ncc_token, classification)
+            result = create_classification(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - {classification["name"]}",
+                classification["data"],
+            )
             if result != {}:
-                logging.info(f'Classification "{classification["name"]}" created.')
+                logging.info(
+                    f'Classification "{campaign_name} - {classification["name"]}" created.'
+                )
                 classifications_to_assign.append(result)
             else:
                 logging.warning(
-                    f'Classification "{classification["name"]}" not created.'
+                    f'Classification "{campaign_name} - {classification["name"]}" not created.'
                 )
         else:
-            logging.info(f'Classification "{classification["name"]}" already exists.')
+            logging.info(
+                f'Classification "{campaign_name} - {classification["name"]}" already exists.'
+            )
             classifications_to_assign.append(result)
-    classifications_copy = []
 
     # Create scorecard
     scorecard = search_scorecards(ncc_location, ncc_token, campaign_name)
@@ -653,7 +664,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     if scorecard != {}:
         for classification in classifications_to_assign:
             success = search_scorecard_classifications(
-                ncc_location, ncc_token, classification["_id"], scorecard["_id"]
+                ncc_location, ncc_token, scorecard["_id"], classification["_id"]
             )
             if success:
                 logging.info(
@@ -689,73 +700,105 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Create ACD Voicemail function
     acd_voicemail_function = search_functions(
-        ncc_location, ncc_token, "Test ACD Voicemail"
+        ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
     )
     if acd_voicemail_function == {}:
-        acd_voicemail_function = create_function(
-            ncc_location, ncc_token, acd_voicemail_function_body
+        acd_voicemail_function = create_acd_voicemail_function(
+            ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
         )
         if acd_voicemail_function != {}:
-            logging.info(f'Function "Test ACD Voicemail" created.')
+            logging.info(f'Function "{campaign_name} - ACD Voicemail" created.')
         else:
-            logging.warning(f'Function "Test ACD Voicemail" not created.')
+            logging.warning(f'Function "{campaign_name} - ACD Voicemail" not created.')
     else:
-        logging.info(f'Function "Test ACD Voicemail" already exists.')
+        logging.info(f'Function "{campaign_name} - ACD Voicemail" already exists.')
 
     # Create ACD Callback function
     acd_callback_function = search_functions(
-        ncc_location, ncc_token, "Test ACD Callback"
+        ncc_location, ncc_token, f"{campaign_name} - ACD Callback"
     )
     if acd_callback_function == {}:
-        acd_callback_function = create_function(
-            ncc_location, ncc_token, acd_callback_function_body
+        acd_callback_function = create_acd_callback_function(
+            ncc_location, ncc_token, f"{campaign_name} - ACD Callback"
         )
         if acd_callback_function != {}:
-            logging.info(f'Function "Test ACD Callback" created.')
+            logging.info(f'Function "{campaign_name} - ACD Callback" created.')
         else:
-            logging.warning(f'Function "Test ACD Callback" not created.')
+            logging.warning(f'Function "{campaign_name} - ACD Callback" not created.')
     else:
-        logging.info(f'Function "Test ACD Callback" already exists.')
+        logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
-        workflow = create_workflow(
-            ncc_location,
-            ncc_token,
-            workflow_type,
-            campaign_name,
-            business_name,
-            queues_to_assign,
-            acd_voicemail_function,
-            acd_callback_function,
-        )
-        if workflow != {}:
-            logging.info(f'Workflow "{campaign_name}" created.')
+        if acd_voicemail_function != {} and acd_callback_function != {}:
+            if workflow_type == "iva":
+                workflow = create_iva_workflow(
+                    ncc_location,
+                    ncc_token,
+                    campaign_name,
+                    business_name,
+                    acd_voicemail_function,
+                    acd_callback_function,
+                )
+            elif workflow_type == "non_iva_dtmf":
+                workflow = create_non_iva_dtmf_workflow(
+                    ncc_location,
+                    ncc_token,
+                    campaign_name,
+                    business_name,
+                    queues_to_assign,
+                    acd_voicemail_function,
+                    acd_callback_function,
+                )
+            else:
+                workflow = create_direct_line_workflow(
+                    ncc_location,
+                    ncc_token,
+                    campaign_name,
+                    business_name,
+                    queues_to_assign,
+                    acd_voicemail_function,
+                    acd_callback_function,
+                )
+            if workflow != {}:
+                logging.info(f'Workflow "{campaign_name}" created.')
+            else:
+                logging.warning(f'Workflow "{campaign_name}" not created.')
         else:
-            logging.warning(f'Workflow "{campaign_name}" not created.')
+            logging.warning("Insufficient data to create workflow.")
     else:
         logging.info(f'Workflow "{campaign_name}" already exists.')
 
     # Create campaign
     campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
     if campaign == {}:
-        campaign = create_campaign(
-            ncc_location,
-            ncc_token,
-            campaign_name,
-            user_survey["_id"],
-            chat_survey["_id"],
-            qm_survey["_id"],
-            campaign_caller_id,
-            workflow["_id"],
-            real_time_transcription_service["_id"],
-            gen_ai_service["_id"],
-        )
-        if campaign != {}:
-            logging.info(f'Campaign "{campaign_name}" created.')
+        if (
+            "_id" in user_survey
+            and "_id" in chat_survey
+            and "_id" in qm_survey
+            and "_id" in workflow
+            and "_id" in real_time_transcription_service
+            and "_id" in gen_ai_service
+        ):
+            campaign = create_campaign(
+                ncc_location,
+                ncc_token,
+                campaign_name,
+                user_survey["_id"],
+                chat_survey["_id"],
+                qm_survey["_id"],
+                campaign_caller_id,
+                workflow["_id"],
+                real_time_transcription_service["_id"],
+                gen_ai_service["_id"],
+            )
+            if campaign != {}:
+                logging.info(f'Campaign "{campaign_name}" created.')
+            else:
+                logging.warning(f'Campaign "{campaign_name}" not created.')
         else:
-            logging.warning(f'Campaign "{campaign_name}" not created.')
+            logging.warning("Insufficient data to create campaign.")
     else:
         logging.info(f'Campaign "{campaign_name}" already exists.')
 
