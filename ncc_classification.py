@@ -67,6 +67,40 @@ def search_classifications(
     return classification
 
 
+def search_campaign_classifications(
+    ncc_location: str, ncc_token: str, campaign_name: str
+) -> dict:
+    """
+    This function searches for classifications in Nextiva Contact Center (NCC) whose name begins with the name of the specified campaign.
+    """
+    classifications = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    url_encoded_name = urllib.parse.quote(campaign_name)
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/classification?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if str(result["name"]).startswith(campaign_name):
+                        classifications.append(result)
+    except:
+        pass
+    conn.close()
+    return classifications
+
+
 def create_classification(
     ncc_location: str,
     ncc_token: str,

@@ -25,7 +25,7 @@ def get_survey(ncc_location: str, ncc_token: str, survey_id: str) -> list:
 
 def get_surveys(ncc_location: str, ncc_token: str) -> list:
     """
-    This function fetches a list of surveys present on the Nextiva Contact Center tenant.
+    This function fetches a list of surveys present on the Nextiva Contact Center (NCC) tenant.
     """
     surveys = []
     conn = http.client.HTTPSConnection(ncc_location)
@@ -81,6 +81,40 @@ def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
         pass
     conn.close()
     return survey
+
+
+def search_campaign_surveys(
+    ncc_location: str, ncc_token: str, campaign_name: str
+) -> dict:
+    """
+    This function searches for existing surveys in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
+    """
+    surveys = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    url_encoded_name = urllib.parse.quote(campaign_name)
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/survey?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if str(result["name"]).startswith(campaign_name):
+                        surveys.append(result)
+    except:
+        pass
+    conn.close()
+    return surveys
 
 
 def create_survey(

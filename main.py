@@ -5,6 +5,7 @@ from set_up_feature import *
 from set_up_integration import *
 from set_up_agent import *
 from set_up_supervisor import *
+from tear_down_campaign import *
 from tear_down_tenant import *
 
 
@@ -18,8 +19,9 @@ def display_main_menu():
     print("4. Set up integration")
     print("5. Set up agent")
     print("6. Set up supervisor")
-    print("7. Tear down tenant")
-    print("8. Exit")
+    print("7. Tear down campaign")
+    print("8. Tear down tenant")
+    print("9. Exit")
     print()
 
 
@@ -45,7 +47,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "8":
+            while choice != "9":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
@@ -61,8 +63,10 @@ def main():
                 elif choice == "6":
                     set_up_supervisor(ncc_location, ncc_token)
                 elif choice == "7":
-                    tear_down_tenant(ncc_location, ncc_token)
+                    tear_down_campaign(ncc_location, ncc_token)
                 elif choice == "8":
+                    tear_down_tenant(ncc_location, ncc_token)
+                elif choice == "9":
                     pass
                 else:
                     print()
