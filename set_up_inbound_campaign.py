@@ -738,6 +738,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     ncc_token,
                     campaign_name,
                     business_name,
+                    queues_to_assign,
                     acd_voicemail_function,
                     acd_callback_function,
                 )
