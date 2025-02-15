@@ -664,7 +664,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     if scorecard != {}:
         for classification in classifications_to_assign:
             success = search_scorecard_classifications(
-                ncc_location, ncc_token, classification["_id"], scorecard["_id"]
+                ncc_location, ncc_token, scorecard["_id"], classification["_id"]
             )
             if success:
                 logging.info(
