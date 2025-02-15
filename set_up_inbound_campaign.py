@@ -700,33 +700,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Create ACD Voicemail function
     acd_voicemail_function = search_functions(
-        ncc_location, ncc_token, "Test ACD Voicemail"
+        ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
     )
     if acd_voicemail_function == {}:
-        acd_voicemail_function = create_function(
-            ncc_location, ncc_token, acd_voicemail_function_body
+        acd_voicemail_function = create_acd_voicemail_function(
+            ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
         )
         if acd_voicemail_function != {}:
-            logging.info(f'Function "Test ACD Voicemail" created.')
+            logging.info(f'Function "{campaign_name} - ACD Voicemail" created.')
         else:
-            logging.warning(f'Function "Test ACD Voicemail" not created.')
+            logging.warning(f'Function "{campaign_name} - ACD Voicemail" not created.')
     else:
-        logging.info(f'Function "Test ACD Voicemail" already exists.')
+        logging.info(f'Function "{campaign_name} - ACD Voicemail" already exists.')
 
     # Create ACD Callback function
     acd_callback_function = search_functions(
-        ncc_location, ncc_token, "Test ACD Callback"
+        ncc_location, ncc_token, f"{campaign_name} - ACD Callback"
     )
     if acd_callback_function == {}:
-        acd_callback_function = create_function(
-            ncc_location, ncc_token, acd_callback_function_body
+        acd_callback_function = create_acd_callback_function(
+            ncc_location, ncc_token, f"{campaign_name} - ACD Callback"
         )
         if acd_callback_function != {}:
-            logging.info(f'Function "Test ACD Callback" created.')
+            logging.info(f'Function "{campaign_name} - ACD Callback" created.')
         else:
-            logging.warning(f'Function "Test ACD Callback" not created.')
+            logging.warning(f'Function "{campaign_name} - ACD Callback" not created.')
     else:
-        logging.info(f'Function "Test ACD Callback" already exists.')
+        logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
