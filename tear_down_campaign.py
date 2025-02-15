@@ -32,6 +32,7 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
             print("Invalid campaign name.")
         else:
             campaign_name = f"Test {campaign_name}"
+            print()
 
     start_time = datetime.datetime.now()
 
