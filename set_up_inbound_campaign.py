@@ -621,7 +621,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
 
     # Create classifications
     classifications_to_assign = []
-    for classification in classifications:
+    classifications_copy = classifications.copy()
+    for classification in classifications_copy:
         result = search_classifications(ncc_location, ncc_token, classification["name"])
         if result == {}:
             result = create_classification(ncc_location, ncc_token, classification)
@@ -635,6 +636,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'Classification "{classification["name"]}" already exists.')
             classifications_to_assign.append(result)
+    classifications_copy = []
 
     # Create scorecard
     scorecard = search_scorecards(ncc_location, ncc_token, campaign_name)

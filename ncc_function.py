@@ -33,7 +33,7 @@ def get_functions(ncc_location: str, ncc_token: str) -> list:
 
 def search_functions(ncc_location: str, ncc_token: str, function_name: str) -> dict:
     """
-    This function searches for an existing NCC function with the same name as the intended new NCC function.
+    This function searches for an existing Nextiva Contact Center (NCC) function with the specified name.
     """
     function = {}
     conn = http.client.HTTPSConnection(ncc_location)
@@ -62,6 +62,40 @@ def search_functions(ncc_location: str, ncc_token: str, function_name: str) -> d
         pass
     conn.close()
     return function
+
+
+def search_campaign_functions(
+    ncc_location: str, ncc_token: str, campaign_name: str
+) -> dict:
+    """
+    This function searches for existing Nextiva Contact Center (NCC) functions that begin with the name of an NCC campaign.
+    """
+    functions = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    url_encoded_name = urllib.parse.quote(campaign_name)
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/function?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if str(result["name"]).startswith(campaign_name):
+                        functions.append(result)
+    except:
+        pass
+    conn.close()
+    return functions
 
 
 def create_function(ncc_location: str, ncc_token: str, function_body: dict) -> dict:
