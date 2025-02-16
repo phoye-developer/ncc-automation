@@ -1116,7 +1116,7 @@ def create_iva_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -2070,7 +2070,7 @@ def create_general_non_iva_dtmf_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -3018,7 +3018,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -3995,7 +3995,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -4943,7 +4943,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -5779,7 +5779,7 @@ def create_direct_line_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",

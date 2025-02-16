@@ -77,6 +77,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "general"
             dispositions = general_dispositions
             queues = general_queues
+            categories = general_categories
             classifications = general_classifications.copy()
             templates = general_templates
             topics = general_topics
@@ -85,6 +86,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "hc"
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
+            categories = general_categories + hc_categories
             classifications = general_classifications.copy() + hc_classifications.copy()
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
@@ -93,6 +95,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "finserv"
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
+            categories = general_categories + finserv_categories
             classifications = (
                 general_classifications.copy() + finserv_classifications.copy()
             )
@@ -103,6 +106,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "insurance"
             dispositions = general_dispositions + insurance_dispositions
             queues = general_queues + insurance_queues
+            categories = general_categories + insurance_categories
             classifications = (
                 general_classifications.copy() + insurance_classifications.copy()
             )
@@ -432,55 +436,64 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         logging.info(f'Survey theme "Test {business_name}" already exists.')
 
     # Create user survey
-    user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
-    if user_survey == {}:
-        user_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - User",
-            main_user_survey_body,
-            survey_theme,
-        )
-        if user_survey != {}:
-            logging.info(f'Survey "{campaign_name} - User" created.')
+    if survey_theme != {}:
+        user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
+        if user_survey == {}:
+            user_survey = create_user_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - User",
+                categories,
+                survey_theme,
+            )
+            if user_survey != {}:
+                logging.info(f'Survey "{campaign_name} - User" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - User" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - User" not created.')
+            logging.info(f'Survey "{campaign_name} - User" already exists.')
     else:
-        logging.info(f'Survey "{campaign_name} - User" already exists.')
+        logging.warning("Insufficient data to create user survey.")
 
     # Create chat survey
-    chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
-    if chat_survey == {}:
-        chat_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - Chat",
-            main_chat_survey_body,
-            survey_theme,
-        )
-        if chat_survey != {}:
-            logging.info(f'Survey "{campaign_name} - Chat" created.')
+    if survey_theme != {}:
+        chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
+        if chat_survey == {}:
+            chat_survey = create_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - Chat",
+                main_chat_survey_body,
+                survey_theme,
+            )
+            if chat_survey != {}:
+                logging.info(f'Survey "{campaign_name} - Chat" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - Chat" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - Chat" not created.')
+            logging.info(f'Survey "{campaign_name} - Chat" already exists.')
     else:
-        logging.info(f'Survey "{campaign_name} - Chat" already exists.')
+        logging.warning("Insufficient data to create chat survey.")
 
     # Create QM survey
-    qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
-    if qm_survey == {}:
-        qm_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - QM",
-            main_qm_survey_body,
-            survey_theme,
-        )
-        if qm_survey != {}:
-            logging.info(f'Survey "{campaign_name} - QM" created.')
+    if survey_theme != {}:
+        qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
+        if qm_survey == {}:
+            qm_survey = create_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - QM",
+                main_qm_survey_body,
+                survey_theme,
+            )
+            if qm_survey != {}:
+                logging.info(f'Survey "{campaign_name} - QM" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - QM" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - QM" not created.')
+            logging.info(f'Survey "{campaign_name} - QM" already exists')
     else:
-        logging.info(f'Survey "{campaign_name} - QM" already exists')
+        logging.warning("Insufficient data to create QM survey.")
 
     # Create topics
     topics_to_assign = []
