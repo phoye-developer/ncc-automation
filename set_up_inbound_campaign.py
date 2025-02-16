@@ -73,6 +73,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         choice = input("Command: ")
         print()
         if choice == "1":
+            vertical = "general"
             dispositions = general_dispositions
             queues = general_queues
             classifications = general_classifications.copy()
@@ -80,6 +81,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             topics = general_topics
             reports = general_reports
         elif choice == "2":
+            vertical = "hc"
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             classifications = general_classifications.copy() + hc_classifications.copy()
@@ -87,6 +89,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             topics = general_topics + hc_topics
             reports = general_reports + hc_reports
         elif choice == "3":
+            vertical = "finserv"
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             classifications = (
@@ -698,6 +701,53 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'Template "{template["name"]}" already exists.')
             templates_to_assign.append(result)
 
+    # Create Search Contacts function
+    search_contacts_function = search_functions(
+        ncc_location, ncc_token, f"{campaign_name} - Search Contacts"
+    )
+    if search_contacts_function == {}:
+        search_contacts_function = create_search_contacts_function(
+            ncc_location, ncc_token, f"{campaign_name} - Search Contacts"
+        )
+        if search_contacts_function != {}:
+            logging.info(f'Function "{campaign_name} - Search Contacts" created.')
+        else:
+            logging.warning(
+                f'Function "{campaign_name} - Search Contacts" not created.'
+            )
+    else:
+        logging.info(f'Function "{campaign_name} - Search Contacts" already exists.')
+
+    # Create Two Way Chat function
+    two_way_chat_function = search_functions(
+        ncc_location, ncc_token, f"{campaign_name} - Two Way Chat"
+    )
+    if two_way_chat_function == {}:
+        two_way_chat_function = create_two_way_chat_function(
+            ncc_location, ncc_token, f"{campaign_name} - Two Way Chat"
+        )
+        if two_way_chat_function != {}:
+            logging.info(f'Function "{campaign_name} - Two Way Chat" created.')
+        else:
+            logging.warning(f'Function "{campaign_name} - Two Way Chat" not created.')
+    else:
+        logging.info(f'Function "{campaign_name} - Two Way Chat" already exists.')
+
+    # Create Two Way SMS function
+    two_way_sms_function = search_functions(
+        ncc_location, ncc_token, f"{campaign_name} - Two Way SMS"
+    )
+    if two_way_sms_function == {}:
+        two_way_sms_function = create_two_way_sms_function(
+            ncc_location, ncc_token, f"{campaign_name} - Two Way SMS"
+        )
+        if two_way_sms_function != {}:
+            logging.info(f'Function "{campaign_name} - Two Way SMS" created.')
+        else:
+            logging.warning(f'Function "{campaign_name} - Two Way SMS" not created.')
+    else:
+        logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
+
     # Create ACD Voicemail function
     acd_voicemail_function = search_functions(
         ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
@@ -731,26 +781,66 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
-        if acd_voicemail_function != {} and acd_callback_function != {}:
+        if (
+            acd_voicemail_function != {}
+            and acd_callback_function != {}
+            and search_contacts_function != {}
+            and two_way_chat_function != {}
+            and two_way_sms_function != {}
+        ):
             if workflow_type == "iva":
                 workflow = create_iva_workflow(
                     ncc_location,
                     ncc_token,
                     campaign_name,
                     business_name,
+                    queues_to_assign,
+                    search_contacts_function,
+                    two_way_chat_function,
+                    two_way_sms_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )
             elif workflow_type == "non_iva_dtmf":
-                workflow = create_non_iva_dtmf_workflow(
-                    ncc_location,
-                    ncc_token,
-                    campaign_name,
-                    business_name,
-                    queues_to_assign,
-                    acd_voicemail_function,
-                    acd_callback_function,
-                )
+                if vertical == "general":
+                    workflow = create_general_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "hc":
+                    workflow = create_hc_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "finserv":
+                    workflow = create_finserv_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
             else:
                 workflow = create_direct_line_workflow(
                     ncc_location,
@@ -758,6 +848,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     campaign_name,
                     business_name,
                     queues_to_assign,
+                    search_contacts_function,
+                    two_way_chat_function,
+                    two_way_sms_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )

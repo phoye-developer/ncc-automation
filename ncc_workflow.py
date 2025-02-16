@@ -77,6 +77,10 @@ def create_iva_workflow(
     ncc_token: str,
     workflow_name: str,
     business_name: str,
+    queues: dict,
+    search_contacts_function: dict,
+    two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -89,137 +93,44 @@ def create_iva_workflow(
         {
             "maxActions": 10000,
             "localizations": {
-                "name": {"en": {"value": workflow_name}},
-                "description": {"en": {"value": "IVA Workflow"}},
+                "name": {"en": {"language": "en", "value": workflow_name}},
+                "description": {"en": {"language": "en", "value": "IVA workflow"}},
             },
             "states": {
-                "67548667ca85e7eb0bed9d1d": {
+                "67b1186f5510d9081ac8e32b": {
                     "category": "Standard",
-                    "campaignStateId": "67548667ca85e7eb0bed9d1d",
+                    "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "InboundCall or InboundSMS",
-                                "message": "Thank you for contacting ${workitem.data.companyName}! To take a brief survey, go to https://login.thrio.io/survey/?tenant=nextivase19&campaignId=67588455e3c06e3d040ca5df&context=%7B%22language%22%3A%22en%22%2C%22workitemId%22%3A%22${workitem.workitemId}%22%7D.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727538",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Chat",
-                                "message": "Thank you for contacting ${workitem.data.companyName}. To take a brief survey, go to https://login.thrio.io/survey/?tenant=nextivase19&campaignId=67588455e3c06e3d040ca5df&context=%7B%22language%22%3A%22en%22%2C%22workitemId%22%3A%22${workitem.workitemId}%22%7D.",
-                                "toAddress": "workitem.data.context.consumerData.phone",
-                                "fromAddress": "'+14809192185'",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727539",
-                            "icon": "icon-ai-message",
-                        },
-                        {
+                            "category": "Action",
+                            "title": "Terminate",
                             "name": "Terminate",
                             "type": "terminate",
                             "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                            "_selected": False,
-                            "id": "refId1736293727540",
-                            "icon": "icon-terminate",
-                        },
+                        }
                     ],
                     "objectType": "campaignstate",
-                    "key": "67548667ca85e7eb0bed9d1d",
-                    "_id": "67548667ca85e7eb0bed9d1d",
+                    "key": "67b1186f5510d9081ac8e32b",
+                    "_id": "67b1186f5510d9081ac8e32b",
                     "description": "End State",
                     "name": "End State",
-                    "location": "104.73465829197903 358.887243337547",
+                    "location": "-147.23017129888294 34.91808770109185",
                     "transitions": [],
                 },
                 "start-state": {
                     "category": "Begin",
                     "campaignStateId": "start-state",
                     "actions": [
-                        {
-                            "icon": "icon-save",
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "currency",
-                                "rightExpression": "'$'",
-                                "variableName": "currency",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "liveTransfer",
-                                "rightExpression": "false",
-                                "variableName": "liveTransfer",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738366172155",
-                            "icon": "icon-save",
-                        },
                         {
                             "name": "Save Variable",
                             "description": "",
@@ -238,16 +149,16 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1738366172156",
+                            "id": "refId1739600227611",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "verified",
+                                "description": "contactFound",
                                 "rightExpression": "false",
-                                "variableName": "verified",
+                                "variableName": "contactFound",
                                 "asObject": True,
                                 "dlpOption": False,
                                 "wfmOption": False,
@@ -259,16 +170,89 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1738366172157",
+                            "id": "refId1739600227612",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "sourceLanguage",
-                                "rightExpression": "en",
-                                "variableName": "sourceLanguage",
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227613",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone",
+                                "rightExpression": "workitem.from.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227614",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "priority",
+                                "rightExpression": "Standard",
+                                "variableName": "priority",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
                                 "wfmOption": False,
@@ -280,56 +264,13 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1738366172158",
                             "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "ccAmount",
-                                "rightExpression": "6346",
-                                "variableName": "ccAmount",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738366172159",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SpinSci - Patient Lookup",
-                                "functionId": "675486df3bf7aa24c8198202",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {"name": "SpinSci - Patient Lookup"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1738366172160",
-                            "icon": "icon-function",
+                            "id": "refId1739600227615",
                         },
                         {
                             "name": "Survey",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Survey",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -341,18 +282,80 @@ def create_iva_workflow(
                                     ],
                                 },
                                 "stateName": "Survey",
+                                "description": "Transition to another state",
                             },
                             "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1733873034739",
-                            "id": "refId1738366172161",
+                            "transitionId": "refId1739600227151",
+                            "id": "refId1739600227616",
                             "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Search Contacts",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11894720280f716c36bdf",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67b118871e7c034010972864",
+                            "_selected": False,
+                            "id": "refId1739600227617",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1739600227151"},
+                        {"name": "Search Contacts", "id": "67b118871e7c034010972864"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "-92.43594451534577 -158.49227385694343",
+                },
+                "67b11894720280f716c36bdf": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11894720280f716c36bdf",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600227189",
+                            "icon": "icon-function",
                         },
                         {
                             "name": "Chat",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Chat",
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -363,42 +366,19 @@ def create_iva_workflow(
                                         }
                                     ],
                                 },
-                                "stateName": "Chat",
+                                "stateId": "67b11b3a4492457796ee0690",
                             },
-                            "type": "transitionbyname",
+                            "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1733592655593",
-                            "id": "refId1738366172162",
+                            "transitionId": "refId1739600227187",
                             "icon": "icon-transition",
-                        },
-                        {
-                            "name": "InboundSMS",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "InboundSMS",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "InboundSMS",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655652",
-                            "id": "refId1738366172163",
-                            "icon": "icon-transition",
+                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "InboundCall",
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -409,61 +389,243 @@ def create_iva_workflow(
                                         }
                                     ],
                                 },
-                                "stateName": "InboundCall",
+                                "stateId": "67b11b424881f97a86b2640f",
                             },
-                            "type": "transitionbyname",
+                            "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1733592655594",
-                            "id": "refId1738366172164",
+                            "transitionId": "refId1739600227163",
+                            "id": "refId1739600227191",
                             "icon": "icon-transition",
                         },
                         {
+                            "icon": "icon-transition",
+                            "name": "InboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b4990b64c67bfb0e882",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600227203",
+                        },
+                    ],
+                    "_id": "67b11894720280f716c36bdf",
+                    "key": "67b11894720280f716c36bdf",
+                    "location": "235.689872021094 86.58930650937515",
+                    "transitions": [
+                        {"name": "Chat", "id": "refId1739600227187"},
+                        {"name": "InboundCall", "id": "refId1739600227163"},
+                        {"name": "InboundSMS", "id": "refId1739600227203"},
+                    ],
+                },
+                "67b11b35410f937347fe9aee": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b35410f937347fe9aee",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
                             "name": "End State",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "End State",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "67548667ca85e7eb0bed9d1d",
+                                "stateName": "End State",
                             },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1733592655667",
-                            "id": "refId1738366172165",
-                            "icon": "icon-transition",
-                        },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1739600226811",
+                        }
                     ],
-                    "transitions": [
-                        {"name": "Survey", "id": "refId1733873034739"},
-                        {"name": "Chat", "id": "refId1733592655593"},
-                        {"name": "InboundSMS", "id": "refId1733592655652"},
-                        {"name": "InboundCall", "id": "refId1733592655594"},
-                        {"name": "End State", "id": "refId1733592655667"},
-                    ],
-                    "objectType": "campaignstate",
-                    "key": "start-state",
-                    "_id": "start-state",
-                    "description": "Begin State",
-                    "name": "Begin State",
-                    "location": "-127.05378088864046 -24.43341940166158",
+                    "_id": "67b11b35410f937347fe9aee",
+                    "key": "67b11b35410f937347fe9aee",
+                    "location": "626.610300152467 -88.1600651150722",
+                    "transitions": [{"name": "End State", "id": "refId1739600226811"}],
                 },
-                "67549fef8c3694beb965b21c": {
+                "67b11b3a4492457796ee0690": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "67549fef8c3694beb965b21c",
+                    "campaignStateId": "67b11b3a4492457796ee0690",
+                    "name": "Chat",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}. In a few words, what can I help you with today?",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600226829",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "Webhook",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11bac9255944444f52b95",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600226839",
+                        },
+                    ],
+                    "_id": "67b11b3a4492457796ee0690",
+                    "key": "67b11b3a4492457796ee0690",
+                    "location": "631.2642848004028 236.06753202443764",
+                    "transitions": [{"name": "Webhook", "id": "refId1739600226839"}],
+                },
+                "67b11b424881f97a86b2640f": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b424881f97a86b2640f",
+                    "name": "InboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-dialogflow",
+                            "name": "Transfer to Dialogflow",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                            "type": "transfertodialogflow",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "Webhook",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11bac9255944444f52b95",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600226869",
+                        },
+                    ],
+                    "_id": "67b11b424881f97a86b2640f",
+                    "key": "67b11b424881f97a86b2640f",
+                    "location": "629.7129565844244 412.9189486459884",
+                    "transitions": [{"name": "Webhook", "id": "refId1739600226869"}],
+                },
+                "67b11b4990b64c67bfb0e882": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b4990b64c67bfb0e882",
+                    "name": "InboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "smsCounter",
+                                "rightExpression": "1",
+                                "variableName": "smsCounter",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "Webhook",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11bac9255944444f52b95",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600226894",
+                        },
+                    ],
+                    "_id": "67b11b4990b64c67bfb0e882",
+                    "key": "67b11b4990b64c67bfb0e882",
+                    "location": "631.2642848004031 588.219037051561",
+                    "transitions": [{"name": "Webhook", "id": "refId1739600226894"}],
+                },
+                "67b11bac9255944444f52b95": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11bac9255944444f52b95",
                     "name": "Webhook",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase19",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Wait Chat Message",
                             "description": "",
                             "properties": {
-                                "description": "workitem.type == 'Chat'",
                                 "timeoutDuration": 3600000,
-                                "stateId": "67548667ca85e7eb0bed9d1d",
+                                "stateId": "67b1186f5510d9081ac8e32b",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -477,70 +639,14 @@ def create_iva_workflow(
                             },
                             "type": "waitforchatmessage",
                             "_selected": False,
-                            "id": "refId1734645471839",
+                            "id": "refId1739600228033",
                             "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (to English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "675915e93bf7aa24c81986ac",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (to English)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1734645471840",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "sourceLanguage",
-                                "rightExpression": "workitem.data.googletranslateresponse.body.data.translations[0].detectedSourceLanguage",
-                                "variableName": "sourceLanguage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1734645471841",
-                            "icon": "icon-save",
                         },
                         {
                             "name": "Message Bot",
                             "description": "",
                             "properties": {
-                                "description": "Chat (English)",
+                                "description": "Chat",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -548,67 +654,23 @@ def create_iva_workflow(
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
+                                        }
                                     ],
                                 },
                                 "message": "$V.workitem.currentChatMessage.textMsg",
                                 "event": "",
-                                "serviceId": "6750b6e43bf7aa24c8197bfe",
-                                "expansions": {
-                                    "serviceId": {"name": "Dialogflow (HC)"}
-                                },
-                                "_working": False,
                             },
                             "type": "chatmessagebot",
                             "_selected": False,
-                            "id": "refId1734645471842",
                             "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Message Bot",
-                            "description": "",
-                            "properties": {
-                                "description": "Chat (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "event": "",
-                                "serviceId": "6750b6e43bf7aa24c8197bfe",
-                                "expansions": {
-                                    "serviceId": {"name": "Dialogflow (HC)"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "chatmessagebot",
-                            "_selected": False,
-                            "id": "refId1734645471843",
-                            "icon": "icon-ai-message",
+                            "id": "refId1739600228034",
                         },
                         {
                             "name": "SMS Wait For Messages",
                             "description": "",
                             "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
                                 "timeoutDuration": 3600000,
-                                "stateId": "67548667ca85e7eb0bed9d1d",
+                                "stateId": "67b1186f5510d9081ac8e32b",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -619,7 +681,7 @@ def create_iva_workflow(
                                         },
                                         {
                                             "leftExpression": "workitem.data.smsCounter",
-                                            "operator": "!=",
+                                            "operator": ">",
                                             "rightExpression": "1",
                                         },
                                     ],
@@ -627,14 +689,14 @@ def create_iva_workflow(
                             },
                             "type": "smswaitformessage",
                             "_selected": False,
-                            "id": "refId1734645471844",
+                            "id": "refId1739600228035",
                             "icon": "icon-timer",
                         },
                         {
                             "name": "Message Bot",
                             "description": "",
                             "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
+                                "description": "InboundSMS",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -647,16 +709,11 @@ def create_iva_workflow(
                                 },
                                 "message": "$V.workitem.currentSMSMessage.textMsg",
                                 "event": "",
-                                "serviceId": "6750b6e43bf7aa24c8197bfe",
-                                "expansions": {
-                                    "serviceId": {"name": "Dialogflow (HC)"}
-                                },
-                                "_working": False,
                             },
                             "type": "chatmessagebot",
                             "_selected": False,
-                            "id": "refId1734645471845",
                             "icon": "icon-ai-message",
+                            "id": "refId1739600228036",
                         },
                         {
                             "name": "Save Variable",
@@ -683,140 +740,33 @@ def create_iva_workflow(
                             "type": "savevariable",
                             "_selected": False,
                             "icon": "icon-save",
-                            "id": "refId1734645471846",
+                            "id": "refId1739600228037",
                         },
                         {
                             "name": "Wait for messages",
                             "description": "",
                             "properties": {
-                                "description": "Wait for a fulfillment response from Dialogflow",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                },
+                                }
                             },
                             "type": "waitforbot",
                             "_selected": False,
-                            "id": "refId1734645471847",
+                            "id": "refId1739600228047",
                             "icon": "icon-ai-message",
                         },
                         {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "Check hasAllParameters",
-                                "scriptId": "67036ef0cc85b112bd1cae3e",
-                                "variableName": "hasAllParameters",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "scriptId": {"name": "Check hasAllParameters"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1734645471848",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "FollowUp",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "FollowUp",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.hasAllParameters",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateId": "6754a66807e637133888d11b",
-                                "points": {
-                                    "h": True,
-                                    "r": [],
-                                    "ct": 0,
-                                    "__gohashid": 6972,
-                                },
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1733592654758",
-                            "id": "refId1734645471849",
                             "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "queueId",
-                                "scriptId": "670370dccfd52b2fabf52f5c",
-                                "variableName": "queueId",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get queueId"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1734645471850",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "surveyId",
-                                "scriptId": "67037c2523f72d338ef3aa68",
-                                "variableName": "surveyId",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get surveyId"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1734645471851",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "icon": "icon-script",
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "priority",
-                                "scriptId": "67649cb46aa5ac0fee70b93e",
-                                "variableName": "priority",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get priority"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "Chat or InboundSMS",
+                            "name": "Chat or InboundSMS Action",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Chat or InboundSMS",
                                 "condition": {
                                     "conditionType": "OR",
                                     "expressions": [
                                         {
-                                            "operator": "==",
                                             "leftExpression": "workitem.type",
+                                            "operator": "==",
                                             "rightExpression": "'Chat'",
                                         },
                                         {
@@ -830,21 +780,20 @@ def create_iva_workflow(
                             },
                             "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1733592654882",
-                            "id": "refId1734645471852",
-                            "icon": "icon-transition",
+                            "transitionId": "67b1220e628aee17f5928472",
+                            "id": "refId1739600228096",
                         },
                         {
-                            "name": "InboundCall",
+                            "icon": "icon-transition",
+                            "name": "InboundCall Action",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "InboundCall",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
-                                            "operator": "==",
                                             "leftExpression": "workitem.type",
+                                            "operator": "==",
                                             "rightExpression": "'InboundCall'",
                                         }
                                     ],
@@ -852,140 +801,34 @@ def create_iva_workflow(
                                 "stateName": "workitem.data.botWebhookRequest.queryResult.action",
                             },
                             "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "67561ee2e2c43cea855b41a6",
-                            "id": "refId1734645471853",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "67549fef8c3694beb965b21c",
-                    "key": "67549fef8c3694beb965b21c",
-                    "location": "645.3735128053632 308.11266549492274",
-                    "transitions": [
-                        {"name": "FollowUp", "id": "refId1733592654758"},
-                        {"name": "Chat or InboundSMS", "id": "refId1733592654882"},
-                        {"name": "InboundCall", "id": "67561ee2e2c43cea855b41a6"},
-                    ],
-                },
-                "6754a52e31e712f586a54dce": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754a52e31e712f586a54dce",
-                    "name": "InboundCall",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "icon": "icon-dialogflow",
-                            "name": "Transfer to Dialogflow",
-                            "description": "",
-                            "properties": {
-                                "description": "+1 301-615-7514",
-                                "address": "'+13016157514'",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "transfertodialogflow",
                             "_selected": True,
-                        },
-                        {
-                            "icon": "icon-transition",
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "67549fef8c3694beb965b21c",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1733592654663",
+                            "transitionId": "refId1739600228115",
                         },
                     ],
-                    "_id": "6754a52e31e712f586a54dce",
-                    "key": "6754a52e31e712f586a54dce",
-                    "location": "346.2543127656253 149.5229978031253",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592654663"}],
+                    "_id": "67b11bac9255944444f52b95",
+                    "key": "67b11bac9255944444f52b95",
+                    "location": "1095.232082041558 763.2564039101042",
+                    "transitions": [
+                        {
+                            "name": "Chat or InboundSMS Action",
+                            "id": "67b1220e628aee17f5928472",
+                        },
+                        {"name": "InboundCall Action", "id": "refId1739600228115"},
+                    ],
                 },
-                "6754a66807e637133888d11b": {
+                "67b11d83f4a104689291447f": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "6754a66807e637133888d11b",
+                    "campaignStateId": "67b11d83f4a104689291447f",
                     "name": "FollowUp",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase19",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Forward Bot Response",
-                            "description": "Forward BOT response to consumer",
-                            "properties": {
-                                "description": "Chat (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "NEXT Healthcare",
-                            },
-                            "type": "chatforwardbotresponseconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727193",
-                            "icon": "icon-mail-forward",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Chatbot to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "6759159ccb6cdb0056107af8",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Chatbot to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "icon": "icon-api",
-                            "id": "refId1736293727194",
-                        },
-                        {
+                            "icon": "icon-ai-message",
                             "name": "Chat Message Consumer",
                             "description": "",
                             "properties": {
-                                "description": "Chat (Non-English)",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -993,29 +836,22 @@ def create_iva_workflow(
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
+                                        }
                                     ],
                                 },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
+                                "from": "workitem.data.companyName",
+                                "message": "$V.workitem.chatBotResponse.text[0]",
                                 "messageType": "BOT",
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1736293727195",
+                            "_selected": True,
                         },
                         {
+                            "icon": "icon-ai-message",
                             "name": "SMS Message Consumer",
                             "description": "",
                             "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
                                 "message": "$V.workitem.chatBotResponse.text[0]",
                                 "toAddress": "workitem.from",
                                 "fromAddress": "workitem.to",
@@ -1032,88 +868,45 @@ def create_iva_workflow(
                                 },
                             },
                             "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727196",
-                            "icon": "icon-ai-message",
+                            "_selected": False,
                         },
                         {
                             "name": "Webhook",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Webhook",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "stateName": "Webhook",
+                                "description": "Transition to another state",
                             },
                             "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1733592655455",
-                            "id": "refId1736293727197",
+                            "transitionId": "refId1739600227224",
                             "icon": "icon-transition",
+                            "id": "refId1739600228385",
                         },
                     ],
-                    "_id": "6754a66807e637133888d11b",
-                    "key": "6754a66807e637133888d11b",
-                    "location": "970 490",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592655455"}],
+                    "_id": "67b11d83f4a104689291447f",
+                    "key": "67b11d83f4a104689291447f",
+                    "location": "1378.6929147598528 315.9038660630413",
+                    "transitions": [{"name": "Webhook", "id": "refId1739600227224"}],
                 },
-                "6754d21cf309b28f125b9338": {
+                "67b11daace899acb3e0d1c38": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "6754d21cf309b28f125b9338",
+                    "campaignStateId": "67b11daace899acb3e0d1c38",
                     "name": "ConnectAgent",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase19",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "liveTransfer",
-                                "rightExpression": "true",
-                                "variableName": "liveTransfer",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736870642343",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Please wait while I transfer you to an agent who can assist you.",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736870642344",
-                            "icon": "icon-save",
-                        },
-                        {
+                            "icon": "icon-ai-message",
                             "name": "Chat Message Consumer",
                             "description": "",
                             "properties": {
-                                "description": "Please wait... (English)",
+                                "description": "Please wait...",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1121,89 +914,19 @@ def create_iva_workflow(
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
+                                        }
                                     ],
                                 },
-                                "from": "${workitem.data.companyName}",
+                                "from": "workitem.data.companyName",
                                 "message": "Please wait while I transfer you to an agent who can assist you.",
                                 "messageType": "BOT",
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
                             "_selected": False,
-                            "id": "refId1736870642345",
+                        },
+                        {
                             "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736870642346",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736870642347",
-                            "icon": "icon-ai-message",
-                        },
-                        {
                             "name": "SMS Message Consumer",
                             "description": "",
                             "properties": {
@@ -1225,14 +948,31 @@ def create_iva_workflow(
                             },
                             "type": "smsmessageconsumer",
                             "_selected": False,
-                            "id": "refId1736870642348",
-                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "Retrieve the call",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                }
+                            },
+                            "type": "dialogflowtakeback",
+                            "_selected": False,
+                            "icon": "icon-dialogflow",
+                            "id": "refId1739600228216",
                         },
                         {
                             "name": "Synthesize Text via Google TTS",
                             "description": "Convert Text into Audio using Google's Text-To-Speech",
                             "properties": {
-                                "description": "Please wait...",
                                 "voiceName": "en-US-Wavenet-J",
                                 "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
                                 "condition": {
@@ -1245,76 +985,12 @@ def create_iva_workflow(
                                         }
                                     ],
                                 },
+                                "description": "Please wait...",
                             },
                             "type": "googletts",
                             "_selected": False,
-                            "id": "refId1736870642349",
                             "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "Contact Info",
-                                "scriptId": "6703724d50226e7fac14eff4",
-                                "variableName": "agentUserId",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Contact Info"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1736870642350",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "Get VIP status",
-                                "scriptId": "6764a2e295da237375b528d6",
-                                "variableName": "vip",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get VIP status"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1736870642351",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "priority",
-                                "rightExpression": "Highest",
-                                "variableName": "priority",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.vip",
-                                            "operator": "==",
-                                            "rightExpression": "true",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736870642352",
-                            "icon": "icon-save",
+                            "id": "refId1739600228217",
                         },
                         {
                             "name": "Enter Queue from Expression",
@@ -1323,10 +999,9 @@ def create_iva_workflow(
                                 "priorityExpression": "workitem.data.priority",
                                 "queueIdsExpression": "workitem.data.queueId",
                                 "ringAllEnabled": False,
-                                "stickyEnabled": True,
-                                "stickyUserType": "userIdFromExpression",
-                                "stickyUserIdFromExpression": "workitem.data.agentUserId",
-                                "stickyDurationToWaitSeconds": "7200",
+                                "stickyEnabled": False,
+                                "stickyUserType": "5",
+                                "stickyDurationToWaitSeconds": 0,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
@@ -1334,16 +1009,15 @@ def create_iva_workflow(
                             },
                             "type": "enterqueuefromexpression",
                             "_selected": True,
-                            "id": "refId1736870642353",
+                            "id": "refId1739600228218",
                             "icon": "icon-enterqueues",
                         },
                         {
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "MH - Two way Chat conversation (with translation)",
-                                "functionId": "67591497cb6cdb0056107af7",
-                                "functionExpression": "",
+                                "description": "Two way Chat conversation",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1356,14 +1030,14 @@ def create_iva_workflow(
                                 },
                                 "expansions": {
                                     "functionId": {
-                                        "name": "MH - Two way Chat conversation (with translation)"
+                                        "name": two_way_chat_function["name"]
                                     }
                                 },
                                 "_working": False,
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1736870642354",
+                            "id": "refId1739600228219",
                             "icon": "icon-function",
                         },
                         {
@@ -1371,7 +1045,7 @@ def create_iva_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1383,20 +1057,19 @@ def create_iva_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1736870642355",
+                            "id": "refId1739600228220",
                             "icon": "icon-function",
                         },
                         {
                             "name": "HoldQueue",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "HoldQueue",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1407,43 +1080,44 @@ def create_iva_workflow(
                                         }
                                     ],
                                 },
-                                "stateId": "6754d3e1cebccc1b46fb81b9",
+                                "stateId": "67b11dbf1fac7db53c1d0210",
+                                "description": "Transition to another state",
                                 "points": {
                                     "h": True,
                                     "r": [],
                                     "ct": 0,
-                                    "__gohashid": 18129,
+                                    "__gohashid": 115203,
                                 },
                             },
                             "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1733592655314",
-                            "id": "refId1736870642356",
+                            "transitionId": "refId1739600227355",
+                            "id": "refId1739600228221",
                             "icon": "icon-transition",
                         },
                     ],
-                    "_id": "6754d21cf309b28f125b9338",
-                    "key": "6754d21cf309b28f125b9338",
-                    "location": "1291.8858968900809 138.65132175363544",
-                    "transitions": [{"name": "HoldQueue", "id": "refId1733592655314"}],
+                    "_id": "67b11daace899acb3e0d1c38",
+                    "key": "67b11daace899acb3e0d1c38",
+                    "location": "1381.9621588018802 462.6942731551528",
+                    "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
-                "6754d3e1cebccc1b46fb81b9": {
+                "67b11dbf1fac7db53c1d0210": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "6754d3e1cebccc1b46fb81b9",
+                    "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase19",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "icon": "icon-playdigits",
-                            "name": "Play & Collect Digits",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
                                 "dlpOption": False,
@@ -1451,13 +1125,9 @@ def create_iva_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
                             },
-                            "type": "playdigits",
-                            "_selected": False,
+                            "type": "googlettscollect",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-function",
@@ -1513,97 +1183,14 @@ def create_iva_workflow(
                                 "_working": False,
                             },
                             "type": "function",
-                            "_selected": False,
-                        },
-                        {
-                            "icon": "icon-playdigits",
-                            "name": "Play & Collect Digits",
-                            "description": "",
-                            "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "1",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playdigits",
                             "_selected": True,
-                            "id": "refId1733592655333",
+                            "id": "refId1739600228575",
                         },
                         {
-                            "icon": "icon-function",
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Voicemail (1)",
-                                "functionId": acd_voicemail_function["_id"],
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_voicemail_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": True,
-                            "id": "refId1733592655346",
-                        },
-                        {
-                            "icon": "icon-function",
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Callback (2)",
-                                "functionId": acd_callback_function["_id"],
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'2'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_callback_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1733592655369",
-                        },
-                        {
-                            "icon": "icon-transition",
-                            "name": "HoldQueue",
+                            "name": "Loop",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "HoldQueue",
+                                "description": "Back to Top",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
@@ -1612,3245 +1199,21 @@ def create_iva_workflow(
                             },
                             "type": "transitionbyname",
                             "_selected": False,
-                            "id": "refId1733592655368",
-                            "transitionId": "6754d499ccb6c1f8f6fe72de",
+                            "transitionId": "refId1739600227365",
+                            "icon": "icon-transition",
+                            "id": "refId1739600228544",
                         },
                     ],
-                    "_id": "6754d3e1cebccc1b46fb81b9",
-                    "key": "6754d3e1cebccc1b46fb81b9",
-                    "location": "1591.6195351472147 271.0110364906225",
-                    "transitions": [
-                        {"name": "HoldQueue", "id": "6754d499ccb6c1f8f6fe72de"}
-                    ],
-                },
-                "6754d66b14feffef0a0fe835": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d66b14feffef0a0fe835",
-                    "name": "input.welcome",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Forward Bot Response",
-                            "description": "Forward BOT response to consumer",
-                            "properties": {
-                                "description": "Chat (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "NEXT Healthcare",
-                            },
-                            "type": "chatforwardbotresponseconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727288",
-                            "icon": "icon-mail-forward",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Chatbot to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "6759159ccb6cdb0056107af8",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Chatbot to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "icon": "icon-api",
-                            "id": "refId1736293727289",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Chat (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1736293727290",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
-                                "message": "$V.workitem.chatBotResponse.text[0]",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727291",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655432",
-                            "id": "refId1736293727292",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d66b14feffef0a0fe835",
-                    "key": "6754d66b14feffef0a0fe835",
-                    "location": "977.681174605216 141.4922316884425",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592655432"}],
-                },
-                "6754d6b1013b53b761521cb1": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d6b1013b53b761521cb1",
-                    "name": "input.unknown",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Forward Bot Response",
-                            "description": "Forward BOT response to consumer",
-                            "properties": {
-                                "description": "Chat (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "NEXT Healthcare",
-                            },
-                            "type": "chatforwardbotresponseconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727271",
-                            "icon": "icon-mail-forward",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Chatbot to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "6759159ccb6cdb0056107af8",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Chatbot to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "icon": "icon-api",
-                            "id": "refId1736293727272",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Chat (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1736293727273",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
-                                "message": "$V.workitem.chatBotResponse.text[0]",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727274",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655445",
-                            "id": "refId1736293727275",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d6b1013b53b761521cb1",
-                    "key": "6754d6b1013b53b761521cb1",
-                    "location": "978.2321383050015 2.3998122501033095",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592655445"}],
-                },
-                "6754d9242071cae7ccc0408f": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d9242071cae7ccc0408f",
-                    "name": "ScheduleAppt",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "action",
-                                "rightExpression": "ScheduleAppt",
-                                "variableName": "action",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "icon": "icon-save",
-                            "id": "refId1733699106764",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "actionPhrase",
-                                "rightExpression": "schedule your appointment",
-                                "variableName": "actionPhrase",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1733699106765",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Verify",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Verify",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "Verify",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655964",
-                            "id": "refId1733699106766",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Please wait while I schedule your appointment.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1733699106767",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "message": "Please wait while I schedule your appointment.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1733699106768",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Please wait...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Please wait while I schedule your appointment.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1733699106769",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655517",
-                            "id": "refId1733699106770",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d9242071cae7ccc0408f",
-                    "key": "6754d9242071cae7ccc0408f",
-                    "location": "1059.7172096802483 -318.93998231888554",
-                    "transitions": [
-                        {"name": "Verify", "id": "refId1733592655964"},
-                        {"name": "Webhook", "id": "refId1733592655517"},
-                    ],
-                },
-                "6754d948bf9b42b9875f3441": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d948bf9b42b9875f3441",
-                    "name": "RescheduleAppt",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "Get date",
-                                "scriptId": "6750dbe7e3c06e3d040c9c3d",
-                                "variableName": "date",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get date"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1736293726963",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": "Get time",
-                                "scriptId": "6750dc09c3e1f25ae7bb4b20",
-                                "variableName": "time",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {"scriptId": {"name": "Get time"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1736293726964",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Retrieve the call",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "dialogflowtakeback",
-                            "_selected": False,
-                            "id": "refId1736293726965",
-                            "icon": "icon-dialogflow",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "action",
-                                "rightExpression": "RescheduleAppt",
-                                "variableName": "action",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293726966",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "actionPhrase",
-                                "rightExpression": "reschedule your appointment",
-                                "variableName": "actionPhrase",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293726967",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Verify",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Verify",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "Verify",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655978",
-                            "id": "refId1736293726968",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SpinSci - Appointment Lookup (with translation)",
-                                "functionId": "675945003fb21379dc622fb5",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "SpinSci - Appointment Lookup (with translation)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1736293726969",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.apptLookupResult != Found",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.apptLookupResult",
-                                            "operator": "!=",
-                                            "rightExpression": "'Found'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699103083",
-                            "id": "refId1736293726970",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Please wait while I reschedule your appointment.",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293726971",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Please wait while I reschedule your appointment.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726972",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293726973",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726974",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "message": "Please wait while I reschedule your appointment.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726975",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Please wait...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Please wait while I reschedule your appointment.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293726976",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Spinsci-Reschedule appointment",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "rescheduleApptResponse",
-                                "restCallId": "6740646d7a6d716bb5a83f0a",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Spinsci-Reschedule appointment"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293726977",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Start Timer",
-                            "description": "",
-                            "properties": {
-                                "timeoutInSeconds": "2",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": False,
-                            "id": "refId1736293726978",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Your appointment has been rescheduled for ${workitem.data.date}. What else can I help you with today?",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293726979",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been rescheduled for... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Your appointment has been rescheduled for ${workitem.data.date}. What else can I help you with today?",
-                                "messageType": "BOT",
-                                "options": [
-                                    {"label": "Get Location", "value": "Get Location"},
-                                    {
-                                        "label": "Find a Doctor",
-                                        "value": "Find a Doctor",
-                                    },
-                                    {
-                                        "label": "Refill Prescription",
-                                        "value": "Refill Prescription",
-                                    },
-                                ],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726980",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293726981",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been rescheduled for... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726982",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been rescheduled for...",
-                                "message": "Your appointment has been rescheduled for ${workitem.data.date}. What else can I help you with today?",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726983",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Your appointment has been rescheduled for...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Your appointment has been rescheduled for ${workitem.data.date}. Thank you and have a great day!</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293726984",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your appointment has been rescheduled for ${workitem.data.date}. Reply back with any questions!",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726985",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699104431",
-                            "id": "refId1736293726986",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'Chat'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your appointment has been rescheduled for ${workitem.data.date}. Reply back with any questions!",
-                                "toAddress": "workitem.data.context.consumerData.phone",
-                                "fromAddress": "'+14809192185'",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293726987",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655529",
-                            "id": "refId1736293726988",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d948bf9b42b9875f3441",
-                    "key": "6754d948bf9b42b9875f3441",
-                    "location": "1295.106319285092 -273.3481790910305",
-                    "transitions": [
-                        {"name": "Verify", "id": "refId1733592655978"},
-                        {"name": "ConnectAgent", "id": "refId1733699103083"},
-                        {"name": "End State", "id": "refId1733699104431"},
-                        {"name": "Webhook", "id": "refId1733592655529"},
-                    ],
-                },
-                "6754d9691a335d2b40f9da7d": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d9691a335d2b40f9da7d",
-                    "name": "CancelAppt",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Retrieve the call",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "description": "workitem.type == 'InboundCall'",
-                            },
-                            "type": "dialogflowtakeback",
-                            "_selected": False,
-                            "id": "refId1736293727021",
-                            "icon": "icon-dialogflow",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "action",
-                                "rightExpression": "CancelAppt",
-                                "variableName": "action",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727022",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "actionPhrase",
-                                "rightExpression": "cancel your appointment",
-                                "variableName": "actionPhrase",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727023",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Verify",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Verify",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "Verify",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592656022",
-                            "id": "refId1736293727024",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SpinSci - Appointment Lookup (with translation)",
-                                "functionId": "675945003fb21379dc622fb5",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "SpinSci - Appointment Lookup (with translation)"
-                                    }
-                                },
-                                "_working": False,
-                                "functionExpression": "",
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1736293727025",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.apptLookupResult != Found",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.apptLookupResult",
-                                            "operator": "!=",
-                                            "rightExpression": "'Found'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699107755",
-                            "id": "refId1736293727026",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Please wait while I cancel your appointment.",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727027",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Please wait while I cancel your appointment.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727028",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727029",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727030",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "message": "Please wait while I cancel your appointment.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727031",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Please wait...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Please wait while I cancel your appointment.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293727032",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Spinsci - cancelAppointment",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "cancelApptResponse",
-                                "restCallId": "673ef796186614179724fccf",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Spinsci - cancelAppointment"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727033",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Start Timer",
-                            "description": "",
-                            "properties": {
-                                "timeoutInSeconds": "2",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": False,
-                            "id": "refId1736293727034",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Your appointment has been cancelled.",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727035",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been cancelled. (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Your appointment has been cancelled. What else can I help you with today?",
-                                "messageType": "BOT",
-                                "options": [
-                                    {"label": "Get Location", "value": "Get Location"},
-                                    {
-                                        "label": "Find a Doctor",
-                                        "value": "Find a Doctor",
-                                    },
-                                    {
-                                        "label": "Refill Prescription",
-                                        "value": "Refill Prescription",
-                                    },
-                                ],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727036",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727037",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been cancelled. (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727038",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your appointment has been cancelled.",
-                                "message": "Your appointment has been cancelled. What else can I help you with today?",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727039",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Your appointment has been cancelled.",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Your appointment has been cancelled. Thank you for calling and have a great day!</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293727040",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your appointment has been cancelled. Reply back with any questions!",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727041",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699108123",
-                            "id": "refId1736293727042",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'Chat'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your appointment has been cancelled. Reply back with any questions!",
-                                "toAddress": "workitem.data.context.consumerData.phone",
-                                "fromAddress": "'+14809192185'",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727043",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655542",
-                            "id": "refId1736293727044",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d9691a335d2b40f9da7d",
-                    "key": "6754d9691a335d2b40f9da7d",
-                    "location": "1530.297258596479 -273.8989790871552",
-                    "transitions": [
-                        {"name": "Verify", "id": "refId1733592656022"},
-                        {"name": "ConnectAgent", "id": "refId1733699107755"},
-                        {"name": "End State", "id": "refId1733699108123"},
-                        {"name": "Webhook", "id": "refId1733592655542"},
-                    ],
-                },
-                "6754d9c04898b3bca10e5363": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754d9c04898b3bca10e5363",
-                    "name": "RequestRefill",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Retrieve the call",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "dialogflowtakeback",
-                            "_selected": False,
-                            "id": "refId1736293727069",
-                            "icon": "icon-dialogflow",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "action",
-                                "rightExpression": "RequestRefill",
-                                "variableName": "action",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727070",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "actionPhrase",
-                                "rightExpression": "refill your prescription",
-                                "variableName": "actionPhrase",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727071",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Verify",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Verify",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "Verify",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592656036",
-                            "id": "refId1736293727072",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SpinSci - Prescription Lookup (with translation)",
-                                "functionId": "67593e50e3c06e3d040ca6e1",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "SpinSci - Prescription Lookup (with translation)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1736293727073",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.prescriptionLookupResult != Found",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.prescriptionLookupResult",
-                                            "operator": "!=",
-                                            "rightExpression": "'Found'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699110119",
-                            "id": "refId1736293727074",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Please wait while I refill your prescription.",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727075",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Please wait while I refill your prescription.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727076",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727077",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727078",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "message": "Please wait while I refill your prescription.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727079",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Please wait...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Please wait while I refill your prescription.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293727080",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Spinsci - Request Refills",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "requestRefillsResponse",
-                                "restCallId": "673ef224186614179724fccc",
-                                "expansions": {
-                                    "restCallId": {"name": "Spinsci - Request Refills"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727081",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Start Timer",
-                            "description": "",
-                            "properties": {
-                                "timeoutInSeconds": "2",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": False,
-                            "id": "refId1736293727082",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Your prescription has been refilled. You have ${workitem.data.refillQty - 1} remaining refills. What else can I help you with today?",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727083",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your prescription has been refilled. (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Your prescription has been refilled. You have ${workitem.data.refillQty - 1} remaining refills. What else can I help you with today?",
-                                "messageType": "BOT",
-                                "options": [
-                                    {
-                                        "label": "Reschedule Appointment",
-                                        "value": "Reschedule Appointment",
-                                    },
-                                    {
-                                        "label": "Cancel Appointment",
-                                        "value": "Cancel Appointment",
-                                    },
-                                    {"label": "Get Location", "value": "Get Location"},
-                                    {
-                                        "label": "Find a Doctor",
-                                        "value": "Find a Doctor",
-                                    },
-                                ],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727084",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727085",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your prescription has been refilled. (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727086",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Your prescription has been refilled.",
-                                "message": "Your prescription has been refilled. You have ${workitem.data.refillQty - 1} remaining refills. What else can I help you with today?",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727087",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Your prescription has been refilled.",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Your prescription has been refilled, and you have ${workitem.data.refillQty - 1} remaining refills. Thank you for contacting us and have a great day!</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293727088",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your prescription has been refilled. You have ${workitem.data.refillQty - 1} remaining refills. Reply back with any questions!",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293727089",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699110361",
-                            "id": "refId1736293727090",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'Chat'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your prescription has been refilled. You have ${workitem.data.refillQty - 1} remaining refills. Reply back with any questions!",
-                                "toAddress": "workitem.data.context.consumerData.phone",
-                                "fromAddress": "'+14809192185'",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727091",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655560",
-                            "id": "refId1736293727092",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754d9c04898b3bca10e5363",
-                    "key": "6754d9c04898b3bca10e5363",
-                    "location": "1764.223567332189 -274.6610381074282",
-                    "transitions": [
-                        {"name": "Verify", "id": "refId1733592656036"},
-                        {"name": "ConnectAgent", "id": "refId1733699110119"},
-                        {"name": "End State", "id": "refId1733699110361"},
-                        {"name": "Webhook", "id": "refId1733592655560"},
-                    ],
-                },
-                "6754da1a398b8d68d2fcaf8a": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754da1a398b8d68d2fcaf8a",
-                    "name": "Chat",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "icon": "icon-transition",
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "67549fef8c3694beb965b21c",
-                            },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1733592655624",
-                        }
-                    ],
-                    "_id": "6754da1a398b8d68d2fcaf8a",
-                    "key": "6754da1a398b8d68d2fcaf8a",
-                    "location": "351.85810891596213 -210.7054961374019",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592655624"}],
-                },
-                "6754da97b4f471f89ec7228e": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754da97b4f471f89ec7228e",
-                    "name": "InboundSMS",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "icon": "icon-save",
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "smsCounter",
-                                "rightExpression": "1",
-                                "variableName": "smsCounter",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Webhook",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "67549fef8c3694beb965b21c",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1733592655637",
-                            "icon": "icon-transition",
-                            "id": "refId1733935253678",
-                        },
-                    ],
-                    "_id": "6754da97b4f471f89ec7228e",
-                    "key": "6754da97b4f471f89ec7228e",
-                    "location": "349.90335666480416 -28.133357944239435",
-                    "transitions": [{"name": "Webhook", "id": "refId1733592655637"}],
-                },
-                "6754e45df91eebd4e98c05f3": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754e45df91eebd4e98c05f3",
-                    "name": "Verify",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SpinSci - Verify Patient (with translation)",
-                                "functionId": "67593b84c3e1f25ae7bb55e6",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "SpinSci - Verify Patient (with translation)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": True,
-                            "id": "refId1733873039929",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "End State",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "'timeout'",
-                                        }
-                                    ],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733681592463",
-                            "icon": "icon-transition",
-                            "id": "refId1733873039930",
-                        },
-                        {
-                            "name": "workitem.data.action",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.action",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.data.verified",
-                                            "rightExpression": "true",
-                                        }
-                                    ],
-                                },
-                                "stateName": "workitem.data.action",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655950",
-                            "id": "refId1733873039931",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "ConnectAgent",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733681591776",
-                            "id": "refId1733873039932",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754e45df91eebd4e98c05f3",
-                    "key": "6754e45df91eebd4e98c05f3",
-                    "location": "1938.3633977706813 76.18977094170623",
-                    "transitions": [
-                        {"name": "End State", "id": "refId1733681592463"},
-                        {"name": "workitem.data.action", "id": "refId1733592655950"},
-                        {"name": "ConnectAgent", "id": "refId1733681591776"},
-                    ],
-                },
-                "6754e4bc03f97c8d984c4508": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6754e4bc03f97c8d984c4508",
-                    "name": "PayBill",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Retrieve the call",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "description": "workitem.type == 'InboundCall'",
-                            },
-                            "type": "dialogflowtakeback",
-                            "_selected": False,
-                            "id": "refId1736293727117",
-                            "icon": "icon-dialogflow",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "action",
-                                "rightExpression": "PayBill",
-                                "variableName": "action",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727118",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "actionPhrase",
-                                "rightExpression": "pay your bill",
-                                "variableName": "actionPhrase",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727119",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Verify",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Verify",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.verified",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "Verify",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592656049",
-                            "id": "refId1736293727120",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Spinsci - getpatientbillingdetails",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "patientBillingResponse",
-                                "restCallId": "675331d7c3e1f25ae7bb4ead",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Spinsci - getpatientbillingdetails"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293727121",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "ccAmount",
-                                "rightExpression": "6346",
-                                "variableName": "ccAmount",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1736293727122",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Chat or InboundSMS",
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699102643",
-                            "id": "refId1736293727123",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "SPAA - Payment Gateway (IVA)",
-                                "functionId": "6753325ce3c06e3d040ca008",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.type",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "SPAA - Payment Gateway (IVA)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1736293727124",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "message": "Hi, this is ${workitem.data.companyName}! Your payment of $${workitem.data.ccAmount} has been processed. Reply back with any questions.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293727125",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "End State",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733592655923",
-                            "id": "refId1736293727126",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6754e4bc03f97c8d984c4508",
-                    "key": "6754e4bc03f97c8d984c4508",
-                    "location": "1994.600291230676 -297.5828329134683",
-                    "transitions": [
-                        {"name": "Verify", "id": "refId1733592656049"},
-                        {"name": "ConnectAgent", "id": "refId1733699102643"},
-                        {"name": "End State", "id": "refId1733592655923"},
-                    ],
-                },
-                "67562198a361ef475749dd55": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "67562198a361ef475749dd55",
-                    "name": "API Failure",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "nextMessage",
-                                "rightExpression": "Sorry, but I'm unable to help you ${workitem.data.actionPhrase} at this time",
-                                "variableName": "nextMessage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "icon": "icon-save",
-                            "id": "refId1736293726766",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Sorry... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Sorry, but I'm unable to help you ${workitem.data.actionPhrase} at this time",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726767",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Next Message to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "67592dbd3bf7aa24c81986b0",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Next Message to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1736293726768",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Sorry... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1736293726769",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundSMS'",
-                                "message": "Sorry, but I'm unable to help you ${workitem.data.actionPhrase} at this time",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1736293726770",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Sorry...",
-                                "voiceName": "en-US-Standard-J",
-                                "text": '<prosody pitch="-2st">Sorry, but I\'m unable to help you ${workitem.data.actionPhrase} at this time.</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1736293726771",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "ConnectAgent",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "ConnectAgent",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "ConnectAgent",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733681595668",
-                            "id": "refId1736293726772",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "67562198a361ef475749dd55",
-                    "key": "67562198a361ef475749dd55",
-                    "location": "2168.483284879579 30.484444816956113",
-                    "transitions": [
-                        {"name": "ConnectAgent", "id": "refId1733681595668"}
-                    ],
-                },
-                "6756793d70c5b89c819837d4": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6756793d70c5b89c819837d4",
-                    "name": "Goodbye",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "name": "Retrieve the call",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.type == 'InboundCall'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "dialogflowtakeback",
-                            "_selected": False,
-                            "id": "refId1733873035995",
-                            "icon": "icon-dialogflow",
-                        },
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Thank you... (English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "Thank you for contacting us and have a great day!",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1733873035996",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "icon": "icon-api",
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Google Translation (Chatbot to Source Language)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "responseVariable": "googletranslateresponse",
-                                "restCallId": "6759159ccb6cdb0056107af8",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Google Translation (Chatbot to Source Language)"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                        },
-                        {
-                            "icon": "icon-ai-message",
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Thank you... (Non-English)",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.sourceLanguage",
-                                            "operator": "!=",
-                                            "rightExpression": "'en'",
-                                        },
-                                    ],
-                                },
-                                "from": "${workitem.data.companyName}",
-                                "message": "$V.workitem.data.googletranslateresponse.body.data.translations[0].translatedText",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                        },
-                        {
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Thank you...",
-                                "message": "Thank you for contacting us and have a great day!",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                            "id": "refId1733873035997",
-                            "icon": "icon-ai-message",
-                        },
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "description": "Thank you...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting us and have a great day!</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1733873035998",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Start Timer",
-                            "description": "",
-                            "properties": {
-                                "timeoutInSeconds": "5",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.type",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": True,
-                            "id": "refId1733873035999",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "End State",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733699107266",
-                            "id": "refId1733873036000",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "6756793d70c5b89c819837d4",
-                    "key": "6756793d70c5b89c819837d4",
-                    "location": "343.3303703091898 496.4486004786945",
-                    "transitions": [{"name": "End State", "id": "refId1733699107266"}],
-                },
-                "675900b6e58af826dec55828": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "675900b6e58af826dec55828",
-                    "name": "Survey",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivase19",
-                    "actions": [
-                        {
-                            "icon": "icon-timer",
-                            "name": "Start Timer",
-                            "description": "",
-                            "properties": {
-                                "timeoutInSeconds": "300",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": True,
-                        },
-                        {
-                            "icon": "icon-transition",
-                            "name": "End State",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "End State",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "End State",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1733873034596",
-                        },
-                    ],
-                    "_id": "675900b6e58af826dec55828",
-                    "key": "675900b6e58af826dec55828",
-                    "location": "349.7475715937059 -377.6856510603927",
-                    "transitions": [{"name": "End State", "id": "refId1733873034596"}],
+                    "_id": "67b11dbf1fac7db53c1d0210",
+                    "key": "67b11dbf1fac7db53c1d0210",
+                    "location": "1710.5859782839211 639.5535706670023",
+                    "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
                 },
             },
-            "finalWorkitemStateId": "67548667ca85e7eb0bed9d1d",
-            "finalUserStateId": "67548667ca85e7eb0bed9d1d",
+            "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
+            "finalUserStateId": "67b1186f5510d9081ac8e32b",
             "name": workflow_name,
+            "description": "IVA workflow",
         }
     )
     headers = {
@@ -4869,12 +1232,15 @@ def create_iva_workflow(
     return workflow
 
 
-def create_non_iva_dtmf_workflow(
+def create_general_non_iva_dtmf_workflow(
     ncc_location: str,
     ncc_token: str,
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
+    two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -4887,61 +1253,41 @@ def create_non_iva_dtmf_workflow(
         {
             "maxActions": 10000,
             "localizations": {
-                "name": {"en": {"value": workflow_name}},
-                "description": {"en": {"value": "Non-IVA, DTMF Workflow"}},
+                "name": {"en": {"language": "en", "value": workflow_name}},
+                "description": {
+                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
+                },
             },
+            "description": "Non-IVA, DTMF workflow",
             "states": {
-                "655e5bff8000b3fefffccc6e": {
+                "67b1186f5510d9081ac8e32b": {
                     "category": "Standard",
-                    "campaignStateId": "655e5bff8000b3fefffccc6e",
+                    "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
-                            "name": "ACD Voicemail From Expression",
-                            "description": "Create ACD Voicemail",
-                            "properties": {
-                                "transcription": True,
-                                "priority": 3,
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "toAddress": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.data.messageRecorded",
-                                            "rightExpression": "1",
-                                        }
-                                    ],
-                                },
-                                "description": "Create ACD Voicemail",
-                            },
-                            "type": "acdvmfromexpression",
-                            "_selected": True,
-                            "id": "refId1723818900554",
-                            "icon": "icon-directconnect",
-                        },
-                        {
+                            "category": "Action",
+                            "title": "Terminate",
                             "name": "Terminate",
                             "type": "terminate",
                             "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                            "_selected": False,
-                            "id": "refId1723818900555",
-                            "icon": "icon-terminate",
-                        },
+                        }
                     ],
                     "objectType": "campaignstate",
-                    "key": "655e5bff8000b3fefffccc6e",
-                    "_id": "655e5bff8000b3fefffccc6e",
+                    "key": "67b1186f5510d9081ac8e32b",
+                    "_id": "67b1186f5510d9081ac8e32b",
                     "description": "End State",
                     "name": "End State",
-                    "location": "-2668.0279541015625 -1000.7500610351562",
-                    "__gohashid": 17820,
+                    "location": "-147.23017129888294 34.91808770109185",
                     "transitions": [],
                 },
                 "start-state": {
@@ -4966,8 +1312,102 @@ def create_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1738366172156",
+                            "id": "refId1739600227611",
                             "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "false",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227612",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227613",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone",
+                                "rightExpression": "workitem.from.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227614",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "priority",
+                                "rightExpression": "Standard",
+                                "variableName": "priority",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
                         },
                         {
                             "name": "Save Variable",
@@ -4987,7 +1427,888 @@ def create_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1715372161609",
+                            "icon": "icon-save",
+                            "id": "refId1739600227615",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Survey'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "Survey",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600227151",
+                            "id": "refId1739600227616",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Search Contacts",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11894720280f716c36bdf",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67b118871e7c034010972864",
+                            "_selected": False,
+                            "id": "refId1739600227617",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1739600227151"},
+                        {"name": "Search Contacts", "id": "67b118871e7c034010972864"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "-92.43594451534577 -158.49227385694343",
+                },
+                "67b11894720280f716c36bdf": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11894720280f716c36bdf",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600227189",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Chat",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b3a4492457796ee0690",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227187",
+                            "icon": "icon-transition",
+                            "id": "refId1739600227190",
+                        },
+                        {
+                            "name": "InboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b424881f97a86b2640f",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227163",
+                            "id": "refId1739600227191",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "InboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b4990b64c67bfb0e882",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600227203",
+                        },
+                    ],
+                    "_id": "67b11894720280f716c36bdf",
+                    "key": "67b11894720280f716c36bdf",
+                    "location": "165.88010230206072 74.17868078154703",
+                    "transitions": [
+                        {"name": "Chat", "id": "refId1739600227187"},
+                        {"name": "InboundCall", "id": "refId1739600227163"},
+                        {"name": "InboundSMS", "id": "refId1739600227203"},
+                    ],
+                },
+                "67b11b35410f937347fe9aee": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b35410f937347fe9aee",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1739600226811",
+                        }
+                    ],
+                    "_id": "67b11b35410f937347fe9aee",
+                    "key": "67b11b35410f937347fe9aee",
+                    "location": "484.89646762282933 -76.7578027276301",
+                    "transitions": [{"name": "End State", "id": "refId1739600226811"}],
+                },
+                "67b11b3a4492457796ee0690": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b3a4492457796ee0690",
+                    "name": "Chat",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "id": "refId1739600229945",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600226839",
+                            "id": "refId1739600229946",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11b3a4492457796ee0690",
+                    "key": "67b11b3a4492457796ee0690",
+                    "location": "480.78544785048666 214.34893700073843",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226839"}
+                    ],
+                },
+                "67b11b424881f97a86b2640f": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b424881f97a86b2640f",
+                    "name": "InboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Sales",
+                                "rightExpression": queues["Test Sales"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Technical Support",
+                                "rightExpression": queues["Test Technical Support"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 193062,
+                                },
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600226869",
+                            "id": "refId1739600231292",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11b424881f97a86b2640f",
+                    "key": "67b11b424881f97a86b2640f",
+                    "location": "476.13146320255123 409.81629221403136",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226869"}
+                    ],
+                },
+                "67b11b4990b64c67bfb0e882": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b4990b64c67bfb0e882",
+                    "name": "InboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600229655",
+                        }
+                    ],
+                    "_id": "67b11b4990b64c67bfb0e882",
+                    "key": "67b11b4990b64c67bfb0e882",
+                    "location": "471.4774785546159 591.3216934835181",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600229655"}
+                    ],
+                },
+                "67b11daace899acb3e0d1c38": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11daace899acb3e0d1c38",
+                    "name": "ConnectAgent",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229770",
+                        },
+                        {
+                            "name": "SMS Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "smsmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229771",
+                        },
+                        {
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "description": "Please wait...",
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                            "id": "refId1739600229773",
+                            "icon": "icon-tts",
+                        },
+                        {
+                            "name": "Enter Queue from Expression",
+                            "description": "",
+                            "properties": {
+                                "priorityExpression": "workitem.data.priority",
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "ringAllEnabled": False,
+                                "stickyEnabled": False,
+                                "stickyUserType": "5",
+                                "stickyDurationToWaitSeconds": 0,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "enterqueuefromexpression",
+                            "_selected": False,
+                            "id": "refId1739600229774",
+                            "icon": "icon-enterqueues",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Two way Chat conversation",
+                                "functionId": two_way_chat_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229775",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Two way SMS conversation",
+                                "functionId": two_way_sms_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {"name": two_way_sms_function["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229776",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "HoldQueue",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11dbf1fac7db53c1d0210",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227355",
+                            "id": "refId1739600229777",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11daace899acb3e0d1c38",
+                    "key": "67b11daace899acb3e0d1c38",
+                    "location": "768.2271674519036 757.1511431023132",
+                    "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
+                },
+                "67b11dbf1fac7db53c1d0210": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11dbf1fac7db53c1d0210",
+                    "name": "HoldQueue",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Voicemail (1)",
+                                "functionId": acd_voicemail_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_voicemail_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "icon": "icon-function",
+                            "id": "refId1739600229018",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Callback (2)",
+                                "functionId": acd_callback_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_callback_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229019",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Loop",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Back to Top",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "HoldQueue",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600227365",
+                            "id": "refId1739600229020",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11dbf1fac7db53c1d0210",
+                    "key": "67b11dbf1fac7db53c1d0210",
+                    "location": "1020.318794945671 938.4428069455298",
+                    "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+            },
+            "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
+            "finalUserStateId": "67b1186f5510d9081ac8e32b",
+            "name": workflow_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/workflow/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return workflow
+
+
+def create_hc_non_iva_dtmf_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_name: str,
+    business_name: str,
+    queues: dict,
+    search_contacts_function: dict,
+    two_way_chat_function: dict,
+    two_way_sms_function: dict,
+    acd_voicemail_function: dict,
+    acd_callback_function: dict,
+) -> dict:
+    """
+    This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
+    """
+    workflow = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "maxActions": 10000,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": workflow_name}},
+                "description": {
+                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
+                },
+            },
+            "description": "Non-IVA, DTMF workflow",
+            "states": {
+                "67b1186f5510d9081ac8e32b": {
+                    "category": "Standard",
+                    "campaignStateId": "67b1186f5510d9081ac8e32b",
+                    "actions": [
+                        {
+                            "category": "Action",
+                            "title": "Terminate",
+                            "name": "Terminate",
+                            "type": "terminate",
+                            "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67b1186f5510d9081ac8e32b",
+                    "_id": "67b1186f5510d9081ac8e32b",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "-147.23017129888294 34.91808770109185",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "companyName",
+                                "rightExpression": business_name,
+                                "variableName": "companyName",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227611",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "false",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227612",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227613",
                             "icon": "icon-save",
                         },
                         {
@@ -5002,17 +2323,69 @@ def create_non_iva_dtmf_workflow(
                                 "wfmOption": False,
                                 "dashboard": False,
                                 "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227614",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "priority",
+                                "rightExpression": "Standard",
+                                "variableName": "priority",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1715372161610",
                             "icon": "icon-save",
+                            "id": "refId1739600227615",
                         },
                         {
-                            "name": "Transition- Survey",
+                            "name": "Survey",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
@@ -5025,20 +2398,81 @@ def create_non_iva_dtmf_workflow(
                                         }
                                     ],
                                 },
-                                "stateId": "65b681d5192355364082a91d",
-                                "description": "Survey",
+                                "stateName": "Survey",
+                                "description": "Transition to another state",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1706457924900",
-                            "id": "refId1715372161611",
+                            "transitionId": "refId1739600227151",
+                            "id": "refId1739600227616",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "Transition- Chat",
+                            "name": "Search Contacts",
+                            "type": "transition",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Chat",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11894720280f716c36bdf",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67b118871e7c034010972864",
+                            "_selected": False,
+                            "id": "refId1739600227617",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1739600227151"},
+                        {"name": "Search Contacts", "id": "67b118871e7c034010972864"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "-92.43594451534577 -158.49227385694343",
+                },
+                "67b11894720280f716c36bdf": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11894720280f716c36bdf",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600227189",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Chat",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -5049,93 +2483,42 @@ def create_non_iva_dtmf_workflow(
                                         }
                                     ],
                                 },
-                                "stateId": "65b68288256da8d4cc8400cd",
+                                "stateId": "67b11b3a4492457796ee0690",
                             },
                             "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1706457925022",
-                            "id": "refId1715372161612",
+                            "transitionId": "refId1739600227187",
                             "icon": "icon-transition",
+                            "id": "refId1739600227190",
                         },
                         {
-                            "name": "Transition",
+                            "name": "InboundCall",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Transition - Inbound Email",
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
-                                            "rightExpression": "'Email'",
+                                            "rightExpression": "'InboundCall'",
                                         }
                                     ],
                                 },
-                                "stateId": "656e4c1678107e0206362208",
+                                "stateId": "67b11b424881f97a86b2640f",
                             },
                             "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1701726650857",
-                            "id": "refId1715372161613",
+                            "transitionId": "refId1739600227163",
+                            "id": "refId1739600227191",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - Outbound Email",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'OutboundEmail'",
-                                        }
-                                    ],
-                                },
-                                "stateId": "656e4b748b3f76f0586f2497",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1701726650829",
-                            "id": "refId1715372161614",
                             "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
+                            "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.businessEvents.General_Regular_Opened",
-                                            "rightExpression": "false",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
-                                },
-                                "description": "Transition - AH and Holidays SMS",
-                                "stateId": "65660377c93272480dc2e4b0",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "65b95e3fa08fbfea3bf141ac",
-                            "id": "refId1715372161615",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - Inbound SMS",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -5146,263 +2529,121 @@ def create_non_iva_dtmf_workflow(
                                         }
                                     ],
                                 },
-                                "stateId": "656601b3f3bcef73c55d9764",
+                                "stateId": "67b11b4990b64c67bfb0e882",
                             },
                             "type": "transition",
-                            "_selected": False,
-                            "transitionId": "656612c27be66629827e487b",
-                            "id": "refId1715372161616",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - Outbound SMS",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'OutboundSMS'",
-                                        }
-                                    ],
-                                },
-                                "stateId": "656601c0063bad1c139eebdb",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "656612bc3f61989ca1c908a7",
-                            "id": "refId1715372161617",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - Callback",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'OutboundCall'",
-                                        }
-                                    ],
-                                },
-                                "stateId": "656a29a2084c71822201e2cc",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1701455750935",
-                            "id": "refId1715372161618",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.businessEvents.General_Regular_Opened",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        },
-                                    ],
-                                },
-                                "description": "Transition - AH and Holidays Voice",
-                                "stateId": "65660110c4430aa14601cdfa",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "65b95e391e9819e26b0b8b10",
-                            "id": "refId1715372161619",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "type": "transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - Inbound Voice",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.type",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "stateId": "655e5d884af8b41fd12da496",
-                                "name": "Start",
-                            },
-                            "_selected": False,
-                            "id": "refId1715372161620",
-                            "transitionId": "refId1700681898306",
-                            "icon": "icon-transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600227203",
                         },
                     ],
+                    "_id": "67b11894720280f716c36bdf",
+                    "key": "67b11894720280f716c36bdf",
+                    "location": "165.88010230206072 74.17868078154703",
                     "transitions": [
-                        {
-                            "name": "Transition- Survey",
-                            "id": "refId1706457924900",
-                            "__gohashid": 2641,
-                        },
-                        {
-                            "name": "Transition- Chat",
-                            "id": "refId1706457925022",
-                            "__gohashid": 2646,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "refId1701726650857",
-                            "__gohashid": 2651,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "refId1701726650829",
-                            "__gohashid": 2656,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "65b95e3fa08fbfea3bf141ac",
-                            "__gohashid": 2661,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "656612c27be66629827e487b",
-                            "__gohashid": 2666,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "656612bc3f61989ca1c908a7",
-                            "__gohashid": 2671,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "refId1701455750935",
-                            "__gohashid": 2676,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "65b95e391e9819e26b0b8b10",
-                            "__gohashid": 2681,
-                        },
-                        {
-                            "name": "Transition",
-                            "id": "refId1700681898306",
-                            "__gohashid": 2686,
-                        },
+                        {"name": "Chat", "id": "refId1739600227187"},
+                        {"name": "InboundCall", "id": "refId1739600227163"},
+                        {"name": "InboundSMS", "id": "refId1739600227203"},
                     ],
-                    "objectType": "campaignstate",
-                    "key": "start-state",
-                    "_id": "start-state",
-                    "description": "Begin State",
-                    "name": "Begin State",
-                    "location": "-3794.6666870117188 -1463.5333251953125",
-                    "__gohashid": 17821,
                 },
-                "655e5d884af8b41fd12da496": {
+                "67b11b35410f937347fe9aee": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "655e5d884af8b41fd12da496",
-                    "name": "Inbound Voice",
+                    "campaignStateId": "67b11b35410f937347fe9aee",
+                    "name": "Survey",
                     "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "voiceName": "en-US-Wavenet-F",
-                                "text": "Thank you for calling ${workitem.data.companyName}.",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "description": "Welcome",
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "id": "refId1715372158867",
-                            "icon": "icon-tts",
-                        },
-                        {
-                            "name": "Enter Queue from Expression",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.data.queueId",
-                                "priorityExpression": "Standard",
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "ringAllEnabled": False,
-                                "stickyEnabled": False,
-                                "stickyUserIdFromExpression": "workitem.data.stickyAgent",
-                                "stickyDurationToWaitSeconds": "60",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "enterqueuefromexpression",
-                            "_selected": False,
-                            "id": "refId1715372158874",
-                            "icon": "icon-enterqueues",
-                        },
-                        {
-                            "name": "Transition - Hold",
+                            "icon": "icon-transition",
+                            "name": "End State",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Hold",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "65b01880267d5184c650aba5",
+                                "stateName": "End State",
                             },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1706457925878",
-                            "id": "refId1715372158875",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "655e5d884af8b41fd12da496",
-                    "key": "655e5d884af8b41fd12da496",
-                    "location": "-3444.1751098632812 -1281.4058227539062",
-                    "transitions": [
-                        {
-                            "name": "Transition - Hold",
-                            "id": "refId1706457925878",
-                            "__gohashid": 2732,
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1739600226811",
                         }
                     ],
-                    "__gohashid": 17822,
+                    "_id": "67b11b35410f937347fe9aee",
+                    "key": "67b11b35410f937347fe9aee",
+                    "location": "484.89646762282933 -76.7578027276301",
+                    "transitions": [{"name": "End State", "id": "refId1739600226811"}],
                 },
-                "65660110c4430aa14601cdfa": {
+                "67b11b3a4492457796ee0690": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "65660110c4430aa14601cdfa",
-                    "name": "AH and Holidays Voice",
+                    "campaignStateId": "67b11b3a4492457796ee0690",
+                    "name": "Chat",
                     "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Play & Collect Digits",
+                            "name": "Chat Message Consumer",
                             "description": "",
                             "properties": {
-                                "description": "Nextiva - Closed",
-                                "loop": 1,
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "id": "refId1739600229945",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600226839",
+                            "id": "refId1739600229946",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11b3a4492457796ee0690",
+                    "key": "67b11b3a4492457796ee0690",
+                    "location": "480.78544785048666 214.34893700073843",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226839"}
+                    ],
+                },
+                "67b11b424881f97a86b2640f": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b424881f97a86b2640f",
+                    "name": "InboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>',
                                 "numberDigits": 1,
-                                "promptId": "65d3874cf3cef83870e7630f",
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "3",
                                 "dlpOption": False,
@@ -5410,248 +2651,260 @@ def create_non_iva_dtmf_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "expansions": {
-                                    "promptId": {"name": "Nextiva - Closed"}
-                                },
-                                "_working": False,
                             },
-                            "type": "playdigits",
-                            "_selected": False,
-                            "icon": "icon-playdigits",
-                            "id": "refId1708363729177",
+                            "type": "googlettscollect",
+                            "_selected": True,
                         },
                         {
-                            "name": "Execute Function",
+                            "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "ACD Voicemail",
-                                "functionId": "65afe16f39fd325f29b43464",
+                                "description": "queueId - Prescription Refills",
+                                "rightExpression": queues["Test Prescription Refills"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
-                                            "leftExpression": "workitem.digits",
                                             "operator": "==",
+                                            "leftExpression": "workitem.digits",
                                             "rightExpression": "'1'",
                                         }
                                     ],
                                 },
-                                "expansions": {"functionId": {"name": "ACD Voicemail"}},
-                                "_working": False,
                             },
-                            "type": "function",
-                            "_selected": True,
-                            "icon": "icon-function",
-                            "id": "refId1708363729178",
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
                         },
                         {
-                            "name": "Transition",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Appointments",
+                                "rightExpression": queues["Test Appointments"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "ConnectAgent",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Transition - End State",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "655e5bff8000b3fefffccc6e",
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1701453663739",
-                            "id": "refId1708363729179",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "65660110c4430aa14601cdfa",
-                    "key": "65660110c4430aa14601cdfa",
-                    "location": "-3467.8545232704014 -1052.0893680871702",
-                    "transitions": [
-                        {
-                            "name": "Transition",
-                            "id": "refId1701453663739",
-                            "__gohashid": 2778,
-                        }
-                    ],
-                    "__gohashid": 17824,
-                },
-                "656601b3f3bcef73c55d9764": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "656601b3f3bcef73c55d9764",
-                    "name": "Inbound SMS",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Enter Queue from Expression",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.data.queueId",
-                                "priorityExpression": "Standard",
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "ringAllEnabled": False,
-                                "stickyEnabled": False,
-                                "stickyUserType": "5",
-                                "stickyDurationToWaitSeconds": 0,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "enterqueuefromexpression",
-                            "_selected": False,
-                            "id": "refId1711467981185",
-                            "icon": "icon-enterqueues",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "Two way SMS conversation",
-                                "functionId": "65afe20b6e054855bfa85c51",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1711467981186",
-                            "icon": "icon-function",
-                        },
-                    ],
-                    "_id": "656601b3f3bcef73c55d9764",
-                    "key": "656601b3f3bcef73c55d9764",
-                    "location": "-2850.9374090125884 -1382.8392460168577",
-                    "transitions": [],
-                    "__gohashid": 17825,
-                },
-                "656601c0063bad1c139eebdb": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "656601c0063bad1c139eebdb",
-                    "name": "Outbound SMS",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "Two way SMS conversation",
-                                "functionId": "65afe20b6e054855bfa85c51",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
                             "_selected": True,
-                            "id": "refId1709680640621",
-                            "icon": "icon-function",
-                        }
+                            "transitionId": "refId1739600226869",
+                            "icon": "icon-transition",
+                            "id": "refId1739600229680",
+                        },
                     ],
-                    "_id": "656601c0063bad1c139eebdb",
-                    "key": "656601c0063bad1c139eebdb",
-                    "location": "-3039.3543096473545 -1365.255810958264",
-                    "transitions": [],
-                    "__gohashid": 17826,
+                    "_id": "67b11b424881f97a86b2640f",
+                    "key": "67b11b424881f97a86b2640f",
+                    "location": "476.13146320255123 409.81629221403136",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226869"}
+                    ],
                 },
-                "65660377c93272480dc2e4b0": {
+                "67b11b4990b64c67bfb0e882": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "65660377c93272480dc2e4b0",
-                    "name": "AH and Holidays SMS",
+                    "campaignStateId": "67b11b4990b64c67bfb0e882",
+                    "name": "InboundSMS",
                     "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
                     "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600229655",
+                        }
+                    ],
+                    "_id": "67b11b4990b64c67bfb0e882",
+                    "key": "67b11b4990b64c67bfb0e882",
+                    "location": "471.4774785546159 591.3216934835181",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600229655"}
+                    ],
+                },
+                "67b11daace899acb3e0d1c38": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11daace899acb3e0d1c38",
+                    "name": "ConnectAgent",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229770",
+                        },
                         {
                             "name": "SMS Message Consumer",
                             "description": "",
                             "properties": {
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "description": "AH and Holiday message",
-                                "message": "Thank you for contacting Nextiva!  You've reached us outside of Normal Business Hours.  Please try us again between 5am and 6pm, Mountain Standard Time (Arizona).",
+                                "description": "Please wait...",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
                                 "toAddress": "workitem.from",
                                 "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
                             },
                             "type": "smsmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1706645974182",
-                            "icon": "icon-sms-message-consumer",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - End State",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "655e5bff8000b3fefffccc6e",
-                            },
-                            "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1701186502862",
-                            "id": "refId1706645974183",
-                            "icon": "icon-transition",
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229771",
                         },
-                    ],
-                    "_id": "65660377c93272480dc2e4b0",
-                    "key": "65660377c93272480dc2e4b0",
-                    "location": "-3695.2710882118076 -1053.3375813973307",
-                    "transitions": [
                         {
-                            "name": "Transition",
-                            "id": "refId1701186502862",
-                            "__gohashid": 2902,
-                        }
-                    ],
-                    "__gohashid": 17827,
-                },
-                "656a29a2084c71822201e2cc": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "656a29a2084c71822201e2cc",
-                    "name": "WebCallback",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Survey",
-                            "description": "Assign survey to workitem",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
                             "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
                                 "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
                                 },
-                                "surveyId": "65afef285754d32573a76733",
-                                "expansions": {
-                                    "surveyId": {"name": "JFDiotte - All - User Survey"}
-                                },
-                                "_working": False,
-                                "description": "Assign survey to workitem",
+                                "description": "Please wait...",
                             },
-                            "type": "assignsurvey",
-                            "_selected": True,
-                            "id": "refId1706645973822",
-                            "icon": "icon-survey",
+                            "type": "googletts",
+                            "_selected": False,
+                            "id": "refId1739600229773",
+                            "icon": "icon-tts",
                         },
                         {
                             "name": "Enter Queue from Expression",
                             "description": "",
                             "properties": {
-                                "description": "workitem.data.queueId",
-                                "priorityExpression": "Standard",
+                                "priorityExpression": "workitem.data.priority",
                                 "queueIdsExpression": "workitem.data.queueId",
                                 "ringAllEnabled": False,
                                 "stickyEnabled": False,
@@ -5664,495 +2917,7 @@ def create_non_iva_dtmf_workflow(
                             },
                             "type": "enterqueuefromexpression",
                             "_selected": False,
-                            "id": "refId1706645973823",
-                            "icon": "icon-enterqueues",
-                        },
-                    ],
-                    "_id": "656a29a2084c71822201e2cc",
-                    "key": "656a29a2084c71822201e2cc",
-                    "location": "-3227.1875005653233 -1337.0012519761244",
-                    "transitions": [],
-                    "__gohashid": 17828,
-                },
-                "656e4b748b3f76f0586f2497": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "656e4b748b3f76f0586f2497",
-                    "name": "Outbound Email",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Send Email From Expression",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "dispositionId": "65e8b4099d95866a1b124750",
-                                "emailaccountId": "65d90668d9ed19568eb2b3aa",
-                                "subject": "Thank you for speaking with Nextiva!",
-                                "toAddress": "workitem.to",
-                                "emailTemplateIdExpression": "6606ebf36080540b02a8b9a7",
-                                "expansions": {
-                                    "dispositionId": {"name": "General Inquiry"},
-                                    "emailaccountId": {"name": "Nextiva SE2"},
-                                },
-                                "_working": False,
-                            },
-                            "type": "sendemailfromexpression",
-                            "_selected": True,
-                            "id": "refId1711728424700",
-                            "icon": "icon-sendemail",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition - End State",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "655e5bff8000b3fefffccc6e",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1701726651002",
-                            "id": "refId1711728424701",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "656e4b748b3f76f0586f2497",
-                    "key": "656e4b748b3f76f0586f2497",
-                    "location": "-2639.6515569716316 -1424.2704826725424",
-                    "transitions": [
-                        {
-                            "name": "Transition",
-                            "id": "refId1701726651002",
-                            "__gohashid": 2987,
-                        }
-                    ],
-                    "__gohashid": 7644,
-                },
-                "656e4c1678107e0206362208": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "656e4c1678107e0206362208",
-                    "name": "Inbound Email",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Enter Queue from Expression",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.data.queueId",
-                                "priorityExpression": "Standard",
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "ringAllEnabled": False,
-                                "stickyEnabled": False,
-                                "stickyUserType": "5",
-                                "stickyDurationToWaitSeconds": 0,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "enterqueuefromexpression",
-                            "_selected": False,
-                            "id": "refId1708363728978",
-                            "icon": "icon-enterqueues",
-                        }
-                    ],
-                    "_id": "656e4c1678107e0206362208",
-                    "key": "656e4c1678107e0206362208",
-                    "location": "-2429.5680608778816 -1461.9372002018392",
-                    "transitions": [],
-                    "__gohashid": 15589,
-                },
-                "65b01880267d5184c650aba5": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "65b01880267d5184c650aba5",
-                    "name": "HoldQueue",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Play & Collect Digits",
-                            "description": "",
-                            "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "1",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playdigits",
-                            "_selected": False,
-                            "id": "refId1723781535537",
-                            "icon": "icon-playdigits",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Voicemail (1)",
-                                "functionId": acd_voicemail_function["_id"],
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_voicemail_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1723781535538",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Callback (2)",
-                                "functionId": acd_callback_function["_id"],
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'2'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_callback_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1723781535539",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Play & Collect Digits",
-                            "description": "",
-                            "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "1",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playdigits",
-                            "_selected": False,
-                            "id": "refId1723781535541",
-                            "icon": "icon-playdigits",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Voicemail (1)",
-                                "functionId": acd_voicemail_function["_id"],
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_voicemail_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": True,
-                            "id": "refId1723781535542",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Callback (2)",
-                                "functionId": acd_callback_function["_id"],
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'2'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_callback_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1723781535543",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Transition- Loop",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Loop",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "65b01880267d5184c650aba5",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1706457925717",
-                            "id": "refId1723781535545",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "65b01880267d5184c650aba5",
-                    "key": "65b01880267d5184c650aba5",
-                    "location": "-3213.6666870117188 -1185.9999389648438",
-                    "transitions": [
-                        {
-                            "name": "Transition- Loop",
-                            "id": "refId1706457925717",
-                            "__gohashid": 3072,
-                        }
-                    ],
-                    "__gohashid": 15384,
-                },
-                "65b681d5192355364082a91d": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "65b681d5192355364082a91d",
-                    "name": "Survey",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "Two way Survey conversation",
-                                "functionId": "65afe255a4d255439999a8a7",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": "Two way Survey conversation"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": True,
-                            "id": "refId1708363728848",
-                            "icon": "icon-function",
-                        }
-                    ],
-                    "_id": "65b681d5192355364082a91d",
-                    "key": "65b681d5192355364082a91d",
-                    "location": "-2071.66650390625 -1539.6666259765625",
-                    "transitions": [],
-                    "__gohashid": 8488,
-                },
-                "65b68288256da8d4cc8400cd": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "65b68288256da8d4cc8400cd",
-                    "name": "Chat",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "contactType",
-                                "rightExpression": "workitem.data.context.consumerData.contactType",
-                                "variableName": "contactType",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1722013941414",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "firstName",
-                                "rightExpression": "workitem.data.context.consumerData.firstName",
-                                "variableName": "firstName",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1722013941415",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "lastName",
-                                "rightExpression": "workitem.data.context.consumerData.lastName",
-                                "variableName": "lastName",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1722013941416",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "email",
-                                "rightExpression": "workitem.data.context.consumerData.email",
-                                "variableName": "email",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1722013941417",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "phone",
-                                "rightExpression": "workitem.data.context.consumerData.phone",
-                                "variableName": "phone",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1722013941418",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Skill Name",
-                            "description": "Add skill to workitem",
-                            "properties": {
-                                "description": "skills mandatory for contactType",
-                                "skillName": "workitem.data.contactType",
-                                "mandatory": True,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "skillbyname",
-                            "_selected": False,
-                            "id": "refId1722013941419",
-                            "icon": "icon-ll-skills",
-                        },
-                        {
-                            "name": "Enter Queue from Expression",
-                            "description": "",
-                            "properties": {
-                                "description": "workitem.data.queueId",
-                                "priorityExpression": "Standard",
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "ringAllEnabled": False,
-                                "stickyEnabled": False,
-                                "stickyUserType": "5",
-                                "stickyDurationToWaitSeconds": 0,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "enterqueuefromexpression",
-                            "_selected": False,
-                            "id": "refId1722013941420",
+                            "id": "refId1739600229774",
                             "icon": "icon-enterqueues",
                         },
                         {
@@ -6160,32 +2925,1173 @@ def create_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "65afe1ee39fd325f29b43466",
+                                "functionId": two_way_chat_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229775",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Two way SMS conversation",
+                                "functionId": two_way_sms_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {"name": two_way_sms_function["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229776",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "HoldQueue",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11dbf1fac7db53c1d0210",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227355",
+                            "id": "refId1739600229777",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11daace899acb3e0d1c38",
+                    "key": "67b11daace899acb3e0d1c38",
+                    "location": "768.2271674519036 757.1511431023132",
+                    "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
+                },
+                "67b11dbf1fac7db53c1d0210": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11dbf1fac7db53c1d0210",
+                    "name": "HoldQueue",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Voicemail (1)",
+                                "functionId": acd_voicemail_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_voicemail_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "icon": "icon-function",
+                            "id": "refId1739600229018",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Callback (2)",
+                                "functionId": acd_callback_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_callback_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229019",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Loop",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Back to Top",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "HoldQueue",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600227365",
+                            "id": "refId1739600229020",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11dbf1fac7db53c1d0210",
+                    "key": "67b11dbf1fac7db53c1d0210",
+                    "location": "1020.318794945671 938.4428069455298",
+                    "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+            },
+            "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
+            "finalUserStateId": "67b1186f5510d9081ac8e32b",
+            "name": workflow_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/workflow/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return workflow
+
+
+def create_finserv_non_iva_dtmf_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_name: str,
+    business_name: str,
+    queues: dict,
+    search_contacts_function: dict,
+    two_way_chat_function: dict,
+    two_way_sms_function: dict,
+    acd_voicemail_function: dict,
+    acd_callback_function: dict,
+) -> dict:
+    """
+    This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
+    """
+    workflow = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "maxActions": 10000,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": workflow_name}},
+                "description": {
+                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
+                },
+            },
+            "description": "Non-IVA, DTMF workflow",
+            "states": {
+                "67b1186f5510d9081ac8e32b": {
+                    "category": "Standard",
+                    "campaignStateId": "67b1186f5510d9081ac8e32b",
+                    "actions": [
+                        {
+                            "category": "Action",
+                            "title": "Terminate",
+                            "name": "Terminate",
+                            "type": "terminate",
+                            "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67b1186f5510d9081ac8e32b",
+                    "_id": "67b1186f5510d9081ac8e32b",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "-147.23017129888294 34.91808770109185",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "companyName",
+                                "rightExpression": business_name,
+                                "variableName": "companyName",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227611",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "false",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227612",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227613",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone",
+                                "rightExpression": "workitem.from.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227614",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "priority",
+                                "rightExpression": "Standard",
+                                "variableName": "priority",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1739600227615",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Survey'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "Survey",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600227151",
+                            "id": "refId1739600227616",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Search Contacts",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11894720280f716c36bdf",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67b118871e7c034010972864",
+                            "_selected": False,
+                            "id": "refId1739600227617",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1739600227151"},
+                        {"name": "Search Contacts", "id": "67b118871e7c034010972864"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "-92.43594451534577 -158.49227385694343",
+                },
+                "67b11894720280f716c36bdf": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11894720280f716c36bdf",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
+                                "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
-                                "functionExpression": "",
                             },
                             "type": "function",
-                            "_selected": True,
-                            "id": "refId1722013941421",
+                            "_selected": False,
+                            "id": "refId1739600227189",
                             "icon": "icon-function",
                         },
+                        {
+                            "name": "Chat",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b3a4492457796ee0690",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227187",
+                            "icon": "icon-transition",
+                            "id": "refId1739600227190",
+                        },
+                        {
+                            "name": "InboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b424881f97a86b2640f",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227163",
+                            "id": "refId1739600227191",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "InboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b4990b64c67bfb0e882",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600227203",
+                        },
                     ],
-                    "_id": "65b68288256da8d4cc8400cd",
-                    "key": "65b68288256da8d4cc8400cd",
-                    "location": "-2248.3333740234375 -1499",
-                    "transitions": [],
-                    "__gohashid": 12397,
+                    "_id": "67b11894720280f716c36bdf",
+                    "key": "67b11894720280f716c36bdf",
+                    "location": "165.88010230206072 74.17868078154703",
+                    "transitions": [
+                        {"name": "Chat", "id": "refId1739600227187"},
+                        {"name": "InboundCall", "id": "refId1739600227163"},
+                        {"name": "InboundSMS", "id": "refId1739600227203"},
+                    ],
+                },
+                "67b11b35410f937347fe9aee": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b35410f937347fe9aee",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1739600226811",
+                        }
+                    ],
+                    "_id": "67b11b35410f937347fe9aee",
+                    "key": "67b11b35410f937347fe9aee",
+                    "location": "484.89646762282933 -76.7578027276301",
+                    "transitions": [{"name": "End State", "id": "refId1739600226811"}],
+                },
+                "67b11b3a4492457796ee0690": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b3a4492457796ee0690",
+                    "name": "Chat",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "id": "refId1739600229945",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600226839",
+                            "id": "refId1739600229946",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11b3a4492457796ee0690",
+                    "key": "67b11b3a4492457796ee0690",
+                    "location": "480.78544785048666 214.34893700073843",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226839"}
+                    ],
+                },
+                "67b11b424881f97a86b2640f": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b424881f97a86b2640f",
+                    "name": "InboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. For loan application info, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Credit Card Applications",
+                                "rightExpression": queues[
+                                    "Test Credit Card Applications"
+                                ],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Loan Applications",
+                                "rightExpression": queues["Test Loan Applications"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Accounts",
+                                "rightExpression": queues["Test Accounts"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'5'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600226869",
+                            "icon": "icon-transition",
+                            "id": "refId1739600229680",
+                        },
+                    ],
+                    "_id": "67b11b424881f97a86b2640f",
+                    "key": "67b11b424881f97a86b2640f",
+                    "location": "476.13146320255123 409.81629221403136",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226869"}
+                    ],
+                },
+                "67b11b4990b64c67bfb0e882": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b4990b64c67bfb0e882",
+                    "name": "InboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600229655",
+                        }
+                    ],
+                    "_id": "67b11b4990b64c67bfb0e882",
+                    "key": "67b11b4990b64c67bfb0e882",
+                    "location": "471.4774785546159 591.3216934835181",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600229655"}
+                    ],
+                },
+                "67b11daace899acb3e0d1c38": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11daace899acb3e0d1c38",
+                    "name": "ConnectAgent",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229770",
+                        },
+                        {
+                            "name": "SMS Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "smsmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229771",
+                        },
+                        {
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "description": "Please wait...",
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                            "id": "refId1739600229773",
+                            "icon": "icon-tts",
+                        },
+                        {
+                            "name": "Enter Queue from Expression",
+                            "description": "",
+                            "properties": {
+                                "priorityExpression": "workitem.data.priority",
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "ringAllEnabled": False,
+                                "stickyEnabled": False,
+                                "stickyUserType": "5",
+                                "stickyDurationToWaitSeconds": 0,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "enterqueuefromexpression",
+                            "_selected": False,
+                            "id": "refId1739600229774",
+                            "icon": "icon-enterqueues",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Two way Chat conversation",
+                                "functionId": two_way_chat_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229775",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "Two way SMS conversation",
+                                "functionId": two_way_sms_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {"name": two_way_sms_function["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229776",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "HoldQueue",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11dbf1fac7db53c1d0210",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227355",
+                            "id": "refId1739600229777",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11daace899acb3e0d1c38",
+                    "key": "67b11daace899acb3e0d1c38",
+                    "location": "768.2271674519036 757.1511431023132",
+                    "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
+                },
+                "67b11dbf1fac7db53c1d0210": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11dbf1fac7db53c1d0210",
+                    "name": "HoldQueue",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Voicemail (1)",
+                                "functionId": acd_voicemail_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_voicemail_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "icon": "icon-function",
+                            "id": "refId1739600229018",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
+                                "description": "ACD Callback (2)",
+                                "functionId": acd_callback_function["_id"],
+                                "functionExpression": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": acd_callback_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229019",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Loop",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Back to Top",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "HoldQueue",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600227365",
+                            "id": "refId1739600229020",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11dbf1fac7db53c1d0210",
+                    "key": "67b11dbf1fac7db53c1d0210",
+                    "location": "1020.318794945671 938.4428069455298",
+                    "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
                 },
             },
-            "finalWorkitemStateId": "655e5bff8000b3fefffccc6e",
-            "finalUserStateId": "655e5bff8000b3fefffccc6e",
+            "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
+            "finalUserStateId": "67b1186f5510d9081ac8e32b",
             "name": workflow_name,
         }
     )
@@ -6211,6 +4117,9 @@ def create_direct_line_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
+    two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -6223,60 +4132,41 @@ def create_direct_line_workflow(
         {
             "maxActions": 10000,
             "localizations": {
-                "name": {"en": {"value": workflow_name}},
-                "description": {"en": {"value": "Direct Line Workflow"}},
+                "name": {"en": {"language": "en", "value": workflow_name}},
+                "description": {
+                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
+                },
             },
+            "description": "Non-IVA, DTMF workflow",
             "states": {
-                "66d8f9e3104729188ed41685": {
+                "67b1186f5510d9081ac8e32b": {
                     "category": "Standard",
-                    "campaignStateId": "66d8f9e3104729188ed41685",
+                    "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
-                            "name": "ACD Voicemail From Expression",
-                            "description": "Create ACD Voicemail",
-                            "properties": {
-                                "description": "Create ACD Voicemail",
-                                "transcription": True,
-                                "priority": 3,
-                                "queueIdsExpression": "workitem.data.queueId",
-                                "toAddress": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.messageRecorded",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "acdvmfromexpression",
-                            "_selected": False,
-                            "id": "refId1725570892321",
-                            "icon": "icon-directconnect",
-                        },
-                        {
+                            "category": "Action",
+                            "title": "Terminate",
                             "name": "Terminate",
                             "type": "terminate",
                             "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                            "_selected": False,
-                            "id": "refId1725570892323",
-                            "icon": "icon-terminate",
-                        },
+                        }
                     ],
                     "objectType": "campaignstate",
-                    "key": "66d8f9e3104729188ed41685",
-                    "_id": "66d8f9e3104729188ed41685",
+                    "key": "67b1186f5510d9081ac8e32b",
+                    "_id": "67b1186f5510d9081ac8e32b",
                     "description": "End State",
                     "name": "End State",
-                    "location": "1023.0958707809248 417.0087238302355",
+                    "location": "-147.23017129888294 34.91808770109185",
                     "transitions": [],
                 },
                 "start-state": {
@@ -6301,8 +4191,102 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1738366172156",
+                            "id": "refId1739600227611",
                             "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "false",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227612",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227613",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone",
+                                "rightExpression": "workitem.from.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600227614",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "priority",
+                                "rightExpression": "Standard",
+                                "variableName": "priority",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
                         },
                         {
                             "name": "Save Variable",
@@ -6322,83 +4306,34 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1728896032862",
                             "icon": "icon-save",
+                            "id": "refId1739600227615",
                         },
                         {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "preferredLanguage",
-                                "rightExpression": "English",
-                                "variableName": "preferredLanguage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1728896032863",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Transition",
+                            "name": "Survey",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "InboundCall",
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
-                                },
-                                "stateId": "670ca5ecfdefe77a5801fdbb",
-                            },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1725492300624",
-                            "id": "refId1728896032864",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "OutboundSMS",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
-                                            "rightExpression": "'OutboundSMS'",
+                                            "rightExpression": "'Survey'",
                                         }
                                     ],
                                 },
-                                "stateId": "6707178a057e0af18faedc7d",
+                                "stateName": "Survey",
+                                "description": "Transition to another state",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1728517832620",
-                            "id": "refId1728896032866",
+                            "transitionId": "refId1739600227151",
+                            "id": "refId1739600227616",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "Start",
+                            "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
                             "properties": {
@@ -6406,148 +4341,388 @@ def create_direct_line_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "66d8f9e3104729188ed41685",
+                                "stateId": "67b11894720280f716c36bdf",
                                 "name": "Start",
                                 "description": "Transition to another state",
                             },
-                            "transitionId": "66d8f9fc37e19143fb9f21e2",
+                            "transitionId": "67b118871e7c034010972864",
                             "_selected": False,
-                            "id": "refId1728896032867",
+                            "id": "refId1739600227617",
                             "icon": "icon-transition",
                         },
                     ],
                     "transitions": [
-                        {"name": "Transition", "id": "refId1725492300624"},
-                        {"name": "Transition", "id": "refId1728517832620"},
-                        {"name": "Start", "id": "66d8f9fc37e19143fb9f21e2"},
+                        {"name": "Survey", "id": "refId1739600227151"},
+                        {"name": "Search Contacts", "id": "67b118871e7c034010972864"},
                     ],
                     "objectType": "campaignstate",
                     "key": "start-state",
                     "_id": "start-state",
                     "description": "Begin State",
                     "name": "Begin State",
-                    "location": "712.7212863159832 -20.793664538718872",
+                    "location": "-92.43594451534577 -158.49227385694343",
                 },
-                "66d8fa0d32652cf89e82962b": {
+                "67b11894720280f716c36bdf": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "66d8fa0d32652cf89e82962b",
-                    "name": "EnterQueue",
+                    "campaignStateId": "67b11894720280f716c36bdf",
+                    "name": "Search Contacts",
                     "description": "Newly Created State",
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Look Up Agent Info",
+                            "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "scriptId": "66c6bdda96c7f718c8cd8f3b",
-                                "variableName": "agentUserId",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
+                                "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "expansions": {"scriptId": {"name": "Contact Info"}},
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1729821754218",
-                            "icon": "icon-script",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "intent",
-                                "rightExpression": "Customer Service",
-                                "variableName": "intent",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": True,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1729821754219",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "subunit",
-                                "rightExpression": "N/A",
-                                "variableName": "subunit",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": True,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1729821754220",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "department",
-                                "rightExpression": "Customer Service",
-                                "variableName": "department",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": True,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1729821754221",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "icon": "icon-playprompt",
-                            "name": "Play Prompt",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Please Wait",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "loop": 1,
-                                "promptId": "671b105ee6c64a69cf713f96",
                                 "expansions": {
-                                    "promptId": {"name": "Litify - Please Wait"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
-                            "type": "playprompt",
+                            "type": "function",
                             "_selected": False,
+                            "id": "refId1739600227189",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Chat",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b3a4492457796ee0690",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227187",
+                            "icon": "icon-transition",
+                            "id": "refId1739600227190",
+                        },
+                        {
+                            "name": "InboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b424881f97a86b2640f",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227163",
+                            "id": "refId1739600227191",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "InboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b11b4990b64c67bfb0e882",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600227203",
+                        },
+                    ],
+                    "_id": "67b11894720280f716c36bdf",
+                    "key": "67b11894720280f716c36bdf",
+                    "location": "165.88010230206072 74.17868078154703",
+                    "transitions": [
+                        {"name": "Chat", "id": "refId1739600227187"},
+                        {"name": "InboundCall", "id": "refId1739600227163"},
+                        {"name": "InboundSMS", "id": "refId1739600227203"},
+                    ],
+                },
+                "67b11b35410f937347fe9aee": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b35410f937347fe9aee",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1739600226811",
+                        }
+                    ],
+                    "_id": "67b11b35410f937347fe9aee",
+                    "key": "67b11b35410f937347fe9aee",
+                    "location": "484.89646762282933 -76.7578027276301",
+                    "transitions": [{"name": "End State", "id": "refId1739600226811"}],
+                },
+                "67b11b3a4492457796ee0690": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b3a4492457796ee0690",
+                    "name": "Chat",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "id": "refId1739600229945",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600226839",
+                            "id": "refId1739600229946",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b11b3a4492457796ee0690",
+                    "key": "67b11b3a4492457796ee0690",
+                    "location": "480.78544785048666 214.34893700073843",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226839"}
+                    ],
+                },
+                "67b11b424881f97a86b2640f": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b424881f97a86b2640f",
+                    "name": "InboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                            "icon": "icon-tts",
+                            "id": "refId1739600229678",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600226869",
+                            "icon": "icon-transition",
+                            "id": "refId1739600229680",
+                        },
+                    ],
+                    "_id": "67b11b424881f97a86b2640f",
+                    "key": "67b11b424881f97a86b2640f",
+                    "location": "476.13146320255123 409.81629221403136",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600226869"}
+                    ],
+                },
+                "67b11b4990b64c67bfb0e882": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11b4990b64c67bfb0e882",
+                    "name": "InboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1739600229655",
+                        }
+                    ],
+                    "_id": "67b11b4990b64c67bfb0e882",
+                    "key": "67b11b4990b64c67bfb0e882",
+                    "location": "471.4774785546159 591.3216934835181",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739600229655"}
+                    ],
+                },
+                "67b11daace899acb3e0d1c38": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b11daace899acb3e0d1c38",
+                    "name": "ConnectAgent",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229770",
+                        },
+                        {
+                            "name": "SMS Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "Please wait...",
+                                "message": "Please wait while I transfer you to an agent who can assist you.",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "smsmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1739600229771",
+                        },
+                        {
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                                "description": "Please wait...",
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                            "id": "refId1739600229773",
+                            "icon": "icon-tts",
                         },
                         {
                             "name": "Enter Queue from Expression",
                             "description": "",
                             "properties": {
-                                "priorityExpression": "Standard",
+                                "priorityExpression": "workitem.data.priority",
                                 "queueIdsExpression": "workitem.data.queueId",
                                 "ringAllEnabled": False,
-                                "stickyEnabled": True,
-                                "stickyUserType": "userIdFromExpression",
-                                "stickyUserIdFromExpression": "workitem.data.agentUserId",
-                                "stickyDurationToWaitSeconds": "7200",
+                                "stickyEnabled": False,
+                                "stickyUserType": "5",
+                                "stickyDurationToWaitSeconds": 0,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
@@ -6555,16 +4730,43 @@ def create_direct_line_workflow(
                             },
                             "type": "enterqueuefromexpression",
                             "_selected": False,
-                            "id": "refId1729821754224",
+                            "id": "refId1739600229774",
                             "icon": "icon-enterqueues",
                         },
                         {
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
+                                "description": "Two way Chat conversation",
+                                "functionId": two_way_chat_function["_id"],
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "expansions": {
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "function",
+                            "_selected": False,
+                            "id": "refId1739600229775",
+                            "icon": "icon-function",
+                        },
+                        {
+                            "name": "Execute Function",
+                            "description": "",
+                            "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
-                                "functionExpression": "",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -6576,20 +4778,19 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1729821754225",
+                            "id": "refId1739600229776",
                             "icon": "icon-function",
                         },
                         {
-                            "name": "Transition",
+                            "name": "HoldQueue",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "HoldQueue",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -6600,36 +4801,38 @@ def create_direct_line_workflow(
                                         }
                                     ],
                                 },
-                                "stateId": "66d8fb13ad3c61caa09d1110",
+                                "stateId": "67b11dbf1fac7db53c1d0210",
+                                "description": "Transition to another state",
                             },
                             "type": "transition",
                             "_selected": False,
-                            "transitionId": "refId1725492300850",
-                            "id": "refId1729821754226",
+                            "transitionId": "refId1739600227355",
+                            "id": "refId1739600229777",
                             "icon": "icon-transition",
                         },
                     ],
-                    "_id": "66d8fa0d32652cf89e82962b",
-                    "key": "66d8fa0d32652cf89e82962b",
-                    "location": "2901.6485757105515 1140.6023515871557",
-                    "transitions": [{"name": "Transition", "id": "refId1725492300850"}],
+                    "_id": "67b11daace899acb3e0d1c38",
+                    "key": "67b11daace899acb3e0d1c38",
+                    "location": "768.2271674519036 757.1511431023132",
+                    "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
-                "66d8fb13ad3c61caa09d1110": {
+                "67b11dbf1fac7db53c1d0210": {
                     "category": "Standard",
                     "objectType": "campaignstate",
-                    "campaignStateId": "66d8fb13ad3c61caa09d1110",
+                    "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Play & Collect Digits",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
                                 "dlpOption": False,
@@ -6637,15 +4840,9 @@ def create_direct_line_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
                             },
-                            "type": "playdigits",
-                            "_selected": False,
-                            "id": "refId1738600563580",
-                            "icon": "icon-playdigits",
+                            "type": "googlettscollect",
+                            "_selected": True,
                         },
                         {
                             "name": "Execute Function",
@@ -6673,8 +4870,8 @@ def create_direct_line_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1738600563581",
                             "icon": "icon-function",
+                            "id": "refId1739600229018",
                         },
                         {
                             "name": "Execute Function",
@@ -6702,823 +4899,35 @@ def create_direct_line_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1738600563582",
+                            "id": "refId1739600229019",
                             "icon": "icon-function",
                         },
                         {
-                            "name": "Play & Collect Digits",
-                            "description": "",
-                            "properties": {
-                                "description": "music accoustic1",
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "1",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playdigits",
-                            "_selected": True,
-                            "id": "refId1738600563583",
-                            "icon": "icon-playdigits",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Voicemail (1)",
-                                "functionId": acd_voicemail_function["_id"],
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_voicemail_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1738600563584",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "ACD Callback (2)",
-                                "functionId": acd_callback_function["_id"],
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'2'",
-                                        }
-                                    ],
-                                },
-                                "expansions": {
-                                    "functionId": {
-                                        "name": acd_callback_function["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": False,
-                            "id": "refId1738600563585",
-                            "icon": "icon-function",
-                        },
-                        {
-                            "name": "Transition",
+                            "name": "Loop",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Loop",
+                                "description": "Back to Top",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "66d8fb13ad3c61caa09d1110",
+                                "stateName": "HoldQueue",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1725492300938",
-                            "id": "refId1738600563586",
+                            "transitionId": "refId1739600227365",
+                            "id": "refId1739600229020",
                             "icon": "icon-transition",
                         },
                     ],
-                    "_id": "66d8fb13ad3c61caa09d1110",
-                    "key": "66d8fb13ad3c61caa09d1110",
-                    "location": "3201.3012699091823 1307.7540018006155",
-                    "transitions": [{"name": "Transition", "id": "refId1725492300938"}],
-                },
-                "6707178a057e0af18faedc7d": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "6707178a057e0af18faedc7d",
-                    "name": "OutboundSMS",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "icon": "icon-function",
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
-                                "functionExpression": "",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "function",
-                            "_selected": True,
-                        }
-                    ],
-                    "_id": "6707178a057e0af18faedc7d",
-                    "key": "6707178a057e0af18faedc7d",
-                    "location": "1198.5146171007284 322.6567628330434",
-                    "transitions": [],
-                },
-                "670ca4e625ed9996262cc286": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670ca4e625ed9996262cc286",
-                    "name": "CheckPrefLang",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.data.preferredLanguage",
-                                            "rightExpression": "'English'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.preferredLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'Spanish'",
-                                        },
-                                    ],
-                                },
-                                "stateId": "670cc602dd90eb0f8f0980e4",
-                                "description": "Transition to another state",
-                            },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "670cb472659969154290cd0b",
-                            "id": "refId1728890057467",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition to another state",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [],
-                                },
-                                "stateId": "670ca881295277f9f946e876",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1728881253112",
-                            "id": "refId1728890057468",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "670ca4e625ed9996262cc286",
-                    "key": "670ca4e625ed9996262cc286",
-                    "location": "2009.9989589671272 580.4637014087123",
-                    "transitions": [
-                        {"name": "Transition", "id": "670cb472659969154290cd0b"},
-                        {"name": "Transition", "id": "refId1728881253112"},
-                    ],
-                },
-                "670ca5ecfdefe77a5801fdbb": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670ca5ecfdefe77a5801fdbb",
-                    "name": "SearchContacts",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "phone",
-                                "rightExpression": "workitem.from.slice(-10)",
-                                "variableName": "phone",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738607250005",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Search Contacts",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "searchContactsResponse",
-                                "restCallId": "66d8ec3ed36e0e5b10d105cd",
-                                "expansions": {
-                                    "restCallId": {"name": "Litify - Search Contacts"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1738607250006",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.apiResponse.httpStatus == 200 && workitem.data.apiResponse.body.totalSize == '1'",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.searchContactsResponse.httpStatus",
-                                            "operator": "==",
-                                            "rightExpression": "200",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.searchContactsResponse.body.totalSize",
-                                            "operator": "==",
-                                            "rightExpression": "'1'",
-                                        },
-                                    ],
-                                },
-                                "stateId": "670ca7469db654594e96e93c",
-                                "points": {
-                                    "h": True,
-                                    "r": [],
-                                    "ct": 0,
-                                    "__gohashid": 3755,
-                                },
-                            },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1728881252987",
-                            "id": "refId1738607250007",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "670ca5ecfdefe77a5801fdbb",
-                    "key": "670ca5ecfdefe77a5801fdbb",
-                    "location": "1410.2807399707942 166.35588969177047",
-                    "transitions": [{"name": "Transition", "id": "refId1728881252987"}],
-                },
-                "670ca7469db654594e96e93c": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670ca7469db654594e96e93c",
-                    "name": "GetAccountDetails",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "whoId",
-                                "rightExpression": "workitem.data.searchContactsResponse.body.records[0].Id",
-                                "variableName": "whoId",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738607250029",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "name",
-                                "rightExpression": "workitem.data.searchContactsResponse.body.records[0].Name",
-                                "variableName": "name",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": True,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738607250030",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "accountId",
-                                "rightExpression": "workitem.data.searchContactsResponse.body.records[0].AccountId",
-                                "variableName": "accountId",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738607250031",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Get Account Details",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "getAccountDetailsResponse",
-                                "restCallId": "670ca5bf3b729f0c47e638d1",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Litify - Get Account Details"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": False,
-                            "id": "refId1738607250032",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "preferredLanguage",
-                                "rightExpression": "workitem.data.getAccountDetailsResponse.body.Preferred_Language__c",
-                                "variableName": "preferredLanguage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.data.apiResponse.httpStatus",
-                                            "rightExpression": "200",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1738607250033",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                                "stateId": "66d8fa0d32652cf89e82962b",
-                                "description": "Transition to another state",
-                                "points": {
-                                    "h": True,
-                                    "r": [
-                                        {
-                                            "b": 1796.157061852348,
-                                            "k": 346.6035165442374,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 1806.157061852348,
-                                            "k": 346.6035165442374,
-                                            "h": True,
-                                        },
-                                        {"b": 1804, "k": 346.6035165442374, "h": True},
-                                        {"b": 1804, "k": 346.6035165442374, "h": True},
-                                        {
-                                            "b": 2901.6485757105515,
-                                            "k": 346.6035165442374,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 2901.6485757105515,
-                                            "k": 1066.3623674562962,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 2901.6485757105515,
-                                            "k": 1076.3623674562962,
-                                            "h": True,
-                                        },
-                                    ],
-                                    "ct": 7,
-                                    "__gohashid": 5528,
-                                },
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1728896033011",
-                            "id": "refId1738607250034",
-                            "icon": "icon-transition",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "workitem.data.apiResponse.httpStatus == 200",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.getAccountDetailsResponse.httpStatus",
-                                            "operator": "==",
-                                            "rightExpression": "200",
-                                        }
-                                    ],
-                                },
-                                "stateId": "670ca4e625ed9996262cc286",
-                                "points": {
-                                    "h": True,
-                                    "r": [
-                                        {
-                                            "b": 1796.157061852348,
-                                            "k": 390.6035165442374,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 1806.157061852348,
-                                            "k": 390.6035165442374,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 1806.157061852348,
-                                            "k": 390.6035165442374,
-                                            "h": True,
-                                        },
-                                        {"b": 1806.157061852348, "k": 452, "h": True},
-                                        {"b": 2009.9989589671272, "k": 452, "h": True},
-                                        {
-                                            "b": 2009.9989589671272,
-                                            "k": 484.22371727785287,
-                                            "h": True,
-                                        },
-                                        {
-                                            "b": 2009.9989589671272,
-                                            "k": 494.22371727785287,
-                                            "h": True,
-                                        },
-                                    ],
-                                    "ct": 7,
-                                    "__gohashid": 5529,
-                                },
-                            },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1728881253060",
-                            "id": "refId1738607250035",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "670ca7469db654594e96e93c",
-                    "key": "670ca7469db654594e96e93c",
-                    "location": "1713.157061852348 351.86353241337804",
-                    "transitions": [
-                        {"name": "Transition", "id": "refId1728896033011"},
-                        {"name": "Transition", "id": "refId1728881253060"},
-                    ],
-                },
-                "670ca881295277f9f946e876": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670ca881295277f9f946e876",
-                    "name": "PromptLang",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "preferredLanguage == English",
-                                "rightExpression": "English",
-                                "variableName": "preferredLanguage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1729821755530",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Play Prompt",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Welcome",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "loop": 1,
-                                "promptId": "671b0cbf8fec8776eabc05d5",
-                                "expansions": {
-                                    "promptId": {"name": "Litify - Welcome"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playprompt",
-                            "_selected": False,
-                            "id": "refId1729821755531",
-                            "icon": "icon-playprompt",
-                        },
-                        {
-                            "name": "Play & Collect Digits",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Spanish Option",
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "671b100be6c64a69cf713f95",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "3",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "promptId": {"name": "Litify - Spanish Option"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playdigits",
-                            "_selected": False,
-                            "icon": "icon-playdigits",
-                            "id": "refId1729821755532",
-                        },
-                        {
-                            "icon": "icon-reset",
-                            "name": "Set Language",
-                            "description": "",
-                            "properties": {
-                                "description": "Spanish",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.digits",
-                                            "operator": "==",
-                                            "rightExpression": "'8'",
-                                        }
-                                    ],
-                                },
-                                "languageId": "5856910dd1cde32bc192b8e6",
-                                "expansions": {"languageId": {"name": "Spanish"}},
-                                "_working": False,
-                            },
-                            "type": "setlanguage",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "preferredLanguage == Spanish",
-                                "rightExpression": "Spanish",
-                                "variableName": "preferredLanguage",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "operator": "==",
-                                            "leftExpression": "workitem.digits",
-                                            "rightExpression": "'8'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "id": "refId1729821755533",
-                            "icon": "icon-save",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "UpdatePrefLang",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "670ca987f116924f28a46251",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1728881253362",
-                            "id": "refId1729821755534",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "670ca881295277f9f946e876",
-                    "key": "670ca881295277f9f946e876",
-                    "location": "2306.9008182257976 775.9696699595421",
-                    "transitions": [{"name": "Transition", "id": "refId1728881253362"}],
-                },
-                "670ca987f116924f28a46251": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670ca987f116924f28a46251",
-                    "name": "UpdatePrefLang",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "name": "Execute REST Call",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Update Preferred Language",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "updatePreferredLanguageResponse",
-                                "restCallId": "670cabec4cc7a140809eb919",
-                                "expansions": {
-                                    "restCallId": {
-                                        "name": "Litify - Update Preferred Language"
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "restapi",
-                            "_selected": True,
-                            "id": "refId1728881257176",
-                            "icon": "icon-api",
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Welcome",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "66d8fa0d32652cf89e82962b",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1728881253454",
-                            "id": "refId1728881257177",
-                            "icon": "icon-transition",
-                        },
-                    ],
-                    "_id": "670ca987f116924f28a46251",
-                    "key": "670ca987f116924f28a46251",
-                    "location": "2543.34642867992 974.7483534080326",
-                    "transitions": [{"name": "Transition", "id": "refId1728881253454"}],
-                },
-                "670cc602dd90eb0f8f0980e4": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "670cc602dd90eb0f8f0980e4",
-                    "name": "Welcome",
-                    "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
-                    "actions": [
-                        {
-                            "icon": "icon-reset",
-                            "name": "Set Language",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.preferredLanguage",
-                                            "operator": "==",
-                                            "rightExpression": "'Spanish'",
-                                        }
-                                    ],
-                                },
-                                "languageId": "5856910dd1cde32bc192b8e6",
-                                "expansions": {"languageId": {"name": "Spanish"}},
-                                "_working": False,
-                            },
-                            "type": "setlanguage",
-                            "_selected": True,
-                        },
-                        {
-                            "icon": "icon-playprompt",
-                            "name": "Play Prompt",
-                            "description": "",
-                            "properties": {
-                                "description": "Litify - Welcome",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "loop": 1,
-                                "promptId": "671b0cbf8fec8776eabc05d5",
-                                "expansions": {
-                                    "promptId": {"name": "Litify - Welcome"}
-                                },
-                                "_working": False,
-                            },
-                            "type": "playprompt",
-                            "_selected": False,
-                        },
-                        {
-                            "name": "Transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "EnterQueue",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "66d8fa0d32652cf89e82962b",
-                            },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1728890057465",
-                            "icon": "icon-transition",
-                            "id": "refId1729821753867",
-                        },
-                    ],
-                    "_id": "670cc602dd90eb0f8f0980e4",
-                    "key": "670cc602dd90eb0f8f0980e4",
-                    "location": "2701.9396287318796 708.3558662644192",
-                    "transitions": [{"name": "Transition", "id": "refId1728890057465"}],
+                    "_id": "67b11dbf1fac7db53c1d0210",
+                    "key": "67b11dbf1fac7db53c1d0210",
+                    "location": "1020.318794945671 938.4428069455298",
+                    "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
                 },
             },
-            "finalWorkitemStateId": "66d8f9e3104729188ed41685",
-            "finalUserStateId": "66d8f9e3104729188ed41685",
+            "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
+            "finalUserStateId": "67b1186f5510d9081ac8e32b",
             "name": workflow_name,
         }
     )
