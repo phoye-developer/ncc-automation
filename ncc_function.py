@@ -121,6 +121,197 @@ def create_function(ncc_location: str, ncc_token: str, function_body: dict) -> d
     return function
 
 
+def create_search_contacts_function(
+    ncc_location: str, ncc_token: str, function_name: str
+) -> dict:
+    """
+    This function creates an NCC function.
+    """
+    function = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "states": {
+                "67b1198ffbec07080c5ed4f5": {
+                    "category": "Standard",
+                    "campaignStateId": "67b1198ffbec07080c5ed4f5",
+                    "actions": [
+                        {
+                            "icon": "icon-functionreturn",
+                            "name": "Return To Workflow",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                            "type": "functionreturn",
+                            "_selected": True,
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67b1198ffbec07080c5ed4f5",
+                    "_id": "67b1198ffbec07080c5ed4f5",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "-29.15635454687515 171.02506895312501",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "name": "Search Contacts",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b119c1c1ef27217175e22a",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67b119ac7b83858bc8773ee8",
+                            "_selected": True,
+                            "icon": "icon-transition",
+                            "id": "refId1739600226597",
+                        }
+                    ],
+                    "transitions": [
+                        {"name": "Search Contacts", "id": "67b119ac7b83858bc8773ee8"}
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "0 0",
+                },
+                "67b119c1c1ef27217175e22a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b119c1c1ef27217175e22a",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-search",
+                            "name": "Contact",
+                            "description": "Assign contact",
+                            "properties": {
+                                "description": "Chat",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "searchOn": "workitem.data.context.consumerData.phone",
+                            },
+                            "type": "findcontact",
+                            "_selected": False,
+                            "id": "refId1739600226656",
+                        },
+                        {
+                            "icon": "icon-search",
+                            "name": "Contact",
+                            "description": "Assign contact",
+                            "properties": {
+                                "description": "InboundCall or InboundSMS",
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                                "searchOn": "workitem.data.phone",
+                            },
+                            "type": "findcontact",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-search",
+                            "name": "Contact",
+                            "description": "Assign contact",
+                            "properties": {
+                                "description": "Email",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Email'",
+                                        }
+                                    ],
+                                },
+                                "searchOn": "workitem.from",
+                            },
+                            "type": "findcontact",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1739600226625",
+                            "icon": "icon-transition",
+                            "id": "refId1739600226627",
+                        },
+                    ],
+                    "_id": "67b119c1c1ef27217175e22a",
+                    "key": "67b119c1c1ef27217175e22a",
+                    "location": "318.1850467343752 131.52630117187525",
+                    "transitions": [{"name": "End State", "id": "refId1739600226625"}],
+                },
+            },
+            "showInDashboardOption": False,
+            "name": function_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/function/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            function = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return function
+
+
 def create_acd_voicemail_function(
     ncc_location: str, ncc_token: str, function_name: str
 ) -> dict:

@@ -701,6 +701,23 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'Template "{template["name"]}" already exists.')
             templates_to_assign.append(result)
 
+    # Create Search Contacts function
+    search_contacts_function = search_functions(
+        ncc_location, ncc_token, f"{campaign_name} - Search Contacts"
+    )
+    if search_contacts_function == {}:
+        search_contacts_function = create_search_contacts_function(
+            ncc_location, ncc_token, f"{campaign_name} - Search Contacts"
+        )
+        if search_contacts_function != {}:
+            logging.info(f'Function "{campaign_name} - Search Contacts" created.')
+        else:
+            logging.warning(
+                f'Function "{campaign_name} - Search Contacts" not created.'
+            )
+    else:
+        logging.info(f'Function "{campaign_name} - Search Contacts" already exists.')
+
     # Create ACD Voicemail function
     acd_voicemail_function = search_functions(
         ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
@@ -734,7 +751,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     # Create workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow == {}:
-        if acd_voicemail_function != {} and acd_callback_function != {}:
+        if (
+            acd_voicemail_function != {}
+            and acd_callback_function != {}
+            and search_contacts_function != {}
+        ):
             if workflow_type == "iva":
                 workflow = create_iva_workflow(
                     ncc_location,
@@ -742,6 +763,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     campaign_name,
                     business_name,
                     queues_to_assign,
+                    search_contacts_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )
@@ -753,6 +775,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         campaign_name,
                         business_name,
                         queues_to_assign,
+                        search_contacts_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -763,6 +786,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         campaign_name,
                         business_name,
                         queues_to_assign,
+                        search_contacts_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -773,6 +797,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         campaign_name,
                         business_name,
                         queues_to_assign,
+                        search_contacts_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -783,6 +808,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     campaign_name,
                     business_name,
                     queues_to_assign,
+                    search_contacts_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )

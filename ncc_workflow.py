@@ -78,6 +78,7 @@ def create_iva_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -329,15 +330,17 @@ def create_iva_workflow(
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "Search Contacts - Main",
-                                "functionId": "67b119abaade3e5c8919bcc0",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
                                 "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Search Contacts - Main"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -1231,6 +1234,7 @@ def create_general_non_iva_dtmf_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -1485,15 +1489,17 @@ def create_general_non_iva_dtmf_workflow(
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "Search Contacts - Main",
-                                "functionId": "67b119abaade3e5c8919bcc0",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
                                 "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Search Contacts - Main"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -1669,21 +1675,133 @@ def create_general_non_iva_dtmf_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                             },
-                            "type": "googletts",
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Sales",
+                                "rightExpression": queues["Test Sales"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
                             "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600229678",
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Technical Support",
+                                "rightExpression": queues["Test Technical Support"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "ConnectAgent",
@@ -1695,12 +1813,18 @@ def create_general_non_iva_dtmf_workflow(
                                 },
                                 "stateId": "67b11daace899acb3e0d1c38",
                                 "description": "Transition to another state",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 193062,
+                                },
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
+                            "id": "refId1739600231292",
                             "icon": "icon-transition",
-                            "id": "refId1739600229680",
                         },
                     ],
                     "_id": "67b11b424881f97a86b2640f",
@@ -2060,6 +2184,7 @@ def create_hc_non_iva_dtmf_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -2314,15 +2439,17 @@ def create_hc_non_iva_dtmf_workflow(
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "Search Contacts - Main",
-                                "functionId": "67b119abaade3e5c8919bcc0",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
                                 "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Search Contacts - Main"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -2498,21 +2625,133 @@ def create_hc_non_iva_dtmf_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                             },
-                            "type": "googletts",
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Prescription Refills",
+                                "rightExpression": queues["Test Prescription Refills"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
                             "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600229678",
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Appointments",
+                                "rightExpression": queues["Test Appointments"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "ConnectAgent",
@@ -2889,6 +3128,7 @@ def create_finserv_non_iva_dtmf_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -3143,15 +3383,17 @@ def create_finserv_non_iva_dtmf_workflow(
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "Search Contacts - Main",
-                                "functionId": "67b119abaade3e5c8919bcc0",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
                                 "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Search Contacts - Main"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -3327,21 +3569,162 @@ def create_finserv_non_iva_dtmf_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. For loan application info, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                             },
-                            "type": "googletts",
+                            "type": "googlettscollect",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Credit Card Applications",
+                                "rightExpression": queues[
+                                    "Test Credit Card Applications"
+                                ],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
                             "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600229678",
+                            "icon": "icon-save",
+                            "id": "refId1739600231288",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Loan Applications",
+                                "rightExpression": queues["Test Loan Applications"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'2'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231289",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Accounts",
+                                "rightExpression": queues["Test Accounts"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'3'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231290",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'4'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'5'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739600231291",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "ConnectAgent",
@@ -3718,6 +4101,7 @@ def create_direct_line_workflow(
     workflow_name: str,
     business_name: str,
     queues: dict,
+    search_contacts_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -3972,15 +4356,17 @@ def create_direct_line_workflow(
                             "name": "Execute Function",
                             "description": "",
                             "properties": {
-                                "description": "Search Contacts - Main",
-                                "functionId": "67b119abaade3e5c8919bcc0",
+                                "description": "Search Contacts",
+                                "functionId": search_contacts_function["_id"],
                                 "functionExpression": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Search Contacts - Main"}
+                                    "functionId": {
+                                        "name": search_contacts_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
