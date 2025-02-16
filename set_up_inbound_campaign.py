@@ -73,6 +73,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         choice = input("Command: ")
         print()
         if choice == "1":
+            vertical = "general"
             dispositions = general_dispositions
             queues = general_queues
             classifications = general_classifications.copy()
@@ -80,6 +81,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             topics = general_topics
             reports = general_reports
         elif choice == "2":
+            vertical = "hc"
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             classifications = general_classifications.copy() + hc_classifications.copy()
@@ -87,6 +89,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             topics = general_topics + hc_topics
             reports = general_reports + hc_reports
         elif choice == "3":
+            vertical = "finserv"
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             classifications = (
@@ -743,15 +746,36 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     acd_callback_function,
                 )
             elif workflow_type == "non_iva_dtmf":
-                workflow = create_non_iva_dtmf_workflow(
-                    ncc_location,
-                    ncc_token,
-                    campaign_name,
-                    business_name,
-                    queues_to_assign,
-                    acd_voicemail_function,
-                    acd_callback_function,
-                )
+                if vertical == "general":
+                    workflow = create_general_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "hc":
+                    workflow = create_hc_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "finserv":
+                    workflow = create_finserv_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
             else:
                 workflow = create_direct_line_workflow(
                     ncc_location,
