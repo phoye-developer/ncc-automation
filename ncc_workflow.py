@@ -1102,13 +1102,14 @@ def create_iva_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "icon": "icon-playdigits",
-                            "name": "Play & Collect Digits",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
-                                "loop": 1,
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
                                 "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
                                 "dlpOption": False,
@@ -1116,13 +1117,9 @@ def create_iva_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
-                                "_working": False,
                             },
-                            "type": "playdigits",
-                            "_selected": False,
+                            "type": "googlettscollect",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-function",
