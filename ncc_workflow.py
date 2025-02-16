@@ -80,6 +80,7 @@ def create_iva_workflow(
     queues: dict,
     search_contacts_function: dict,
     two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -1044,7 +1045,7 @@ def create_iva_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1056,7 +1057,7 @@ def create_iva_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
@@ -1239,6 +1240,7 @@ def create_general_non_iva_dtmf_workflow(
     queues: dict,
     search_contacts_function: dict,
     two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -2003,7 +2005,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -2015,7 +2017,7 @@ def create_general_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
@@ -2192,6 +2194,7 @@ def create_hc_non_iva_dtmf_workflow(
     queues: dict,
     search_contacts_function: dict,
     two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -2950,7 +2953,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -2962,7 +2965,7 @@ def create_hc_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
@@ -3139,6 +3142,7 @@ def create_finserv_non_iva_dtmf_workflow(
     queues: dict,
     search_contacts_function: dict,
     two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -3926,7 +3930,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -3938,7 +3942,7 @@ def create_finserv_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
@@ -4115,6 +4119,7 @@ def create_direct_line_workflow(
     queues: dict,
     search_contacts_function: dict,
     two_way_chat_function: dict,
+    two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -4761,7 +4766,7 @@ def create_direct_line_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way SMS conversation",
-                                "functionId": "5c79411ad4f8db0001649bc5",
+                                "functionId": two_way_sms_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -4773,7 +4778,7 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way SMS conversation"}
+                                    "functionId": {"name": two_way_sms_function["name"]}
                                 },
                                 "_working": False,
                             },
