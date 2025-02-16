@@ -69,6 +69,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         print("1. General")
         print("2. Healthcare")
         print("3. FinServ")
+        print("4. Insurance")
         print()
         choice = input("Command: ")
         print()
@@ -98,6 +99,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             templates = general_templates + finserv_templates
             topics = general_topics + finserv_topics
             reports = general_reports + finserv_reports
+        elif choice == "4":
+            vertical = "insurance"
+            dispositions = general_dispositions + insurance_dispositions
+            queues = general_queues + insurance_queues
+            classifications = (
+                general_classifications.copy() + insurance_classifications.copy()
+            )
+            templates = general_templates + insurance_templates
+            topics = general_topics + insurance_topics
+            reports = general_reports + insurance_reports
         else:
             choice = ""
             print("Invalid choice.")
@@ -830,6 +841,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     )
                 elif vertical == "finserv":
                     workflow = create_finserv_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "insurance":
+                    workflow = create_insurance_non_iva_dtmf_workflow(
                         ncc_location,
                         ncc_token,
                         campaign_name,

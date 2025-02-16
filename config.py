@@ -193,6 +193,7 @@ general_dispositions = [
 ]
 hc_dispositions = []
 finserv_dispositions = []
+insurance_dispositions = []
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
@@ -367,7 +368,93 @@ finserv_queues = [
         "chatSLA": 30,
     },
 ]
+insurance_queues = [
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Policies"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Accounts",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Test Claims"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Test Accounts",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+]
 
+# Categories
+general_categories = [
+    {"label": "Billing Inquiry", "value": "Billing Inquiry"},
+    {"label": "General Inquiry", "value": "General Inquiry"},
+    {"label": "Make Payment", "value": "Make Payment"},
+    {"label": "Make Payment Arrangement", "value": "Make Payment Arrangement"},
+    {"label": "Other", "value": "Other"},
+    {"label": "Provide Feedback", "value": "Provide Feedback"},
+    {"label": "Register Complaint", "value": "Register Complaint"},
+    {"label": "Report Issue", "value": "Report Issue"},
+    {"label": "Request Cancellation", "value": "Request Cancellation"},
+    {"label": "Update Contact Info", "value": "Update Contact Info"},
+]
+hc_categories = [
+    {"label": "Cancel Appointment", "value": "Cancel Appointment"},
+    {"label": "Cancel Policy", "value": "Cancel Policy"},
+    {"label": "Change Policy", "value": "Change Policy"},
+    {"label": "Enroll Patient", "value": "Enroll Patient"},
+    {"label": "Policy Inquiry", "value": "Policy Inquiry"},
+    {"label": "Refill Prescription", "value": "Refill Prescription"},
+    {"label": "Request Records", "value": "Request Records"},
+    {"label": "Reschedule Appointment", "value": "Reschedule Appointment"},
+    {"label": "Schedule Appointment", "value": "Schedule Appointment"},
+    {"label": "Update Policy", "value": "Update Policy"},
+    {"label": "Verify Insurance", "value": "Verify Insurance"},
+]
+finserv_categories = [
+    {"label": "Apply for Loan", "value": "Apply for Loan"},
+    {"label": "Close Account", "value": "Close Account"},
+    {"label": "Open Account", "value": "Open Account"},
+    {"label": "Report Fraud", "value": "Report Fraud"},
+    {
+        "label": "Request New Debit/Credit Card",
+        "value": "Request New Debit/Credit Card",
+    },
+    {"label": "Update Account", "value": "Update Account"},
+]
+insurance_categories = [
+    {"label": "Cancel Policy", "value": "Cancel Policy"},
+    {"label": "Change Policy", "value": "Change Policy"},
+    {"label": "File Claim", "value": "File Claim"},
+    {"label": "Get Claim Status", "value": "Get Claim Status"},
+    {"label": "Policy Inquiry", "value": "Policy Inquiry"},
+    {"label": "Policy Purchase", "value": "Policy Purchase"},
+    {"label": "Renew Policy", "value": "Renew Policy"},
+    {"label": "Update Policy", "value": "Update Policy"},
+    {"label": "Verify Insurance", "value": "Verify Insurance"},
+]
+
+# Surveys
 main_user_survey_body = {
     "hideSurveyBoxShadown": False,
     "type": "full",
@@ -4271,6 +4358,7 @@ finserv_classifications = [
         "name": "Verification",
     }
 ]
+insurance_classifications = []
 
 general_templates = [
     {
@@ -4322,6 +4410,7 @@ general_templates = [
 ]
 hc_templates = []
 finserv_templates = []
+insurance_templates = []
 
 general_topics = [
     "Test Refund Requests",
@@ -4336,6 +4425,7 @@ hc_topics = [
     "Test Policy and Coverage Issues",
 ]
 finserv_topics = []
+insurance_topics = ["Test Policy and Coverage Issues", "Test Claim Issues"]
 
 general_reports = [
     {
@@ -4387,3 +4477,4 @@ general_reports = [
 ]
 hc_reports = []
 finserv_reports = []
+insurance_reports = []
