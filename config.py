@@ -5,14 +5,73 @@ deepgram_project_id = "90b9d6eb-c8c6-46a9-a0d7-c35f585403c4"
 general_dispositions = [
     {
         "useCampaignIdForDNC": False,
-        "resolved": False,
+        "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Billing"},
+                "en": {
+                    "language": "en",
+                    "value": "Test Closed - Customer Disconnected",
+                },
             },
         },
-        "name": "Test Billing",
-        "forceSurveyValidation": False,
+        "name": "Test Closed - Customer Disconnected",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Closed - Block Number"},
+            },
+        },
+        "name": "Test Closed - Block Number",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": True,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Closed - No Action Needed"},
+            },
+        },
+        "name": "Test Closed - No Action Needed",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Closed - Out of Scope"},
+            },
+        },
+        "name": "Test Closed - Out of Scope",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Test Closed - Request Cancelled"},
+            },
+        },
+        "name": "Test Closed - Request Cancelled",
+        "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
         "connectAgain": False,
@@ -22,11 +81,11 @@ general_dispositions = [
         "resolved": False,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Customer Service"},
+                "en": {"language": "en", "value": "Test Not Resolved - System Error"},
             },
         },
-        "name": "Test Customer Service",
-        "forceSurveyValidation": False,
+        "name": "Test Not Resolved - System Error",
+        "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
         "connectAgain": False,
@@ -36,11 +95,48 @@ general_dispositions = [
         "resolved": False,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Callback"},
+                "en": {
+                    "language": "en",
+                    "value": "Test Pending - Awaiting Customer Response",
+                },
             },
         },
-        "name": "Test Callback",
-        "forceSurveyValidation": False,
+        "name": "Test Pending - Awaiting Customer Response",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Test Pending - Awaiting Internal Review",
+                },
+            },
+        },
+        "name": "Test Pending - Awaiting Internal Review",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Test Pending - Callback Required",
+                },
+            },
+        },
+        "name": "Test Pending - Callback Required",
+        "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
         "connectAgain": False,
@@ -48,135 +144,55 @@ general_dispositions = [
     },
     {
         "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Test Pending - Escalated to Supervisor",
+                },
+            },
+        },
+        "name": "Test Pending - Escalated to Supervisor",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Test Pending - Escalated to Support",
+                },
+            },
+        },
+        "name": "Test Pending - Escalated to Support",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Block Number"},
+                "en": {"language": "en", "value": "Test Resolved"},
             },
         },
-        "name": "Test Block Number",
-        "forceSurveyValidation": False,
+        "name": "Test Resolved",
+        "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
         "connectAgain": False,
     },
 ]
-hc_dispositions = [
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Refill Prescription"},
-            },
-        },
-        "name": "Test Refill Prescription",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Schedule Appointment"},
-            },
-        },
-        "name": "Test Schedule Appointment",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Reschedule Appointment"},
-            },
-        },
-        "name": "Test Reschedule Appointment",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Cancel Appointment"},
-            },
-        },
-        "name": "Test Cancel Appointment",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-]
-finserv_dispositions = [
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Credit Card Application"},
-            },
-        },
-        "name": "Test Credit Card Application",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Loan Application"},
-            },
-        },
-        "name": "Test Loan Application",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Open Account"},
-            },
-        },
-        "name": "Test Open Account",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Close Account"},
-            },
-        },
-        "name": "Test Close Account",
-        "forceSurveyValidation": False,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-]
+hc_dispositions = []
+finserv_dispositions = []
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
