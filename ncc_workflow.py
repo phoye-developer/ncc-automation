@@ -79,6 +79,7 @@ def create_iva_workflow(
     business_name: str,
     queues: dict,
     search_contacts_function: dict,
+    two_way_chat_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -1015,7 +1016,7 @@ def create_iva_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "62f5f778a4a0a35b078738fe",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1027,7 +1028,9 @@ def create_iva_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -1235,6 +1238,7 @@ def create_general_non_iva_dtmf_workflow(
     business_name: str,
     queues: dict,
     search_contacts_function: dict,
+    two_way_chat_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -1971,7 +1975,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "62f5f778a4a0a35b078738fe",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1983,7 +1987,9 @@ def create_general_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -2185,6 +2191,7 @@ def create_hc_non_iva_dtmf_workflow(
     business_name: str,
     queues: dict,
     search_contacts_function: dict,
+    two_way_chat_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -2915,7 +2922,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "62f5f778a4a0a35b078738fe",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -2927,7 +2934,9 @@ def create_hc_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -3129,6 +3138,7 @@ def create_finserv_non_iva_dtmf_workflow(
     business_name: str,
     queues: dict,
     search_contacts_function: dict,
+    two_way_chat_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -3888,7 +3898,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "62f5f778a4a0a35b078738fe",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -3900,7 +3910,9 @@ def create_finserv_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },
@@ -4102,6 +4114,7 @@ def create_direct_line_workflow(
     business_name: str,
     queues: dict,
     search_contacts_function: dict,
+    two_way_chat_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -4720,7 +4733,7 @@ def create_direct_line_workflow(
                             "description": "",
                             "properties": {
                                 "description": "Two way Chat conversation",
-                                "functionId": "62f5f778a4a0a35b078738fe",
+                                "functionId": two_way_chat_function["_id"],
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -4732,7 +4745,9 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "expansions": {
-                                    "functionId": {"name": "Two way Chat conversation"}
+                                    "functionId": {
+                                        "name": two_way_chat_function["name"]
+                                    }
                                 },
                                 "_working": False,
                             },

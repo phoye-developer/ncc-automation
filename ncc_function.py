@@ -312,6 +312,293 @@ def create_search_contacts_function(
     return function
 
 
+def create_two_way_chat_function(
+    ncc_location: str, ncc_token: str, function_name: str
+) -> dict:
+    """
+    This function creates an NCC function.
+    """
+    function = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "name": function_name,
+            "states": {
+                "612ff2f1d02eea7fc5cb265d": {
+                    "category": "Standard",
+                    "campaignStateId": "612ff2f1d02eea7fc5cb265d",
+                    "actions": [
+                        {
+                            "category": "Action",
+                            "title": "Terminate",
+                            "name": "Terminate",
+                            "type": "terminate",
+                            "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "612ff2f1d02eea7fc5cb265d",
+                    "_id": "612ff2f1d02eea7fc5cb265d",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "-616.3333740234373 -655",
+                    "transitions": [],
+                    "__gohashid": 66405,
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "name": "To Wait for Message",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "62b08f28e945230cb5347c5b",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1630518553842",
+                            "id": "refId1702415443173",
+                            "icon": "icon-transition",
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "name": "To Wait for Message",
+                            "id": "refId1630518553842",
+                            "__gohashid": 13172,
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin",
+                    "location": "-624.6666564941406 -568.0834203806282",
+                    "__gohashid": 66406,
+                },
+                "612ff3bd59517fb2d65d306b": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "612ff3bd59517fb2d65d306b",
+                    "name": "Handle User Messages",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "name": "Forward to consumer",
+                            "description": "Forward chat message to consumer",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "description": "Forward chat message to consumer",
+                            },
+                            "type": "chatforwardconsumer",
+                            "_selected": True,
+                            "id": "refId1678901939403",
+                            "icon": "icon-chat-forward-consumer",
+                        },
+                        {
+                            "name": "Transition - Wait Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "62b08f28e945230cb5347c5b",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1630518553991",
+                            "id": "refId1678901939404",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "612ff3bd59517fb2d65d306b",
+                    "key": "612ff3bd59517fb2d65d306b",
+                    "location": "50.68510709065231 -258.93826994112607",
+                    "transitions": [
+                        {
+                            "name": "Transition - Wait Messages",
+                            "id": "refId1630518553991",
+                            "__gohashid": 13218,
+                        }
+                    ],
+                    "__gohashid": 66409,
+                },
+                "612ff3c80832633212b10106": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "612ff3c80832633212b10106",
+                    "name": "Handle Customer Messages",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "name": "Forward to agent",
+                            "description": "Forward chat message to agent",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "description": "Forward chat message to agent",
+                            },
+                            "type": "chatforwardagent",
+                            "_selected": False,
+                            "id": "refId1655733056662",
+                            "icon": "icon-chat-forward-agent",
+                        },
+                        {
+                            "name": "Transition - Wait Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "62b08f28e945230cb5347c5b",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1630518554009",
+                            "id": "refId1655733056663",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "612ff3c80832633212b10106",
+                    "key": "612ff3c80832633212b10106",
+                    "location": "-227.9815188859102 -108.53824069969977",
+                    "transitions": [
+                        {
+                            "name": "Transition - Wait Messages",
+                            "id": "refId1630518554009",
+                            "__gohashid": 13264,
+                        }
+                    ],
+                    "__gohashid": 66410,
+                },
+                "62b08f28e945230cb5347c5b": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "62b08f28e945230cb5347c5b",
+                    "name": "Wait for Messages",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-timer",
+                            "name": "Wait Chat Message",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                            "type": "waitforchatmessage",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Transition - User Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.currentChatMessage.type ",
+                                            "operator": "==",
+                                            "rightExpression": "'USER'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "612ff3bd59517fb2d65d306b",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "id": "refId1678901939383",
+                            "transitionId": "refId1655733056505",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Transition - Customer Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.currentChatMessage.type ",
+                                            "operator": "!=",
+                                            "rightExpression": "'USER'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "612ff3c80832633212b10106",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1655733056506",
+                            "id": "refId1678901939384",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "62b08f28e945230cb5347c5b",
+                    "key": "62b08f28e945230cb5347c5b",
+                    "location": "-426.9883614959492 -364.3766170225258",
+                    "transitions": [
+                        {
+                            "name": "Transition - User Messages",
+                            "id": "refId1655733056505",
+                            "__gohashid": 13310,
+                        },
+                        {
+                            "name": "Transition - Customer Messages",
+                            "id": "refId1655733056506",
+                            "__gohashid": 13315,
+                        },
+                    ],
+                    "__gohashid": 2780,
+                },
+            },
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/function/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            function = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return function
+
+
 def create_acd_voicemail_function(
     ncc_location: str, ncc_token: str, function_name: str
 ) -> dict:

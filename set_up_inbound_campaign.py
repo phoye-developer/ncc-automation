@@ -718,6 +718,21 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         logging.info(f'Function "{campaign_name} - Search Contacts" already exists.')
 
+    # Create Two Way Chat function
+    two_way_chat_function = search_functions(
+        ncc_location, ncc_token, f"{campaign_name} - Two Way Chat"
+    )
+    if two_way_chat_function == {}:
+        two_way_chat_function = create_two_way_chat_function(
+            ncc_location, ncc_token, f"{campaign_name} - Two Way Chat"
+        )
+        if two_way_chat_function != {}:
+            logging.info(f'Function "{campaign_name} - Two Way Chat" created.')
+        else:
+            logging.warning(f'Function "{campaign_name} - Two Way Chat" not created.')
+    else:
+        logging.info(f'Function "{campaign_name} - Two Way Chat" already exists.')
+
     # Create ACD Voicemail function
     acd_voicemail_function = search_functions(
         ncc_location, ncc_token, f"{campaign_name} - ACD Voicemail"
@@ -755,6 +770,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             acd_voicemail_function != {}
             and acd_callback_function != {}
             and search_contacts_function != {}
+            and two_way_chat_function != {}
         ):
             if workflow_type == "iva":
                 workflow = create_iva_workflow(
@@ -764,6 +780,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     business_name,
                     queues_to_assign,
                     search_contacts_function,
+                    two_way_chat_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )
@@ -776,6 +793,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         business_name,
                         queues_to_assign,
                         search_contacts_function,
+                        two_way_chat_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -787,6 +805,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         business_name,
                         queues_to_assign,
                         search_contacts_function,
+                        two_way_chat_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -798,6 +817,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         business_name,
                         queues_to_assign,
                         search_contacts_function,
+                        two_way_chat_function,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -809,6 +829,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     business_name,
                     queues_to_assign,
                     search_contacts_function,
+                    two_way_chat_function,
                     acd_voicemail_function,
                     acd_callback_function,
                 )
