@@ -437,8 +437,8 @@ finserv_categories = [
     {"label": "Open Account", "value": "Open Account"},
     {"label": "Report Fraud", "value": "Report Fraud"},
     {
-        "label": "Request New Debit/Credit Card",
-        "value": "Request New Debit/Credit Card",
+        "label": "Request New Debit or Credit Card",
+        "value": "Request New Debit or Credit Card",
     },
     {"label": "Update Account", "value": "Update Account"},
 ]
@@ -470,7 +470,7 @@ hc_options = [
 finserv_options = [
     {"label": "Credit Card Applications", "value": "Credit Card Applications"},
     {"label": "Loan Applications", "value": "Loan Applications"},
-    {"label": "Checking/Savings Accounts", "value": "Checking/Savings Accounts"},
+    {"label": "Checking or Savings Accounts", "value": "Checking or Savings Accounts"},
     {"label": "Billing", "value": "Billing"},
     {"label": "Customer Service", "value": "Customer Service"},
 ]

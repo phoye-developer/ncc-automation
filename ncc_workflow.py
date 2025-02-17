@@ -1648,6 +1648,133 @@ def create_general_non_iva_dtmf_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": "workitem.data.context.consumerData.interest",
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Sales",
+                                "rightExpression": queues["Test Sales"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Sales'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1739749451080",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739749451064",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Technical Support",
+                                "rightExpression": queues["Test Technical Support"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Technical Support'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739749451048",
+                        },
+                        {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
                             "properties": {
@@ -2602,6 +2729,130 @@ def create_hc_non_iva_dtmf_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": "workitem.data.context.consumerData.interest",
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Prescription Refills",
+                                "rightExpression": queues["Test Prescription Refills"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Prescription Refills'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Appointments",
+                                "rightExpression": queues["Test Appointments"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Appointments'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
                             "properties": {
@@ -3548,6 +3799,158 @@ def create_finserv_non_iva_dtmf_workflow(
                             "_selected": True,
                             "id": "refId1739600229945",
                             "icon": "icon-ai-message",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": "workitem.data.context.consumerData.interest",
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Credit Card Applications",
+                                "rightExpression": queues[
+                                    "Test Credit Card Applications"
+                                ],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Credit Card Applications'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Loan Applications",
+                                "rightExpression": queues["Test Loan Applications"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Loan Applications'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Accounts",
+                                "rightExpression": queues["Test Accounts"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Checking or Savings Accounts'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
                         },
                         {
                             "name": "ConnectAgent",
@@ -4525,6 +4928,130 @@ def create_insurance_non_iva_dtmf_workflow(
                             "_selected": True,
                             "id": "refId1739600229945",
                             "icon": "icon-ai-message",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": "workitem.data.context.consumerData.interest",
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Policies",
+                                "rightExpression": queues["Test Policies"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Policies'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Claims",
+                                "rightExpression": queues["Test Claims"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Claims'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Test Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Test Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
                         },
                         {
                             "name": "ConnectAgent",
