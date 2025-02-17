@@ -367,7 +367,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'Agent "{agent["name"]}" already assigned to "{key}" queue.'
+                                f'Agent "{agent["firstName"]} {agent["lastName"]}" already assigned to "{key}" queue.'
                             )
                         else:
                             success = create_user_queue(
@@ -375,11 +375,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'Agent "{agent["name"]}" assigned to "{key}" queue.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to "{key}" queue.'
                                 )
                             else:
                                 logging.warning(
-                                    f'Agent "{agent["name"]}" not assigned to "{key}" queue.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{key}" queue.'
                                 )
             else:
                 logging.warning("No agents found to assign to queues.")
