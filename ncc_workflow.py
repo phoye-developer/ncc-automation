@@ -19,29 +19,6 @@ def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
     return workflow
 
 
-def get_workflows(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of workflows present on the Nextiva Contact Center tenant.
-    """
-    workflows = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    conn.request("GET", "/data/api/types/workflow?q=Test%20", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                workflow_name = result["name"]
-                if workflow_name[0:5] == "Test ":
-                    workflows.append(result)
-    return workflows
-
-
 def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> dict:
     """
     This function searches for an existing workflow with the same name as the intended new workflow.
@@ -251,7 +228,7 @@ def create_iva_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1414,7 +1391,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1673,7 +1650,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Sales",
-                                "rightExpression": queues["Test Sales"],
+                                "rightExpression": queues["Sales"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1699,7 +1676,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1726,7 +1703,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1753,7 +1730,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Technical Support",
-                                "rightExpression": queues["Test Technical Support"],
+                                "rightExpression": queues["Technical Support"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1833,7 +1810,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Sales",
-                                "rightExpression": queues["Test Sales"],
+                                "rightExpression": queues["Sales"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1860,7 +1837,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1887,7 +1864,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -1914,7 +1891,7 @@ def create_general_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Technical Support",
-                                "rightExpression": queues["Test Technical Support"],
+                                "rightExpression": queues["Technical Support"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2495,7 +2472,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2754,7 +2731,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Prescription Refills",
-                                "rightExpression": queues["Test Prescription Refills"],
+                                "rightExpression": queues["Prescription Refills"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2780,7 +2757,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Appointments",
-                                "rightExpression": queues["Test Appointments"],
+                                "rightExpression": queues["Appointments"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2806,7 +2783,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2832,7 +2809,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2911,7 +2888,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Prescription Refills",
-                                "rightExpression": queues["Test Prescription Refills"],
+                                "rightExpression": queues["Prescription Refills"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2938,7 +2915,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Appointments",
-                                "rightExpression": queues["Test Appointments"],
+                                "rightExpression": queues["Appointments"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2965,7 +2942,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -2992,7 +2969,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3567,7 +3544,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3826,9 +3803,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Credit Card Applications",
-                                "rightExpression": queues[
-                                    "Test Credit Card Applications"
-                                ],
+                                "rightExpression": queues["Credit Card Applications"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3854,7 +3829,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Loan Applications",
-                                "rightExpression": queues["Test Loan Applications"],
+                                "rightExpression": queues["Loan Applications"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3880,7 +3855,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Accounts",
-                                "rightExpression": queues["Test Accounts"],
+                                "rightExpression": queues["Accounts"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3906,7 +3881,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -3932,7 +3907,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4011,9 +3986,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Credit Card Applications",
-                                "rightExpression": queues[
-                                    "Test Credit Card Applications"
-                                ],
+                                "rightExpression": queues["Credit Card Applications"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4040,7 +4013,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Loan Applications",
-                                "rightExpression": queues["Test Loan Applications"],
+                                "rightExpression": queues["Loan Applications"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4067,7 +4040,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Accounts",
-                                "rightExpression": queues["Test Accounts"],
+                                "rightExpression": queues["Accounts"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4094,7 +4067,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4121,7 +4094,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4696,7 +4669,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4955,7 +4928,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Policies",
-                                "rightExpression": queues["Test Policies"],
+                                "rightExpression": queues["Policies"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -4981,7 +4954,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Claims",
-                                "rightExpression": queues["Test Claims"],
+                                "rightExpression": queues["Claims"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5007,7 +4980,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5033,7 +5006,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5112,7 +5085,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Policies",
-                                "rightExpression": queues["Test Policies"],
+                                "rightExpression": queues["Policies"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5139,7 +5112,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Claims",
-                                "rightExpression": queues["Test Claims"],
+                                "rightExpression": queues["Claims"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5166,7 +5139,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Billing",
-                                "rightExpression": queues["Test Billing"],
+                                "rightExpression": queues["Billing"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5193,7 +5166,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId - Customer Service",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -5768,7 +5741,7 @@ def create_direct_line_workflow(
                             "description": "",
                             "properties": {
                                 "description": "queueId",
-                                "rightExpression": queues["Test Customer Service"],
+                                "rightExpression": queues["Customer Service"],
                                 "variableName": "queueId",
                                 "asObject": False,
                                 "dlpOption": False,
@@ -6568,9 +6541,7 @@ def add_extend_call_component(
                                     }
                                 ],
                             },
-                            "expansions": {
-                                "functionId": {"name": "Test Post-Call Survey"}
-                            },
+                            "expansions": {"functionId": {"name": "Post-Call Survey"}},
                             "_working": False,
                         },
                         "type": "aftercallivr",

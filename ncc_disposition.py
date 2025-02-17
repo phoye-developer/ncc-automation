@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_dispositions(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of dispositions present on the Nextiva Contact Center tenant.
-    """
-    dispositions = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/disposition?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    disposition_name = result["name"]
-                    if disposition_name[0:5] == "Test ":
-                        dispositions.append(result)
-    except:
-        pass
-    conn.close()
-    return dispositions
-
-
 def search_dispositions(
     ncc_location: str, ncc_token: str, disposition_name: str
 ) -> dict:

@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_templates(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of templates present in Nextiva Contact Center (NCC).
-    """
-    templates = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/template?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    template_name = result["name"]
-                    if template_name[0:5] == "Test ":
-                        templates.append(result)
-    except:
-        pass
-    conn.close()
-    return templates
-
-
 def search_templates(ncc_location: str, ncc_token: str, template_name: str) -> dict:
     """
     This function searches for an existing template in Nextiva Contact Center (NCC) with the same name as the intended new template.

@@ -23,33 +23,6 @@ def get_survey(ncc_location: str, ncc_token: str, survey_id: str) -> list:
     return survey
 
 
-def get_surveys(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of surveys present on the Nextiva Contact Center (NCC) tenant.
-    """
-    surveys = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/survey?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    survey_name = result["name"]
-                    if survey_name[0:5] == "Test ":
-                        surveys.append(result)
-    except:
-        pass
-    conn.close()
-    return surveys
-
-
 def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
     """
     This function searches for an existing survey with the same name as the intended new survey.

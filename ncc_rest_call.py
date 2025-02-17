@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_rest_calls(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of REST API call objects present on the Nextiva Contact Center tenant.
-    """
-    rest_calls = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/restcall?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    rest_call_name = result["name"]
-                    if rest_call_name[0:5] == "Test ":
-                        rest_calls.append(result)
-    except:
-        pass
-    conn.close()
-    return rest_calls
-
-
 def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> dict:
     """
     This function searches for an existing REST API call object with the same name as the intended new REST API call object.
