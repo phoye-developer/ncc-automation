@@ -78,6 +78,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             dispositions = general_dispositions
             queues = general_queues
             categories = general_categories
+            options = general_options
             classifications = general_classifications.copy()
             templates = general_templates
             topics = general_topics
@@ -87,6 +88,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
             categories = general_categories + hc_categories
+            options = hc_options
             classifications = general_classifications.copy() + hc_classifications.copy()
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
@@ -96,6 +98,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
             categories = general_categories + finserv_categories
+            options = finserv_options
             classifications = (
                 general_classifications.copy() + finserv_classifications.copy()
             )
@@ -107,6 +110,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             dispositions = general_dispositions + insurance_dispositions
             queues = general_queues + insurance_queues
             categories = general_categories + insurance_categories
+            options = insurance_options
             classifications = (
                 general_classifications.copy() + insurance_classifications.copy()
             )
@@ -459,11 +463,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     if survey_theme != {}:
         chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
         if chat_survey == {}:
-            chat_survey = create_survey(
+            chat_survey = create_chat_survey(
                 ncc_location,
                 ncc_token,
                 f"{campaign_name} - Chat",
-                main_chat_survey_body,
+                options,
                 survey_theme,
             )
             if chat_survey != {}:
