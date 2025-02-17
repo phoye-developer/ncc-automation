@@ -40,7 +40,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "9":
+            while choice != "5":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
