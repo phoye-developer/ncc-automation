@@ -79,6 +79,31 @@ def create_iva_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -94,7 +119,7 @@ def create_iva_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -1242,6 +1267,31 @@ def create_general_non_iva_dtmf_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -1257,7 +1307,7 @@ def create_general_non_iva_dtmf_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -2323,6 +2373,31 @@ def create_hc_non_iva_dtmf_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -2338,7 +2413,7 @@ def create_hc_non_iva_dtmf_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -3395,6 +3470,31 @@ def create_finserv_non_iva_dtmf_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -3410,7 +3510,7 @@ def create_finserv_non_iva_dtmf_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -4520,6 +4620,31 @@ def create_insurance_non_iva_dtmf_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -4535,7 +4660,7 @@ def create_insurance_non_iva_dtmf_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -5592,6 +5717,31 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b1186f5510d9081ac8e32b",
                     "actions": [
                         {
+                            "name": "ACD Voicemail From Expression",
+                            "description": "Create ACD Voicemail",
+                            "properties": {
+                                "transcription": True,
+                                "priority": 3,
+                                "queueIdsExpression": "workitem.data.queueId",
+                                "toAddress": "",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.messageRecorded",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "description": "Create ACD Voicemail",
+                            },
+                            "type": "acdvmfromexpression",
+                            "_selected": True,
+                            "id": "refId1723818900554",
+                            "icon": "icon-directconnect",
+                        },
+                        {
                             "category": "Action",
                             "title": "Terminate",
                             "name": "Terminate",
@@ -5607,7 +5757,7 @@ def create_direct_line_workflow(
                                     "expressions": [{"operator": "=="}],
                                 }
                             },
-                        }
+                        },
                     ],
                     "objectType": "campaignstate",
                     "key": "67b1186f5510d9081ac8e32b",
@@ -6393,237 +6543,6 @@ def create_direct_line_workflow(
         pass
     conn.close()
     return workflow
-
-
-def assign_rest_call_to_workflow(
-    ncc_location: str,
-    ncc_token: str,
-    rest_call_id: str,
-    workflow_id: str,
-    rest_call_name: str,
-) -> bool:
-    """
-    This function adds an Execute Rest component to a Nextiva Contact Center (NCC) workflow.
-    """
-    success = False
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "states": {
-                "67875b41a4c102ae206943b9": {
-                    "category": "Standard",
-                    "campaignStateId": "67875b41a4c102ae206943b9",
-                    "actions": [
-                        {
-                            "category": "Action",
-                            "title": "Terminate",
-                            "name": "Terminate",
-                            "type": "terminate",
-                            "description": "Terminate",
-                            "icon": "./assets/svg/icon-terminate",
-                            "svg": "",
-                            "color": "#FFFFFF",
-                            "fig": "Rectangle",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                }
-                            },
-                        }
-                    ],
-                    "objectType": "campaignstate",
-                    "key": "67875b41a4c102ae206943b9",
-                    "_id": "67875b41a4c102ae206943b9",
-                    "description": "End State",
-                    "name": "End State",
-                    "location": "200 100",
-                    "transitions": [],
-                },
-                "start-state": {
-                    "category": "Begin",
-                    "campaignStateId": "start-state",
-                    "actions": [
-                        {
-                            "icon": "icon-api",
-                            "name": "Execute REST Call",
-                            "description": "Search Contacts",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "responseVariable": "searchContactsResponse",
-                                "restCallId": rest_call_id,
-                                "_working": False,
-                                "description": "Search Contacts",
-                                "expansions": {"restCallId": {"name": rest_call_name}},
-                            },
-                            "type": "restapi",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "Start",
-                            "type": "transition",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateId": "67875b41a4c102ae206943b9",
-                                "name": "Start",
-                                "description": "Transition to another state",
-                            },
-                            "transitionId": "6787681cf851f26a1784df71",
-                            "_selected": False,
-                            "icon": "icon-transition",
-                            "id": "refId1736922763544",
-                        },
-                    ],
-                    "transitions": [
-                        {"name": "Start", "id": "6787681cf851f26a1784df71"}
-                    ],
-                    "objectType": "campaignstate",
-                    "key": "start-state",
-                    "_id": "start-state",
-                    "description": "Begin State",
-                    "name": "Begin State",
-                    "location": "0 0",
-                },
-            }
-        }
-    )
-    headers = {
-        "Authorization": ncc_token,
-        "Content-Type": "application/json",
-    }
-    try:
-        conn.request(
-            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
-        )
-        res = conn.getresponse()
-        if res.status == 200:
-            success = True
-    except:
-        pass
-    conn.close()
-    return success
-
-
-def add_extend_call_component(
-    ncc_location: str, ncc_token: str, workflow_id: str, function_id: str
-) -> bool:
-    """
-    This function adds the Extend Call component to the Begin State of the specified workflow.
-    """
-    success = False
-    workflow = get_workflow(ncc_location, ncc_token, workflow_id)
-    if workflow != {}:
-        states = workflow["states"]
-        for state_key in states:
-            if state_key == "start-state":
-                actions = states[state_key]["actions"]
-                actions.insert(
-                    0,
-                    {
-                        "name": "Extend Call",
-                        "description": "Extend Call",
-                        "properties": {
-                            "functionId": function_id,
-                            "condition": {
-                                "conditionType": "AND",
-                                "expressions": [
-                                    {
-                                        "operator": "==",
-                                        "leftExpression": "workitem.type",
-                                        "rightExpression": "'InboundCall'",
-                                    }
-                                ],
-                            },
-                            "expansions": {"functionId": {"name": "Post-Call Survey"}},
-                            "_working": False,
-                        },
-                        "type": "aftercallivr",
-                        "_selected": False,
-                        "icon": "icon-play-voicemail-greeting",
-                        "id": "refId1715372161608",
-                    },
-                )
-    success = update_workflow(ncc_location, ncc_token, workflow_id, workflow)
-    return success
-
-
-def add_sms_message_consumer_survey_link(
-    ncc_location: str, ncc_token: str, workflow_id: str
-) -> bool:
-    """
-    This function adds the SMS Message Consumer component to the End State of the specified workflow.
-    """
-    success = False
-    workflow = get_workflow(ncc_location, ncc_token, workflow_id)
-    if workflow != {}:
-        states = workflow["states"]
-        for state_key in states:
-            if state_key == "67875b41a4c102ae206943b9":
-                actions = states[state_key]["actions"]
-                actions.insert(
-                    0,
-                    {
-                        "icon": "icon-ai-message",
-                        "name": "Send Survey Link",
-                        "description": "",
-                        "properties": {
-                            "description": "",
-                            "message": "Thank you for contacting us! To take a brief survey, go to https://www.mysurveysite.com?workitem_id=${workitem.workitemId}",
-                            "toAddress": "workitem.from",
-                            "fromAddress": "workitem.to",
-                            "createNewWorkitem": False,
-                            "condition": {
-                                "conditionType": "OR",
-                                "expressions": [
-                                    {
-                                        "operator": "==",
-                                        "leftExpression": "workitem.type",
-                                        "rightExpression": "'InboundCall'",
-                                    },
-                                    {
-                                        "operator": "==",
-                                        "leftExpression": "workitem.type",
-                                        "rightExpression": "'InboundSMS'",
-                                    },
-                                ],
-                            },
-                        },
-                        "type": "smsmessageconsumer",
-                        "_selected": False,
-                    },
-                )
-    success = update_workflow(ncc_location, ncc_token, workflow_id, workflow)
-    return success
-
-
-def update_workflow(
-    ncc_location: str, ncc_token: str, workflow_id: str, workflow_body: dict
-) -> bool:
-    """
-    This function updates an NCC workflow with the specified workflow ID and workflow body.
-    """
-    success = False
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(workflow_body)
-    headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
-    try:
-        conn.request(
-            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
-        )
-        res = conn.getresponse()
-        if res.status == 200:
-            success = True
-    except:
-        pass
-    conn.close()
-    return success
 
 
 def delete_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> bool:
