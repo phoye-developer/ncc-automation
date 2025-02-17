@@ -5,93 +5,6 @@ deepgram_project_id = "90b9d6eb-c8c6-46a9-a0d7-c35f585403c4"
 general_dispositions = [
     {
         "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {
-                    "language": "en",
-                    "value": "Closed - Customer Disconnected",
-                },
-            },
-        },
-        "name": "Closed - Customer Disconnected",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Closed - Block Number"},
-            },
-        },
-        "name": "Closed - Block Number",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": True,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Closed - No Action Needed"},
-            },
-        },
-        "name": "Closed - No Action Needed",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Closed - Out of Scope"},
-            },
-        },
-        "name": "Closed - Out of Scope",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Closed - Request Cancelled"},
-            },
-        },
-        "name": "Closed - Request Cancelled",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Not Resolved - System Error"},
-            },
-        },
-        "name": "Not Resolved - System Error",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
         "resolved": False,
         "localizations": {
             "name": {
@@ -171,6 +84,93 @@ general_dispositions = [
             },
         },
         "name": "Pending - Escalated to Support",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Pending - System Error"},
+            },
+        },
+        "name": "Pending - System Error",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Resolved - Block Number"},
+            },
+        },
+        "name": "Resolved - Block Number",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": True,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Resolved - Customer Disconnected",
+                },
+            },
+        },
+        "name": "Resolved - Customer Disconnected",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Resolved - No Action Needed"},
+            },
+        },
+        "name": "Resolved - No Action Needed",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Resolved - Out of Scope"},
+            },
+        },
+        "name": "Resolved - Out of Scope",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": True,
+        "localizations": {
+            "name": {
+                "en": {"language": "en", "value": "Resolved - Request Cancelled"},
+            },
+        },
+        "name": "Resolved - Request Cancelled",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
