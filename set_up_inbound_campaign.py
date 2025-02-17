@@ -48,8 +48,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if campaign_name == "":
             print()
             print("Invalid campaign name.")
-        else:
-            campaign_name = f"Test {campaign_name}"
 
     # Enter business name
     business_name = ""
@@ -69,6 +67,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         print("1. General")
         print("2. Healthcare")
         print("3. FinServ")
+        print("4. Insurance")
         print()
         choice = input("Command: ")
         print()
@@ -76,6 +75,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "general"
             dispositions = general_dispositions
             queues = general_queues
+            categories = general_categories
+            options = general_options
             classifications = general_classifications.copy()
             templates = general_templates
             topics = general_topics
@@ -84,6 +85,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "hc"
             dispositions = general_dispositions + hc_dispositions
             queues = general_queues + hc_queues
+            categories = general_categories + hc_categories
+            options = hc_options
             classifications = general_classifications.copy() + hc_classifications.copy()
             templates = general_templates + hc_templates
             topics = general_topics + hc_topics
@@ -92,12 +95,26 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             vertical = "finserv"
             dispositions = general_dispositions + finserv_dispositions
             queues = general_queues + finserv_queues
+            categories = general_categories + finserv_categories
+            options = finserv_options
             classifications = (
                 general_classifications.copy() + finserv_classifications.copy()
             )
             templates = general_templates + finserv_templates
             topics = general_topics + finserv_topics
             reports = general_reports + finserv_reports
+        elif choice == "4":
+            vertical = "insurance"
+            dispositions = general_dispositions + insurance_dispositions
+            queues = general_queues + insurance_queues
+            categories = general_categories + insurance_categories
+            options = insurance_options
+            classifications = (
+                general_classifications.copy() + insurance_classifications.copy()
+            )
+            templates = general_templates + insurance_templates
+            topics = general_topics + insurance_topics
+            reports = general_reports + insurance_reports
         else:
             choice = ""
             print("Invalid choice.")
@@ -350,7 +367,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         )
                         if success:
                             logging.info(
-                                f'Agent "{agent["name"]}" already assigned to "{key}" queue.'
+                                f'Agent "{agent["firstName"]} {agent["lastName"]}" already assigned to "{key}" queue.'
                             )
                         else:
                             success = create_user_queue(
@@ -358,11 +375,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             )
                             if success:
                                 logging.info(
-                                    f'Agent "{agent["name"]}" assigned to "{key}" queue.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to "{key}" queue.'
                                 )
                             else:
                                 logging.warning(
-                                    f'Agent "{agent["name"]}" not assigned to "{key}" queue.'
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{key}" queue.'
                                 )
             else:
                 logging.warning("No agents found to assign to queues.")
@@ -406,70 +423,75 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.warning('User profile "Supervisor" not found.')
 
     # Create survey theme
-    survey_theme = search_survey_themes(
-        ncc_location, ncc_token, f"Test {business_name}"
-    )
+    survey_theme = search_survey_themes(ncc_location, ncc_token, f"{business_name}")
     if survey_theme == {}:
-        survey_theme = create_survey_theme(
-            ncc_location, ncc_token, f"Test {business_name}"
-        )
+        survey_theme = create_survey_theme(ncc_location, ncc_token, f"{business_name}")
         if survey_theme != {}:
-            logging.info(f'Survey theme "Test {business_name}" created.')
+            logging.info(f'Survey theme "{business_name}" created.')
         else:
-            logging.warning(f'Survey theme "Test {business_name}" not created.')
+            logging.warning(f'Survey theme "{business_name}" not created.')
     else:
-        logging.info(f'Survey theme "Test {business_name}" already exists.')
+        logging.info(f'Survey theme "{business_name}" already exists.')
 
     # Create user survey
-    user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
-    if user_survey == {}:
-        user_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - User",
-            main_user_survey_body,
-            survey_theme,
-        )
-        if user_survey != {}:
-            logging.info(f'Survey "{campaign_name} - User" created.')
+    if survey_theme != {}:
+        user_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - User")
+        if user_survey == {}:
+            user_survey = create_user_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - User",
+                categories,
+                survey_theme,
+            )
+            if user_survey != {}:
+                logging.info(f'Survey "{campaign_name} - User" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - User" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - User" not created.')
+            logging.info(f'Survey "{campaign_name} - User" already exists.')
     else:
-        logging.info(f'Survey "{campaign_name} - User" already exists.')
+        logging.warning("Insufficient data to create user survey.")
 
     # Create chat survey
-    chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
-    if chat_survey == {}:
-        chat_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - Chat",
-            main_chat_survey_body,
-            survey_theme,
-        )
-        if chat_survey != {}:
-            logging.info(f'Survey "{campaign_name} - Chat" created.')
+    if survey_theme != {}:
+        chat_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - Chat")
+        if chat_survey == {}:
+            chat_survey = create_chat_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - Chat",
+                options,
+                survey_theme,
+            )
+            if chat_survey != {}:
+                logging.info(f'Survey "{campaign_name} - Chat" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - Chat" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - Chat" not created.')
+            logging.info(f'Survey "{campaign_name} - Chat" already exists.')
     else:
-        logging.info(f'Survey "{campaign_name} - Chat" already exists.')
+        logging.warning("Insufficient data to create chat survey.")
 
     # Create QM survey
-    qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
-    if qm_survey == {}:
-        qm_survey = create_survey(
-            ncc_location,
-            ncc_token,
-            f"{campaign_name} - QM",
-            main_qm_survey_body,
-            survey_theme,
-        )
-        if qm_survey != {}:
-            logging.info(f'Survey "{campaign_name} - QM" created.')
+    if survey_theme != {}:
+        qm_survey = search_surveys(ncc_location, ncc_token, f"{campaign_name} - QM")
+        if qm_survey == {}:
+            qm_survey = create_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - QM",
+                main_qm_survey_body,
+                survey_theme,
+            )
+            if qm_survey != {}:
+                logging.info(f'Survey "{campaign_name} - QM" created.')
+            else:
+                logging.warning(f'Survey "{campaign_name} - QM" not created.')
         else:
-            logging.warning(f'Survey "{campaign_name} - QM" not created.')
+            logging.info(f'Survey "{campaign_name} - QM" already exists')
     else:
-        logging.info(f'Survey "{campaign_name} - QM" already exists')
+        logging.warning("Insufficient data to create QM survey.")
 
     # Create topics
     topics_to_assign = []
@@ -564,7 +586,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         logging.info('Service type "TEXT_TO_SPEECH" already exists.')
     else:
         tts_service = create_tts_service(
-            ncc_location, ncc_token, "Test Google - Text To Speech"
+            ncc_location, ncc_token, "Google - Text To Speech"
         )
         if tts_service != {}:
             logging.info('Service type "TEXT_TO_SPEECH" created.')
@@ -579,7 +601,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         gen_ai_service = create_gen_ai_service(
             ncc_location,
             ncc_token,
-            "Test Google - Generative AI",
+            "Google - Generative AI",
             f"thrio-prod-{tenant_id}",
         )
         if gen_ai_service != {}:
@@ -596,33 +618,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         # Create Deepgram API key
         deepgram_api_key_id = search_deepgram_api_keys(
-            deepgram_project_id, deepgram_main_api_key, "Test Key"
+            deepgram_project_id, deepgram_main_api_key, "Key"
         )
         if deepgram_api_key_id == "":
             deepgram_api_key = create_deepgram_api_key(
                 deepgram_project_id, deepgram_main_api_key
             )
             if deepgram_api_key != "":
-                logging.info('Deepgram API key "Test Key" created.')
+                logging.info('Deepgram API key "Key" created.')
             else:
-                logging.warning('Deepgram API key "Test Key" not created.')
+                logging.warning('Deepgram API key "Key" not created.')
         else:
-            logging.info('Deepgram API key "Test Key" already exists.')
+            logging.info('Deepgram API key "Key" already exists.')
 
     # Create REALTIME_ANALYSIS service
     if real_time_transcription_service == {} and deepgram_api_key != "":
         real_time_transcription_service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
-            "Test Deepgram Real-Time Transcription",
+            "Deepgram Real-Time Transcription",
             deepgram_api_key,
         )
         if real_time_transcription_service != {}:
-            logging.info('Service "Test Deepgram Real-Time Transcription" created.')
+            logging.info('Service "Deepgram Real-Time Transcription" created.')
         else:
-            logging.warning(
-                'Service "Test Deepgram Real-Time Transcription" not created.'
-            )
+            logging.warning('Service "Deepgram Real-Time Transcription" not created.')
 
     # Create classifications
     classifications_to_assign = []
@@ -830,6 +850,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     )
                 elif vertical == "finserv":
                     workflow = create_finserv_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                    )
+                elif vertical == "insurance":
+                    workflow = create_insurance_non_iva_dtmf_workflow(
                         ncc_location,
                         ncc_token,
                         campaign_name,

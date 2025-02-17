@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_topics(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of topics present on the Nextiva Contact Center tenant.
-    """
-    topics = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/topic?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    topic_name = result["name"]
-                    if topic_name[0:5] == "Test ":
-                        topics.append(result)
-    except:
-        pass
-    conn.close()
-    return topics
-
-
 def search_topics(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
     """
     This function searches for an existing topic with the same name as the intended new topic.

@@ -12,7 +12,7 @@ def get_users(ncc_location: str, ncc_token: str, user_profile_id: str) -> list:
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
-        conn.request("GET", "/data/api/types/user?q=Test%20", payload, headers)
+        conn.request("GET", "/data/api/types/user", payload, headers)
         res = conn.getresponse()
         if res.status == 200:
             data = res.read().decode("utf-8")
@@ -21,11 +21,7 @@ def get_users(ncc_location: str, ncc_token: str, user_profile_id: str) -> list:
             if total > 0:
                 results = json_data["objects"]
                 for result in results:
-                    first_name = result["firstName"]
-                    if (
-                        first_name[0:5] == "Test "
-                        and result["userProfileId"] == user_profile_id
-                    ):
+                    if result["userProfileId"] == user_profile_id:
                         users.append(result)
     except:
         pass

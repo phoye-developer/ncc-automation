@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_survey_themes(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function searches for a list of survey themes in Nextiva Contact Center (NCC)
-    """
-    survey_themes = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/surveytheme?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    survey_theme_name = result["name"]
-                    if survey_theme_name[0:5] == "Test ":
-                        survey_themes.append(result)
-    except:
-        pass
-    conn.close()
-    return survey_themes
-
-
 def search_survey_themes(
     ncc_location: str, ncc_token: str, survey_theme_name: str
 ) -> dict:

@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_reports(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of reports present on the Nextiva Contact Center tenant.
-    """
-    reports = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/report?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    report_name = result["name"]
-                    if report_name[0:5] == "Test ":
-                        reports.append(result)
-    except:
-        pass
-    conn.close()
-    return reports
-
-
 def search_reports(ncc_location: str, ncc_token: str, report_name: str) -> dict:
     """
     This function searches for an existing report with the same name as the intended new report.

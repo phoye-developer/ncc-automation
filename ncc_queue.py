@@ -3,33 +3,6 @@ import urllib.parse
 import json
 
 
-def get_queues(ncc_location: str, ncc_token: str) -> list:
-    """
-    This function fetches a list of queues present on the Nextiva Contact Center tenant.
-    """
-    queues = []
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    try:
-        conn.request("GET", "/data/api/types/queue?q=Test%20", payload, headers)
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    queue_name = result["name"]
-                    if queue_name[0:5] == "Test ":
-                        queues.append(result)
-    except:
-        pass
-    conn.close()
-    return queues
-
-
 def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     """
     This function searches for an existing queue with the same name as the intended new queue.
