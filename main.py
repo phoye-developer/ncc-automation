@@ -1,12 +1,9 @@
 import getpass
 from authentication import *
 from set_up_inbound_campaign import *
-from set_up_feature import *
-from set_up_integration import *
 from set_up_agent import *
 from set_up_supervisor import *
 from tear_down_campaign import *
-from tear_down_tenant import *
 
 
 def display_main_menu():
@@ -14,14 +11,10 @@ def display_main_menu():
     print("Main Menu")
     print("---------")
     print("1. Set up inbound campaign")
-    print("2. Set up outbound campaign")
-    print("3. Set up feature")
-    print("4. Set up integration")
-    print("5. Set up agent")
-    print("6. Set up supervisor")
-    print("7. Tear down campaign")
-    print("8. Tear down tenant")
-    print("9. Exit")
+    print("2. Set up agent")
+    print("3. Set up supervisor")
+    print("4. Tear down campaign")
+    print("5. Exit")
     print()
 
 
@@ -53,20 +46,12 @@ def main():
                 if choice == "1":
                     set_up_inbound_campaign(ncc_location, ncc_token)
                 elif choice == "2":
-                    pass
-                elif choice == "3":
-                    set_up_feature(ncc_location, ncc_token)
-                elif choice == "4":
-                    set_up_integration(ncc_location, ncc_token)
-                elif choice == "5":
                     set_up_agent(ncc_location, ncc_token)
-                elif choice == "6":
+                elif choice == "3":
                     set_up_supervisor(ncc_location, ncc_token)
-                elif choice == "7":
+                elif choice == "4":
                     tear_down_campaign(ncc_location, ncc_token)
-                elif choice == "8":
-                    tear_down_tenant(ncc_location, ncc_token)
-                elif choice == "9":
+                elif choice == "5":
                     pass
                 else:
                     print()
