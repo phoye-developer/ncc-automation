@@ -10,11 +10,11 @@ general_dispositions = [
             "name": {
                 "en": {
                     "language": "en",
-                    "value": "Test Closed - Customer Disconnected",
+                    "value": "Closed - Customer Disconnected",
                 },
             },
         },
-        "name": "Test Closed - Customer Disconnected",
+        "name": "Closed - Customer Disconnected",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -25,10 +25,10 @@ general_dispositions = [
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Closed - Block Number"},
+                "en": {"language": "en", "value": "Closed - Block Number"},
             },
         },
-        "name": "Test Closed - Block Number",
+        "name": "Closed - Block Number",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": True,
@@ -39,10 +39,10 @@ general_dispositions = [
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Closed - No Action Needed"},
+                "en": {"language": "en", "value": "Closed - No Action Needed"},
             },
         },
-        "name": "Test Closed - No Action Needed",
+        "name": "Closed - No Action Needed",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -53,10 +53,10 @@ general_dispositions = [
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Closed - Out of Scope"},
+                "en": {"language": "en", "value": "Closed - Out of Scope"},
             },
         },
-        "name": "Test Closed - Out of Scope",
+        "name": "Closed - Out of Scope",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -67,10 +67,10 @@ general_dispositions = [
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Closed - Request Cancelled"},
+                "en": {"language": "en", "value": "Closed - Request Cancelled"},
             },
         },
-        "name": "Test Closed - Request Cancelled",
+        "name": "Closed - Request Cancelled",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -81,27 +81,10 @@ general_dispositions = [
         "resolved": False,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Not Resolved - System Error"},
+                "en": {"language": "en", "value": "Not Resolved - System Error"},
             },
         },
-        "name": "Test Not Resolved - System Error",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": False,
-        "localizations": {
-            "name": {
-                "en": {
-                    "language": "en",
-                    "value": "Test Pending - Awaiting Customer Response",
-                },
-            },
-        },
-        "name": "Test Pending - Awaiting Customer Response",
+        "name": "Not Resolved - System Error",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -114,11 +97,11 @@ general_dispositions = [
             "name": {
                 "en": {
                     "language": "en",
-                    "value": "Test Pending - Awaiting Internal Review",
+                    "value": "Pending - Awaiting Customer Response",
                 },
             },
         },
-        "name": "Test Pending - Awaiting Internal Review",
+        "name": "Pending - Awaiting Customer Response",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -131,11 +114,28 @@ general_dispositions = [
             "name": {
                 "en": {
                     "language": "en",
-                    "value": "Test Pending - Callback Required",
+                    "value": "Pending - Awaiting Internal Review",
                 },
             },
         },
-        "name": "Test Pending - Callback Required",
+        "name": "Pending - Awaiting Internal Review",
+        "forceSurveyValidation": True,
+        "forceContactAssignment": False,
+        "blockNumber": False,
+        "connectAgain": False,
+    },
+    {
+        "useCampaignIdForDNC": False,
+        "resolved": False,
+        "localizations": {
+            "name": {
+                "en": {
+                    "language": "en",
+                    "value": "Pending - Callback Required",
+                },
+            },
+        },
+        "name": "Pending - Callback Required",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -149,11 +149,11 @@ general_dispositions = [
             "name": {
                 "en": {
                     "language": "en",
-                    "value": "Test Pending - Escalated to Supervisor",
+                    "value": "Pending - Escalated to Supervisor",
                 },
             },
         },
-        "name": "Test Pending - Escalated to Supervisor",
+        "name": "Pending - Escalated to Supervisor",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -166,11 +166,11 @@ general_dispositions = [
             "name": {
                 "en": {
                     "language": "en",
-                    "value": "Test Pending - Escalated to Support",
+                    "value": "Pending - Escalated to Support",
                 },
             },
         },
-        "name": "Test Pending - Escalated to Support",
+        "name": "Pending - Escalated to Support",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -181,10 +181,10 @@ general_dispositions = [
         "resolved": True,
         "localizations": {
             "name": {
-                "en": {"language": "en", "value": "Test Resolved"},
+                "en": {"language": "en", "value": "Resolved"},
             },
         },
-        "name": "Test Resolved",
+        "name": "Resolved",
         "forceSurveyValidation": True,
         "forceContactAssignment": False,
         "blockNumber": False,
@@ -201,7 +201,7 @@ general_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Billing"}}},
+        "localizations": {"name": {"en": {"language": "en", "value": "Billing"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -210,7 +210,7 @@ general_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Billing",
+        "name": "Billing",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -219,7 +219,7 @@ general_queues = [
         "blended": False,
         "socialSLA": 3600,
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Customer Service"}}
+            "name": {"en": {"language": "en", "value": "Customer Service"}}
         },
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
@@ -229,7 +229,7 @@ general_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Customer Service",
+        "name": "Customer Service",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -237,7 +237,7 @@ general_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Sales"}}},
+        "localizations": {"name": {"en": {"language": "en", "value": "Sales"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -246,7 +246,7 @@ general_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Sales",
+        "name": "Sales",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -255,7 +255,7 @@ general_queues = [
         "blended": False,
         "socialSLA": 3600,
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Technical Support"}}
+            "name": {"en": {"language": "en", "value": "Technical Support"}}
         },
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
@@ -265,7 +265,7 @@ general_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Technical Support",
+        "name": "Technical Support",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -276,7 +276,7 @@ hc_queues = [
         "blended": False,
         "socialSLA": 3600,
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Prescription Refills"}}
+            "name": {"en": {"language": "en", "value": "Prescription Refills"}}
         },
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
@@ -286,7 +286,7 @@ hc_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Prescription Refills",
+        "name": "Prescription Refills",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -294,9 +294,7 @@ hc_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Appointments"}}
-        },
+        "localizations": {"name": {"en": {"language": "en", "value": "Appointments"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -305,7 +303,7 @@ hc_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Appointments",
+        "name": "Appointments",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -316,7 +314,7 @@ finserv_queues = [
         "blended": False,
         "socialSLA": 3600,
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Credit Card Applications"}}
+            "name": {"en": {"language": "en", "value": "Credit Card Applications"}}
         },
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
@@ -326,7 +324,7 @@ finserv_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Credit Card Applications",
+        "name": "Credit Card Applications",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -335,7 +333,7 @@ finserv_queues = [
         "blended": False,
         "socialSLA": 3600,
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Loan Applications"}}
+            "name": {"en": {"language": "en", "value": "Loan Applications"}}
         },
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
@@ -345,7 +343,7 @@ finserv_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Loan Applications",
+        "name": "Loan Applications",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -353,7 +351,7 @@ finserv_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Accounts"}}},
+        "localizations": {"name": {"en": {"language": "en", "value": "Accounts"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -362,7 +360,7 @@ finserv_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Accounts",
+        "name": "Accounts",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -372,7 +370,7 @@ insurance_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Policies"}}},
+        "localizations": {"name": {"en": {"language": "en", "value": "Policies"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -381,7 +379,7 @@ insurance_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Policies",
+        "name": "Policies",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -389,7 +387,7 @@ insurance_queues = [
     {
         "blended": False,
         "socialSLA": 3600,
-        "localizations": {"name": {"en": {"language": "en", "value": "Test Claims"}}},
+        "localizations": {"name": {"en": {"language": "en", "value": "Claims"}}},
         "slaCalculation": 1,
         "assignmentType": "fifo_across_all_queues",
         "pushQueueDataInRealTime": True,
@@ -398,7 +396,7 @@ insurance_queues = [
         "realtimeAssignment": True,
         "disableSkills": False,
         "lifo": False,
-        "name": "Test Claims",
+        "name": "Claims",
         "noAnswerStatusAsAvailable": False,
         "voiceSLA": 30,
         "chatSLA": 30,
@@ -3358,9 +3356,9 @@ post_call_phone_survey_function_body = {
         },
     },
     "showInDashboardOption": False,
-    "name": "Test Post-Call Phone Survey",
+    "name": "Post-Call Phone Survey",
     "localizations": {
-        "name": {"en": {"language": "en", "value": "Test Post-Call Phone Survey"}}
+        "name": {"en": {"language": "en", "value": "Post-Call Phone Survey"}}
     },
 }
 
@@ -3412,7 +3410,7 @@ insurance_classifications = []
 general_templates = [
     {
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Appointment Reminders"}}
+            "name": {"en": {"language": "en", "value": "Appointment Reminders"}}
         },
         "assistance": False,
         "chat": False,
@@ -3420,38 +3418,36 @@ general_templates = [
         "sms": True,
         "html": '<div style="font-size: 14px; font-family: Arial;">Hi ${firstName}. As a reminder, you have an appointment at ${description}. Reply back with any questions. See you then!</div>',
         "email": False,
-        "name": "Test Appointment Reminders",
+        "name": "Appointment Reminders",
     },
     {
-        "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Payment Link"}}
-        },
+        "localizations": {"name": {"en": {"language": "en", "value": "Payment Link"}}},
         "assistance": False,
         "chat": True,
         "name": "",
         "sms": True,
         "html": '<div style="font-size: 14px; font-family: Arial;">To make a payment, go to <a href="https://www.nextiva.com​">https://www.nextiva.com</a>.</div>',
         "email": True,
-        "name": "Test Payment Link",
+        "name": "Payment Link",
     },
     {
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Supervisor Request"}}
+            "name": {"en": {"language": "en", "value": "Supervisor Request"}}
         },
         "assistance": True,
         "chat": False,
-        "name": "Test Supervisor Request",
+        "name": "Supervisor Request",
         "sms": False,
         "html": "I have a customer asking for a supervisor.",
         "email": False,
     },
     {
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Refund Request"}}
+            "name": {"en": {"language": "en", "value": "Refund Request"}}
         },
         "assistance": True,
         "chat": False,
-        "name": "Test Refund Request",
+        "name": "Refund Request",
         "sms": False,
         "html": "I have a customer asking for a refund.",
         "email": False,
@@ -3462,19 +3458,19 @@ finserv_templates = []
 insurance_templates = []
 
 general_topics = [
-    "Test Refund Requests",
-    "Test Data Privacy",
-    "Test Billing Issues",
-    "Test Escalations",
-    "Test Internal Process Issues",
-    "Test Legal or Ethical Issues",
+    "Refund Requests",
+    "Data Privacy",
+    "Billing Issues",
+    "Escalations",
+    "Internal Process Issues",
+    "Legal or Ethical Issues",
 ]
 hc_topics = [
-    "Test Medical Issues",
-    "Test Policy and Coverage Issues",
+    "Medical Issues",
+    "Policy and Coverage Issues",
 ]
 finserv_topics = []
-insurance_topics = ["Test Policy and Coverage Issues", "Test Claim Issues"]
+insurance_topics = ["Policy and Coverage Issues", "Claim Issues"]
 
 general_reports = [
     {
@@ -3484,14 +3480,12 @@ general_reports = [
         },
         "type": "AbandonDetail",
         "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Abandon Detail - This Month"}
-            }
+            "name": {"en": {"language": "en", "value": "Abandon Detail - This Month"}}
         },
         "filters": {
             "supervisedQueues": True,
         },
-        "name": "Test Abandon Detail - This Month",
+        "name": "Abandon Detail - This Month",
     },
     {
         "timezone": "America/Phoenix",
@@ -3500,14 +3494,12 @@ general_reports = [
         },
         "type": "AbandonDetail",
         "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Test Abandon Detail - This Week"}
-            }
+            "name": {"en": {"language": "en", "value": "Abandon Detail - This Week"}}
         },
         "filters": {
             "supervisedQueues": True,
         },
-        "name": "Test Abandon Detail - This Week",
+        "name": "Abandon Detail - This Week",
     },
     {
         "timezone": "America/Phoenix",
@@ -3516,12 +3508,12 @@ general_reports = [
         },
         "type": "AbandonDetail",
         "localizations": {
-            "name": {"en": {"language": "en", "value": "Test Abandon Detail - Today"}}
+            "name": {"en": {"language": "en", "value": "Abandon Detail - Today"}}
         },
         "filters": {
             "supervisedQueues": True,
         },
-        "name": "Test Abandon Detail - Today",
+        "name": "Abandon Detail - Today",
     },
 ]
 hc_reports = []

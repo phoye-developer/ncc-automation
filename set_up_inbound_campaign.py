@@ -48,8 +48,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if campaign_name == "":
             print()
             print("Invalid campaign name.")
-        else:
-            campaign_name = f"Test {campaign_name}"
 
     # Enter business name
     business_name = ""
@@ -425,19 +423,15 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.warning('User profile "Supervisor" not found.')
 
     # Create survey theme
-    survey_theme = search_survey_themes(
-        ncc_location, ncc_token, f"Test {business_name}"
-    )
+    survey_theme = search_survey_themes(ncc_location, ncc_token, f"{business_name}")
     if survey_theme == {}:
-        survey_theme = create_survey_theme(
-            ncc_location, ncc_token, f"Test {business_name}"
-        )
+        survey_theme = create_survey_theme(ncc_location, ncc_token, f"{business_name}")
         if survey_theme != {}:
-            logging.info(f'Survey theme "Test {business_name}" created.')
+            logging.info(f'Survey theme "{business_name}" created.')
         else:
-            logging.warning(f'Survey theme "Test {business_name}" not created.')
+            logging.warning(f'Survey theme "{business_name}" not created.')
     else:
-        logging.info(f'Survey theme "Test {business_name}" already exists.')
+        logging.info(f'Survey theme "{business_name}" already exists.')
 
     # Create user survey
     if survey_theme != {}:
@@ -592,7 +586,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         logging.info('Service type "TEXT_TO_SPEECH" already exists.')
     else:
         tts_service = create_tts_service(
-            ncc_location, ncc_token, "Test Google - Text To Speech"
+            ncc_location, ncc_token, "Google - Text To Speech"
         )
         if tts_service != {}:
             logging.info('Service type "TEXT_TO_SPEECH" created.')
@@ -607,7 +601,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         gen_ai_service = create_gen_ai_service(
             ncc_location,
             ncc_token,
-            "Test Google - Generative AI",
+            "Google - Generative AI",
             f"thrio-prod-{tenant_id}",
         )
         if gen_ai_service != {}:
@@ -624,33 +618,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     else:
         # Create Deepgram API key
         deepgram_api_key_id = search_deepgram_api_keys(
-            deepgram_project_id, deepgram_main_api_key, "Test Key"
+            deepgram_project_id, deepgram_main_api_key, "Key"
         )
         if deepgram_api_key_id == "":
             deepgram_api_key = create_deepgram_api_key(
                 deepgram_project_id, deepgram_main_api_key
             )
             if deepgram_api_key != "":
-                logging.info('Deepgram API key "Test Key" created.')
+                logging.info('Deepgram API key "Key" created.')
             else:
-                logging.warning('Deepgram API key "Test Key" not created.')
+                logging.warning('Deepgram API key "Key" not created.')
         else:
-            logging.info('Deepgram API key "Test Key" already exists.')
+            logging.info('Deepgram API key "Key" already exists.')
 
     # Create REALTIME_ANALYSIS service
     if real_time_transcription_service == {} and deepgram_api_key != "":
         real_time_transcription_service = create_real_time_transcription_service(
             ncc_location,
             ncc_token,
-            "Test Deepgram Real-Time Transcription",
+            "Deepgram Real-Time Transcription",
             deepgram_api_key,
         )
         if real_time_transcription_service != {}:
-            logging.info('Service "Test Deepgram Real-Time Transcription" created.')
+            logging.info('Service "Deepgram Real-Time Transcription" created.')
         else:
-            logging.warning(
-                'Service "Test Deepgram Real-Time Transcription" not created.'
-            )
+            logging.warning('Service "Deepgram Real-Time Transcription" not created.')
 
     # Create classifications
     classifications_to_assign = []

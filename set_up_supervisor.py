@@ -30,8 +30,6 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
         if first_name == "":
             print()
             print("Invalid first name.")
-        else:
-            first_name = f"Test {first_name}"
 
     # Enter last name
     last_name = ""
