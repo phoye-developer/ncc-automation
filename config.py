@@ -176,20 +176,6 @@ general_dispositions = [
         "blockNumber": False,
         "connectAgain": False,
     },
-    {
-        "useCampaignIdForDNC": False,
-        "resolved": True,
-        "localizations": {
-            "name": {
-                "en": {"language": "en", "value": "Resolved"},
-            },
-        },
-        "name": "Resolved",
-        "forceSurveyValidation": True,
-        "forceContactAssignment": False,
-        "blockNumber": False,
-        "connectAgain": False,
-    },
 ]
 hc_dispositions = []
 finserv_dispositions = []
