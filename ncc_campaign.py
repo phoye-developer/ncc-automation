@@ -148,6 +148,7 @@ def create_campaign(
                     }
                 }
             },
+            "name": campaign_name,
         },
     )
     headers = {
