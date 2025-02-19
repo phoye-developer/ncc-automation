@@ -298,6 +298,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     logging.info("Starting...")
     # Create dispositions
     dispositions_to_assign = []
+    tenant_id = ""
     for disposition in dispositions:
         result = search_dispositions(ncc_location, ncc_token, disposition["name"])
         if result == {}:
@@ -598,16 +599,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     if gen_ai_service != {}:
         logging.info('Service type "GENERATIVE_AI" already exists.')
     else:
-        gen_ai_service = create_gen_ai_service(
-            ncc_location,
-            ncc_token,
-            "Google - Generative AI",
-            f"thrio-prod-{tenant_id}",
-        )
-        if gen_ai_service != {}:
-            logging.info('Service type "GENERATIVE_AI" created.')
+        if tenant_id != "":
+            gen_ai_service = create_gen_ai_service(
+                ncc_location,
+                ncc_token,
+                "Google - Generative AI",
+                f"thrio-prod-{tenant_id}",
+            )
+            if gen_ai_service != {}:
+                logging.info('Service type "GENERATIVE_AI" created.')
+            else:
+                logging.warning('Service type "GENERATIVE_AI" not created.')
         else:
-            logging.warning('Service type "GENERATIVE_AI" not created.')
+            logging.warning('Insufficient data to create service type "GENERATIVE_AI"')
 
     # Search for REALTIME_ANALYSIS service
     real_time_transcription_service = search_services(
