@@ -20,6 +20,10 @@ def set_up_agent(ncc_location: str, ncc_token: str):
     )
 
     cancelled = False
+
+    print()
+    print('Enter "cancel" at any time to cancel.')
+
     # Enter first name
     first_name = ""
     while first_name == "":

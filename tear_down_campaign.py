@@ -22,6 +22,10 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
     )
 
     cancelled = False
+
+    print()
+    print('Enter "cancel" at any time to cancel.')
+
     # Enter campaign name
     campaign_name = ""
     while campaign_name == "":
