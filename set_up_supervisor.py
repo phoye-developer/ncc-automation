@@ -22,251 +22,296 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
+    cancelled = False
+
+    print()
+    print('Enter "cancel" at any time to cancel.')
+
     # Enter first name
     first_name = ""
     while first_name == "":
         print()
         first_name = input("First name: ")
-        if first_name == "":
+        if first_name.lower() == "cancel":
+            print()
+            print("Operation cancelled.")
+            cancelled = True
+        elif first_name == "":
             print()
             print("Invalid first name.")
 
-    # Enter last name
-    last_name = ""
-    while last_name == "":
-        print()
-        last_name = input("Last name: ")
-        if last_name == "":
-            print()
-            print("Invalid last name.")
+    if cancelled == False:
 
-    # Enter email
-    email = ""
-    while email == "":
-        print()
-        email = input("Email: ")
-        if email == "":
+        # Enter last name
+        last_name = ""
+        while last_name == "":
             print()
-            print("Invalid email.")
-        else:
+            last_name = input("Last name: ")
+            if last_name.lower() == "cancel":
+                print()
+                print("Operation cancelled.")
+                cancelled = True
+            elif last_name == "":
+                print()
+                print("Invalid last name.")
+
+    if cancelled == False:
+
+        # Enter email
+        email = ""
+        while email == "":
             print()
-
-    # Select whether to assign supervisors to queues
-    choice = ""
-    while choice == "":
-        print("Assign supervisor to all queues?")
-        print("--------------------------------")
-        print("1. Yes")
-        print("2. No")
-        print()
-        choice = input("Command: ")
-        print()
-        if choice == "1":
-            assign_to_queues = True
-        elif choice == "2":
-            assign_to_queues = False
-        else:
-            choice = ""
-            print("Invalid choice.")
-            print()
-
-    # Select whether to assign all agents to the supervisor
-    choice = ""
-    while choice == "":
-        print("Assign all agents to supervisor?")
-        print("--------------------------------")
-        print("1. Yes")
-        print("2. No")
-        print()
-        choice = input("Command: ")
-        print()
-        if choice == "1":
-            assign_agents = True
-        elif choice == "2":
-            assign_agents = False
-        else:
-            choice = ""
-            print("Invalid choice.")
-            print()
-
-    # Select whether to assign all campaigns to the supervisor
-    choice = ""
-    while choice == "":
-        print("Assign supervisor to all campaigns?")
-        print("-----------------------------------")
-        print("1. Yes")
-        print("2. No")
-        print()
-        choice = input("Command: ")
-        print()
-        if choice == "1":
-            assign_to_campaigns = True
-        elif choice == "2":
-            assign_to_campaigns = False
-        else:
-            choice = ""
-            print("Invalid choice.")
-            print()
-
-    # Select whether to assign supervisor to topics
-    choice = ""
-    while choice == "":
-        print("Assign supervisor to all topics?")
-        print("--------------------------------")
-        print("1. Yes")
-        print("2. No")
-        print()
-        choice = input("Command: ")
-        print()
-        if choice == "1":
-            assign_to_topics = True
-        elif choice == "2":
-            assign_to_topics = False
-        else:
-            choice = ""
-            print("Invalid choice.")
-            print()
-
-    start_time = datetime.datetime.now()
-
-    logging.info("Starting...")
-    # Create supervisor
-    supervisor = search_users(ncc_location, ncc_token, first_name, last_name)
-    if supervisor == {}:
-        supervisor_user_profile = search_user_profiles(
-            ncc_location, ncc_token, "Supervisor"
-        )
-        if supervisor_user_profile != {}:
-            supervisor = create_user(
-                ncc_location,
-                ncc_token,
-                first_name,
-                last_name,
-                email,
-                supervisor_user_profile["_id"],
-            )
-            if supervisor != {}:
-                logging.info(f'Supervisor "{first_name} {last_name}" created.')
+            email = input("Email: ")
+            if email.lower() == "cancel":
+                print()
+                print("Operation cancelled.")
+                cancelled = True
+            elif email == "":
+                print()
+                print("Invalid email.")
             else:
-                logging.warning(f'Supervisor "{first_name} {last_name}" not created.')
-        else:
-            logging.warning('User profile "Supervisor" not found.')
-    else:
-        logging.info(f'Supervisor "{first_name} {last_name}" already exists.')
+                print()
 
-    # Assign supervisor to queues
-    if supervisor != {} and assign_to_queues:
-        queues = get_queues(ncc_location, ncc_token)
-        if len(queues) > 0:
-            for queue in queues:
-                success = search_supervisor_queues(
-                    ncc_location, ncc_token, supervisor["_id"], queue["_id"]
+    if cancelled == False:
+
+        # Select whether to assign supervisors to queues
+        choice = ""
+        while choice == "":
+            print("Assign supervisor to all queues?")
+            print("--------------------------------")
+            print("1. Yes")
+            print("2. No")
+            print()
+            choice = input("Command: ")
+            print()
+            if choice.lower() == "cancel":
+                print("Operation cancelled.")
+                cancelled = True
+            elif choice == "1":
+                assign_to_queues = True
+            elif choice == "2":
+                assign_to_queues = False
+            else:
+                choice = ""
+                print("Invalid choice.")
+                print()
+
+    if cancelled == False:
+
+        # Select whether to assign all agents to the supervisor
+        choice = ""
+        while choice == "":
+            print("Assign all agents to supervisor?")
+            print("--------------------------------")
+            print("1. Yes")
+            print("2. No")
+            print()
+            choice = input("Command: ")
+            print()
+            if choice.lower() == "cancel":
+                print("Operation cancelled.")
+                cancelled = True
+            elif choice == "1":
+                assign_agents = True
+            elif choice == "2":
+                assign_agents = False
+            else:
+                choice = ""
+                print("Invalid choice.")
+                print()
+
+    if cancelled == False:
+
+        # Select whether to assign all campaigns to the supervisor
+        choice = ""
+        while choice == "":
+            print("Assign supervisor to all campaigns?")
+            print("-----------------------------------")
+            print("1. Yes")
+            print("2. No")
+            print()
+            choice = input("Command: ")
+            print()
+            if choice.lower() == "cancel":
+                print("Operation cancelled.")
+                cancelled = True
+            elif choice == "1":
+                assign_to_campaigns = True
+            elif choice == "2":
+                assign_to_campaigns = False
+            else:
+                choice = ""
+                print("Invalid choice.")
+                print()
+
+    if cancelled == False:
+
+        # Select whether to assign supervisor to topics
+        choice = ""
+        while choice == "":
+            print("Assign supervisor to all topics?")
+            print("--------------------------------")
+            print("1. Yes")
+            print("2. No")
+            print()
+            choice = input("Command: ")
+            print()
+            if choice.lower() == "cancel":
+                print("Operation cancelled.")
+                cancelled = True
+            elif choice == "1":
+                assign_to_topics = True
+            elif choice == "2":
+                assign_to_topics = False
+            else:
+                choice = ""
+                print("Invalid choice.")
+                print()
+
+    if cancelled == False:
+
+        start_time = datetime.datetime.now()
+
+        logging.info("Starting...")
+        # Create supervisor
+        supervisor = search_users(ncc_location, ncc_token, first_name, last_name)
+        if supervisor == {}:
+            supervisor_user_profile = search_user_profiles(
+                ncc_location, ncc_token, "Supervisor"
+            )
+            if supervisor_user_profile != {}:
+                supervisor = create_user(
+                    ncc_location,
+                    ncc_token,
+                    first_name,
+                    last_name,
+                    email,
+                    supervisor_user_profile["_id"],
                 )
-                if success:
-                    logging.info(
-                        f'Supervisor "{supervisor["name"]}" already assigned to queue "{queue["name"]}".'
-                    )
+                if supervisor != {}:
+                    logging.info(f'Supervisor "{first_name} {last_name}" created.')
                 else:
-                    success = create_supervisor_queue(
+                    logging.warning(
+                        f'Supervisor "{first_name} {last_name}" not created.'
+                    )
+            else:
+                logging.warning('User profile "Supervisor" not found.')
+        else:
+            logging.info(f'Supervisor "{first_name} {last_name}" already exists.')
+
+        # Assign supervisor to queues
+        if supervisor != {} and assign_to_queues:
+            queues = get_queues(ncc_location, ncc_token)
+            if len(queues) > 0:
+                for queue in queues:
+                    success = search_supervisor_queues(
                         ncc_location, ncc_token, supervisor["_id"], queue["_id"]
                     )
                     if success:
                         logging.info(
-                            f'Supervisor "{supervisor["name"]}" assigned to queue "{queue["name"]}".'
+                            f'Supervisor "{supervisor["name"]}" already assigned to queue "{queue["name"]}".'
                         )
                     else:
-                        logging.warning(
-                            f'Supervisor "{supervisor["name"]}" not assigned to queue "{queue["name"]}".'
+                        success = create_supervisor_queue(
+                            ncc_location, ncc_token, supervisor["_id"], queue["_id"]
                         )
-        else:
-            logging.warning("No queues found for assignment.")
+                        if success:
+                            logging.info(
+                                f'Supervisor "{supervisor["name"]}" assigned to queue "{queue["name"]}".'
+                            )
+                        else:
+                            logging.warning(
+                                f'Supervisor "{supervisor["name"]}" not assigned to queue "{queue["name"]}".'
+                            )
+            else:
+                logging.warning("No queues found for assignment.")
 
-    # Assign agents to supervisor
-    if supervisor != {} and assign_agents:
-        agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
-        if agent_user_profile != {}:
-            agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
-            if len(agents) > 0:
-                for agent in agents:
-                    success = search_supervisor_users(
-                        ncc_location, ncc_token, supervisor["_id"], agent["_id"]
-                    )
-                    if success:
-                        logging.info(
-                            f'Agent "{agent["firstName"]} {agent["lastName"]}" already assigned to "{first_name} {last_name}".'
-                        )
-                    else:
-                        success = create_supervisor_user(
+        # Assign agents to supervisor
+        if supervisor != {} and assign_agents:
+            agent_user_profile = search_user_profiles(ncc_location, ncc_token, "Agent")
+            if agent_user_profile != {}:
+                agents = get_users(ncc_location, ncc_token, agent_user_profile["_id"])
+                if len(agents) > 0:
+                    for agent in agents:
+                        success = search_supervisor_users(
                             ncc_location, ncc_token, supervisor["_id"], agent["_id"]
                         )
                         if success:
                             logging.info(
-                                f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to "{first_name} {last_name}".'
+                                f'Agent "{agent["firstName"]} {agent["lastName"]}" already assigned to "{first_name} {last_name}".'
                             )
                         else:
-                            logging.warning(
-                                f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{first_name} {last_name}".'
+                            success = create_supervisor_user(
+                                ncc_location, ncc_token, supervisor["_id"], agent["_id"]
                             )
-            else:
-                logging.warning("No agents found for assignment.")
-        else:
-            logging.warning('User profile "Agent" not found.')
-
-    # Assign supervisor to campaigns
-    if supervisor != {} and assign_to_campaigns:
-        campaigns = get_campaigns(ncc_location, ncc_token)
-        if len(campaigns) > 0:
-            for campaign in campaigns:
-                success = search_supervisor_campaigns(
-                    ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
-                )
-                if success:
-                    logging.info(
-                        f'Supervisor "{first_name} {last_name}" already assigned to campaign "{campaign["name"]}".'
-                    )
+                            if success:
+                                logging.info(
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to "{first_name} {last_name}".'
+                                )
+                            else:
+                                logging.warning(
+                                    f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{first_name} {last_name}".'
+                                )
                 else:
-                    success = create_supervisor_campaign(
+                    logging.warning("No agents found for assignment.")
+            else:
+                logging.warning('User profile "Agent" not found.')
+
+        # Assign supervisor to campaigns
+        if supervisor != {} and assign_to_campaigns:
+            campaigns = get_campaigns(ncc_location, ncc_token)
+            if len(campaigns) > 0:
+                for campaign in campaigns:
+                    success = search_supervisor_campaigns(
                         ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
                     )
                     if success:
                         logging.info(
-                            f'Supervisor "{first_name} {last_name}" assigned to campaign "{campaign["name"]}".'
+                            f'Supervisor "{first_name} {last_name}" already assigned to campaign "{campaign["name"]}".'
                         )
                     else:
-                        logging.warning(
-                            f'Supervisor "{first_name} {last_name}" not assigned to campaign "{campaign["name"]}".'
+                        success = create_supervisor_campaign(
+                            ncc_location, ncc_token, supervisor["_id"], campaign["_id"]
                         )
-        else:
-            logging.warning("No campaigns found for assignment.")
+                        if success:
+                            logging.info(
+                                f'Supervisor "{first_name} {last_name}" assigned to campaign "{campaign["name"]}".'
+                            )
+                        else:
+                            logging.warning(
+                                f'Supervisor "{first_name} {last_name}" not assigned to campaign "{campaign["name"]}".'
+                            )
+            else:
+                logging.warning("No campaigns found for assignment.")
 
-    # Assign supervisor to topics
-    if supervisor != {} and assign_to_topics:
-        topics = get_topics(ncc_location, ncc_token)
-        if len(topics) > 0:
-            for topic in topics:
-                if "users" in topic:
-                    users = topic["users"]
-                else:
-                    users = []
-                if supervisor["_id"] in users:
-                    logging.info(
-                        f'Supervisor "{first_name} {last_name}" already assigned to topic "{topic["name"]}".'
-                    )
-                else:
-                    users.append(supervisor["_id"])
-                    success = update_topic_users(
-                        ncc_location, ncc_token, topic["_id"], users
-                    )
-                    if success:
+        # Assign supervisor to topics
+        if supervisor != {} and assign_to_topics:
+            topics = get_topics(ncc_location, ncc_token)
+            if len(topics) > 0:
+                for topic in topics:
+                    if "users" in topic:
+                        users = topic["users"]
+                    else:
+                        users = []
+                    if supervisor["_id"] in users:
                         logging.info(
-                            f'Supervisor "{first_name} {last_name}" assigned to topic "{topic["name"]}".'
+                            f'Supervisor "{first_name} {last_name}" already assigned to topic "{topic["name"]}".'
                         )
                     else:
-                        logging.warning(
-                            f'Supervisor "{first_name} {last_name}" not assigned to topic "{topic["name"]}".'
+                        users.append(supervisor["_id"])
+                        success = update_topic_users(
+                            ncc_location, ncc_token, topic["_id"], users
                         )
-        else:
-            logging.warning("No topics found for assignment.")
+                        if success:
+                            logging.info(
+                                f'Supervisor "{first_name} {last_name}" assigned to topic "{topic["name"]}".'
+                            )
+                        else:
+                            logging.warning(
+                                f'Supervisor "{first_name} {last_name}" not assigned to topic "{topic["name"]}".'
+                            )
+            else:
+                logging.warning("No topics found for assignment.")
 
-    duration = datetime.datetime.now() - start_time
-    logging.info(f"Duration: {str(duration)}")
+        duration = datetime.datetime.now() - start_time
+        logging.info(f"Duration: {str(duration)}")

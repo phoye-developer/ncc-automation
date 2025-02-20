@@ -29,7 +29,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("Please log in.")
+    print("Please log in. Your password will not display on the screen.")
     print()
     while not authenticated:
         username = input("Username: ")
