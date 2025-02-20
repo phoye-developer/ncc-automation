@@ -613,40 +613,26 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.warning('Insufficient data to create service type "GENERATIVE_AI"')
 
-    # Search for REALTIME_ANALYSIS service
+    # Create REALTIME_ANALYSIS service
     real_time_transcription_service = search_services(
         ncc_location, ncc_token, "REALTIME_ANALYSIS"
     )
     if real_time_transcription_service != {}:
         logging.info('Service type "REALTIME_ANALYSIS" already exists.')
     else:
-        # Create Deepgram API key
-        deepgram_api_key_id = search_deepgram_api_keys(
-            deepgram_project_id, deepgram_main_api_key, "Key"
-        )
-        if deepgram_api_key_id == "":
-            deepgram_api_key = create_deepgram_api_key(
-                deepgram_project_id, deepgram_main_api_key
+        if deepgram_api_key != "":
+            real_time_transcription_service = create_real_time_transcription_service(
+                ncc_location,
+                ncc_token,
+                "Deepgram Real-Time Transcription",
+                deepgram_api_key,
             )
-            if deepgram_api_key != "":
-                logging.info('Deepgram API key "Key" created.')
+            if real_time_transcription_service != {}:
+                logging.info('Service "Deepgram Real-Time Transcription" created.')
             else:
-                logging.warning('Deepgram API key "Key" not created.')
-        else:
-            logging.info('Deepgram API key "Key" already exists.')
-
-    # Create REALTIME_ANALYSIS service
-    if real_time_transcription_service == {} and deepgram_api_key != "":
-        real_time_transcription_service = create_real_time_transcription_service(
-            ncc_location,
-            ncc_token,
-            "Deepgram Real-Time Transcription",
-            deepgram_api_key,
-        )
-        if real_time_transcription_service != {}:
-            logging.info('Service "Deepgram Real-Time Transcription" created.')
-        else:
-            logging.warning('Service "Deepgram Real-Time Transcription" not created.')
+                logging.warning(
+                    'Service "Deepgram Real-Time Transcription" not created.'
+                )
 
     # Create classifications
     classifications_to_assign = []

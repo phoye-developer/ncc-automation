@@ -1,6 +1,3 @@
-# Deepgram
-deepgram_project_id = "90b9d6eb-c8c6-46a9-a0d7-c35f585403c4"
-
 # NCC entities
 general_dispositions = [
     {
