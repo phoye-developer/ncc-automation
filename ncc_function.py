@@ -199,7 +199,7 @@ def create_search_contacts_function(
                             "name": "Contact",
                             "description": "Assign contact",
                             "properties": {
-                                "description": "InboundCall or InboundSMS",
+                                "description": "InboundCall, OutboundCall, InboundSMS, OutboundSMS",
                                 "condition": {
                                     "conditionType": "OR",
                                     "expressions": [
@@ -211,7 +211,17 @@ def create_search_contacts_function(
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
                                             "rightExpression": "'InboundSMS'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
                                         },
                                     ],
                                 },

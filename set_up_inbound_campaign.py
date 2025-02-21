@@ -1054,6 +1054,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and search_contacts_function != {}
                 and two_way_chat_function != {}
                 and two_way_sms_function != {}
+                and chat_survey != {}
+                and user_survey != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1081,6 +1083,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             two_way_sms_function,
                             acd_voicemail_function,
                             acd_callback_function,
+                            chat_survey,
+                            user_survey,
                         )
                     elif vertical == "hc":
                         workflow = create_hc_non_iva_dtmf_workflow(
@@ -1094,6 +1098,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             two_way_sms_function,
                             acd_voicemail_function,
                             acd_callback_function,
+                            chat_survey,
+                            user_survey,
                         )
                     elif vertical == "finserv":
                         workflow = create_finserv_non_iva_dtmf_workflow(
@@ -1107,6 +1113,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             two_way_sms_function,
                             acd_voicemail_function,
                             acd_callback_function,
+                            chat_survey,
+                            user_survey,
                         )
                     elif vertical == "insurance":
                         workflow = create_insurance_non_iva_dtmf_workflow(
@@ -1120,6 +1128,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             two_way_sms_function,
                             acd_voicemail_function,
                             acd_callback_function,
+                            chat_survey,
+                            user_survey,
                         )
                 else:
                     workflow = create_direct_line_workflow(
@@ -1133,6 +1143,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         two_way_sms_function,
                         acd_voicemail_function,
                         acd_callback_function,
+                        user_survey,
                     )
                 if workflow != {}:
                     logging.info(f'Workflow "{campaign_name}" created.')
