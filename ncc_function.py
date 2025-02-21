@@ -949,9 +949,13 @@ def create_acd_voicemail_function(
     payload = json.dumps(
         {
             "localizations": {
-                "name": {"en": {"language": "en", "value": function_name}}
+                "name": {
+                    "en": {
+                        "language": "en",
+                        "value": function_name,
+                    }
+                }
             },
-            "name": function_name,
             "states": {
                 "5dc401ec494df97002ea2b57": {
                     "category": "Standard",
@@ -977,7 +981,7 @@ def create_acd_voicemail_function(
                     "_id": "5dc401ec494df97002ea2b57",
                     "description": "End State",
                     "name": "End State",
-                    "location": "18.313131530711985 675.3981425236382",
+                    "location": "222.2019827736027 834.963330452857",
                     "transitions": [],
                     "__gohashid": 40842,
                 },
@@ -998,40 +1002,8 @@ def create_acd_voicemail_function(
                             },
                             "type": "addtimeevent",
                             "_selected": False,
-                            "id": "refId1723573943893",
+                            "id": "refId1740101739903",
                             "icon": "icon-clock",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "queueId - workitem.queues",
-                                "rightExpression": "workitem.queues",
-                                "variableName": "queueId",
-                                "asObject": False,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "'queueId' in workitem.data",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        },
-                                        {
-                                            "leftExpression": "'queues'  in workitem",
-                                            "operator": "==",
-                                            "rightExpression": "true",
-                                        },
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": True,
-                            "id": "refId1723573943894",
-                            "icon": "icon-save",
                         },
                         {
                             "name": "Exit Queue",
@@ -1041,11 +1013,11 @@ def create_acd_voicemail_function(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "description": "Remove workitem from queue",
+                                "description": "",
                             },
                             "type": "exitqueue",
                             "_selected": False,
-                            "id": "refId1723573943895",
+                            "id": "refId1740101739905",
                             "icon": "icon-exitqueues",
                         },
                         {
@@ -1058,16 +1030,16 @@ def create_acd_voicemail_function(
                                 },
                                 "rightExpression": "0",
                                 "variableName": "messageRecorded",
-                                "description": "Set messageRecorded = 0",
+                                "description": "messageRecorded = 0",
                                 "asObject": True,
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1723573943896",
+                            "id": "refId1740101739906",
                             "icon": "icon-save",
                         },
                         {
-                            "name": "Transition - Record VM",
+                            "name": "Record VM",
                             "type": "transition",
                             "description": "Transition to another state",
                             "properties": {
@@ -1079,54 +1051,20 @@ def create_acd_voicemail_function(
                                 "name": "Start",
                                 "description": "Transition to another state",
                                 "points": {
-                                    "__gohashid": 8249,
-                                    "_isFrozen": True,
-                                    "s": [
-                                        {
-                                            "x": -785.9999999999999,
-                                            "y": 121.43979496706925,
-                                            "_isFrozen": True,
-                                        },
-                                        {
-                                            "x": -775.9999999999999,
-                                            "y": 121.43979496706925,
-                                            "_isFrozen": True,
-                                        },
-                                        {
-                                            "x": -652.4756306329477,
-                                            "y": 121.43979496706925,
-                                            "_isFrozen": True,
-                                        },
-                                        {
-                                            "x": -652.4756306329477,
-                                            "y": 135.10859965070503,
-                                            "_isFrozen": True,
-                                        },
-                                        {
-                                            "x": -652.4756306329477,
-                                            "y": 148.77740433434082,
-                                            "_isFrozen": True,
-                                        },
-                                        {
-                                            "x": -652.4756306329477,
-                                            "y": 158.77740433434082,
-                                            "_isFrozen": True,
-                                        },
-                                    ],
-                                    "Ja": 6,
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 26492,
                                 },
                             },
                             "transitionId": "5dc4023452d09c4fc8369c19",
-                            "_selected": False,
-                            "id": "refId1723573943897",
+                            "_selected": True,
+                            "id": "refId1740101739907",
                             "icon": "icon-transition",
                         },
                     ],
                     "transitions": [
-                        {
-                            "name": "Transition - Record VM",
-                            "id": "5dc4023452d09c4fc8369c19",
-                        }
+                        {"name": "Record VM", "id": "5dc4023452d09c4fc8369c19"}
                     ],
                     "objectType": "campaignstate",
                     "key": "start-state",
@@ -1141,29 +1079,25 @@ def create_acd_voicemail_function(
                     "campaignStateId": "5dc401fe07b302d7a780e761",
                     "actions": [
                         {
-                            "name": "Play Prompt",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
                             "properties": {
-                                "description": "Please leave your voicemail after the tone",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Please leave your message after the tone. When you are finished, you may hang up, or stay on the line for more options.</prosody>',
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "loop": 1,
-                                "promptId": "599d70ddee2f2566c4321477",
-                                "_working": False,
-                                "expansions": {"promptId": {"name": "8630"}},
                             },
-                            "type": "playprompt",
+                            "type": "googletts",
                             "_selected": False,
-                            "id": "refId1655475277111",
-                            "icon": "icon-playprompt",
                         },
                         {
                             "name": "Recording",
                             "description": "",
                             "properties": {
-                                "description": "Start Recording with Beep",
+                                "description": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
@@ -1178,7 +1112,7 @@ def create_acd_voicemail_function(
                             },
                             "type": "record",
                             "_selected": False,
-                            "id": "refId1655475277112",
+                            "id": "refId1740101739815",
                             "icon": "icon-record-start",
                         },
                         {
@@ -1191,13 +1125,13 @@ def create_acd_voicemail_function(
                                 },
                                 "rightExpression": "1",
                                 "variableName": "messageRecorded",
-                                "description": "set messageRecorded = 1",
+                                "description": "messageRecorded = 1",
                                 "asObject": True,
                             },
                             "type": "savevariable",
-                            "_selected": True,
-                            "id": "refId1655475277172",
-                            "icon": "icon-savevariable",
+                            "_selected": False,
+                            "id": "refId1740101739816",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "Start Timer",
@@ -1212,8 +1146,8 @@ def create_acd_voicemail_function(
                             },
                             "type": "starttimer",
                             "_selected": False,
-                            "id": "refId1655475277143",
-                            "icon": "icon-starttimer",
+                            "id": "refId1740101739817",
+                            "icon": "icon-timer",
                         },
                         {
                             "name": "Save Variable",
@@ -1225,30 +1159,36 @@ def create_acd_voicemail_function(
                                 },
                                 "rightExpression": "1",
                                 "variableName": "retries",
-                                "description": "Set retries = 1",
+                                "description": "retries = 1",
                                 "asObject": True,
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1655475277115",
-                            "icon": "icon-savevariable",
+                            "id": "refId1740101739818",
+                            "icon": "icon-save",
                         },
                         {
-                            "name": "Transition - Options Menu",
+                            "name": "Options Menu",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "goto options",
+                                "description": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "stateId": "5dc40291e680339a6aecc831",
                                 "name": "Transition",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 24281,
+                                },
                             },
                             "type": "transition",
-                            "_selected": False,
+                            "_selected": True,
                             "transitionId": "refId1573126598874",
-                            "id": "refId1655475277116",
+                            "id": "refId1740101739819",
                             "icon": "icon-transition",
                         },
                     ],
@@ -1257,14 +1197,11 @@ def create_acd_voicemail_function(
                     "objectType": "campaignstate",
                     "_id": "5dc401fe07b302d7a780e761",
                     "key": "5dc401fe07b302d7a780e761",
-                    "location": "-652.4756306329476 223.16141083458496",
+                    "location": "-617.0166999820101 254.1879751541553",
                     "loc": "200.03145361646278 -52.4453125",
                     "__gohashid": 4074,
                     "transitions": [
-                        {
-                            "name": "Transition - Options Menu",
-                            "id": "refId1573126598874",
-                        }
+                        {"name": "Options Menu", "id": "refId1573126598874"}
                     ],
                 },
                 "5dc40291e680339a6aecc831": {
@@ -1272,32 +1209,31 @@ def create_acd_voicemail_function(
                     "campaignStateId": "5dc40291e680339a6aecc831",
                     "actions": [
                         {
-                            "name": "Play & Collect Digits",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
                             "properties": {
-                                "description": "To save your message, press 1, to hear your message, press 2, to re-record your message, press 3, to cancel your message, press star.",
+                                "description": "Save (1), Listen (2), Re-record (3), Cancel (*)",
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To save your message, press 1. To hear your message, press 2. To re-record your message, press 3. To cancel your message, press star.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "7",
+                                "dlpOption": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "loop": 1,
-                                "numberDigits": 1,
-                                "promptId": "599d7152ee2f2566c4321478",
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "7",
-                                "_working": False,
-                                "expansions": {"promptId": {"name": "8631"}},
                             },
-                            "type": "playdigits",
+                            "type": "googlettscollect",
                             "_selected": False,
-                            "id": "refId1655475276883",
-                            "icon": "icon-playdigits",
                         },
                         {
                             "name": "Play Recording",
                             "description": "",
                             "properties": {
-                                "description": "DIGITS - TWO - Hear Message",
+                                "description": "workitem.digits == '2'",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1313,14 +1249,14 @@ def create_acd_voicemail_function(
                             },
                             "type": "playrecording",
                             "_selected": False,
-                            "id": "refId1655475276884",
+                            "id": "refId1740101739507",
                             "icon": "icon-playrecording",
                         },
                         {
-                            "name": "Transition - Options Menu",
+                            "name": "Back to Top",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "SELECT 2 - goto options",
+                                "description": "workitem.digits == '2'",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1331,20 +1267,19 @@ def create_acd_voicemail_function(
                                         }
                                     ],
                                 },
-                                "stateId": "5dc40291e680339a6aecc831",
-                                "name": "Transition",
+                                "stateName": "Options Menu",
                             },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1573126598778",
-                            "id": "refId1655475276885",
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1740101739453",
+                            "id": "refId1740101739508",
                             "icon": "icon-transition",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "Set messageRecorded = 0",
+                                "description": "messageRecorded = 0, workitem.digits == '3' or '*'",
                                 "condition": {
                                     "conditionType": "OR",
                                     "expressions": [
@@ -1366,14 +1301,14 @@ def create_acd_voicemail_function(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1655475276886",
-                            "icon": "icon-savevariable",
+                            "id": "refId1740101739509",
+                            "icon": "icon-save",
                         },
                         {
-                            "name": "Transition - Record VM",
+                            "name": "Record VM",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "SELECT 3 - goto record",
+                                "description": "workitem.digits == '3'",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1384,20 +1319,19 @@ def create_acd_voicemail_function(
                                         }
                                     ],
                                 },
-                                "stateId": "5dc401fe07b302d7a780e761",
-                                "name": "Transition",
+                                "stateName": "Record VM",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1573126598787",
-                            "id": "refId1655475276887",
+                            "transitionId": "refId1740101739373",
+                            "id": "refId1740101739510",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "Transition - Create VM",
+                            "name": "Create ACD VM",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "SELECT 1 - create ACD VM",
+                                "description": "workitem.digits == '1'",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1410,18 +1344,24 @@ def create_acd_voicemail_function(
                                 },
                                 "stateId": "5dc40521e22562777dcb2007",
                                 "name": "Transition",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 20591,
+                                },
                             },
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1573126598797",
-                            "id": "refId1655475276888",
+                            "id": "refId1740101739511",
                             "icon": "icon-transition",
                         },
                         {
                             "name": "Return To Workflow",
                             "description": "",
                             "properties": {
-                                "description": "SELECT * - return to workflow",
+                                "description": "workitem.digits == '*'",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1435,25 +1375,25 @@ def create_acd_voicemail_function(
                             },
                             "type": "functionreturn",
                             "_selected": False,
-                            "id": "refId1655475276889",
+                            "id": "refId1740101739512",
                             "icon": "icon-functionreturn",
                         },
                         {
-                            "name": "Transition - Options Menu",
+                            "name": "Back to Top",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "If Invalid Option Loop",
+                                "description": "",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "5dc40291e680339a6aecc831",
+                                "stateName": "Options Menu",
                             },
-                            "type": "transition",
-                            "_selected": False,
-                            "transitionId": "refId1585421559053",
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740101739423",
+                            "id": "refId1740101739513",
                             "icon": "icon-transition",
-                            "id": "refId1655475276890",
                         },
                     ],
                     "name": "Options Menu",
@@ -1461,20 +1401,14 @@ def create_acd_voicemail_function(
                     "objectType": "campaignstate",
                     "_id": "5dc40291e680339a6aecc831",
                     "key": "5dc40291e680339a6aecc831",
-                    "location": "-433.1248747227851 409.75422566702383",
+                    "location": "-334.13535998891757 470.32989886237533",
                     "loc": "165.03145361646278 67.5546875",
                     "__gohashid": 8936,
                     "transitions": [
-                        {
-                            "name": "Transition - Options Menu",
-                            "id": "refId1573126598778",
-                        },
-                        {"name": "Transition - Record VM", "id": "refId1573126598787"},
-                        {"name": "Transition - Create VM", "id": "refId1573126598797"},
-                        {
-                            "name": "Transition - Options Menu",
-                            "id": "refId1585421559053",
-                        },
+                        {"name": "Back to Top", "id": "refId1740101739453"},
+                        {"name": "Record VM", "id": "refId1740101739373"},
+                        {"name": "Create ACD VM", "id": "refId1573126598797"},
+                        {"name": "Back to Top", "id": "refId1740101739423"},
                     ],
                 },
                 "5dc40521e22562777dcb2007": {
@@ -1482,29 +1416,26 @@ def create_acd_voicemail_function(
                     "campaignStateId": "5dc40521e22562777dcb2007",
                     "actions": [
                         {
-                            "name": "Play Prompt",
-                            "description": "",
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
                             "properties": {
-                                "description": "thanks for calling",
+                                "description": "Thank you for calling...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for calling, and have a great Day!</prosody>',
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "loop": 1,
-                                "promptId": "59567ffda798c90678770d66",
-                                "_working": False,
-                                "expansions": {"promptId": {"name": "4091"}},
                             },
-                            "type": "playprompt",
+                            "type": "googletts",
                             "_selected": False,
-                            "id": "refId1727322591514",
-                            "icon": "icon-playprompt",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "Set messageRecorded = 0",
+                                "description": "messageRecorded = 0",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
@@ -1515,7 +1446,7 @@ def create_acd_voicemail_function(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1727322591515",
+                            "id": "refId1740101740016",
                             "icon": "icon-save",
                         },
                         {
@@ -1532,26 +1463,32 @@ def create_acd_voicemail_function(
                                 "transcription": True,
                             },
                             "type": "acdvmfromexpression",
-                            "_selected": True,
+                            "_selected": False,
+                            "id": "refId1740101740017",
                             "icon": "icon-directconnect",
-                            "id": "refId1727322591516",
                         },
                         {
-                            "name": "Transition - End State",
+                            "name": "End State",
                             "description": "Transition to another state",
                             "properties": {
-                                "description": "Terminate",
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "stateId": "5dc401ec494df97002ea2b57",
                                 "name": "Transition",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 28713,
+                                },
                             },
                             "type": "transition",
-                            "_selected": False,
+                            "_selected": True,
                             "transitionId": "refId1573126598835",
-                            "id": "refId1727322591517",
+                            "id": "refId1740101740018",
                             "icon": "icon-transition",
                         },
                     ],
@@ -1560,14 +1497,13 @@ def create_acd_voicemail_function(
                     "objectType": "campaignstate",
                     "_id": "5dc40521e22562777dcb2007",
                     "key": "5dc40521e22562777dcb2007",
-                    "location": "-201.86401092256142 579.0405190011794",
+                    "location": "-31.9566348868193 679.5074891788356",
                     "loc": "213.03145361646278 459.0546875",
                     "__gohashid": 62107,
-                    "transitions": [
-                        {"name": "Transition - End State", "id": "refId1573126598835"}
-                    ],
+                    "transitions": [{"name": "End State", "id": "refId1573126598835"}],
                 },
             },
+            "name": function_name,
         }
     )
     headers = {
