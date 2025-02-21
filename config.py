@@ -451,7 +451,7 @@ hc_options = [
 finserv_options = [
     {"label": "Credit Card Applications", "value": "Credit Card Applications"},
     {"label": "Loan Applications", "value": "Loan Applications"},
-    {"label": "Checking or Savings Accounts", "value": "Checking or Savings Accounts"},
+    {"label": "Checking or Savings Accounts", "value": "Accounts"},
     {"label": "Billing", "value": "Billing"},
     {"label": "Customer Service", "value": "Customer Service"},
 ]

@@ -200,7 +200,7 @@ def create_iva_workflow(
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -225,8 +225,39 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-save",
@@ -1245,6 +1276,8 @@ def create_general_non_iva_dtmf_workflow(
     two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    chat_survey: dict,
+    user_survey: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
@@ -1339,7 +1372,7 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227611",
+                            "id": "refId1739934453997",
                             "icon": "icon-save",
                         },
                         {
@@ -1360,7 +1393,7 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227612",
+                            "id": "refId1739934453998",
                             "icon": "icon-save",
                         },
                         {
@@ -1381,14 +1414,14 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227613",
+                            "id": "refId1739934453999",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -1413,11 +1446,41 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
@@ -1434,7 +1497,9 @@ def create_general_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
+                            "id": "refId1739934454001",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
@@ -1454,8 +1519,8 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739934454002",
                             "icon": "icon-save",
-                            "id": "refId1739600227615",
                         },
                         {
                             "name": "Survey",
@@ -1477,7 +1542,7 @@ def create_general_non_iva_dtmf_workflow(
                             "type": "transitionbyname",
                             "_selected": False,
                             "transitionId": "refId1739600227151",
-                            "id": "refId1739600227616",
+                            "id": "refId1739934454003",
                             "icon": "icon-transition",
                         },
                         {
@@ -1495,7 +1560,7 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "transitionId": "67b118871e7c034010972864",
                             "_selected": False,
-                            "id": "refId1739600227617",
+                            "id": "refId1739934454005",
                             "icon": "icon-transition",
                         },
                     ],
@@ -1508,7 +1573,7 @@ def create_general_non_iva_dtmf_workflow(
                     "_id": "start-state",
                     "description": "Begin State",
                     "name": "Begin State",
-                    "location": "-92.43594451534577 -158.49227385694343",
+                    "location": "-103.83820690278785 -186.18348251215994",
                 },
                 "67b11894720280f716c36bdf": {
                     "category": "Standard",
@@ -1538,7 +1603,7 @@ def create_general_non_iva_dtmf_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1739600227189",
+                            "id": "refId1739934453972",
                             "icon": "icon-function",
                         },
                         {
@@ -1561,8 +1626,8 @@ def create_general_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227187",
+                            "id": "refId1739934453973",
                             "icon": "icon-transition",
-                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
@@ -1584,11 +1649,10 @@ def create_general_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227163",
-                            "id": "refId1739600227191",
+                            "id": "refId1739934453974",
                             "icon": "icon-transition",
                         },
                         {
-                            "icon": "icon-transition",
                             "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
@@ -1603,10 +1667,34 @@ def create_general_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b4990b64c67bfb0e882",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227203",
+                            "id": "refId1739934453975",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b552f294171b486a3d1b7a",
                             },
                             "type": "transition",
                             "_selected": True,
-                            "transitionId": "refId1739600227203",
+                            "transitionId": "refId1739934453995",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -1616,6 +1704,7 @@ def create_general_non_iva_dtmf_workflow(
                         {"name": "Chat", "id": "refId1739600227187"},
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
+                        {"name": "OutboundCall", "id": "refId1739934453995"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -1973,12 +2062,6 @@ def create_general_non_iva_dtmf_workflow(
                                 },
                                 "stateId": "67b11daace899acb3e0d1c38",
                                 "description": "Transition to another state",
-                                "points": {
-                                    "h": True,
-                                    "r": [],
-                                    "ct": 0,
-                                    "__gohashid": 193062,
-                                },
                             },
                             "type": "transition",
                             "_selected": False,
@@ -2206,7 +2289,7 @@ def create_general_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "768.2271674519036 757.1511431023132",
+                    "location": "764.6354547998594 951.1036263127032",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -2315,8 +2398,190 @@ def create_general_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1020.318794945671 938.4428069455298",
+                    "location": "1016.7270822936268 1132.3952901559198",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+                "67b552f294171b486a3d1b7a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b552f294171b486a3d1b7a",
+                    "name": "OutboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": f'workitem.surveyResult["{chat_survey["_id"]}"].interest.value',
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1739934455752",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Sales",
+                                "rightExpression": queues["Sales"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Sales'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455753",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455754",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455755",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Technical Support",
+                                "rightExpression": queues["Technical Support"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Technical Support'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455756",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Assign survey to workitem",
+                            "properties": {
+                                "description": user_survey["name"],
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "surveyId": user_survey["_id"],
+                                "expansions": {
+                                    "surveyId": {"name": user_survey["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "assignsurvey",
+                            "_selected": False,
+                            "id": "refId1739934455757",
+                            "icon": "icon-survey",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739934454854",
+                            "id": "refId1739934455758",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b552f294171b486a3d1b7a",
+                    "key": "67b552f294171b486a3d1b7a",
+                    "location": "469.70693096850323 778.9689734663827",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739934454854"}
+                    ],
                 },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
@@ -2351,6 +2616,8 @@ def create_hc_non_iva_dtmf_workflow(
     two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    chat_survey: dict,
+    user_survey: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
@@ -2445,7 +2712,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227611",
+                            "id": "refId1739934453997",
                             "icon": "icon-save",
                         },
                         {
@@ -2466,7 +2733,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227612",
+                            "id": "refId1739934453998",
                             "icon": "icon-save",
                         },
                         {
@@ -2487,14 +2754,14 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227613",
+                            "id": "refId1739934453999",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -2519,11 +2786,41 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
@@ -2540,7 +2837,9 @@ def create_hc_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
+                            "id": "refId1739934454001",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
@@ -2560,8 +2859,8 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739934454002",
                             "icon": "icon-save",
-                            "id": "refId1739600227615",
                         },
                         {
                             "name": "Survey",
@@ -2583,7 +2882,7 @@ def create_hc_non_iva_dtmf_workflow(
                             "type": "transitionbyname",
                             "_selected": False,
                             "transitionId": "refId1739600227151",
-                            "id": "refId1739600227616",
+                            "id": "refId1739934454003",
                             "icon": "icon-transition",
                         },
                         {
@@ -2601,7 +2900,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "transitionId": "67b118871e7c034010972864",
                             "_selected": False,
-                            "id": "refId1739600227617",
+                            "id": "refId1739934454005",
                             "icon": "icon-transition",
                         },
                     ],
@@ -2614,7 +2913,7 @@ def create_hc_non_iva_dtmf_workflow(
                     "_id": "start-state",
                     "description": "Begin State",
                     "name": "Begin State",
-                    "location": "-92.43594451534577 -158.49227385694343",
+                    "location": "-103.83820690278785 -186.18348251215994",
                 },
                 "67b11894720280f716c36bdf": {
                     "category": "Standard",
@@ -2644,7 +2943,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1739600227189",
+                            "id": "refId1739934453972",
                             "icon": "icon-function",
                         },
                         {
@@ -2667,8 +2966,8 @@ def create_hc_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227187",
+                            "id": "refId1739934453973",
                             "icon": "icon-transition",
-                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
@@ -2690,11 +2989,10 @@ def create_hc_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227163",
-                            "id": "refId1739600227191",
+                            "id": "refId1739934453974",
                             "icon": "icon-transition",
                         },
                         {
-                            "icon": "icon-transition",
                             "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
@@ -2709,10 +3007,34 @@ def create_hc_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b4990b64c67bfb0e882",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227203",
+                            "id": "refId1739934453975",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b552f294171b486a3d1b7a",
                             },
                             "type": "transition",
                             "_selected": True,
-                            "transitionId": "refId1739600227203",
+                            "transitionId": "refId1739934453995",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -2722,6 +3044,7 @@ def create_hc_non_iva_dtmf_workflow(
                         {"name": "Chat", "id": "refId1739600227187"},
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
+                        {"name": "OutboundCall", "id": "refId1739934453995"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -2850,7 +3173,8 @@ def create_hc_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": False,
+                            "_selected": True,
+                            "id": "refId1739749451080",
                         },
                         {
                             "icon": "icon-save",
@@ -2877,6 +3201,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451064",
                         },
                         {
                             "icon": "icon-save",
@@ -2903,6 +3228,7 @@ def create_hc_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451048",
                         },
                         {
                             "name": "ConnectAgent",
@@ -3078,10 +3404,10 @@ def create_hc_non_iva_dtmf_workflow(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
+                            "id": "refId1739600231292",
                             "icon": "icon-transition",
-                            "id": "refId1739600229680",
                         },
                     ],
                     "_id": "67b11b424881f97a86b2640f",
@@ -3303,7 +3629,7 @@ def create_hc_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "768.2271674519036 757.1511431023132",
+                    "location": "764.6354547998594 951.1036263127032",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -3412,8 +3738,190 @@ def create_hc_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1020.318794945671 938.4428069455298",
+                    "location": "1016.7270822936268 1132.3952901559198",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+                "67b552f294171b486a3d1b7a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b552f294171b486a3d1b7a",
+                    "name": "OutboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": f'workitem.surveyResult["{chat_survey["_id"]}"].interest.value',
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1739934455752",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Prescription Refills",
+                                "rightExpression": queues["Prescription Refills"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Prescription Refills'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455753",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Appointments",
+                                "rightExpression": queues["Appointments"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Appointments'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455754",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455755",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455756",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Assign survey to workitem",
+                            "properties": {
+                                "description": user_survey["name"],
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "surveyId": user_survey["_id"],
+                                "expansions": {
+                                    "surveyId": {"name": user_survey["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "assignsurvey",
+                            "_selected": False,
+                            "id": "refId1739934455757",
+                            "icon": "icon-survey",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739934454854",
+                            "id": "refId1739934455758",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b552f294171b486a3d1b7a",
+                    "key": "67b552f294171b486a3d1b7a",
+                    "location": "469.70693096850323 778.9689734663827",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739934454854"}
+                    ],
                 },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
@@ -3448,6 +3956,8 @@ def create_finserv_non_iva_dtmf_workflow(
     two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    chat_survey: dict,
+    user_survey: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
@@ -3542,7 +4052,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227611",
+                            "id": "refId1739934453997",
                             "icon": "icon-save",
                         },
                         {
@@ -3563,7 +4073,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227612",
+                            "id": "refId1739934453998",
                             "icon": "icon-save",
                         },
                         {
@@ -3584,14 +4094,14 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227613",
+                            "id": "refId1739934453999",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -3616,11 +4126,41 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
@@ -3637,7 +4177,9 @@ def create_finserv_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
+                            "id": "refId1739934454001",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
@@ -3657,8 +4199,8 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739934454002",
                             "icon": "icon-save",
-                            "id": "refId1739600227615",
                         },
                         {
                             "name": "Survey",
@@ -3680,7 +4222,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             "type": "transitionbyname",
                             "_selected": False,
                             "transitionId": "refId1739600227151",
-                            "id": "refId1739600227616",
+                            "id": "refId1739934454003",
                             "icon": "icon-transition",
                         },
                         {
@@ -3698,7 +4240,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "transitionId": "67b118871e7c034010972864",
                             "_selected": False,
-                            "id": "refId1739600227617",
+                            "id": "refId1739934454005",
                             "icon": "icon-transition",
                         },
                     ],
@@ -3711,7 +4253,7 @@ def create_finserv_non_iva_dtmf_workflow(
                     "_id": "start-state",
                     "description": "Begin State",
                     "name": "Begin State",
-                    "location": "-92.43594451534577 -158.49227385694343",
+                    "location": "-103.83820690278785 -186.18348251215994",
                 },
                 "67b11894720280f716c36bdf": {
                     "category": "Standard",
@@ -3741,7 +4283,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1739600227189",
+                            "id": "refId1739934453972",
                             "icon": "icon-function",
                         },
                         {
@@ -3764,8 +4306,8 @@ def create_finserv_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227187",
+                            "id": "refId1739934453973",
                             "icon": "icon-transition",
-                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
@@ -3787,11 +4329,10 @@ def create_finserv_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227163",
-                            "id": "refId1739600227191",
+                            "id": "refId1739934453974",
                             "icon": "icon-transition",
                         },
                         {
-                            "icon": "icon-transition",
                             "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
@@ -3806,10 +4347,34 @@ def create_finserv_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b4990b64c67bfb0e882",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227203",
+                            "id": "refId1739934453975",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b552f294171b486a3d1b7a",
                             },
                             "type": "transition",
                             "_selected": True,
-                            "transitionId": "refId1739600227203",
+                            "transitionId": "refId1739934453995",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -3819,6 +4384,7 @@ def create_finserv_non_iva_dtmf_workflow(
                         {"name": "Chat", "id": "refId1739600227187"},
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
+                        {"name": "OutboundCall", "id": "refId1739934453995"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -3947,7 +4513,8 @@ def create_finserv_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": False,
+                            "_selected": True,
+                            "id": "refId1739749451080",
                         },
                         {
                             "icon": "icon-save",
@@ -3967,13 +4534,14 @@ def create_finserv_non_iva_dtmf_workflow(
                                         {
                                             "leftExpression": "workitem.data.interest",
                                             "operator": "==",
-                                            "rightExpression": "'Checking or Savings Accounts'",
+                                            "rightExpression": "'Accounts'",
                                         }
                                     ],
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": False,
+                            "_selected": True,
+                            "id": "refId1739749451080",
                         },
                         {
                             "icon": "icon-save",
@@ -4000,6 +4568,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451048",
                         },
                         {
                             "icon": "icon-save",
@@ -4026,6 +4595,7 @@ def create_finserv_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451048",
                         },
                         {
                             "name": "ConnectAgent",
@@ -4068,7 +4638,7 @@ def create_finserv_non_iva_dtmf_workflow(
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. For loan application info, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>',
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. To apply for a new loan, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "3",
@@ -4228,10 +4798,10 @@ def create_finserv_non_iva_dtmf_workflow(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
+                            "id": "refId1739600231292",
                             "icon": "icon-transition",
-                            "id": "refId1739600229680",
                         },
                     ],
                     "_id": "67b11b424881f97a86b2640f",
@@ -4453,7 +5023,7 @@ def create_finserv_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "768.2271674519036 757.1511431023132",
+                    "location": "764.6354547998594 951.1036263127032",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -4562,8 +5132,217 @@ def create_finserv_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1020.318794945671 938.4428069455298",
+                    "location": "1016.7270822936268 1132.3952901559198",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+                "67b552f294171b486a3d1b7a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b552f294171b486a3d1b7a",
+                    "name": "OutboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": f'workitem.surveyResult["{chat_survey["_id"]}"].interest.value',
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1739934455752",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Credit Card Applications",
+                                "rightExpression": queues["Credit Card Applications"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Credit Card Applications'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455753",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Loan Applications",
+                                "rightExpression": queues["Loan Applications"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Loan Applications'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455754",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Accounts",
+                                "rightExpression": queues["Accounts"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Accounts'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455755",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455755",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455756",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Assign survey to workitem",
+                            "properties": {
+                                "description": user_survey["name"],
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "surveyId": user_survey["_id"],
+                                "expansions": {
+                                    "surveyId": {"name": user_survey["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "assignsurvey",
+                            "_selected": False,
+                            "id": "refId1739934455757",
+                            "icon": "icon-survey",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739934454854",
+                            "id": "refId1739934455758",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b552f294171b486a3d1b7a",
+                    "key": "67b552f294171b486a3d1b7a",
+                    "location": "469.70693096850323 778.9689734663827",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739934454854"}
+                    ],
                 },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
@@ -4598,6 +5377,8 @@ def create_insurance_non_iva_dtmf_workflow(
     two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    chat_survey: dict,
+    user_survey: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
@@ -4692,7 +5473,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227611",
+                            "id": "refId1739934453997",
                             "icon": "icon-save",
                         },
                         {
@@ -4713,7 +5494,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227612",
+                            "id": "refId1739934453998",
                             "icon": "icon-save",
                         },
                         {
@@ -4734,14 +5515,14 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227613",
+                            "id": "refId1739934453999",
                             "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -4766,11 +5547,41 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
@@ -4787,7 +5598,9 @@ def create_insurance_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
+                            "id": "refId1739934454001",
+                            "icon": "icon-save",
                         },
                         {
                             "name": "Save Variable",
@@ -4807,8 +5620,8 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739934454002",
                             "icon": "icon-save",
-                            "id": "refId1739600227615",
                         },
                         {
                             "name": "Survey",
@@ -4830,7 +5643,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             "type": "transitionbyname",
                             "_selected": False,
                             "transitionId": "refId1739600227151",
-                            "id": "refId1739600227616",
+                            "id": "refId1739934454003",
                             "icon": "icon-transition",
                         },
                         {
@@ -4848,7 +5661,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "transitionId": "67b118871e7c034010972864",
                             "_selected": False,
-                            "id": "refId1739600227617",
+                            "id": "refId1739934454005",
                             "icon": "icon-transition",
                         },
                     ],
@@ -4861,7 +5674,7 @@ def create_insurance_non_iva_dtmf_workflow(
                     "_id": "start-state",
                     "description": "Begin State",
                     "name": "Begin State",
-                    "location": "-92.43594451534577 -158.49227385694343",
+                    "location": "-103.83820690278785 -186.18348251215994",
                 },
                 "67b11894720280f716c36bdf": {
                     "category": "Standard",
@@ -4891,7 +5704,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1739600227189",
+                            "id": "refId1739934453972",
                             "icon": "icon-function",
                         },
                         {
@@ -4914,8 +5727,8 @@ def create_insurance_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227187",
+                            "id": "refId1739934453973",
                             "icon": "icon-transition",
-                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
@@ -4937,11 +5750,10 @@ def create_insurance_non_iva_dtmf_workflow(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227163",
-                            "id": "refId1739600227191",
+                            "id": "refId1739934453974",
                             "icon": "icon-transition",
                         },
                         {
-                            "icon": "icon-transition",
                             "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
@@ -4956,10 +5768,34 @@ def create_insurance_non_iva_dtmf_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b4990b64c67bfb0e882",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227203",
+                            "id": "refId1739934453975",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b552f294171b486a3d1b7a",
                             },
                             "type": "transition",
                             "_selected": True,
-                            "transitionId": "refId1739600227203",
+                            "transitionId": "refId1739934453995",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -4969,6 +5805,7 @@ def create_insurance_non_iva_dtmf_workflow(
                         {"name": "Chat", "id": "refId1739600227187"},
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
+                        {"name": "OutboundCall", "id": "refId1739934453995"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -5097,7 +5934,8 @@ def create_insurance_non_iva_dtmf_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": False,
+                            "_selected": True,
+                            "id": "refId1739749451080",
                         },
                         {
                             "icon": "icon-save",
@@ -5124,6 +5962,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451048",
                         },
                         {
                             "icon": "icon-save",
@@ -5150,6 +5989,7 @@ def create_insurance_non_iva_dtmf_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
+                            "id": "refId1739749451048",
                         },
                         {
                             "name": "ConnectAgent",
@@ -5192,7 +6032,7 @@ def create_insurance_non_iva_dtmf_workflow(
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To purchase, update, or cancel a policy, press 1. To file or check the status of a claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>',
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To sign up for a new policy, or to make changes to an existing policy, press 1. To file a new claim, or check the status of an existing claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "3",
@@ -5325,10 +6165,10 @@ def create_insurance_non_iva_dtmf_workflow(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
+                            "id": "refId1739600231292",
                             "icon": "icon-transition",
-                            "id": "refId1739600229680",
                         },
                     ],
                     "_id": "67b11b424881f97a86b2640f",
@@ -5550,7 +6390,7 @@ def create_insurance_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "768.2271674519036 757.1511431023132",
+                    "location": "764.6354547998594 951.1036263127032",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -5659,8 +6499,190 @@ def create_insurance_non_iva_dtmf_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1020.318794945671 938.4428069455298",
+                    "location": "1016.7270822936268 1132.3952901559198",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+                "67b552f294171b486a3d1b7a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b552f294171b486a3d1b7a",
+                    "name": "OutboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "interest",
+                                "rightExpression": f'workitem.surveyResult["{chat_survey["_id"]}"].interest.value',
+                                "variableName": "interest",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1739934455752",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Policies",
+                                "rightExpression": queues["Policies"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Policies'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455753",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Claims",
+                                "rightExpression": queues["Claims"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Claims'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455754",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Billing",
+                                "rightExpression": queues["Billing"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Billing'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455755",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "queueId - Customer Service",
+                                "rightExpression": queues["Customer Service"],
+                                "variableName": "queueId",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.interest",
+                                            "operator": "==",
+                                            "rightExpression": "'Customer Service'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1739934455756",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Survey",
+                            "description": "Assign survey to workitem",
+                            "properties": {
+                                "description": user_survey["name"],
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "surveyId": user_survey["_id"],
+                                "expansions": {
+                                    "surveyId": {"name": user_survey["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "assignsurvey",
+                            "_selected": False,
+                            "id": "refId1739934455757",
+                            "icon": "icon-survey",
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739934454854",
+                            "id": "refId1739934455758",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67b552f294171b486a3d1b7a",
+                    "key": "67b552f294171b486a3d1b7a",
+                    "location": "469.70693096850323 778.9689734663827",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1739934454854"}
+                    ],
                 },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
@@ -5695,6 +6717,7 @@ def create_direct_line_workflow(
     two_way_sms_function: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    user_survey: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC).
@@ -5838,7 +6861,7 @@ def create_direct_line_workflow(
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone",
+                                "description": "phone (inbound)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -5863,8 +6886,39 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739600227614",
+                            "id": "refId1739934454000",
                             "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (outbound)",
+                                "rightExpression": "workitem.to.slice(-10)",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        },
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-save",
@@ -5988,7 +7042,7 @@ def create_direct_line_workflow(
                             },
                             "type": "function",
                             "_selected": False,
-                            "id": "refId1739600227189",
+                            "id": "refId1740106542548",
                             "icon": "icon-function",
                         },
                         {
@@ -6007,12 +7061,46 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b3a4492457796ee0690",
+                                "points": {
+                                    "h": True,
+                                    "r": [
+                                        {
+                                            "b": 248.88010230206072,
+                                            "k": 47.062687281791156,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 258.8801023020607,
+                                            "k": 47.062687281791156,
+                                            "h": True,
+                                        },
+                                        {"b": 260, "k": 47.062687281791156, "h": True},
+                                        {"b": 260, "k": 47.062687281791156, "h": True},
+                                        {
+                                            "b": 480.78544785048666,
+                                            "k": 47.062687281791156,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 480.78544785048666,
+                                            "k": 139.9649305004943,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 480.78544785048666,
+                                            "k": 149.9649305004943,
+                                            "h": True,
+                                        },
+                                    ],
+                                    "ct": 7,
+                                    "__gohashid": 60756,
+                                },
                             },
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227187",
+                            "id": "refId1740106542549",
                             "icon": "icon-transition",
-                            "id": "refId1739600227190",
                         },
                         {
                             "name": "InboundCall",
@@ -6030,15 +7118,44 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b424881f97a86b2640f",
+                                "points": {
+                                    "h": True,
+                                    "r": [
+                                        {
+                                            "b": 248.88010230206072,
+                                            "k": 91.06268728179116,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 258.8801023020607,
+                                            "k": 91.06268728179116,
+                                            "h": True,
+                                        },
+                                        {"b": 260, "k": 91.06268728179116, "h": True},
+                                        {"b": 260, "k": 292, "h": True},
+                                        {"b": 476.13146320255123, "k": 292, "h": True},
+                                        {
+                                            "b": 476.13146320255123,
+                                            "k": 335.43228571378717,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 476.13146320255123,
+                                            "k": 345.43228571378717,
+                                            "h": True,
+                                        },
+                                    ],
+                                    "ct": 7,
+                                    "__gohashid": 60757,
+                                },
                             },
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1739600227163",
-                            "id": "refId1739600227191",
+                            "id": "refId1740106542550",
                             "icon": "icon-transition",
                         },
                         {
-                            "icon": "icon-transition",
                             "name": "InboundSMS",
                             "description": "Transition to another state",
                             "properties": {
@@ -6053,10 +7170,64 @@ def create_direct_line_workflow(
                                     ],
                                 },
                                 "stateId": "67b11b4990b64c67bfb0e882",
+                                "points": {
+                                    "h": True,
+                                    "r": [
+                                        {
+                                            "b": 248.88010230206072,
+                                            "k": 135.06268728179117,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 258.8801023020607,
+                                            "k": 135.06268728179117,
+                                            "h": True,
+                                        },
+                                        {"b": 260, "k": 135.06268728179117, "h": True},
+                                        {"b": 260, "k": 484, "h": True},
+                                        {"b": 471.4774785546159, "k": 484, "h": True},
+                                        {
+                                            "b": 471.4774785546159,
+                                            "k": 516.9376869832739,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 471.4774785546159,
+                                            "k": 526.9376869832739,
+                                            "h": True,
+                                        },
+                                    ],
+                                    "ct": 7,
+                                    "__gohashid": 60758,
+                                },
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1739600227203",
+                            "icon": "icon-transition",
+                            "id": "refId1740106542551",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundCall",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundCall'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67b80e6253218fc5093deb5c",
                             },
                             "type": "transition",
                             "_selected": True,
-                            "transitionId": "refId1739600227203",
+                            "transitionId": "refId1740106542563",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -6066,6 +7237,7 @@ def create_direct_line_workflow(
                         {"name": "Chat", "id": "refId1739600227187"},
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
+                        {"name": "OutboundCall", "id": "refId1740106542563"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -6411,7 +7583,7 @@ def create_direct_line_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "768.2271674519036 757.1511431023132",
+                    "location": "787.0836588751356 943.8304081923136",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -6520,8 +7692,60 @@ def create_direct_line_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1020.318794945671 938.4428069455298",
+                    "location": "1039.175286368903 1125.1220720355302",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
+                },
+                "67b80e6253218fc5093deb5c": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67b80e6253218fc5093deb5c",
+                    "name": "OutboundCall",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "icon": "icon-survey",
+                            "name": "Survey",
+                            "description": "Assign survey to workitem",
+                            "properties": {
+                                "description": user_survey["name"],
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "surveyId": user_survey["_id"],
+                                "expansions": {
+                                    "surveyId": {"name": user_survey["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "assignsurvey",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1740106542546",
+                            "icon": "icon-transition",
+                            "id": "refId1740106542747",
+                        },
+                    ],
+                    "_id": "67b80e6253218fc5093deb5c",
+                    "key": "67b80e6253218fc5093deb5c",
+                    "location": "473.1430260529314 768.5038362516186",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1740106542546"}
+                    ],
                 },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",

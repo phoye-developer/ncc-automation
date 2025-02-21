@@ -29,6 +29,8 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
+    print("NCC Automation v0.3.0-beta")
+    print()
     print("Please log in. Your password will not display on the screen.")
     print()
     while not authenticated:
