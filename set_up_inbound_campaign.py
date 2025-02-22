@@ -1071,66 +1071,21 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         acd_callback_function,
                     )
                 elif workflow_type == "non_iva_dtmf":
-                    if vertical == "general":
-                        workflow = create_general_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "hc":
-                        workflow = create_hc_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "finserv":
-                        workflow = create_finserv_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "insurance":
-                        workflow = create_insurance_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
+                    workflow = create_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                        chat_survey,
+                        user_survey,
+                        vertical,
+                    )
                 else:
                     workflow = create_direct_line_workflow(
                         ncc_location,
