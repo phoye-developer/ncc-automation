@@ -58,6 +58,7 @@ def create_iva_workflow(
     search_contacts_function: dict,
     two_way_chat_function: dict,
     two_way_sms_function: dict,
+    prompt: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
 ) -> dict:
@@ -1149,7 +1150,7 @@ def create_iva_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -1161,6 +1162,39 @@ def create_iva_workflow(
                             },
                             "type": "googlettscollect",
                             "_selected": True,
+                        },
+                        {
+                            "name": "Play & Collect Digits",
+                            "description": "",
+                            "properties": {
+                                "loop": 1,
+                                "numberDigits": 1,
+                                "promptId": prompt["_id"],
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "!=",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "!=",
+                                            "rightExpression": "'2'",
+                                        },
+                                    ],
+                                },
+                                "expansions": {"promptId": {"name": prompt["name"]}},
+                                "_working": False,
+                            },
+                            "type": "playdigits",
+                            "_selected": True,
+                            "id": "refId1740283338201",
+                            "icon": "icon-playdigits",
                         },
                         {
                             "icon": "icon-function",
@@ -1274,6 +1308,7 @@ def create_non_iva_dtmf_workflow(
     search_contacts_function: dict,
     two_way_chat_function: dict,
     two_way_sms_function: dict,
+    prompt: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
     chat_survey: dict,
@@ -2082,7 +2117,7 @@ def create_non_iva_dtmf_workflow(
                         "properties": {
                             "voiceName": "en-US-Wavenet-J",
                             "voiceGender": "male",
-                            "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                            "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
                             "numberDigits": 1,
                             "terminationKey": "#",
                             "timeoutInSeconds": "1",
@@ -2094,6 +2129,39 @@ def create_non_iva_dtmf_workflow(
                         },
                         "type": "googlettscollect",
                         "_selected": True,
+                    },
+                    {
+                        "name": "Play & Collect Digits",
+                        "description": "",
+                        "properties": {
+                            "loop": 1,
+                            "numberDigits": 1,
+                            "promptId": prompt["_id"],
+                            "terminationKey": "#",
+                            "timeoutInSeconds": "1",
+                            "dlpOption": False,
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "operator": "!=",
+                                        "leftExpression": "workitem.digits",
+                                        "rightExpression": "'1'",
+                                    },
+                                    {
+                                        "leftExpression": "workitem.digits",
+                                        "operator": "!=",
+                                        "rightExpression": "'2'",
+                                    },
+                                ],
+                            },
+                            "expansions": {"promptId": {"name": prompt["name"]}},
+                            "_working": False,
+                        },
+                        "type": "playdigits",
+                        "_selected": True,
+                        "id": "refId1740283338201",
+                        "icon": "icon-playdigits",
                     },
                     {
                         "name": "Execute Function",
@@ -3759,6 +3827,7 @@ def create_direct_line_workflow(
     search_contacts_function: dict,
     two_way_chat_function: dict,
     two_way_sms_function: dict,
+    prompt: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
     user_survey: dict,
@@ -4645,7 +4714,7 @@ def create_direct_line_workflow(
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "voiceGender": "male",
-                                "text": '<prosody pitch="-2st"><break time="10s"/>To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.<break time="10s"/></prosody>',
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
                                 "numberDigits": 1,
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
@@ -4657,6 +4726,39 @@ def create_direct_line_workflow(
                             },
                             "type": "googlettscollect",
                             "_selected": True,
+                        },
+                        {
+                            "name": "Play & Collect Digits",
+                            "description": "",
+                            "properties": {
+                                "loop": 1,
+                                "numberDigits": 1,
+                                "promptId": prompt["_id"],
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "!=",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "!=",
+                                            "rightExpression": "'2'",
+                                        },
+                                    ],
+                                },
+                                "expansions": {"promptId": {"name": prompt["name"]}},
+                                "_working": False,
+                            },
+                            "type": "playdigits",
+                            "_selected": True,
+                            "id": "refId1740283338201",
+                            "icon": "icon-playdigits",
                         },
                         {
                             "name": "Execute Function",

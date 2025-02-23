@@ -21,6 +21,7 @@ from ncc_template import *
 from ncc_campaign_template import *
 from ncc_supervisor_campaign import *
 from ncc_function import *
+from ncc_prompt import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -999,6 +1000,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
 
+        # Search for "music accoustic1" prompt
+        prompt = search_prompts(ncc_location, ncc_token, "music accoustic1")
+        if prompt != {}:
+            logging.info(f'Prompt "music accoustic1" found.')
+        else:
+            logging.warning(f'Prompt "music accoustic1" not found.')
+
         # Create ACD Voicemail function
         acd_voicemail_function = search_functions(
             ncc_location,
@@ -1054,6 +1062,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and search_contacts_function != {}
                 and two_way_chat_function != {}
                 and two_way_sms_function != {}
+                and prompt != {}
                 and chat_survey != {}
                 and user_survey != {}
             ):
@@ -1067,6 +1076,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         search_contacts_function,
                         two_way_chat_function,
                         two_way_sms_function,
+                        prompt,
                         acd_voicemail_function,
                         acd_callback_function,
                     )
@@ -1080,6 +1090,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         search_contacts_function,
                         two_way_chat_function,
                         two_way_sms_function,
+                        prompt,
                         acd_voicemail_function,
                         acd_callback_function,
                         chat_survey,
@@ -1096,6 +1107,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         search_contacts_function,
                         two_way_chat_function,
                         two_way_sms_function,
+                        prompt,
                         acd_voicemail_function,
                         acd_callback_function,
                         user_survey,
