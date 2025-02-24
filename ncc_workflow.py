@@ -1387,6 +1387,35 @@ def create_iva_workflow(
                     "location": "1377.2676533950016 165.8574496311703",
                     "transitions": [{"name": "Webhook", "id": "refId1740420824069"}],
                 },
+                "67bd02ee8a738c4befeec93a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67bd02ee8a738c4befeec93a",
+                    "name": "Goodbye",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740431837535",
+                        }
+                    ],
+                    "_id": "67bd02ee8a738c4befeec93a",
+                    "key": "67bd02ee8a738c4befeec93a",
+                    "location": "-53.149243957620115 454.07154501420496",
+                    "transitions": [{"name": "End State", "id": "refId1740431837535"}],
+                },
             },
             "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
             "finalUserStateId": "67b1186f5510d9081ac8e32b",
