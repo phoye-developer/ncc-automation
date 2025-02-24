@@ -62,6 +62,7 @@ def create_iva_workflow(
     acd_voicemail_function: dict,
     acd_callback_function: dict,
     get_function_id_script: dict,
+    check_has_all_parameters_script: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) for use as an Intelligent Virtual Agent (IVA).
@@ -790,6 +791,52 @@ def create_iva_workflow(
                             "_selected": False,
                             "id": "refId1739600228047",
                             "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "Execute Script",
+                            "description": "",
+                            "properties": {
+                                "description": check_has_all_parameters_script["name"],
+                                "scriptId": check_has_all_parameters_script["_id"],
+                                "variableName": "hasAllParameters",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "scriptId": {
+                                        "name": check_has_all_parameters_script["name"]
+                                    }
+                                },
+                                "_working": False,
+                            },
+                            "type": "script",
+                            "_selected": False,
+                            "id": "refId1740431837492",
+                            "icon": "icon-script",
+                        },
+                        {
+                            "name": "FollowUp",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.hasAllParameters",
+                                            "operator": "==",
+                                            "rightExpression": "false",
+                                        }
+                                    ],
+                                },
+                                "stateName": "FollowUp",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740431837457",
+                            "id": "refId1740431837493",
+                            "icon": "icon-transition",
                         },
                         {
                             "icon": "icon-script",

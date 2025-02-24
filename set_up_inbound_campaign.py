@@ -1054,6 +1054,21 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
+        # Create Check hasAllParameters script
+        check_has_all_parameters_script = search_scripts(
+            ncc_location, ncc_token, "Check hasAllParameters"
+        )
+        if check_has_all_parameters_script == {}:
+            check_has_all_parameters_script = create_check_has_all_parameters_script(
+                ncc_location, ncc_token, "Check hasAllParameters"
+            )
+            if check_has_all_parameters_script != {}:
+                logging.info('Script "Check hasAllParameters" created.')
+            else:
+                logging.warning('Script "Check hasAllParameters" not created.')
+        else:
+            logging.info('Script "Check hasAllParameters" already exists.')
+
         # Create Get functionId script
         get_function_id_script = search_scripts(
             ncc_location, ncc_token, "Get functionId"
@@ -1086,6 +1101,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and chat_survey != {}
                 and user_survey != {}
                 and get_function_id_script != {}
+                and check_has_all_parameters_script != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1101,6 +1117,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         acd_voicemail_function,
                         acd_callback_function,
                         get_function_id_script,
+                        check_has_all_parameters_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
                     workflow = create_non_iva_dtmf_workflow(
