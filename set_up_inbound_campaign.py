@@ -1055,20 +1055,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
         # Create Get functionId script
-        if workflow_type == "iva":
-            get_function_id_script = search_scripts(
+        get_function_id_script = search_scripts(
+            ncc_location, ncc_token, "Get functionId"
+        )
+        if get_function_id_script == {}:
+            get_function_id_script = create_get_function_id_script(
                 ncc_location, ncc_token, "Get functionId"
             )
-            if get_function_id_script == {}:
-                get_function_id_script = create_get_function_id_script(
-                    ncc_location, ncc_token, "Get functionId"
-                )
-                if get_function_id_script != {}:
-                    logging.info('Script "Get functionId" created.')
-                else:
-                    logging.warning('Script "Get functionId" not created.')
+            if get_function_id_script != {}:
+                logging.info('Script "Get functionId" created.')
             else:
-                logging.info('Script "Get functionId" already exists.')
+                logging.warning('Script "Get functionId" not created.')
+        else:
+            logging.info('Script "Get functionId" already exists.')
 
         # Create workflow
         workflow = search_workflows(
@@ -1086,6 +1085,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and prompt != {}
                 and chat_survey != {}
                 and user_survey != {}
+                and get_function_id_script != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1100,6 +1100,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         prompt,
                         acd_voicemail_function,
                         acd_callback_function,
+                        get_function_id_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
                     workflow = create_non_iva_dtmf_workflow(

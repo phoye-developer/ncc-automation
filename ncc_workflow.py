@@ -61,6 +61,7 @@ def create_iva_workflow(
     prompt: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
+    get_function_id_script: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) for use as an Intelligent Virtual Agent (IVA).
@@ -789,6 +790,26 @@ def create_iva_workflow(
                             "_selected": False,
                             "id": "refId1739600228047",
                             "icon": "icon-ai-message",
+                        },
+                        {
+                            "icon": "icon-script",
+                            "name": "Execute Script",
+                            "description": "",
+                            "properties": {
+                                "description": get_function_id_script["name"],
+                                "scriptId": get_function_id_script["_id"],
+                                "variableName": "functionId",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "scriptId": {"name": get_function_id_script["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "script",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-transition",
