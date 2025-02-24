@@ -199,12 +199,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     campaign_addresses_available
                 ):
                     print(f"{index + 1}. {campaign_address_available["name"]}")
+                print(f"{len(campaign_addresses_available) + 1}. None")
                 print()
                 choice = input("Command: ")
                 if choice.lower() == "cancel":
                     print()
                     print("Operation cancelled.")
                     cancelled = True
+                    campaign_address = "None"
+                elif choice == str(len(campaign_addresses_available) + 1):
+                    print()
                     campaign_address = "None"
                 else:
                     choice = int(choice) - 1
@@ -1158,7 +1162,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'Campaign "{campaign_name}" already exists.')
 
         # Assign campaign address to campaign
-        if campaign != {} and campaign_address != "":
+        if campaign != {} and campaign_address != "" and campaign_address != "None":
             success = assign_address_to_campaign(
                 ncc_location,
                 ncc_token,
