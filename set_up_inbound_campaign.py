@@ -21,6 +21,7 @@ from ncc_template import *
 from ncc_campaign_template import *
 from ncc_supervisor_campaign import *
 from ncc_function import *
+from ncc_script import *
 from ncc_prompt import *
 from ncc_workflow import *
 from ncc_service import *
@@ -1052,6 +1053,22 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 )
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
+
+        # Create Get functionId script
+        if workflow_type == "iva":
+            get_function_id_script = search_scripts(
+                ncc_location, ncc_token, "Get functionId"
+            )
+            if get_function_id_script == {}:
+                get_function_id_script = create_get_function_id_script(
+                    ncc_location, ncc_token, "Get functionId"
+                )
+                if get_function_id_script != {}:
+                    logging.info('Script "Get functionId" created.')
+                else:
+                    logging.warning('Script "Get functionId" not created.')
+            else:
+                logging.info('Script "Get functionId" already exists.')
 
         # Create workflow
         workflow = search_workflows(
