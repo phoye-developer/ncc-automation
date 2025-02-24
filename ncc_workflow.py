@@ -1396,7 +1396,50 @@ def create_iva_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "icon": "icon-transition",
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName} and have a great day!",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName} and have a great day!</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": False,
+                        },
+                        {
                             "name": "End State",
                             "description": "Transition to another state",
                             "properties": {
@@ -1405,11 +1448,14 @@ def create_iva_workflow(
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "stateName": "End State",
+                                "description": "Transition to another state",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740431837535",
-                        }
+                            "icon": "icon-transition",
+                            "id": "refId1740431837551",
+                        },
                     ],
                     "_id": "67bd02ee8a738c4befeec93a",
                     "key": "67bd02ee8a738c4befeec93a",
