@@ -158,6 +158,26 @@ def create_iva_workflow(
                             "icon": "icon-save",
                         },
                         {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "sourceLanguage",
+                                "rightExpression": "en",
+                                "variableName": "sourceLanguage",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
@@ -1595,6 +1615,26 @@ def create_non_iva_dtmf_workflow(
                         "_selected": False,
                         "id": "refId1739934453997",
                         "icon": "icon-save",
+                    },
+                    {
+                        "icon": "icon-save",
+                        "name": "Save Variable",
+                        "description": "",
+                        "properties": {
+                            "description": "sourceLanguage",
+                            "rightExpression": "en",
+                            "variableName": "sourceLanguage",
+                            "asObject": False,
+                            "dlpOption": False,
+                            "wfmOption": False,
+                            "dashboard": False,
+                            "condition": {
+                                "conditionType": "NONE",
+                                "expressions": [{"operator": "=="}],
+                            },
+                        },
+                        "type": "savevariable",
+                        "_selected": True,
                     },
                     {
                         "name": "Save Variable",
@@ -4113,6 +4153,26 @@ def create_direct_line_workflow(
                             "_selected": False,
                             "id": "refId1739600227611",
                             "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "sourceLanguage",
+                                "rightExpression": "en",
+                                "variableName": "sourceLanguage",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
                         },
                         {
                             "name": "Save Variable",
