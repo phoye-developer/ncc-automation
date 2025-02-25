@@ -62,6 +62,7 @@ def create_iva_workflow(
     acd_voicemail_function: dict,
     acd_callback_function: dict,
     get_function_id_script: dict,
+    get_queue_id_script: dict,
     check_has_all_parameters_script: dict,
 ) -> dict:
     """
@@ -872,6 +873,26 @@ def create_iva_workflow(
                                 },
                                 "expansions": {
                                     "scriptId": {"name": get_function_id_script["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "script",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-script",
+                            "name": "Execute Script",
+                            "description": "",
+                            "properties": {
+                                "description": get_queue_id_script["name"],
+                                "scriptId": get_queue_id_script["_id"],
+                                "variableName": "queueId",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "expansions": {
+                                    "scriptId": {"name": get_queue_id_script["name"]}
                                 },
                                 "_working": False,
                             },

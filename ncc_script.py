@@ -71,7 +71,7 @@ def create_get_function_id_script(
     ncc_location: str, ncc_token: str, script_name: str
 ) -> dict:
     """
-    This function creates a script to get the funtionId parameter returned by Google Dialogflow.
+    This function creates a script to get the functionId parameter returned by Google Dialogflow.
     """
     script = {}
     conn = http.client.HTTPSConnection(ncc_location)
@@ -79,6 +79,39 @@ def create_get_function_id_script(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
             "content": 'functionId = "";\n\nif (workitem.type == "Chat" || workitem.type == "InboundSMS") {\n    functionId = workitem.chatBotResponse.parameters.functionId.string;\n} else if (workitem.type == "InboundCall") {\n    functionId = workitem.data.botWebhookRequest.queryResult.parameters.functionId;\n} else {\n    functionId = Unknown;\n}\n\nfunctionId',
+            "name": script_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/script/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            script = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return script
+
+
+def create_get_queue_id_script(
+    ncc_location: str, ncc_token: str, script_name: str, default_queue_id: str
+) -> dict:
+    """
+    This function creates a script to get the queueId parameter returned by Google Dialogflow.
+    """
+    script = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
+            "content": 'if (workitem.type == "Chat" || workitem.type == "InboundSMS") {\n    queueId = workitem.chatBotResponse.parameters.queueId.string;\n} else if (workitem.type == "InboundCall") {\n    queueId = workitem.data.botWebhookRequest.queryResult.parameters.queueId\n} else {\n    queueId = "'
+            + default_queue_id
+            + '";\n}',
             "name": script_name,
         }
     )

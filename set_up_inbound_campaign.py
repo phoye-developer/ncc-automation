@@ -1084,6 +1084,22 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info('Script "Get functionId" already exists.')
 
+        # Create Get queueId script
+        get_queue_id_script = search_scripts(ncc_location, ncc_token, "Get queueId")
+        if get_queue_id_script == {}:
+            get_queue_id_script = create_get_queue_id_script(
+                ncc_location,
+                ncc_token,
+                "Get queueId",
+                queues_to_assign["Customer Service"],
+            )
+            if get_queue_id_script != {}:
+                logging.info('Script "Get queueId" created.')
+            else:
+                logging.warning('Script "Get queueId" not created.')
+        else:
+            logging.info('Script "Get queueId" already exists.')
+
         # Create workflow
         workflow = search_workflows(
             ncc_location,
@@ -1101,6 +1117,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and chat_survey != {}
                 and user_survey != {}
                 and get_function_id_script != {}
+                and get_queue_id_script != {}
                 and check_has_all_parameters_script != {}
             ):
                 if workflow_type == "iva":
@@ -1117,6 +1134,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         acd_voicemail_function,
                         acd_callback_function,
                         get_function_id_script,
+                        get_queue_id_script,
                         check_has_all_parameters_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
