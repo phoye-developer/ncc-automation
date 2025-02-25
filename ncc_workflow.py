@@ -523,7 +523,7 @@ def create_iva_workflow(
                     "actions": [
                         {
                             "name": "Chat Message Consumer",
-                            "description": "",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "condition": {
@@ -572,7 +572,7 @@ def create_iva_workflow(
                         {
                             "icon": "icon-tts",
                             "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
@@ -1418,7 +1418,7 @@ def create_iva_workflow(
                         {
                             "icon": "icon-ai-message",
                             "name": "Chat Message Consumer",
-                            "description": "",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "condition": {
                                     "conditionType": "AND",
@@ -1441,7 +1441,7 @@ def create_iva_workflow(
                         {
                             "icon": "icon-tts",
                             "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "voiceName": "en-US-Wavenet-J",
                                 "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName} and have a great day!</prosody>',
@@ -2005,7 +2005,7 @@ def create_non_iva_dtmf_workflow(
                 "actions": [
                     {
                         "name": "Chat Message Consumer",
-                        "description": "",
+                        "description": "Thank you for contacting...",
                         "properties": {
                             "description": "Thank you for contacting...",
                             "condition": {
@@ -2076,7 +2076,7 @@ def create_non_iva_dtmf_workflow(
                     {
                         "icon": "icon-tts",
                         "name": "Play Collect Google TTS",
-                        "description": "Play Collect using Text-To-Speech",
+                        "description": "Thank you for contacting...",
                         "properties": {
                             "description": "Thank you for contacting...",
                             "voiceName": "en-US-Wavenet-J",
@@ -4638,7 +4638,7 @@ def create_direct_line_workflow(
                     "actions": [
                         {
                             "name": "Chat Message Consumer",
-                            "description": "",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "condition": {
@@ -4690,7 +4690,7 @@ def create_direct_line_workflow(
                     "actions": [
                         {
                             "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "description": "Thank you for contacting...",
                             "properties": {
                                 "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
