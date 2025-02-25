@@ -21,6 +21,8 @@ from ncc_template import *
 from ncc_campaign_template import *
 from ncc_supervisor_campaign import *
 from ncc_function import *
+from ncc_script import *
+from ncc_prompt import *
 from ncc_workflow import *
 from ncc_service import *
 from ncc_campaign import *
@@ -198,12 +200,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     campaign_addresses_available
                 ):
                     print(f"{index + 1}. {campaign_address_available["name"]}")
+                print(f"{len(campaign_addresses_available) + 1}. None")
                 print()
                 choice = input("Command: ")
                 if choice.lower() == "cancel":
                     print()
                     print("Operation cancelled.")
                     cancelled = True
+                    campaign_address = "None"
+                elif choice == str(len(campaign_addresses_available) + 1):
+                    print()
                     campaign_address = "None"
                 else:
                     choice = int(choice) - 1
@@ -999,6 +1005,13 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
 
+        # Search for "music accoustic1" prompt
+        prompt = search_prompts(ncc_location, ncc_token, "music accoustic1")
+        if prompt != {}:
+            logging.info(f'Prompt "music accoustic1" found.')
+        else:
+            logging.warning(f'Prompt "music accoustic1" not found.')
+
         # Create ACD Voicemail function
         acd_voicemail_function = search_functions(
             ncc_location,
@@ -1041,6 +1054,52 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
+        # Create Check hasAllParameters script
+        check_has_all_parameters_script = search_scripts(
+            ncc_location, ncc_token, "Check hasAllParameters"
+        )
+        if check_has_all_parameters_script == {}:
+            check_has_all_parameters_script = create_check_has_all_parameters_script(
+                ncc_location, ncc_token, "Check hasAllParameters"
+            )
+            if check_has_all_parameters_script != {}:
+                logging.info('Script "Check hasAllParameters" created.')
+            else:
+                logging.warning('Script "Check hasAllParameters" not created.')
+        else:
+            logging.info('Script "Check hasAllParameters" already exists.')
+
+        # Create Get functionId script
+        get_function_id_script = search_scripts(
+            ncc_location, ncc_token, "Get functionId"
+        )
+        if get_function_id_script == {}:
+            get_function_id_script = create_get_function_id_script(
+                ncc_location, ncc_token, "Get functionId"
+            )
+            if get_function_id_script != {}:
+                logging.info('Script "Get functionId" created.')
+            else:
+                logging.warning('Script "Get functionId" not created.')
+        else:
+            logging.info('Script "Get functionId" already exists.')
+
+        # Create Get queueId script
+        get_queue_id_script = search_scripts(ncc_location, ncc_token, "Get queueId")
+        if get_queue_id_script == {}:
+            get_queue_id_script = create_get_queue_id_script(
+                ncc_location,
+                ncc_token,
+                "Get queueId",
+                queues_to_assign["Customer Service"],
+            )
+            if get_queue_id_script != {}:
+                logging.info('Script "Get queueId" created.')
+            else:
+                logging.warning('Script "Get queueId" not created.')
+        else:
+            logging.info('Script "Get queueId" already exists.')
+
         # Create workflow
         workflow = search_workflows(
             ncc_location,
@@ -1054,8 +1113,12 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 and search_contacts_function != {}
                 and two_way_chat_function != {}
                 and two_way_sms_function != {}
+                and prompt != {}
                 and chat_survey != {}
                 and user_survey != {}
+                and get_function_id_script != {}
+                and get_queue_id_script != {}
+                and check_has_all_parameters_script != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1067,70 +1130,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         search_contacts_function,
                         two_way_chat_function,
                         two_way_sms_function,
+                        prompt,
                         acd_voicemail_function,
                         acd_callback_function,
+                        get_function_id_script,
+                        get_queue_id_script,
+                        check_has_all_parameters_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
-                    if vertical == "general":
-                        workflow = create_general_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "hc":
-                        workflow = create_hc_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "finserv":
-                        workflow = create_finserv_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
-                    elif vertical == "insurance":
-                        workflow = create_insurance_non_iva_dtmf_workflow(
-                            ncc_location,
-                            ncc_token,
-                            campaign_name,
-                            business_name,
-                            queues_to_assign,
-                            search_contacts_function,
-                            two_way_chat_function,
-                            two_way_sms_function,
-                            acd_voicemail_function,
-                            acd_callback_function,
-                            chat_survey,
-                            user_survey,
-                        )
+                    workflow = create_non_iva_dtmf_workflow(
+                        ncc_location,
+                        ncc_token,
+                        campaign_name,
+                        business_name,
+                        queues_to_assign,
+                        search_contacts_function,
+                        two_way_chat_function,
+                        two_way_sms_function,
+                        prompt,
+                        acd_voicemail_function,
+                        acd_callback_function,
+                        chat_survey,
+                        user_survey,
+                        vertical,
+                    )
                 else:
                     workflow = create_direct_line_workflow(
                         ncc_location,
@@ -1141,6 +1164,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         search_contacts_function,
                         two_way_chat_function,
                         two_way_sms_function,
+                        prompt,
                         acd_voicemail_function,
                         acd_callback_function,
                         user_survey,
@@ -1191,7 +1215,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             logging.info(f'Campaign "{campaign_name}" already exists.')
 
         # Assign campaign address to campaign
-        if campaign != {} and campaign_address != "":
+        if campaign != {} and campaign_address != "" and campaign_address != "None":
             success = assign_address_to_campaign(
                 ncc_location,
                 ncc_token,

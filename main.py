@@ -14,7 +14,8 @@ def display_main_menu():
     print("2. Set up agent")
     print("3. Set up supervisor")
     print("4. Tear down campaign")
-    print("5. Exit")
+    print("5. Logout")
+    print("6. Exit")
     print()
 
 
@@ -29,7 +30,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v0.3.0-beta")
+    print("NCC Automation v0.4.0-beta")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
@@ -42,7 +43,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "5":
+            while choice != "6":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
@@ -54,6 +55,11 @@ def main():
                 elif choice == "4":
                     tear_down_campaign(ncc_location, ncc_token)
                 elif choice == "5":
+                    auth_info = ""
+                    authenticated = False
+                    print()
+                    break
+                elif choice == "6":
                     pass
                 else:
                     print()
