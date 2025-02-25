@@ -471,7 +471,7 @@ def create_two_way_chat_function(
                                         }
                                     ],
                                 },
-                                "from": "",
+                                "from": "workitem.data.companyName",
                                 "message": "workitem.data.agentMessage",
                                 "messageType": "BOT",
                                 "options": [],
@@ -1085,7 +1085,7 @@ def create_two_way_chat_function(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "from": "",
+                                "from": "workitem.data.companyName",
                                 "message": "workitem.data.translatedText",
                                 "messageType": "BOT",
                                 "options": [],
