@@ -1178,7 +1178,7 @@ def create_two_way_sms_function(
                     "_id": "612ff2f1d02eea7fc5cb265d",
                     "description": "End State",
                     "name": "End State",
-                    "location": "-53.99999999999994 -421",
+                    "location": "-161.36846272687495 -49.74660419945286",
                     "transitions": [],
                     "__gohashid": 66405,
                 },
@@ -1187,7 +1187,7 @@ def create_two_way_sms_function(
                     "campaignStateId": "start-state",
                     "actions": [
                         {
-                            "name": "To Outbound SMS",
+                            "name": "OutboundSMS",
                             "type": "transition",
                             "description": "Transition to another state",
                             "properties": {
@@ -1206,12 +1206,12 @@ def create_two_way_sms_function(
                                 "name": "Start",
                             },
                             "_selected": False,
-                            "id": "refId1631116631289",
+                            "id": "refId1740431839807",
                             "transitionId": "612ff3a2d1ec0e08e1e29bcf",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "To Wait for Message",
+                            "name": "Wait for Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
@@ -1222,23 +1222,15 @@ def create_two_way_sms_function(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": False,
+                            "_selected": True,
                             "transitionId": "refId1630518553842",
-                            "id": "refId1631116631290",
+                            "id": "refId1740431839808",
                             "icon": "icon-transition",
                         },
                     ],
                     "transitions": [
-                        {
-                            "name": "To Outbound SMS",
-                            "id": "612ff3a2d1ec0e08e1e29bcf",
-                            "__gohashid": 14862,
-                        },
-                        {
-                            "name": "To Wait for Message",
-                            "id": "refId1630518553842",
-                            "__gohashid": 14867,
-                        },
+                        {"name": "OutboundSMS", "id": "612ff3a2d1ec0e08e1e29bcf"},
+                        {"name": "Wait for Messages", "id": "refId1630518553842"},
                     ],
                     "objectType": "campaignstate",
                     "key": "start-state",
@@ -1252,7 +1244,7 @@ def create_two_way_sms_function(
                     "category": "Standard",
                     "objectType": "campaignstate",
                     "campaignStateId": "612ff35f0e0c559bed2e5c81",
-                    "name": "Outbound SMS State",
+                    "name": "OutboundSMS",
                     "description": "Newly Created State",
                     "actions": [
                         {
@@ -1266,36 +1258,30 @@ def create_two_way_sms_function(
                             },
                             "type": "smsforwardmessageconsumer",
                             "_selected": False,
-                            "id": "refId1708363728404",
-                            "icon": "icon-sms-forward-consumer",
+                            "id": "refId1740431839906",
+                            "icon": "icon-mail-forward",
                         },
                         {
-                            "name": "Wait for Message",
+                            "icon": "icon-transition",
+                            "name": "Wait for Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "612ff3880ab56f6610b79c74",
-                                "description": "Transition to another state",
+                                "stateName": "Wait for Messages",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": True,
-                            "transitionId": "refId1630518553860",
-                            "id": "refId1708363728405",
-                            "icon": "icon-transition",
+                            "transitionId": "refId1740431839936",
                         },
                     ],
                     "_id": "612ff35f0e0c559bed2e5c81",
                     "key": "612ff35f0e0c559bed2e5c81",
-                    "location": "191.8542037178397 -226.5198362940609",
+                    "location": "604.1346275561209 -154.4762946540609",
                     "transitions": [
-                        {
-                            "name": "Wait for Message",
-                            "id": "refId1630518553860",
-                            "__gohashid": 14913,
-                        }
+                        {"name": "Wait for Messages", "id": "refId1740431839936"}
                     ],
                     "__gohashid": 66407,
                 },
@@ -1303,7 +1289,7 @@ def create_two_way_sms_function(
                     "category": "Standard",
                     "objectType": "campaignstate",
                     "campaignStateId": "612ff3880ab56f6610b79c74",
-                    "name": "SMS Wait For Message State",
+                    "name": "Wait for Messages",
                     "description": "Newly Created State",
                     "actions": [
                         {
@@ -1313,15 +1299,17 @@ def create_two_way_sms_function(
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                }
+                                },
+                                "timeoutDuration": 3600000,
+                                "stateId": "612ff2f1d02eea7fc5cb265d",
                             },
                             "type": "smswaitformessage",
                             "_selected": False,
-                            "id": "refId1655853941559",
-                            "icon": "icon-sms-wait-messages",
+                            "id": "refId1740431840301",
+                            "icon": "icon-timer",
                         },
                         {
-                            "name": "Handle User Message",
+                            "name": "Process Agent Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
@@ -1338,13 +1326,13 @@ def create_two_way_sms_function(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": False,
+                            "_selected": True,
                             "transitionId": "refId1630518553915",
-                            "id": "refId1655853941560",
+                            "id": "refId1740431840302",
                             "icon": "icon-transition",
                         },
                         {
-                            "name": "Handle Customer Message",
+                            "name": "Process Customer Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
@@ -1363,23 +1351,18 @@ def create_two_way_sms_function(
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1630518553916",
-                            "id": "refId1655853941561",
+                            "id": "refId1740431840303",
                             "icon": "icon-transition",
                         },
                     ],
                     "_id": "612ff3880ab56f6610b79c74",
                     "key": "612ff3880ab56f6610b79c74",
-                    "location": "38.334104901042906 -2.2785823394880254",
+                    "location": "260.09313151166816 31.702892867660353",
                     "transitions": [
+                        {"name": "Process Agent Messages", "id": "refId1630518553915"},
                         {
-                            "name": "Handle User Message",
-                            "id": "refId1630518553915",
-                            "__gohashid": 14959,
-                        },
-                        {
-                            "name": "Handle Customer Message",
+                            "name": "Process Customer Messages",
                             "id": "refId1630518553916",
-                            "__gohashid": 14964,
                         },
                     ],
                     "__gohashid": 66408,
@@ -1388,50 +1371,106 @@ def create_two_way_sms_function(
                     "category": "Standard",
                     "objectType": "campaignstate",
                     "campaignStateId": "612ff3bd59517fb2d65d306b",
-                    "name": "Handle User Messages",
+                    "name": "Process Agent Messages",
                     "description": "Newly Created State",
                     "actions": [
                         {
-                            "name": "SMS Forward To Consumer",
+                            "name": "Save Variable",
                             "description": "",
                             "properties": {
+                                "description": "agentMessage",
+                                "rightExpression": "workitem.currentSMSMessage.textMsg",
+                                "variableName": "agentMessage",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                }
+                                },
                             },
-                            "type": "smsforwardmessageconsumer",
+                            "type": "savevariable",
                             "_selected": False,
-                            "icon": "icon-sms-forward-consumer",
-                            "id": "refId1655829864609",
+                            "id": "refId1740460008313",
+                            "icon": "icon-save",
                         },
                         {
-                            "name": "Wait for Message",
+                            "name": "Translate Agent Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Non-English",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "!=",
+                                            "rightExpression": "'en'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67bd5428c2ee169ce826991e",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 33963,
+                                },
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1740460008074",
+                            "id": "refId1740460008314",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "icon": "icon-mail-forward",
+                            "name": "SMS Forward To Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "English",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'en'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "smsforwardmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Wait for Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "612ff3880ab56f6610b79c74",
+                                "stateName": "Wait for Messages",
                                 "description": "Transition to another state",
                             },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1630518553991",
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1740431839867",
+                            "id": "refId1740460008316",
                             "icon": "icon-transition",
-                            "id": "refId1655829864610",
                         },
                     ],
                     "_id": "612ff3bd59517fb2d65d306b",
                     "key": "612ff3bd59517fb2d65d306b",
-                    "location": "510.0184811140898 144.12838527686267",
+                    "location": "1086.0111696022634 210.05104007830812",
                     "transitions": [
                         {
-                            "name": "Wait for Message",
-                            "id": "refId1630518553991",
-                            "__gohashid": 15010,
-                        }
+                            "name": "Translate Agent Messages",
+                            "id": "refId1740460008074",
+                        },
+                        {"name": "Wait for Messages", "id": "refId1740431839867"},
                     ],
                     "__gohashid": 66409,
                 },
@@ -1439,52 +1478,526 @@ def create_two_way_sms_function(
                     "category": "Standard",
                     "objectType": "campaignstate",
                     "campaignStateId": "612ff3c80832633212b10106",
-                    "name": "Handle Customer Messages",
+                    "name": "Process Customer Messages",
                     "description": "Newly Created State",
                     "actions": [
                         {
-                            "name": "SMS Forward To Agent",
+                            "name": "Save Variable",
                             "description": "",
+                            "properties": {
+                                "description": "customerMessage",
+                                "rightExpression": "workitem.currentSMSMessage.textMsg",
+                                "variableName": "customerMessage",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1740460008031",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Detect Language",
+                            "description": "Detect Language",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                }
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "description": "Detect Language",
                             },
-                            "type": "smsforwardmessageagent",
+                            "type": "detectlanguage",
                             "_selected": False,
-                            "icon": "icon-sms-forward-agent",
-                            "id": "refId1655829864585",
+                            "id": "refId1740460008032",
+                            "icon": "icon-web",
                         },
                         {
-                            "name": "Wait for Message",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "sourceLanguage",
+                                "rightExpression": "workitem.detectLanguageResult.mostLikelyLanguage",
+                                "variableName": "sourceLanguage",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1740460008033",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Translate Customer Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "!=",
+                                            "rightExpression": "'en'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67bd503d3d360b21dbeadaab",
+                                "description": "Non-English",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1740460007689",
+                            "id": "refId1740460008034",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Chat Message Agent",
+                            "description": "",
+                            "properties": {
+                                "message": "workitem.data.customerMessage",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'en'",
+                                        }
+                                    ],
+                                },
+                                "fromType": "CLIENT",
+                                "fromId": "workitem.from",
+                                "description": "English",
+                            },
+                            "type": "chatmessageagent",
+                            "_selected": False,
+                            "id": "refId1740460008035",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "Wait for Messages",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "612ff3880ab56f6610b79c74",
+                                "stateName": "Wait for Messages",
                                 "description": "Transition to another state",
                             },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1630518554009",
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1740431839904",
+                            "id": "refId1740460008036",
                             "icon": "icon-transition",
-                            "id": "refId1655829864586",
                         },
                     ],
                     "_id": "612ff3c80832633212b10106",
                     "key": "612ff3c80832633212b10106",
-                    "location": "233.29705531534 222.47057338338624",
+                    "location": "550.3167805397934 335.24967225928475",
                     "transitions": [
                         {
-                            "name": "Wait for Message",
-                            "id": "refId1630518554009",
-                            "__gohashid": 15056,
-                        }
+                            "name": "Translate Customer Messages",
+                            "id": "refId1740460007689",
+                        },
+                        {"name": "Wait for Messages", "id": "refId1740431839904"},
                     ],
                     "__gohashid": 66410,
+                },
+                "67bd503d3d360b21dbeadaab": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67bd503d3d360b21dbeadaab",
+                    "name": "Translate Customer Messages",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Spanish",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'es'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "sourceLang": "Spanish",
+                                "targetLang": "English",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460007893",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "French",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'fr'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "sourceLang": "French",
+                                "targetLang": "English",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460007911",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Portuguese",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'pt'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "sourceLang": "Portuguese",
+                                "targetLang": "English",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460007926",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Afrikaans",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'af'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "sourceLang": "Afrikaans",
+                                "targetLang": "English",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460007941",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Vietnamese",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'vi'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.customerMessage",
+                                "sourceLang": "Vietnamese",
+                                "targetLang": "English",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460007956",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "translatedText",
+                                "rightExpression": "workitem.translationResult.translation",
+                                "variableName": "translatedText",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "icon": "icon-save",
+                            "id": "refId1740460007894",
+                        },
+                        {
+                            "name": "Chat Message Agent",
+                            "description": "",
+                            "properties": {
+                                "message": "workitem.data.translatedText",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "fromType": "CLIENT",
+                                "fromId": "workitem.from",
+                            },
+                            "type": "chatmessageagent",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1740460007895",
+                        },
+                        {
+                            "name": "Wait for Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "Wait for Messages",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1740460007590",
+                            "id": "refId1740460007896",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67bd503d3d360b21dbeadaab",
+                    "key": "67bd503d3d360b21dbeadaab",
+                    "location": "866.7870650001614 535.8438214337766",
+                    "transitions": [
+                        {"name": "Wait for Messages", "id": "refId1740460007590"}
+                    ],
+                },
+                "67bd5428c2ee169ce826991e": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67bd5428c2ee169ce826991e",
+                    "name": "Translate Agent Messages",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Spanish",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'es'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.agentMessage",
+                                "sourceLang": "English",
+                                "targetLang": "Spanish",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460008422",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "French",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'fr'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.agentMessage",
+                                "sourceLang": "English",
+                                "targetLang": "French",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460008440",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Portuguese",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'pt'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.agentMessage",
+                                "sourceLang": "English",
+                                "targetLang": "Portuguese",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460008455",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Afrikaans",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'af'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.agentMessage",
+                                "sourceLang": "English",
+                                "targetLang": "Afrikaans",
+                            },
+                            "type": "translate",
+                            "_selected": True,
+                            "icon": "icon-web",
+                            "id": "refId1740460008470",
+                        },
+                        {
+                            "name": "Translate",
+                            "description": "Translate",
+                            "properties": {
+                                "description": "Vietnamese",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.sourceLanguage",
+                                            "operator": "==",
+                                            "rightExpression": "'vi'",
+                                        }
+                                    ],
+                                },
+                                "text": "workitem.data.agentMessage",
+                                "sourceLang": "English",
+                                "targetLang": "Vietnamese",
+                            },
+                            "type": "translate",
+                            "_selected": False,
+                            "icon": "icon-web",
+                            "id": "refId1740460008485",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "translatedText",
+                                "rightExpression": "workitem.translationResult.translation",
+                                "variableName": "translatedText",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1740460008423",
+                        },
+                        {
+                            "name": "SMS Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "message": "workitem.data.translatedText",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "smsmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1740460008424",
+                        },
+                        {
+                            "name": "Wait for Messages",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "Wait for Messages",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1740460008012",
+                            "id": "refId1740460008425",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67bd5428c2ee169ce826991e",
+                    "key": "67bd5428c2ee169ce826991e",
+                    "location": "1436.3930803836427 390.18766137899274",
+                    "transitions": [
+                        {"name": "Wait for Messages", "id": "refId1740460008012"}
+                    ],
                 },
             },
         }
