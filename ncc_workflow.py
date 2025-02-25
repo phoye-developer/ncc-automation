@@ -1420,6 +1420,7 @@ def create_iva_workflow(
                             "name": "Chat Message Consumer",
                             "description": "Thank you for contacting...",
                             "properties": {
+                                "description": "Thank you for contacting...",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
@@ -1443,6 +1444,7 @@ def create_iva_workflow(
                             "name": "Synthesize Text via Google TTS",
                             "description": "Thank you for contacting...",
                             "properties": {
+                                "description": "Thank you for contacting...",
                                 "voiceName": "en-US-Wavenet-J",
                                 "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName} and have a great day!</prosody>',
                                 "condition": {
