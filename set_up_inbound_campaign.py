@@ -86,6 +86,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("2. Healthcare")
             print("3. FinServ")
             print("4. Insurance")
+            print("5. Retail")
+            print("6. PubSec")
             print()
             choice = input("Command: ")
             print()
@@ -140,6 +142,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     templates = general_templates + insurance_templates
                     topics = general_topics + insurance_topics
                     reports = general_reports + insurance_reports
+                elif choice == "5":
+                    vertical = "retail"
+                    dispositions = general_dispositions + retail_dispositions
+                    queues = general_queues + retail_queues
+                    categories = general_categories + retail_categories
+                    options = retail_options
+                    classifications = (
+                        general_classifications.copy() + retail_classifications.copy()
+                    )
+                    templates = general_templates + retail_templates
+                    topics = general_topics + retail_topics
+                    reports = general_reports + retail_reports
+                elif choice == "6":
+                    vertical = "pubsec"
+                    dispositions = general_dispositions + pubsec_dispositions
+                    queues = general_queues + pubsec_queues
+                    categories = general_categories + pubsec_categories
+                    options = pubsec_options
+                    classifications = (
+                        general_classifications.copy() + pubsec_classifications.copy()
+                    )
+                    templates = general_templates + pubsec_templates
+                    topics = general_topics + pubsec_topics
+                    reports = general_reports + pubsec_reports
                 else:
                     choice = ""
                     print("Invalid choice.")

@@ -4128,6 +4128,839 @@ def create_non_iva_dtmf_workflow(
                 "icon": "icon-survey",
             },
         ]
+    elif vertical == "retail":
+        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For order inquiries, press 1. For stock availability, press 2. To exchange an item, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
+        chat_variables = [
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Orders'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Stock Availability'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": True,
+                "id": "refId1739749451080",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Exchanges",
+                    "rightExpression": queues["Exchanges"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Exchanges'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": True,
+                "id": "refId1739749451080",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Billing'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739749451048",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Customer Service",
+                    "rightExpression": queues["Customer Service"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Customer Service'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739749451048",
+            },
+        ]
+        inbound_call_variables = [
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'1'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "icon": "icon-save",
+                "id": "refId1739600231288",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'2'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231289",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Exchanges",
+                    "rightExpression": queues["Exchanges"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'3'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231289",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'4'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231291",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Customer Service",
+                    "rightExpression": queues["Customer Service"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'5'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231291",
+                "icon": "icon-save",
+            },
+        ]
+        outbound_call_variables = [
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Orders'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455753",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Orders",
+                    "rightExpression": queues["Orders"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Stock Availability'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455754",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Exchanges",
+                    "rightExpression": queues["Exchanges"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Exchanges'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455754",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Billing'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455755",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Customer Service",
+                    "rightExpression": queues["Customer Service"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Customer Service'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455756",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Survey",
+                "description": "Assign survey to workitem",
+                "properties": {
+                    "description": user_survey["name"],
+                    "condition": {
+                        "conditionType": "NONE",
+                        "expressions": [{"operator": "=="}],
+                    },
+                    "surveyId": user_survey["_id"],
+                    "expansions": {"surveyId": {"name": user_survey["name"]}},
+                    "_working": False,
+                },
+                "type": "assignsurvey",
+                "_selected": False,
+                "id": "refId1739934455757",
+                "icon": "icon-survey",
+            },
+        ]
+    elif vertical == "pubsec":
+        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To report a pothole, press 1. To report an abandoned vehicle, press 2. To report a missed trash pickup, press 3. For billing, press 4. Otherwise, please stay on the line.</prosody>'
+        chat_variables = [
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Maintenance",
+                    "rightExpression": queues["Maintenance"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Pothole'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Vehicle Services",
+                    "rightExpression": queues["Vehicle Services"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Abandoned Vehicle'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": True,
+                "id": "refId1739749451080",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Waste Management",
+                    "rightExpression": queues["Waste Management"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Missed Trash Pickup'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": True,
+                "id": "refId1739749451080",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Billing'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739749451048",
+            },
+            {
+                "icon": "icon-save",
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Customer Service",
+                    "rightExpression": queues["Customer Service"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Other'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739749451048",
+            },
+        ]
+        inbound_call_variables = [
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Maintenance",
+                    "rightExpression": queues["Maintenance"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'1'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "icon": "icon-save",
+                "id": "refId1739600231288",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Vehicle Services",
+                    "rightExpression": queues["Vehicle Services"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'2'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231289",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Waste Management",
+                    "rightExpression": queues["Waste Management"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'3'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231289",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "operator": "==",
+                                "leftExpression": "workitem.digits",
+                                "rightExpression": "'4'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739600231291",
+                "icon": "icon-save",
+            },
+        ]
+        outbound_call_variables = [
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Maintenance",
+                    "rightExpression": queues["Maintenance"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Pothole'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455753",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Vehicle Services",
+                    "rightExpression": queues["Vehicle Services"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Abandoned Vehicle'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455754",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Waste Management",
+                    "rightExpression": queues["Waste Management"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Missed Trash Pickup'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455754",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Billing",
+                    "rightExpression": queues["Billing"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Billing'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455755",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Save Variable",
+                "description": "",
+                "properties": {
+                    "description": "queueId - Customer Service",
+                    "rightExpression": queues["Customer Service"],
+                    "variableName": "queueId",
+                    "asObject": False,
+                    "dlpOption": False,
+                    "wfmOption": False,
+                    "dashboard": False,
+                    "condition": {
+                        "conditionType": "AND",
+                        "expressions": [
+                            {
+                                "leftExpression": "workitem.data.interest",
+                                "operator": "==",
+                                "rightExpression": "'Other'",
+                            }
+                        ],
+                    },
+                },
+                "type": "savevariable",
+                "_selected": False,
+                "id": "refId1739934455756",
+                "icon": "icon-save",
+            },
+            {
+                "name": "Survey",
+                "description": "Assign survey to workitem",
+                "properties": {
+                    "description": user_survey["name"],
+                    "condition": {
+                        "conditionType": "NONE",
+                        "expressions": [{"operator": "=="}],
+                    },
+                    "surveyId": user_survey["_id"],
+                    "expansions": {"surveyId": {"name": user_survey["name"]}},
+                    "_working": False,
+                },
+                "type": "assignsurvey",
+                "_selected": False,
+                "id": "refId1739934455757",
+                "icon": "icon-survey",
+            },
+        ]
 
     # Modify workflow body
     if "67b11b3a4492457796ee0690" in workflow_body["states"]:
