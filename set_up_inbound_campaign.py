@@ -2,7 +2,6 @@ import datetime
 import logging
 from config import *
 from authentication_info import *
-from deepgram import *
 from ncc_pstn_number import *
 from ncc_disposition import *
 from ncc_user_profile import *
@@ -769,6 +768,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.warning("No supervisors found to assign to topics.")
             else:
                 logging.warning('User profile "Supervisor" not found.')
+
+        # Create MEDIA service
+        media_service = search_services(
+            ncc_location,
+            ncc_token,
+            "MEDIA",
+        )
+        if media_service != {}:
+            logging.info('Service type "MEDIA" already exists.')
+        else:
+            media_service = create_media_service(
+                ncc_location,
+                ncc_token,
+                "Freeswitch - Media Server",
+            )
+            if media_service != {}:
+                logging.info('Service type "MEDIA" created.')
+            else:
+                logging.warning('Service type "MEDIA" not created.')
 
         # Create TEXT_TO_SPEECH service
         tts_service = search_services(

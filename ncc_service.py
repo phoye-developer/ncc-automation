@@ -34,6 +34,45 @@ def search_services(ncc_location: str, ncc_token: str, service_type: str) -> dic
     return service
 
 
+def create_media_service(
+    ncc_location: str,
+    ncc_token: str,
+    ncc_service_name: str,
+) -> dict:
+    """
+    This function creates a Nextiva Contact Center (NCC) MEDIA service with the specified name.
+    """
+    service = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {
+                "name": {"en": {"language": "en", "value": ncc_service_name}},
+                "description": {"en": {"language": "en", "value": ncc_service_name}},
+            },
+            "description": ncc_service_name,
+            "type": "MEDIA",
+            "enabled": True,
+            "provider": "FREESWITCH",
+            "name": ncc_service_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/service/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            service = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return service
+
+
 def create_transcription_service(
     ncc_location: str, ncc_token: str, ncc_service_name: str, deepgram_api_key: str
 ) -> dict:
