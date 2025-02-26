@@ -34,11 +34,61 @@ def search_services(ncc_location: str, ncc_token: str, service_type: str) -> dic
     return service
 
 
+def create_transcription_service(
+    ncc_location: str, ncc_token: str, ncc_service_name: str, deepgram_api_key: str
+) -> dict:
+    """
+    This function creates a Nextiva Contact Center (NCC) TRANSCRIPTION service with the specified name.
+    """
+    service = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "apiKey": deepgram_api_key,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": ncc_service_name}},
+                "description": {"en": {"language": "en", "value": ncc_service_name}},
+            },
+            "description": ncc_service_name,
+            "type": "TRANSCRIPTION",
+            "enabled": True,
+            "provider": "DEEPGRAM",
+            "name": ncc_service_name,
+            "parameters": [
+                {"key": "tier", "value": "enhanced"},
+                {"key": "model", "value": "phonecall"},
+                {"key": "utterances", "value": "true"},
+                {"key": "utt_split", "value": "0.8"},
+                {"key": "multichannel", "value": "true"},
+                {"key": "smart_format", "value": "true"},
+                {"key": "detect_language", "value": "true"},
+                {"key": "profanity_filter", "value": "false"},
+                {"key": "encoding", "value": "linear16"},
+                {"key": "sample_rate", "value": "16000"},
+            ],
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/service/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            service = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return service
+
+
 def create_real_time_transcription_service(
     ncc_location: str, ncc_token: str, ncc_service_name: str, deepgram_api_key: str
 ) -> dict:
     """
-    This function creates an NCC REALTIME_ANALYSIS service with the specified name.
+    This function creates a Nextiva Contact Center (NCC) REALTIME_ANALYSIS service with the specified name.
     """
     service = {}
     conn = http.client.HTTPSConnection(ncc_location)

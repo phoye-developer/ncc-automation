@@ -814,6 +814,27 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     'Insufficient data to create service type "GENERATIVE_AI"'
                 )
 
+        # Create TRANSCRIPTION service
+        transcription_service = search_services(
+            ncc_location,
+            ncc_token,
+            "TRANSCRIPTION",
+        )
+        if transcription_service != {}:
+            logging.info('Service type "TRANSCRIPTION" already exists.')
+        else:
+            if deepgram_api_key != "":
+                transcription_service = create_transcription_service(
+                    ncc_location,
+                    ncc_token,
+                    "Deepgram Transcription",
+                    deepgram_api_key,
+                )
+                if transcription_service != {}:
+                    logging.info('Service "Deepgram Transcription" created.')
+                else:
+                    logging.warning('Service "Deepgram Transcription" not created.')
+
         # Create REALTIME_ANALYSIS service
         real_time_transcription_service = search_services(
             ncc_location,
