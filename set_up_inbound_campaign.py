@@ -44,7 +44,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     cancelled = False
 
     print()
-    print('Enter "cancel" at any time to cancel.')
+    print('Enter "cancel" at any prompt to cancel.')
 
     # Enter campaign name
     campaign_name = ""

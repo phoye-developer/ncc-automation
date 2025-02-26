@@ -25,7 +25,7 @@ def set_up_supervisor(ncc_location: str, ncc_token: str):
     cancelled = False
 
     print()
-    print('Enter "cancel" at any time to cancel.')
+    print('Enter "cancel" at any prompt to cancel.')
 
     # Enter first name
     first_name = ""
