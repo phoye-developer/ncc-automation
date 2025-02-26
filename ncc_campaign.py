@@ -174,7 +174,7 @@ def create_campaign(
             "expansions": {
                 "realtimeAnalysisServiceId": {
                     "localizations": {
-                        "name": {"en": "Test Deepgram Real-Time Transcription"}
+                        "name": {"en": "Deepgram Real-Time Transcription"}
                     }
                 }
             },

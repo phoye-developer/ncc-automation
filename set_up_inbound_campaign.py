@@ -2,7 +2,6 @@ import datetime
 import logging
 from config import *
 from authentication_info import *
-from deepgram import *
 from ncc_pstn_number import *
 from ncc_disposition import *
 from ncc_user_profile import *
@@ -45,7 +44,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
     cancelled = False
 
     print()
-    print('Enter "cancel" at any time to cancel.')
+    print('Enter "cancel" at any prompt to cancel.')
 
     # Enter campaign name
     campaign_name = ""
@@ -87,6 +86,8 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print("2. Healthcare")
             print("3. FinServ")
             print("4. Insurance")
+            print("5. Retail")
+            print("6. PubSec")
             print()
             choice = input("Command: ")
             print()
@@ -141,6 +142,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     templates = general_templates + insurance_templates
                     topics = general_topics + insurance_topics
                     reports = general_reports + insurance_reports
+                elif choice == "5":
+                    vertical = "retail"
+                    dispositions = general_dispositions + retail_dispositions
+                    queues = general_queues + retail_queues
+                    categories = general_categories + retail_categories
+                    options = retail_options
+                    classifications = (
+                        general_classifications.copy() + retail_classifications.copy()
+                    )
+                    templates = general_templates + retail_templates
+                    topics = general_topics + retail_topics
+                    reports = general_reports + retail_reports
+                elif choice == "6":
+                    vertical = "pubsec"
+                    dispositions = general_dispositions + pubsec_dispositions
+                    queues = general_queues + pubsec_queues
+                    categories = general_categories + pubsec_categories
+                    options = pubsec_options
+                    classifications = (
+                        general_classifications.copy() + pubsec_classifications.copy()
+                    )
+                    templates = general_templates + pubsec_templates
+                    topics = general_topics + pubsec_topics
+                    reports = general_reports + pubsec_reports
                 else:
                     choice = ""
                     print("Invalid choice.")
@@ -770,6 +795,25 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             else:
                 logging.warning('User profile "Supervisor" not found.')
 
+        # Create MEDIA service
+        media_service = search_services(
+            ncc_location,
+            ncc_token,
+            "MEDIA",
+        )
+        if media_service != {}:
+            logging.info('Service type "MEDIA" already exists.')
+        else:
+            media_service = create_media_service(
+                ncc_location,
+                ncc_token,
+                "Freeswitch - Media Server",
+            )
+            if media_service != {}:
+                logging.info('Service type "MEDIA" created.')
+            else:
+                logging.warning('Service type "MEDIA" not created.')
+
         # Create TEXT_TO_SPEECH service
         tts_service = search_services(
             ncc_location,
@@ -814,6 +858,31 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     'Insufficient data to create service type "GENERATIVE_AI"'
                 )
 
+        # Create TRANSCRIPTION service
+        transcription_service = search_services(
+            ncc_location,
+            ncc_token,
+            "TRANSCRIPTION",
+        )
+        if transcription_service != {}:
+            logging.info('Service type "TRANSCRIPTION" already exists.')
+        else:
+            if deepgram_api_key != "":
+                transcription_service = create_transcription_service(
+                    ncc_location,
+                    ncc_token,
+                    "Deepgram Transcription",
+                    deepgram_api_key,
+                )
+                if transcription_service != {}:
+                    logging.info('Service "Deepgram Transcription" created.')
+                else:
+                    logging.warning('Service "Deepgram Transcription" not created.')
+            else:
+                logging.warning(
+                    'Insufficient data to create service type "TRANSCRIPTION".'
+                )
+
         # Create REALTIME_ANALYSIS service
         real_time_transcription_service = search_services(
             ncc_location,
@@ -838,6 +907,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.warning(
                         'Service "Deepgram Real-Time Transcription" not created.'
                     )
+            else:
+                logging.warning(
+                    'Insufficient data to create service type "TRANSCRIPTION".'
+                )
 
         # Create classifications
         classifications_to_assign = []

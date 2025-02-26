@@ -177,6 +177,8 @@ general_dispositions = [
 hc_dispositions = []
 finserv_dispositions = []
 insurance_dispositions = []
+retail_dispositions = []
+pubsec_dispositions = []
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
@@ -385,6 +387,99 @@ insurance_queues = [
         "chatSLA": 30,
     },
 ]
+retail_queues = [
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Orders"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Orders",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Exchanges"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Exchanges",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+]
+pubsec_queues = [
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Waste Management"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Waste Management",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {"name": {"en": {"language": "en", "value": "Maintenance"}}},
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Maintenance",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+    {
+        "blended": False,
+        "socialSLA": 3600,
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Vehicle Services"}}
+        },
+        "slaCalculation": 1,
+        "assignmentType": "fifo_across_all_queues",
+        "pushQueueDataInRealTime": True,
+        "hideInCompanyDirectory": False,
+        "emailSLA": 3600,
+        "realtimeAssignment": True,
+        "disableSkills": False,
+        "lifo": False,
+        "name": "Vehicle Services",
+        "noAnswerStatusAsAvailable": False,
+        "voiceSLA": 30,
+        "chatSLA": 30,
+    },
+]
 
 # Categories
 general_categories = [
@@ -434,6 +529,16 @@ insurance_categories = [
     {"label": "Update Policy", "value": "Update Policy"},
     {"label": "Verify Insurance", "value": "Verify Insurance"},
 ]
+retail_categories = [
+    {"label": "Request Return", "value": "Request Return"},
+    {"label": "Request Refund", "value": "Request Refund"},
+    {"label": "Stock Inquiry", "value": "Stock Inquiry"},
+]
+pubsec_categories = [
+    {"label": "Report Pothole", "value": "Report Pothole"},
+    {"label": "Report Abandoned Vehicle", "value": "Report Abandoned Vehicle"},
+    {"label": "Report Missed Trash Pickup", "value": "Report Missed Trash Pickup"},
+]
 
 # Chat survey options
 general_options = [
@@ -461,10 +566,23 @@ insurance_options = [
     {"label": "Billing", "value": "Billing"},
     {"label": "Customer Service", "value": "Customer Service"},
 ]
+retail_options = [
+    {"label": "Orders", "value": "Orders"},
+    {"label": "Stock Availability", "value": "Stock Availability"},
+    {"label": "Exchanges", "value": "Exchanges"},
+    {"label": "Billing", "value": "Billing"},
+    {"label": "Customer Service", "value": "Customer Service"},
+]
+pubsec_options = [
+    {"label": "Pothole", "value": "Pothole"},
+    {"label": "Abandoned Vehicle", "value": "Abandoned Vehicle"},
+    {"label": "Missed Trash Pickup", "value": "Missed Trash Pickup"},
+    {"label": "Billing", "value": "Billing"},
+    {"label": "Other", "value": "Other"},
+]
 
 # Surveys
 main_chat_survey_body = {
-    "openIcon": "9bf0d084963d20b664b5ff32a9c8e271.png",
     "hideSurveyBoxShadown": False,
     "type": "full",
     "showFooter": False,
@@ -3389,6 +3507,8 @@ finserv_classifications = [
     }
 ]
 insurance_classifications = []
+retail_classifications = []
+pubsec_classifications = []
 
 general_templates = [
     {
@@ -3439,6 +3559,8 @@ general_templates = [
 hc_templates = []
 finserv_templates = []
 insurance_templates = []
+retail_templates = []
+pubsec_templates = []
 
 general_topics = [
     "Refund Requests",
@@ -3454,6 +3576,8 @@ hc_topics = [
 ]
 finserv_topics = []
 insurance_topics = ["Policy and Coverage Issues", "Claim Issues"]
+retail_topics = []
+pubsec_topics = []
 
 general_reports = [
     {
@@ -3502,3 +3626,5 @@ general_reports = [
 hc_reports = []
 finserv_reports = []
 insurance_reports = []
+retail_reports = []
+pubsec_reports = []
