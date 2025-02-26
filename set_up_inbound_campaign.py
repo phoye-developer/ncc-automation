@@ -834,6 +834,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.info('Service "Deepgram Transcription" created.')
                 else:
                     logging.warning('Service "Deepgram Transcription" not created.')
+            else:
+                logging.warning(
+                    'Insufficient data to create service type "TRANSCRIPTION".'
+                )
 
         # Create REALTIME_ANALYSIS service
         real_time_transcription_service = search_services(
@@ -859,6 +863,10 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.warning(
                         'Service "Deepgram Real-Time Transcription" not created.'
                     )
+            else:
+                logging.warning(
+                    'Insufficient data to create service type "TRANSCRIPTION".'
+                )
 
         # Create classifications
         classifications_to_assign = []
