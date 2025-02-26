@@ -464,7 +464,6 @@ insurance_options = [
 
 # Surveys
 main_chat_survey_body = {
-    "openIcon": "9bf0d084963d20b664b5ff32a9c8e271.png",
     "hideSurveyBoxShadown": False,
     "type": "full",
     "showFooter": False,

@@ -610,7 +610,6 @@ def create_chat_survey(
     conn = http.client.HTTPSConnection(ncc_location)
     payload = json.dumps(
         {
-            "openIcon": "9bf0d084963d20b664b5ff32a9c8e271.png",
             "hideSurveyBoxShadown": False,
             "type": "full",
             "showFooter": False,
