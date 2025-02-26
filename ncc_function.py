@@ -1551,8 +1551,19 @@ def create_two_way_sms_function(
                                 "wfmOption": False,
                                 "dashboard": False,
                                 "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "'detectLanguageResult' in workitem",
+                                            "rightExpression": "true",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.data.detectLanguageResult.status",
+                                            "operator": "==",
+                                            "rightExpression": "200",
+                                        },
+                                    ],
                                 },
                             },
                             "type": "savevariable",
@@ -1571,7 +1582,17 @@ def create_two_way_sms_function(
                                             "leftExpression": "workitem.data.sourceLanguage",
                                             "operator": "!=",
                                             "rightExpression": "'en'",
-                                        }
+                                        },
+                                        {
+                                            "leftExpression": "'detectLanguageResult' in workitem",
+                                            "operator": "==",
+                                            "rightExpression": "true",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.data.detectLanguageResult.status",
+                                            "operator": "==",
+                                            "rightExpression": "200",
+                                        },
                                     ],
                                 },
                                 "stateId": "67bd503d3d360b21dbeadaab",
