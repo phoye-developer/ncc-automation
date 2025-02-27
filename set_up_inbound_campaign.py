@@ -2,6 +2,7 @@ import datetime
 import logging
 from config import *
 from authentication_info import *
+from datadog import *
 from ncc_pstn_number import *
 from ncc_disposition import *
 from ncc_user_profile import *
@@ -30,7 +31,7 @@ from ncc_topic import *
 from ncc_report import *
 
 
-def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
+def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
     """
     This function performs the basic setup of a new Nextiva Contact Center (NCC) campaign.
     """
@@ -52,6 +53,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         print()
         campaign_name = input("Campaign name: ")
         if campaign_name.lower() == "cancel":
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Inbound Campaign Setup Cancelled",
+                f'User "{username}" cancelled inbound campaign setup.',
+                ["inboundcampaignsetup"],
+            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -67,6 +78,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             print()
             business_name = input("Business name: ")
             if business_name.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print()
                 print("Operation cancelled.")
                 cancelled = True
@@ -92,6 +113,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -186,6 +217,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -229,6 +270,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print()
                 choice = input("Command: ")
                 if choice.lower() == "cancel":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "Inbound Campaign Setup Cancelled",
+                        f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                        ["inboundcampaignsetup"],
+                    )
                     print()
                     print("Operation cancelled.")
                     cancelled = True
@@ -262,6 +313,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 print()
                 choice = input("Command: ")
                 if choice.lower() == "cancel":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "Inbound Campaign Setup Cancelled",
+                        f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                        ["inboundcampaignsetup"],
+                    )
                     print()
                     print("Operation cancelled.")
                     cancelled = True
@@ -289,6 +350,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -314,6 +385,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -339,6 +420,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -364,6 +455,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -389,6 +490,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Inbound Campaign Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" inbound campaign setup.',
+                    ["inboundcampaignsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
@@ -426,7 +537,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     dispositions_to_assign.append(result)
                     tenant_id = result["tenantId"]
                 else:
-                    logging.warning(f'Disposition "{disposition["name"]}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Disposition Creation Failed",
+                        f'Disposition "{disposition["name"]}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Disposition "{disposition["name"]}" not created.')
             else:
                 logging.info(f'Disposition "{result["name"]}" already exists.')
                 dispositions_to_assign.append(result)
@@ -464,10 +585,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                 f'Disposition "{disposition["name"]}" assigned.'
                             )
                         else:
-                            logging.warning(
+                            post_datadog_event(
+                                dd_api_key,
+                                dd_application_key,
+                                username,
+                                "error",
+                                "normal",
+                                "Disposition Assignment to User Profile Failed",
+                                f'Disposition "{disposition["name"]}" not assigned.',
+                                ["inboundcampaignsetup"],
+                            )
+                            logging.error(
                                 f'Disposition "{disposition["name"]}" not assigned.'
                             )
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    f'User profile "{user_profile}" not found.',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning(f'User profile "{user_profile}" not found.')
 
         # Create queues
@@ -488,7 +629,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.info(f'Queue "{result["name"]}" created.')
                     queues_to_assign[result["name"]] = result["_id"]
                 else:
-                    logging.warning(f'Queue "{queue["name"]}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Queue Creation Failed",
+                        f'Queue "{queue["name"]}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Queue "{queue["name"]}" not created.')
             else:
                 logging.info(f'Queue "{queue["name"]}" already exists.')
                 queues_to_assign[result["name"]] = result["_id"]
@@ -534,13 +685,43 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                         f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to "{key}" queue.'
                                     )
                                 else:
-                                    logging.warning(
+                                    post_datadog_event(
+                                        dd_api_key,
+                                        dd_application_key,
+                                        username,
+                                        "error",
+                                        "normal",
+                                        "Agent Assignment to Queue Failed",
+                                        f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{key}" queue.',
+                                        ["inboundcampaignsetup"],
+                                    )
+                                    logging.error(
                                         f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to "{key}" queue.'
                                     )
                 else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Agents Found",
+                        "No agents found to assign to queues.",
+                        ["inboundcampaignsetup"],
+                    )
                     logging.warning("No agents found to assign to queues.")
             else:
-                logging.warning('User profile "Agent" not found.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Agent" not found for queue assignment.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning('User profile "Agent" not found for queue assignment.')
 
         # Assign supervisors to queues
         if assign_supervisors_to_queues and len(queues_to_assign) > 0:
@@ -583,13 +764,45 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                         f'Supervisor "{supervisor["name"]}" assigned to "{key}" queue.'
                                     )
                                 else:
-                                    logging.warning(
+                                    post_datadog_event(
+                                        dd_api_key,
+                                        dd_application_key,
+                                        username,
+                                        "error",
+                                        "normal",
+                                        "Supervisor Assignment to Queue Failed",
+                                        f'Supervisor "{supervisor["name"]}" not assigned to "{key}" queue.',
+                                        ["inboundcampaignsetup"],
+                                    )
+                                    logging.error(
                                         f'Supervisor "{supervisor["name"]}" not assigned to "{key}" queue.'
                                     )
                 else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Supervisors Found",
+                        "No supervisors found to assign to queues.",
+                        ["inboundcampaignsetup"],
+                    )
                     logging.warning("No supervisors found to assign to queues.")
             else:
-                logging.warning('User profile "Supervisor" not found.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Supervisor" not found for queue assignment.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning(
+                    'User profile "Supervisor" not found for queue assignment.'
+                )
 
         # Create survey theme
         survey_theme = search_survey_themes(
@@ -606,7 +819,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if survey_theme != {}:
                 logging.info(f'Survey theme "{business_name}" created.')
             else:
-                logging.warning(f'Survey theme "{business_name}" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Survey Theme Creation Failed",
+                    f'Survey theme "{business_name}" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(f'Survey theme "{business_name}" not created.')
         else:
             logging.info(f'Survey theme "{business_name}" already exists.')
 
@@ -628,10 +851,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if user_survey != {}:
                     logging.info(f'Survey "{campaign_name} - User" created.')
                 else:
-                    logging.warning(f'Survey "{campaign_name} - User" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Survey Creation Failed",
+                        f'Survey "{campaign_name} - User" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Survey "{campaign_name} - User" not created.')
             else:
                 logging.info(f'Survey "{campaign_name} - User" already exists.')
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Survey Creation Failed",
+                "Insufficient data to create user survey.",
+                ["inboundcampaignsetup"],
+            )
             logging.warning("Insufficient data to create user survey.")
 
         # Create chat survey
@@ -652,10 +895,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if chat_survey != {}:
                     logging.info(f'Survey "{campaign_name} - Chat" created.')
                 else:
-                    logging.warning(f'Survey "{campaign_name} - Chat" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Survey Creation Failed",
+                        f'Survey "{campaign_name} - Chat" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Survey "{campaign_name} - Chat" not created.')
             else:
                 logging.info(f'Survey "{campaign_name} - Chat" already exists.')
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Survey Creation Failed",
+                "Insufficient data to create chat survey.",
+                ["inboundcampaignsetup"],
+            )
             logging.warning("Insufficient data to create chat survey.")
 
         # Create QM survey
@@ -676,10 +939,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if qm_survey != {}:
                     logging.info(f'Survey "{campaign_name} - QM" created.')
                 else:
-                    logging.warning(f'Survey "{campaign_name} - QM" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Survey Creation Failed",
+                        f'Survey "{campaign_name} - QM" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Survey "{campaign_name} - QM" not created.')
             else:
                 logging.info(f'Survey "{campaign_name} - QM" already exists')
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Survey Creation Failed",
+                "Insufficient data to create QM survey.",
+                ["inboundcampaignsetup"],
+            )
             logging.warning("Insufficient data to create QM survey.")
 
         # Create topics
@@ -700,7 +983,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.info(f'Topic "{topic}" created.')
                     topics_to_assign.append(result)
                 else:
-                    logging.warning(f'Topic "{topic}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Topic Creation Failed",
+                        f'Topic "{topic}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Topic "{topic}" not created.')
             else:
                 logging.info(f'Topic "{topic}" already exists.')
                 topics_to_assign.append(result)
@@ -742,13 +1035,43 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                         f'Agent "{agent["firstName"]} {agent["lastName"]}" assigned to topic "{topic["name"]}".'
                                     )
                                 else:
-                                    logging.warning(
+                                    post_datadog_event(
+                                        dd_api_key,
+                                        dd_application_key,
+                                        username,
+                                        "error",
+                                        "normal",
+                                        "Agent Assignment to Topic Failed",
+                                        f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to topic "{topic["name"]}".',
+                                        ["inboundcampaignsetup"],
+                                    )
+                                    logging.error(
                                         f'Agent "{agent["firstName"]} {agent["lastName"]}" not assigned to topic "{topic["name"]}".'
                                     )
                 else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Agents Found",
+                        "No agents found to assign to topics.",
+                        ["inboundcampaignsetup"],
+                    )
                     logging.warning("No agents found to assign to topics.")
             else:
-                logging.warning('User profile "Agent" not found.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Agent" not found for topic assignment.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning('User profile "Agent" not found for topic assignment.')
 
         # Assign supervisors to topics
         if assign_supervisors_to_topics and (len(topics_to_assign) > 0):
@@ -787,12 +1110,42 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                         f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" assigned to topic "{topic["name"]}".'
                                     )
                                 else:
-                                    logging.warning(
+                                    post_datadog_event(
+                                        dd_api_key,
+                                        dd_application_key,
+                                        username,
+                                        "error",
+                                        "normal",
+                                        "Supervisor Assignment to Topic Failed",
+                                        f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to topic "{topic["name"]}".',
+                                        ["inboundcampaignsetup"],
+                                    )
+                                    logging.error(
                                         f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to topic "{topic["name"]}".'
                                     )
                 else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Supervisors Found",
+                        "No supervisors found to assign to topics.",
+                        ["inboundcampaignsetup"],
+                    )
                     logging.warning("No supervisors found to assign to topics.")
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Supervisor" not found for topic assignment.',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning('User profile "Supervisor" not found.')
 
         # Create MEDIA service
@@ -812,7 +1165,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if media_service != {}:
                 logging.info('Service type "MEDIA" created.')
             else:
-                logging.warning('Service type "MEDIA" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Service Creation Failed",
+                    'Service type "MEDIA" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Service type "MEDIA" not created.')
 
         # Create TEXT_TO_SPEECH service
         tts_service = search_services(
@@ -831,7 +1194,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if tts_service != {}:
                 logging.info('Service type "TEXT_TO_SPEECH" created.')
             else:
-                logging.warning('Service type "TEXT_TO_SPEECH" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Service Creation Failed",
+                    'Service type "TEXT_TO_SPEECH" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Service type "TEXT_TO_SPEECH" not created.')
 
         # Create GENERATIVE_AI service
         gen_ai_service = search_services(
@@ -852,8 +1225,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if gen_ai_service != {}:
                     logging.info('Service type "GENERATIVE_AI" created.')
                 else:
-                    logging.warning('Service type "GENERATIVE_AI" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Creation Failed",
+                        'Service type "GENERATIVE_AI" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Service type "GENERATIVE_AI" not created.')
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Service Creation Failed",
+                    'Insufficient data to create service type "GENERATIVE_AI"',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning(
                     'Insufficient data to create service type "GENERATIVE_AI"'
                 )
@@ -877,8 +1270,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if transcription_service != {}:
                     logging.info('Service "Deepgram Transcription" created.')
                 else:
-                    logging.warning('Service "Deepgram Transcription" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Creation Failed",
+                        'Service "Deepgram Transcription" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Service "Deepgram Transcription" not created.')
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Service Creation Failed",
+                    'Insufficient data to create service type "TRANSCRIPTION"',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning(
                     'Insufficient data to create service type "TRANSCRIPTION".'
                 )
@@ -904,10 +1317,30 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if real_time_transcription_service != {}:
                     logging.info('Service "Deepgram Real-Time Transcription" created.')
                 else:
-                    logging.warning(
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Creation Failed",
+                        'Service "Deepgram Real-Time Transcription" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
                         'Service "Deepgram Real-Time Transcription" not created.'
                     )
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Service Creation Failed",
+                    'Insufficient data to create service type "TRANSCRIPTION".',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning(
                     'Insufficient data to create service type "TRANSCRIPTION".'
                 )
@@ -933,7 +1366,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     )
                     classifications_to_assign.append(result)
                 else:
-                    logging.warning(
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Classification Creation Failed",
+                        f'Classification "{campaign_name} - {classification["name"]}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
                         f'Classification "{campaign_name} - {classification["name"]}" not created.'
                     )
             else:
@@ -957,7 +1400,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if scorecard != {}:
                 logging.info(f'Scorecard "{campaign_name}" created.')
             else:
-                logging.warning(f'Scorecard "{campaign_name}" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Scorecard Creation Failed",
+                    f'Scorecard "{campaign_name}" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(f'Scorecard "{campaign_name}" not created.')
         else:
             logging.info(f'Scorecard "{campaign_name}" already exists.')
 
@@ -986,7 +1439,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             f'Classification "{classification["name"]}" assigned to scorecard.'
                         )
                     else:
-                        logging.warning(
+                        post_datadog_event(
+                            dd_api_key,
+                            dd_application_key,
+                            username,
+                            "error",
+                            "normal",
+                            "Classification Assignment to Scorecard Failed",
+                            f'Classification "{classification["name"]}" not assigned to scorecard.',
+                            ["inboundcampaignsetup"],
+                        )
+                        logging.error(
                             f'Classification "{classification["name"]}" not assigned to scorecard.'
                         )
 
@@ -1008,7 +1471,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     logging.info(f'Template "{template["name"]}" created.')
                     templates_to_assign.append(result)
                 else:
-                    logging.warning(f'Template "{template["name"]}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Template Creation Failed",
+                        f'Template "{template["name"]}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Template "{template["name"]}" not created.')
             else:
                 logging.info(f'Template "{template["name"]}" already exists.')
                 templates_to_assign.append(result)
@@ -1028,7 +1501,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if search_contacts_function != {}:
                 logging.info(f'Function "{campaign_name} - Search Contacts" created.')
             else:
-                logging.warning(
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Function "{campaign_name} - Search Contacts" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(
                     f'Function "{campaign_name} - Search Contacts" not created.'
                 )
         else:
@@ -1051,9 +1534,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if two_way_chat_function != {}:
                 logging.info(f'Function "{campaign_name} - Two Way Chat" created.')
             else:
-                logging.warning(
-                    f'Function "{campaign_name} - Two Way Chat" not created.'
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Function "{campaign_name} - Two Way Chat" not created.',
+                    ["inboundcampaignsetup"],
                 )
+                logging.error(f'Function "{campaign_name} - Two Way Chat" not created.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way Chat" already exists.')
 
@@ -1072,9 +1563,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if two_way_sms_function != {}:
                 logging.info(f'Function "{campaign_name} - Two Way SMS" created.')
             else:
-                logging.warning(
-                    f'Function "{campaign_name} - Two Way SMS" not created.'
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Function "{campaign_name} - Two Way SMS" not created.',
+                    ["inboundcampaignsetup"],
                 )
+                logging.error(f'Function "{campaign_name} - Two Way SMS" not created.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
 
@@ -1083,6 +1582,16 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
         if prompt != {}:
             logging.info(f'Prompt "music accoustic1" found.')
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Prompt Not Found",
+                'Prompt "music accoustic1" not found.',
+                ["inboundcampaignsetup"],
+            )
             logging.warning(f'Prompt "music accoustic1" not found.')
 
         # Create ACD Voicemail function
@@ -1100,7 +1609,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if acd_voicemail_function != {}:
                 logging.info(f'Function "{campaign_name} - ACD Voicemail" created.')
             else:
-                logging.warning(
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Function "{campaign_name} - ACD Voicemail" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(
                     f'Function "{campaign_name} - ACD Voicemail" not created.'
                 )
         else:
@@ -1121,9 +1640,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if acd_callback_function != {}:
                 logging.info(f'Function "{campaign_name} - ACD Callback" created.')
             else:
-                logging.warning(
-                    f'Function "{campaign_name} - ACD Callback" not created.'
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Function "{campaign_name} - ACD Callback" not created.',
+                    ["inboundcampaignsetup"],
                 )
+                logging.error(f'Function "{campaign_name} - ACD Callback" not created.')
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
@@ -1138,7 +1665,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if check_has_all_parameters_script != {}:
                 logging.info('Script "Check hasAllParameters" created.')
             else:
-                logging.warning('Script "Check hasAllParameters" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Script Creation Failed",
+                    'Script "Check hasAllParameters" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Script "Check hasAllParameters" not created.')
         else:
             logging.info('Script "Check hasAllParameters" already exists.')
 
@@ -1153,7 +1690,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if get_function_id_script != {}:
                 logging.info('Script "Get functionId" created.')
             else:
-                logging.warning('Script "Get functionId" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Script Creation Failed",
+                    'Script "Get functionId" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Script "Get functionId" not created.')
         else:
             logging.info('Script "Get functionId" already exists.')
 
@@ -1169,7 +1716,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if get_queue_id_script != {}:
                 logging.info('Script "Get queueId" created.')
             else:
-                logging.warning('Script "Get queueId" not created.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Script Creation Failed",
+                    'Script "Get queueId" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Script "Get queueId" not created.')
         else:
             logging.info('Script "Get queueId" already exists.')
 
@@ -1245,8 +1802,28 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if workflow != {}:
                     logging.info(f'Workflow "{campaign_name}" created.')
                 else:
-                    logging.warning(f'Workflow "{campaign_name}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Workflow Creation Failed",
+                        f'Workflow "{campaign_name}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Workflow "{campaign_name}" not created.')
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Workflow Creation Failed",
+                    "Insufficient data to create workflow.",
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning("Insufficient data to create workflow.")
         else:
             logging.info(f'Workflow "{campaign_name}" already exists.')
@@ -1279,10 +1856,40 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     gen_ai_service["_id"],
                 )
                 if campaign != {}:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "success",
+                        "normal",
+                        "Campaign Creation Successful",
+                        f'Campaign "{campaign_name}" created.',
+                        ["inboundcampaignsetup"],
+                    )
                     logging.info(f'Campaign "{campaign_name}" created.')
                 else:
-                    logging.warning(f'Campaign "{campaign_name}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Campaign Creation Failed",
+                        f'Campaign "{campaign_name}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Campaign "{campaign_name}" not created.')
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Campaign Creation Failed",
+                    "Insufficient data to create campaign.",
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning("Insufficient data to create campaign.")
         else:
             logging.info(f'Campaign "{campaign_name}" already exists.')
@@ -1298,7 +1905,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
             if success:
                 logging.info(f'PSTN number "{campaign_address}" assigned to campaign.')
             else:
-                logging.warning(
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Campaign Address Assignment Failed",
+                    f'PSTN number "{campaign_address}" not assigned to campaign.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(
                     f'PSTN number "{campaign_address}" not assigned to campaign.'
                 )
 
@@ -1315,7 +1932,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                     f'Survey "{chat_survey["name"]}" updated with new campaign.'
                 )
             else:
-                logging.warning(
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Survey Update Failed",
+                    f'Survey "{chat_survey["name"]}" not updated with new campaign.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error(
                     f'Survey "{chat_survey["name"]}" not updated with new campaign.'
                 )
 
@@ -1340,7 +1967,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             f'Disposition "{disposition["name"]}" assigned to campaign.'
                         )
                     else:
-                        logging.warning(
+                        post_datadog_event(
+                            dd_api_key,
+                            dd_application_key,
+                            username,
+                            "error",
+                            "normal",
+                            "Disposition Assignment to Campaign Failed",
+                            f'Disposition "{disposition["name"]}" not assigned to campaign.',
+                            ["inboundcampaignsetup"],
+                        )
+                        logging.error(
                             f'Disposition "{disposition["name"]}" not assigned to campaign.'
                         )
                 else:
@@ -1368,7 +2005,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                         f'Scorecard "{scorecard["name"]}" assigned to campaign.'
                     )
                 else:
-                    logging.warning(
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Scorecard Assignment to Campaign Failed",
+                        f'Scorecard "{scorecard["name"]}" not assigned to campaign.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
                         f'Scorecard "{scorecard["name"]}" not assigned to campaign.'
                     )
             else:
@@ -1397,7 +2044,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                             f'Template "{template["name"]}" assigned to campaign.'
                         )
                     else:
-                        logging.warning(
+                        post_datadog_event(
+                            dd_api_key,
+                            dd_application_key,
+                            username,
+                            "error",
+                            "normal",
+                            "Template Assignment to Campaign Failed",
+                            f'Template "{template["name"]}" not assigned to campaign.',
+                            ["inboundcampaignsetup"],
+                        )
+                        logging.error(
                             f'Template "{template["name"]}" not assigned to campaign.'
                         )
                 else:
@@ -1442,12 +2099,42 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                                     f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" assigned to "{campaign["name"]}" campaign.'
                                 )
                             else:
-                                logging.warning(
+                                post_datadog_event(
+                                    dd_api_key,
+                                    dd_application_key,
+                                    username,
+                                    "error",
+                                    "normal",
+                                    "Supervisor Assignment to Campaign Failed",
+                                    f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to "{campaign["name"]}" campaign.',
+                                    ["inboundcampaignsetup"],
+                                )
+                                logging.error(
                                     f'Supervisor "{supervisor["firstName"]} {supervisor["lastName"]}" not assigned to "{campaign["name"]}" campaign.'
                                 )
                 else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Supervisors Found",
+                        "No supervisors found to assign to campaign",
+                        ["inboundcampaignsetup"],
+                    )
                     logging.warning("No supervisors found to assign to campaign.")
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Supervisor" not found.',
+                    ["inboundcampaignsetup"],
+                )
                 logging.warning('User profile "Supervisor" not found.')
 
         # Create reports
@@ -1466,7 +2153,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str):
                 if result != {}:
                     logging.info(f'Report "{report["name"]}" created')
                 else:
-                    logging.warning(f'Report "{report["name"]}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Report Creation Failed",
+                        f'Report "{report["name"]}" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Report "{report["name"]}" not created.')
             else:
                 logging.info(f'Report "{report["name"]}" already exists.')
 

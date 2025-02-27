@@ -1,5 +1,7 @@
 import logging
 import datetime
+from datadog import *
+from authentication_info import *
 from config import *
 from authentication_info import *
 from ncc_workflow import *
@@ -10,7 +12,7 @@ from ncc_classification import *
 from ncc_scorecard import *
 
 
-def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
+def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
     """
     This function deletes entities (e.g., surveys) specific to the specified Nextiva Contact Center (NCC) campaign.
     """
@@ -32,6 +34,16 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
         print()
         campaign_name = input("Campaign name: ")
         if campaign_name.lower() == "cancel":
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Campaign Teardown Cancelled",
+                f'User "{username}" cancelled campaign teardown.',
+                ["campaignteardown"],
+            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -50,11 +62,41 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
         if campaign != {}:
             success = delete_campaign(ncc_location, ncc_token, campaign["_id"])
             if success:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "success",
+                    "normal",
+                    "Campaign Teardown Successful",
+                    f'Campaign "{campaign_name}" deleted.',
+                    ["campaignteardown"],
+                )
                 logging.info(f'Campaign "{campaign_name}" deleted.')
             else:
-                logging.warning(f'Campaign "{campaign_name}" not deleted.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Campaign Teardown Failed",
+                    f'Campaign "{campaign_name}" not deleted.',
+                    ["campaignteardown"],
+                )
+                logging.error(f'Campaign "{campaign_name}" not deleted.')
         else:
-            logging.warning(f'Campaign "{campaign_name}" not found.')
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Campaign Teardown Failed",
+                f'Campaign "{campaign_name}" not found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(f'Campaign "{campaign_name}" not found for deletion.')
 
         # Delete workflow
         workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -63,8 +105,28 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
             if success:
                 logging.info(f'Workflow "{campaign_name}" deleted.')
             else:
-                logging.warning(f'Workflow "{campaign_name}" not deleted.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Workflow Teardown Failed",
+                    f'Workflow "{campaign_name}" not deleted.',
+                    ["campaignteardown"],
+                )
+                logging.error(f'Workflow "{campaign_name}" not deleted.')
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Workflow Teardown Failed",
+                f'Workflow "{campaign_name}" not found for deletion.',
+                ["campaignteardown"],
+            )
             logging.warning(f'Workflow "{campaign_name}" not found.')
 
         # Delete functions
@@ -75,9 +137,31 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
                 if success:
                     logging.info(f'Function "{function["name"]}" deleted.')
                 else:
-                    logging.warning(f'Function "{function["name"]}" not deleted.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Teardown Failed",
+                        f'Function "{function["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(f'Function "{function["name"]}" not deleted.')
         else:
-            logging.warning(f"No functions found with campaign name.")
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Function Teardown Failed",
+                f'No functions with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No functions with campaign name "{campaign_name}" found for deletion.'
+            )
 
         # Delete surveys
         surveys = search_campaign_surveys(ncc_location, ncc_token, campaign_name)
@@ -87,9 +171,31 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
                 if success:
                     logging.info(f'Survey "{survey["name"]}" deleted.')
                 else:
-                    logging.warning(f'Survey "{survey["name"]}" not deleted.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Survey Teardown Failed",
+                        f'Survey "{survey["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(f'Survey "{survey["name"]}" not deleted.')
         else:
-            logging.warning(f"No surveys found with campaign name.")
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Survey Teardown Failed",
+                f'No surveys with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No surveys with campaign name "{campaign_name}" found for deletion.'
+            )
 
         # Delete classifications
         classifications = search_campaign_classifications(
@@ -103,11 +209,33 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
                 if success:
                     logging.info(f'Classification "{classification["name"]}" deleted.')
                 else:
-                    logging.warning(
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Classification Teardown Failed",
+                        f'Classification "{classification["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(
                         f'Classification "{classification["name"]}" not deleted.'
                     )
         else:
-            logging.warning(f"No classifications found with campaign name.")
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Classification Teardown Failed",
+                f'No classifications with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No classifications with campaign name "{campaign_name}" found for deletion.'
+            )
 
         # Delete scorecards
         scorecards = search_campaign_scorecards(ncc_location, ncc_token, campaign_name)
@@ -117,9 +245,31 @@ def tear_down_campaign(ncc_location: str, ncc_token: str) -> str:
                 if success:
                     logging.info(f'Scorecard "{scorecard["name"]}" deleted.')
                 else:
-                    logging.warning(f'Scorecard "{scorecard["name"]}" not deleted.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Scorecard Teardown Failed",
+                        f'Scorecard "{scorecard["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(f'Scorecard "{scorecard["name"]}" not deleted.')
         else:
-            logging.warning(f"No scorecards found with campaign name.")
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Scorecard Teardown Failed",
+                f'No scorecard with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No scorecard with campaign name "{campaign_name}" found for deletion.'
+            )
 
         duration = datetime.datetime.now() - start_time
         logging.info(f"Duration: {str(duration)}")

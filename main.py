@@ -1,5 +1,6 @@
 import getpass
 from authentication import *
+from datadog import *
 from set_up_inbound_campaign import *
 from set_up_agent import *
 from set_up_supervisor import *
@@ -39,6 +40,16 @@ def main():
         password = getpass.getpass(prompt="Password: ", stream=None)
         auth_info = get_ncc_token(username, password)
         if auth_info:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "success",
+                "normal",
+                "Login Successful",
+                f'User "{username}" logged in.',
+                ["login"],
+            )
             authenticated = True
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
@@ -47,24 +58,94 @@ def main():
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
-                    set_up_inbound_campaign(ncc_location, ncc_token)
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Inbound Campaign Setup Started",
+                        f'User "{username}" started inbound campaign setup.',
+                        ["inboundcampaignsetup"],
+                    )
+                    set_up_inbound_campaign(ncc_location, ncc_token, username)
                 elif choice == "2":
-                    set_up_agent(ncc_location, ncc_token)
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Agent Setup Started",
+                        f'User "{username}" started agent setup.',
+                        ["agentsetup"],
+                    )
+                    set_up_agent(ncc_location, ncc_token, username)
                 elif choice == "3":
-                    set_up_supervisor(ncc_location, ncc_token)
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Supervisor Setup Started",
+                        f'User "{username}" started supervisor setup.',
+                        ["supervisorsetup"],
+                    )
+                    set_up_supervisor(ncc_location, ncc_token, username)
                 elif choice == "4":
-                    tear_down_campaign(ncc_location, ncc_token)
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Campaign Teardown Started",
+                        f'User "{username}" started campaign teardown.',
+                        ["campaignteardown"],
+                    )
+                    tear_down_campaign(ncc_location, ncc_token, username)
                 elif choice == "5":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Logout",
+                        f'User "{username}" logged out.',
+                        ["logout"],
+                    )
                     auth_info = ""
                     authenticated = False
                     print()
                     break
                 elif choice == "6":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Exit Application",
+                        f'User "{username}" exited the application.',
+                        ["exitapplication"],
+                    )
                     pass
                 else:
                     print()
                     print("Invalid choice.")
         else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Login Failed",
+                f'User "{username}" tried unsuccessfully to log in.',
+                ["login"],
+            )
             print()
             print("Authentication failed. Please try again.")
             print()
