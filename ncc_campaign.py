@@ -150,7 +150,7 @@ def create_campaign(
             "outboundANI": False,
             "userRecordingsFileNameFormat": "",
             "surveyId": user_survey_id,
-            "useForEmail": False,
+            "useForEmail": True,
             "defaultExtension": False,
             "recordingEventsTranscription": True,
             "ftpFilenameFormat": "",

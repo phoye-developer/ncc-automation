@@ -1,5 +1,7 @@
 import datetime
 import logging
+from authentication_info import *
+from datadog import *
 from ncc_user_profile import *
 from ncc_user import *
 from ncc_queue import *
@@ -8,7 +10,7 @@ from ncc_supervisor_user import *
 from ncc_topic import *
 
 
-def set_up_agent(ncc_location: str, ncc_token: str):
+def set_up_agent(ncc_location: str, ncc_token: str, username: str):
     """
     This function creates an agent in Nextiva Contact Center (NCC) and assigns them to queues.
     """
@@ -30,6 +32,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
         print()
         first_name = input("First name: ")
         if first_name.lower() == "cancel":
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Agent Setup Cancelled",
+                f'User "{username}" cancelled agent setup.',
+                ["agentsetup"],
+            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -45,6 +57,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             print()
             last_name = input("Last name: ")
             if last_name.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Agent Setup Cancelled",
+                    f'User "{username}" cancelled agent setup.',
+                    ["agentsetup"],
+                )
                 print()
                 print("Operation cancelled.")
                 cancelled = True
@@ -60,6 +82,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             print()
             email = input("Email: ")
             if email.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Agent Setup Cancelled",
+                    f'User "{username}" cancelled agent setup.',
+                    ["agentsetup"],
+                )
                 print()
                 print("Operation cancelled.")
                 cancelled = True
@@ -82,6 +114,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Agent Setup Cancelled",
+                    f'User "{username}" cancelled agent setup.',
+                    ["agentsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             elif choice == "1":
@@ -106,6 +148,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Agent Setup Cancelled",
+                    f'User "{username}" cancelled agent setup.',
+                    ["agentsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             elif choice == "1":
@@ -130,6 +182,16 @@ def set_up_agent(ncc_location: str, ncc_token: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Agent Setup Cancelled",
+                    f'User "{username}" cancelled agent setup.',
+                    ["agentsetup"],
+                )
                 print("Operation cancelled.")
                 cancelled = True
             elif choice == "1":
@@ -160,10 +222,40 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                     agent_user_profile["_id"],
                 )
                 if agent != {}:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "success",
+                        "normal",
+                        "Agent Setup Successful",
+                        f'Agent "{first_name} {last_name}" created.',
+                        ["agentsetup"],
+                    )
                     logging.info(f'Agent "{first_name} {last_name}" created.')
                 else:
-                    logging.warning(f'Agent "{first_name} {last_name}" not created.')
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Agent Setup Failed",
+                        f'Agent "{first_name} {last_name}" not created.',
+                        ["agentsetup"],
+                    )
+                    logging.error(f'Agent "{first_name} {last_name}" not created.')
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Agent" not found.',
+                    ["agentsetup"],
+                )
                 logging.warning('User profile "Agent" not found.')
         else:
             logging.info(f'Agent "{first_name} {last_name}" already exists.')
@@ -189,11 +281,31 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                                 f'Agent "{agent["name"]}" assigned to queue "{queue["name"]}".'
                             )
                         else:
-                            logging.warning(
+                            post_datadog_event(
+                                dd_api_key,
+                                dd_application_key,
+                                username,
+                                "error",
+                                "normal",
+                                "Agent Assignment to Queue Failed",
+                                f'Agent "{agent["name"]}" not assigned to queue "{queue["name"]}".',
+                                ["agentsetup"],
+                            )
+                            logging.error(
                                 f'Agent "{agent["name"]}" not assigned to queue "{queue["name"]}".'
                             )
             else:
-                logging.warning("No queues found for assignment.")
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "No Queues Found",
+                    "No queues found for agent assignment.",
+                    ["agentsetup"],
+                )
+                logging.warning("No queues found for agent assignment.")
 
         # Assign agent to supervisors
         if agent != {} and assign_to_supervisors:
@@ -222,12 +334,42 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                                     f'Agent "{first_name} {last_name}" assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
                                 )
                             else:
-                                logging.warning(
+                                post_datadog_event(
+                                    dd_api_key,
+                                    dd_application_key,
+                                    username,
+                                    "error",
+                                    "normal",
+                                    "Agent Assignment to Supervisor Failed",
+                                    f'Agent "{first_name} {last_name}" not assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".',
+                                    ["agentsetup"],
+                                )
+                                logging.error(
                                     f'Agent "{first_name} {last_name}" not assigned to "{supervisor["firstName"]} {supervisor["lastName"]}".'
                                 )
                 else:
-                    logging.warning("No supervisors found for assignment.")
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "No Supervisors Found",
+                        "No supervisors found for agent assignment.",
+                        ["agentsetup"],
+                    )
+                    logging.warning("No supervisors found for agent assignment.")
             else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "User Profile Not Found",
+                    'User profile "Supervisor" not found.',
+                    ["agentsetup"],
+                )
                 logging.warning('User profile "Supervisor" not found.')
 
         # Assign agent to topics
@@ -253,11 +395,31 @@ def set_up_agent(ncc_location: str, ncc_token: str):
                                 f'Agent "{first_name} {last_name}" assigned to topic "{topic["name"]}".'
                             )
                         else:
-                            logging.warning(
+                            post_datadog_event(
+                                dd_api_key,
+                                dd_application_key,
+                                username,
+                                "error",
+                                "normal",
+                                "Agent Assignment to Topic Failed",
+                                f'Agent "{first_name} {last_name}" not assigned to topic "{topic["name"]}".',
+                                ["agentsetup"],
+                            )
+                            logging.error(
                                 f'Agent "{first_name} {last_name}" not assigned to topic "{topic["name"]}".'
                             )
             else:
-                logging.warning("No topics found for assignment.")
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "No Topics Found",
+                    "No topics found for agent assignment",
+                    ["agentsetup"],
+                )
+                logging.warning("No topics found for agent assignment.")
 
         duration = datetime.datetime.now() - start_time
         logging.info(f"Duration: {str(duration)}")
