@@ -245,11 +245,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
 
         # Select PSTN number
         campaign_address = ""
+        campaign_addresses_available = []
         print("Searching for available PSTN numbers...")
         print()
         pstn_numbers = get_pstn_numbers(ncc_location, ncc_token)
         if len(pstn_numbers) > 0:
-            campaign_addresses_available = []
             for index, pstn_number in enumerate(pstn_numbers):
                 success = search_campaigns_by_address(
                     ncc_location, ncc_token, pstn_number["name"]
