@@ -885,12 +885,20 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                 f"{campaign_name} - Chat",
             )
             if chat_survey == {}:
+                chat_queues = []
+                for (
+                    key,
+                    value,
+                ) in queues_to_assign.items():
+                    chat_queues.append(value)
                 chat_survey = create_chat_survey(
                     ncc_location,
                     ncc_token,
                     f"{campaign_name} - Chat",
                     options,
                     survey_theme,
+                    business_name,
+                    chat_queues,
                 )
                 if chat_survey != {}:
                     logging.info(f'Survey "{campaign_name} - Chat" created.')

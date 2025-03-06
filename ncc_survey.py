@@ -602,6 +602,8 @@ def create_chat_survey(
     survey_name: str,
     survey_options: list,
     survey_theme: dict,
+    business_name: str,
+    queues: list,
 ) -> dict:
     """
     This function creates a survey with a specified name.
@@ -1128,7 +1130,7 @@ def create_chat_survey(
                                             "buttonWidth": "120px",
                                             "buttonPadding": "8px",
                                             "buttonMargin": "8px",
-                                            "campaignId": "67bceaa3572c9278ae3c9eac",
+                                            "campaignId": "",
                                             "name": "firstName",
                                             "email": "email",
                                             "messages": [],
@@ -1201,7 +1203,7 @@ def create_chat_survey(
                                             "buttonWidth": "120px",
                                             "buttonPadding": "8px",
                                             "buttonMargin": "8px",
-                                            "campaignId": "67bceaa3572c9278ae3c9eac",
+                                            "campaignId": "",
                                             "phone": "phone",
                                             "attachedData": [],
                                             "successVariables": [],
@@ -1254,12 +1256,7 @@ def create_chat_survey(
                                     "textFontSize": "14",
                                     "buttonPadding": "8px",
                                     "buttonMargin": "8px",
-                                    "queues": [
-                                        "67b68a6d36f8480e05fdcafb",
-                                        "67b68ac2572c9278ae3bc317",
-                                        "67b68aef2180c572fdebe4f9",
-                                        "67b68c52572c9278ae3bc318",
-                                    ],
+                                    "queues": queues,
                                     "medias": ["chat", "voice"],
                                 },
                                 "_id": "67baae17296c3677732b9cf8",
@@ -2052,7 +2049,7 @@ def create_chat_survey(
                                 "component": "rate",
                                 "elements": [],
                                 "properties": {
-                                    "label": "I would recommend Next Retail to a friend!",
+                                    "label": f"I would recommend {business_name} to a friend!",
                                     "labelInReport": "surveyQ04",
                                     "fontSize": 16,
                                     "fieldname": "survey004",
@@ -2859,12 +2856,12 @@ def update_chat_survey_campaign_id(
     survey = get_survey(ncc_location, ncc_token, survey_id)
     if survey != {}:
         conn = http.client.HTTPSConnection(ncc_location)
-        survey["layout"]["elements"][1]["elements"][0]["elements"][0]["elements"][6][
-            "elements"
-        ][0]["properties"]["campaignId"] = campaign_id
-        survey["layout"]["elements"][1]["elements"][0]["elements"][0]["elements"][6][
-            "elements"
-        ][2]["properties"]["campaignId"] = campaign_id
+        survey["layout"]["elements"][2]["elements"][3]["elements"][0]["properties"][
+            "campaignId"
+        ] = campaign_id
+        survey["layout"]["elements"][2]["elements"][3]["elements"][2]["properties"][
+            "campaignId"
+        ] = campaign_id
         payload = json.dumps(survey)
         headers = {
             "Authorization": ncc_token,
