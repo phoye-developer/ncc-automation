@@ -6174,6 +6174,199 @@ def create_direct_line_workflow(
     return workflow
 
 
+def create_csat_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_name: str,
+) -> dict:
+    """
+    This function creates a workflow in Nextiva Contact Center (NCC).
+    """
+    workflow = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "maxActions": 10000,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": workflow_name}}
+            },
+            "states": {
+                "67c22a297a298cbb08ad55a2": {
+                    "category": "Standard",
+                    "campaignStateId": "67c22a297a298cbb08ad55a2",
+                    "actions": [
+                        {
+                            "category": "Action",
+                            "title": "Terminate",
+                            "name": "Terminate",
+                            "type": "terminate",
+                            "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67c22a297a298cbb08ad55a2",
+                    "_id": "67c22a297a298cbb08ad55a2",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "239.35924999999997 130.09825",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "Survey",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Survey'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "Survey",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740775771533",
+                        },
+                        {
+                            "name": "Start",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67c22a297a298cbb08ad55a2",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67c22e1c291f8bcc46061363",
+                            "_selected": False,
+                            "icon": "icon-transition",
+                            "id": "refId1740775771522",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1740775771533"},
+                        {"name": "Start", "id": "67c22e1c291f8bcc46061363"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "0 0",
+                },
+                "67c22dfd63bdfe58b65e30cd": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67c22dfd63bdfe58b65e30cd",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivaretaildemo",
+                    "actions": [
+                        {
+                            "icon": "icon-timer",
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": "300",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "starttimer",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740775771520",
+                        },
+                    ],
+                    "_id": "67c22dfd63bdfe58b65e30cd",
+                    "key": "67c22dfd63bdfe58b65e30cd",
+                    "location": "420.1982499999998 -89.70224999999994",
+                    "transitions": [{"name": "End State", "id": "refId1740775771520"}],
+                },
+            },
+            "finalWorkitemStateId": "67c22a297a298cbb08ad55a2",
+            "finalUserStateId": "67c22a297a298cbb08ad55a2",
+            "name": workflow_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/workflow/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return workflow
+
+
+def update_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_id: str,
+    workflow: dict,
+) -> bool:
+    """
+    This function updates a workflow with the specified workflow ID.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(workflow)
+    headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
+
+
 def delete_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> bool:
     """
     This function deletes a workflow with the specified workflow ID.
