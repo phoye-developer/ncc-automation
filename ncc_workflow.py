@@ -11,12 +11,41 @@ def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", f"/data/api/types/workflow/{workflow_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        workflow = json.loads(data)
+    try:
+        conn.request("GET", f"/data/api/types/workflow/{workflow_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
     return workflow
+
+
+def get_workflows(ncc_location: str, ncc_token: str) -> list:
+    """
+    This function fetches a list of workflows in Nextiva Contact Center (NCC).
+    """
+    workflows = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    try:
+        conn.request("GET", f"/data/api/types/workflow", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    workflows.append(result)
+    except:
+        pass
+    conn.close()
+    return workflows
 
 
 def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> dict:
@@ -28,23 +57,26 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_workflow_name = urllib.parse.quote(workflow_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/workflow?q={url_encoded_workflow_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == workflow_name:
-                    workflow = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/workflow?q={url_encoded_workflow_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == workflow_name:
+                        workflow = result
+                        break
+    except:
+        pass
     conn.close()
     return workflow
 

@@ -10,6 +10,7 @@ from ncc_campaign import *
 from ncc_survey import *
 from ncc_classification import *
 from ncc_scorecard import *
+from ncc_report import *
 
 
 def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
@@ -57,34 +58,13 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
         start_time = datetime.datetime.now()
 
         logging.info("Starting...")
-        # Delete campaign
-        campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
-        if campaign != {}:
-            success = delete_campaign(ncc_location, ncc_token, campaign["_id"])
-            if success:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "success",
-                    "normal",
-                    "Campaign Teardown Successful",
-                    f'Campaign "{campaign_name}" deleted.',
-                    ["campaignteardown"],
-                )
-                logging.info(f'Campaign "{campaign_name}" deleted.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Campaign Teardown Failed",
-                    f'Campaign "{campaign_name}" not deleted.',
-                    ["campaignteardown"],
-                )
-                logging.error(f'Campaign "{campaign_name}" not deleted.')
+        # Delete campaigns
+        campaigns_to_delete = []
+        campaigns = get_campaigns(ncc_location, ncc_token)
+        if len(campaigns) > 0:
+            for campaign in campaigns:
+                if str(campaign["name"]).startswith(campaign_name):
+                    campaigns_to_delete.append(campaign)
         else:
             post_datadog_event(
                 dd_api_key,
@@ -93,29 +73,63 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
                 "warning",
                 "normal",
                 "Campaign Teardown Failed",
-                f'Campaign "{campaign_name}" not found for deletion.',
+                f"No campaigns found.",
                 ["campaignteardown"],
             )
-            logging.warning(f'Campaign "{campaign_name}" not found for deletion.')
-
-        # Delete workflow
-        workflow = search_workflows(ncc_location, ncc_token, campaign_name)
-        if workflow != {}:
-            success = delete_workflow(ncc_location, ncc_token, workflow["_id"])
-            if success:
-                logging.info(f'Workflow "{campaign_name}" deleted.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Workflow Teardown Failed",
-                    f'Workflow "{campaign_name}" not deleted.',
-                    ["campaignteardown"],
+            logging.warning(f"No campaigns found.")
+        if len(campaigns_to_delete) > 0:
+            for campaign_to_delete in campaigns_to_delete:
+                success = delete_campaign(
+                    ncc_location, ncc_token, campaign_to_delete["_id"]
                 )
-                logging.error(f'Workflow "{campaign_name}" not deleted.')
+                if success:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "success",
+                        "normal",
+                        "Campaign Teardown Successful",
+                        f'Campaign "{campaign_to_delete["name"]}" deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.info(f'Campaign "{campaign_to_delete["name"]}" deleted.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Campaign Teardown Failed",
+                        f'Campaign "{campaign_to_delete["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(
+                        f'Campaign "{campaign_to_delete["name"]}" not deleted.'
+                    )
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Campaign Teardown Failed",
+                f'No campaigns with name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No campaigns with name "{campaign_name}" found for deletion.'
+            )
+
+        # Delete workflows
+        workflows_to_delete = []
+        workflows = get_workflows(ncc_location, ncc_token)
+        if len(workflows) > 0:
+            for workflow in workflows:
+                if str(workflow["name"]).startswith(campaign_name):
+                    workflows_to_delete.append(workflow)
         else:
             post_datadog_event(
                 dd_api_key,
@@ -124,10 +138,45 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
                 "warning",
                 "normal",
                 "Workflow Teardown Failed",
-                f'Workflow "{campaign_name}" not found for deletion.',
+                f"No workflows found.",
                 ["campaignteardown"],
             )
-            logging.warning(f'Workflow "{campaign_name}" not found.')
+            logging.warning(f"No workflows found.")
+        if len(workflows_to_delete) > 0:
+            for workflow_to_delete in workflows_to_delete:
+                success = delete_workflow(
+                    ncc_location, ncc_token, workflow_to_delete["_id"]
+                )
+                if success:
+                    logging.info(f'Workflow "{workflow_to_delete["name"]}" deleted.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Workflow Teardown Failed",
+                        f'Workflow "{workflow_to_delete["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(
+                        f'Workflow "{workflow_to_delete["name"]}" not deleted.'
+                    )
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Workflow Teardown Failed",
+                f'No workflows with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No workflows with campaign name "{campaign_name}" found for deletion.'
+            )
 
         # Delete functions
         functions = search_campaign_functions(ncc_location, ncc_token, campaign_name)
@@ -269,6 +318,59 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
             )
             logging.warning(
                 f'No scorecard with campaign name "{campaign_name}" found for deletion.'
+            )
+
+        # Delete reports
+        reports_to_delete = []
+        reports = get_reports(ncc_location, ncc_token)
+        if len(reports) > 0:
+            for report in reports:
+                if str(report["name"]).startswith(campaign_name):
+                    reports_to_delete.append(report)
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Report Teardown Failed",
+                f"No reports found.",
+                ["campaignteardown"],
+            )
+            logging.warning(f"No reports found.")
+        if len(reports_to_delete) > 0:
+            for report_to_delete in reports_to_delete:
+                success = delete_report(
+                    ncc_location, ncc_token, report_to_delete["_id"]
+                )
+                if success:
+                    logging.info(f'Report "{report_to_delete["name"]}" deleted.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Report Teardown Failed",
+                        f'Report "{report_to_delete["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.error(f'Report "{report_to_delete["name"]}" not deleted.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Report Teardown Failed",
+                f'No reports with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No reports with campaign name "{campaign_name}" found for deletion.'
             )
 
         duration = datetime.datetime.now() - start_time
