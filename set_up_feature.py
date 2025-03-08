@@ -85,9 +85,7 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                         ncc_location,
                         ncc_token,
                         username,
-                        f"{campaign_name} - CSAT",
                         campaign_name,
-                        campaign_caller_id,
                     )
                 elif choice == "2":
                     pass

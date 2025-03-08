@@ -877,14 +877,67 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             )
             logging.warning("Insufficient data to create user survey.")
 
+        # Create CSAT survey
+        csat_survey = search_surveys(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - CSAT",
+        )
+        if csat_survey == {}:
+            if survey_theme != {}:
+                csat_survey = create_csat_survey(
+                    ncc_location,
+                    ncc_token,
+                    f"{campaign_name} - CSAT",
+                    survey_theme["_id"],
+                )
+                if csat_survey != {}:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Survey Creation Successful",
+                        f'Survey "{campaign_name} - CSAT" created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.info(f'Survey "{campaign_name} - CSAT" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Survey Creation Failed",
+                        f'Survey "{campaign_name} - CSAT" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Survey "{campaign_name} - CSAT" not created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Survey Creation Failed",
+                    f"Insufficient data to create survey.",
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning("Insufficient data to create survey.")
+        else:
+            logging.info(f'Survey "{campaign_name} - CSAT" already exists')
+
         # Create chat survey
-        if survey_theme != {}:
-            chat_survey = search_surveys(
-                ncc_location,
-                ncc_token,
-                f"{campaign_name} - Chat",
-            )
-            if chat_survey == {}:
+        chat_survey = search_surveys(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - Chat",
+        )
+        if chat_survey == {}:
+            if survey_theme != {}:
                 chat_queues = []
                 for (
                     key,
@@ -897,7 +950,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     f"{campaign_name} - Chat",
                     options,
                     survey_theme,
-                    business_name,
                     chat_queues,
                 )
                 if chat_survey != {}:
@@ -915,19 +967,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     )
                     logging.error(f'Survey "{campaign_name} - Chat" not created.')
             else:
-                logging.info(f'Survey "{campaign_name} - Chat" already exists.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Survey Creation Failed",
+                    "Insufficient data to create chat survey.",
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning("Insufficient data to create chat survey.")
         else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Survey Creation Failed",
-                "Insufficient data to create chat survey.",
-                ["inboundcampaignsetup"],
-            )
-            logging.warning("Insufficient data to create chat survey.")
+            logging.info(f'Survey "{campaign_name} - Chat" already exists.')
 
         # Create QM survey
         if survey_theme != {}:
@@ -1738,7 +1790,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         else:
             logging.info('Script "Get queueId" already exists.')
 
-        # Create workflow
+        # Create "main" workflow
         workflow = search_workflows(
             ncc_location,
             ncc_token,
@@ -1836,6 +1888,46 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         else:
             logging.info(f'Workflow "{campaign_name}" already exists.')
 
+        #  Create CSAT workflow
+        csat_workflow = search_workflows(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - CSAT",
+        )
+        if csat_workflow == {}:
+            if csat_survey != {}:
+                csat_workflow = create_csat_workflow(
+                    ncc_location, ncc_token, f"{campaign_name} - CSAT"
+                )
+                if csat_workflow != {}:
+                    logging.info(f'Workflow "{campaign_name} - CSAT" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Workflow Creation Failed",
+                        f'Workflow "{campaign_name} - CSAT" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Workflow "{campaign_name} - CSAT" not created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Workflow Creation Failed",
+                    "Insufficient data to create workflow.",
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning("Insufficient data to create workflow.")
+        else:
+            logging.info(f'Workflow "{campaign_name} - CSAT" already exists.')
+
         # Create campaign
         campaign = search_campaigns_by_name(
             ncc_location,
@@ -1902,6 +1994,50 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         else:
             logging.info(f'Campaign "{campaign_name}" already exists.')
 
+        # Create CSAT campaign
+        csat_campaign = search_campaigns_by_name(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - CSAT",
+        )
+        if csat_campaign == {}:
+            if "_id" in csat_survey and "_id" in csat_workflow:
+                csat_campaign = create_csat_campaign(
+                    ncc_location,
+                    ncc_token,
+                    f"{campaign_name} - CSAT",
+                    csat_workflow,
+                    csat_survey,
+                )
+                if csat_campaign != {}:
+                    logging.info(f'Campaign "{campaign_name} - CSAT" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Campaign Creation Failed",
+                        f'Campaign "{campaign_name} - CSAT" not created.',
+                        ["featuresetup"],
+                    )
+                    logging.error(f'Campaign "{campaign_name} - CSAT" not created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Campaign Creation Failed",
+                    "Insufficient data to create campaign.",
+                    ["featuresetup"],
+                )
+                logging.warning("Insufficient data to create campaign.")
+        else:
+            logging.info(f'Campaign "{campaign_name} - CSAT" already exists.')
+
         # Assign campaign address to campaign
         if campaign != {} and campaign_address != "" and campaign_address != "None":
             success = assign_address_to_campaign(
@@ -1911,7 +2047,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                 campaign["_id"],
             )
             if success:
-                logging.info(f'PSTN number "{campaign_address}" assigned to campaign.')
+                logging.info(
+                    f'PSTN number "{campaign_address}" assigned to campaign "{campaign_name}".'
+                )
             else:
                 post_datadog_event(
                     dd_api_key,
@@ -1920,11 +2058,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     "error",
                     "normal",
                     "Campaign Address Assignment Failed",
-                    f'PSTN number "{campaign_address}" not assigned to campaign.',
+                    f'PSTN number "{campaign_address}" not assigned to campaign "{campaign_name}".',
                     ["inboundcampaignsetup"],
                 )
                 logging.error(
-                    f'PSTN number "{campaign_address}" not assigned to campaign.'
+                    f'PSTN number "{campaign_address}" not assigned to campaign "{campaign_name}".'
                 )
 
         # Update chat survey campaign ID
@@ -2174,6 +2312,51 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     logging.error(f'Report "{report["name"]}" not created.')
             else:
                 logging.info(f'Report "{report["name"]}" already exists.')
+
+        # Create CSAT report
+        csat_report = search_reports(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - CSAT",
+        )
+        if csat_report == {}:
+            if csat_survey != {} and csat_campaign != {}:
+                csat_report = create_csat_report(
+                    ncc_location,
+                    ncc_token,
+                    f"{campaign_name} - CSAT",
+                    "today",
+                    csat_survey,
+                    csat_campaign,
+                )
+                if csat_report != {}:
+                    logging.info(f'Report "{campaign_name} - CSAT" created')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Report Creation Failed",
+                        f'Report "{campaign_name} - CSAT" not created.',
+                        ["featuresetup"],
+                    )
+                    logging.error(f'Report "{campaign_name} - CSAT" not created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Report Creation Failed",
+                    "Insufficient data to create report.",
+                    ["featuresetup"],
+                )
+                logging.warning("Insufficient data to create report.")
+        else:
+            logging.info(f'Report "{campaign_name} - CSAT" already exists.')
 
         duration = datetime.datetime.now() - start_time
         logging.info(f"Duration: {str(duration)}")
