@@ -115,24 +115,32 @@ def create_csat_report(
             "scheduleApplyQuotesToAll": False,
             "reportuser": {"total": 0, "count": 0},
             "genericQuery": 'WITH\r\n  surveyResults AS (\r\n  SELECT\r\n    FORMAT_TIMESTAMP("%x %X", TIMESTAMP_MILLIS(createdAt), \'${timezone}\') AS start_time,\r\n    REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.relatedWorkitemId.value"), "\\"", "") AS related_workitem_id,\r\n    REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.resolved.value"), "\\"", "") AS resolved,\r\n    REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
-            + '.satisfied.value"), "\\"", "") AS satisfied\r\n  FROM\r\n    `REPORTS_WORKITEMS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND campaigns = "'
+            + csat_survey["_id"]
+            + '.satisfied.value"), "\\"", "") AS satisfied,\r\n    REPLACE(JSON_QUERY(object, "$.surveyResult.'
+            + csat_survey["_id"]
+            + '.friendly.value"), "\\"", "") AS friendly,\r\n    REPLACE(JSON_QUERY(object, "$.surveyResult.'
+            + csat_survey["_id"]
+            + '.wouldRecommend.value"), "\\"", "") AS would_recommend\r\n  FROM\r\n    `REPORTS_WORKITEMS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND campaigns = "'
             + csat_campaign["_id"]
             + '"\r\n    AND type = "Survey"\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.relatedWorkitemId.value"), "\\"", "") IS NOT NULL\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.relatedWorkitemId.value"), "\\"", "") != "undefined"\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.relatedWorkitemId.value"), "\\"", "") != "workitem.data.relatedWorkitemId"\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
+            + csat_survey["_id"]
             + '.satisfied.value"), "\\"", "") != "0"\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
-            + f'{csat_survey["_id"]}'
-            + '.resolved.value"), "\\"", "") != ""),\r\n  workitems AS (\r\n  SELECT\r\n    id AS workitemId,\r\n    campaignName AS campaign_name,\r\n    channelType AS channel_type,\r\n    dispositionName AS disposition_name\r\n  FROM\r\n    `DATA_WORKITEMS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND createdAt between ${startTime} AND ${endTime}),\r\n  user_workitems AS (\r\n  SELECT\r\n    workitemId AS workitem_id,\r\n    userId AS user_id\r\n  FROM\r\n    `DATA_WORKITEMS_USERS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND createdAt between ${startTime} AND ${endTime}),\r\n  user_data AS (\r\n  SELECT\r\n    userId AS user_id,\r\n    firstName AS first_name,\r\n    lastName AS last_name\r\n  FROM\r\n    `user`\r\n  WHERE\r\n    userId in ${users})\r\nSELECT\r\n  surveyResults.start_time AS survey_start_time,\r\n  surveyResults.related_workitem_id AS workitem_id,\r\n  surveyResults.resolved,\r\n  surveyResults.satisfied,\r\n  workitems.campaign_name,\r\n  workitems.channel_type,\r\n  workitems.disposition_name,\r\n  user_data.first_name AS agent_first_name,\r\n  user_data.last_name AS agent_last_name\r\nFROM\r\n  surveyResults\r\nJOIN\r\n  workitems\r\nON\r\n  surveyResults.related_workitem_id = workitems.workitemId\r\nJOIN\r\n  user_workitems\r\nON\r\n  workitems.workitemId = user_workitems.workitem_id\r\nJOIN\r\n  user_data\r\nON\r\n  user_workitems.user_id = user_data.user_id\r\nLIMIT\r\n  1000',
+            + csat_survey["_id"]
+            + '.resolved.value"), "\\"", "") != ""\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
+            + csat_survey["_id"]
+            + '.friendly.value"), "\\"", "") != ""\r\n    AND REPLACE(JSON_QUERY(object, "$.surveyResult.'
+            + csat_survey["_id"]
+            + '.wouldRecommend.value"), "\\"", "") != ""),\r\n  workitems AS (\r\n  SELECT\r\n    id AS workitemId,\r\n    campaignName AS campaign_name,\r\n    channelType AS channel_type,\r\n    dispositionName AS disposition_name\r\n  FROM\r\n    `DATA_WORKITEMS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND createdAt between ${startTime} AND ${endTime}),\r\n  user_workitems AS (\r\n  SELECT\r\n    workitemId AS workitem_id,\r\n    userId AS user_id\r\n  FROM\r\n    `DATA_WORKITEMS_USERS`\r\n  WHERE\r\n    ${partitionTime}\r\n    AND createdAt between ${startTime} AND ${endTime}),\r\n  user_data AS (\r\n  SELECT\r\n    userId AS user_id,\r\n    firstName AS first_name,\r\n    lastName AS last_name\r\n  FROM\r\n    `user`\r\n  WHERE\r\n    userId in ${users})\r\nSELECT\r\n  surveyResults.start_time AS survey_start_time,\r\n  surveyResults.related_workitem_id AS workitem_id,\r\n  surveyResults.resolved,\r\n  surveyResults.satisfied,\r\n  surveyResults.friendly,\r\n  surveyResults.would_recommend,\r\n  workitems.campaign_name,\r\n  workitems.channel_type,\r\n  workitems.disposition_name,\r\n  user_data.first_name AS agent_first_name,\r\n  user_data.last_name AS agent_last_name\r\nFROM\r\n  surveyResults\r\nJOIN\r\n  workitems\r\nON\r\n  surveyResults.related_workitem_id = workitems.workitemId\r\nJOIN\r\n  user_workitems\r\nON\r\n  workitems.workitemId = user_workitems.workitem_id\r\nJOIN\r\n  user_data\r\nON\r\n  user_workitems.user_id = user_data.user_id\r\nLIMIT\r\n  1000',
             "localizations": {"name": {"en": {"language": "en", "value": report_name}}},
             "scheduleAvoidSendingIfNoData": False,
             "filters": {

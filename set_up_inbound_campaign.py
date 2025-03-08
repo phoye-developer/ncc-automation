@@ -890,6 +890,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     ncc_token,
                     f"{campaign_name} - CSAT",
                     survey_theme["_id"],
+                    business_name,
                 )
                 if csat_survey != {}:
                     post_datadog_event(
