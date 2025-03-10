@@ -623,25 +623,6 @@ def create_iva_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
-                            "name": "Chat Message Consumer",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "from": "workitem.data.companyName",
-                                "message": "Thank you for contacting ${workitem.data.companyName}. In a few words, what can I help you with today?",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1739600226829",
-                        },
-                        {
                             "icon": "icon-transition",
                             "name": "Webhook",
                             "description": "Transition to another state",
@@ -2210,25 +2191,6 @@ def create_non_iva_dtmf_workflow(
                 "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
-                        "name": "Chat Message Consumer",
-                        "description": "Thank you for contacting...",
-                        "properties": {
-                            "description": "Thank you for contacting...",
-                            "condition": {
-                                "conditionType": "NONE",
-                                "expressions": [{"operator": "=="}],
-                            },
-                            "from": "workitem.data.companyName",
-                            "message": "Thank you for contacting ${workitem.data.companyName}.",
-                            "messageType": "BOT",
-                            "options": [],
-                        },
-                        "type": "chatmessageconsumer",
-                        "_selected": True,
-                        "id": "refId1739600229945",
-                        "icon": "icon-ai-message",
-                    },
-                    {
                         "icon": "icon-save",
                         "name": "Save Variable",
                         "description": "",
@@ -2282,9 +2244,9 @@ def create_non_iva_dtmf_workflow(
                     {
                         "icon": "icon-tts",
                         "name": "Play Collect Google TTS",
-                        "description": "Thank you for contacting...",
+                        "description": "DTMF menu",
                         "properties": {
-                            "description": "Thank you for contacting...",
+                            "description": "DTMF menu",
                             "voiceName": "en-US-Wavenet-J",
                             "voiceGender": "male",
                             "text": "",
@@ -5136,11 +5098,9 @@ def create_direct_line_workflow(
             "maxActions": 10000,
             "localizations": {
                 "name": {"en": {"language": "en", "value": workflow_name}},
-                "description": {
-                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
-                },
+                "description": {"en": {"language": "en", "value": "Direct workflow"}},
             },
-            "description": "Non-IVA, DTMF workflow",
+            "description": "Direct workflow",
             "states": {
                 "67b1186f5510d9081ac8e32b": {
                     "category": "Standard",
@@ -5772,25 +5732,6 @@ def create_direct_line_workflow(
                     "description": "Newly Created State",
                     "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "from": "workitem.data.companyName",
-                                "message": "Thank you for contacting ${workitem.data.companyName}.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1739600229945",
-                            "icon": "icon-ai-message",
-                        },
                         {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
