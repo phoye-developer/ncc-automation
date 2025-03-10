@@ -380,6 +380,52 @@ def create_iva_workflow(
                             "icon": "icon-transition",
                         },
                         {
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
@@ -624,22 +670,6 @@ def create_iva_workflow(
                     "description": "Newly Created State",
                     "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "icon": "icon-tts",
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                        },
                         {
                             "icon": "icon-dialogflow",
                             "name": "Transfer to Dialogflow",
@@ -1915,6 +1945,52 @@ def create_non_iva_dtmf_workflow(
                         "icon": "icon-transition",
                     },
                     {
+                        "icon": "icon-ai-message",
+                        "name": "Chat Message Consumer",
+                        "description": "Thank you for contacting...",
+                        "properties": {
+                            "description": "Thank you for contacting...",
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'Chat'",
+                                    }
+                                ],
+                            },
+                            "from": "workitem.data.companyName",
+                            "message": "Thank you for contacting ${workitem.data.companyName}.",
+                            "messageType": "BOT",
+                            "options": [],
+                        },
+                        "type": "chatmessageconsumer",
+                        "_selected": True,
+                    },
+                    {
+                        "icon": "icon-tts",
+                        "name": "Synthesize Text via Google TTS",
+                        "description": "Thank you for contacting...",
+                        "properties": {
+                            "description": "Thank you for contacting...",
+                            "voiceName": "en-US-Wavenet-J",
+                            "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'InboundCall'",
+                                    }
+                                ],
+                            },
+                        },
+                        "type": "googletts",
+                        "_selected": True,
+                    },
+                    {
                         "name": "Search Contacts",
                         "type": "transition",
                         "description": "Transition to another state",
@@ -2684,7 +2760,7 @@ def create_non_iva_dtmf_workflow(
     }
 
     if vertical == "general":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3033,7 +3109,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "hc":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3382,7 +3458,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "finserv":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. To apply for a new loan, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To apply for a new credit card, press 1. To apply for a new loan, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3812,7 +3888,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "insurance":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To sign up for a new policy, or to make changes to an existing policy, press 1. To file a new claim, or check the status of an existing claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To sign up for a new policy, or to make changes to an existing policy, press 1. To file a new claim, or check the status of an existing claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -4161,7 +4237,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "retail":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For order inquiries, press 1. For stock availability, press 2. To exchange an item, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">For order inquiries, press 1. For stock availability, press 2. To exchange an item, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -4591,7 +4667,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "pubsec":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To report a pothole, press 1. To report an abandoned vehicle, press 2. To report a missed trash pickup, press 3. For billing, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To report a pothole, press 1. To report an abandoned vehicle, press 2. To report a missed trash pickup, press 3. For billing, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -5336,6 +5412,52 @@ def create_direct_line_workflow(
                             "icon": "icon-transition",
                         },
                         {
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
@@ -5702,23 +5824,6 @@ def create_direct_line_workflow(
                     "description": "Newly Created State",
                     "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600229678",
-                        },
                         {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
