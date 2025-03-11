@@ -2,8 +2,10 @@ import logging
 import datetime
 from authentication_info import *
 from datadog import *
+from ncc_survey import *
 from ncc_workflow import *
 from ncc_campaign import *
+from ncc_report import *
 
 
 def set_up_csat_survey(
@@ -11,9 +13,10 @@ def set_up_csat_survey(
     ncc_token: str,
     username: str,
     campaign_name: str,
+    business_name: str,
 ):
     """
-    This function re-configures a workflow in Nextiva Contact Center (NCC) to send an SMS text with a link to a CSAT survey.
+    This function creates a survey, workflow, campaign, and report in Nextiva Contact Center (NCC) facilitate a CSAT survey.
     """
 
     logging.basicConfig(
@@ -25,34 +28,167 @@ def set_up_csat_survey(
     start_time = datetime.datetime.now()
 
     logging.info("Starting...")
-    # Find "CSAT" campaign
-    csat_campaign = search_campaigns_by_name(
-        ncc_location,
-        ncc_token,
-        f"{campaign_name} - CSAT",
-    )
-    if csat_campaign == {}:
+    # Find survey theme
+    surveys = search_campaign_surveys(ncc_location, ncc_token, campaign_name)
+    if len(surveys) > 0:
+        for survey in surveys:
+            if "surveythemeId" in survey:
+                survey_theme_id = survey["surveythemeId"]
+            if "tenantId" in survey:
+                tenant_id = survey["tenantId"]
+    else:
         post_datadog_event(
             dd_api_key,
             dd_application_key,
             username,
             "warning",
             "normal",
-            "CSAT Survey Setup Failed",
-            f'Campaign "{campaign_name} - CSAT" not found.',
+            "Survey Lookup Failed",
+            f"Survey theme or tenant ID not found.",
             ["featuresetup"],
         )
-        logging.warning(f'Campaign "{campaign_name} - CSAT" not found.')
-    else:
-        tenant_id = csat_campaign["tenantId"]
-        logging.info(f'Campaign "{campaign_name} - CSAT" found.')
+        logging.warning("Survey theme or tenant ID not found.")
 
-    # Find "Main" campaign
-    campaign = search_campaigns_by_name(
+    # Create CSAT survey
+    csat_survey = search_surveys(
         ncc_location,
         ncc_token,
-        campaign_name,
+        f"{campaign_name} - CSAT",
     )
+    if csat_survey == {}:
+        if survey_theme_id != "":
+            csat_survey = create_csat_survey(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - CSAT",
+                survey_theme_id,
+                business_name,
+            )
+            if csat_survey != {}:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "success",
+                    "normal",
+                    "Survey Creation Successful",
+                    f'Survey "{campaign_name} - CSAT" created.',
+                    ["featuresetup"],
+                )
+                logging.info(f'Survey "{campaign_name} - CSAT" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Survey Creation Failed",
+                    f'Survey "{campaign_name} - CSAT" not created.',
+                    ["featuresetup"],
+                )
+                logging.error(f'Survey "{campaign_name} - CSAT" not created.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Survey Creation Failed",
+                f"Insufficient data to create survey.",
+                ["featuresetup"],
+            )
+            logging.warning("Insufficient data to create survey.")
+    else:
+        logging.info(f'Survey "{campaign_name} - CSAT" already exists')
+
+    #  Create CSAT workflow
+    csat_workflow = search_workflows(
+        ncc_location,
+        ncc_token,
+        f"{campaign_name} - CSAT",
+    )
+    if csat_workflow == {}:
+        if csat_survey != {}:
+            csat_workflow = create_csat_workflow(
+                ncc_location, ncc_token, f"{campaign_name} - CSAT"
+            )
+            if csat_workflow != {}:
+                logging.info(f'Workflow "{campaign_name} - CSAT" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Workflow Creation Failed",
+                    f'Workflow "{campaign_name} - CSAT" not created.',
+                    ["featuresetup"],
+                )
+                logging.error(f'Workflow "{campaign_name} - CSAT" not created.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Workflow Creation Failed",
+                "Insufficient data to create workflow.",
+                ["featuresetup"],
+            )
+            logging.warning("Insufficient data to create workflow.")
+    else:
+        logging.info(f'Workflow "{campaign_name} - CSAT" already exists.')
+
+    # Create CSAT campaign
+    csat_campaign = search_campaigns_by_name(
+        ncc_location,
+        ncc_token,
+        f"{campaign_name} - CSAT",
+    )
+    if csat_campaign == {}:
+        if "_id" in csat_survey and "_id" in csat_workflow:
+            csat_campaign = create_csat_campaign(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - CSAT",
+                csat_workflow,
+                csat_survey,
+            )
+            if csat_campaign != {}:
+                logging.info(f'Campaign "{campaign_name} - CSAT" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Campaign Creation Failed",
+                    f'Campaign "{campaign_name} - CSAT" not created.',
+                    ["featuresetup"],
+                )
+                logging.error(f'Campaign "{campaign_name} - CSAT" not created.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Campaign Creation Failed",
+                "Insufficient data to create campaign.",
+                ["featuresetup"],
+            )
+            logging.warning("Insufficient data to create campaign.")
+    else:
+        logging.info(f'Campaign "{campaign_name} - CSAT" already exists.')
+
+    # Find "main" campaign
+    campaign = search_campaigns_by_name(ncc_location, ncc_token, campaign_name)
     if campaign == {}:
         post_datadog_event(
             dd_api_key,
@@ -60,18 +196,16 @@ def set_up_csat_survey(
             username,
             "warning",
             "normal",
-            "CSAT Survey Setup Failed",
+            "Campaign Search Failed",
             f'Campaign "{campaign_name}" not found.',
             ["featuresetup"],
         )
         logging.warning(f'Campaign "{campaign_name}" not found.')
-    else:
-        logging.info(f'Campaign "{campaign_name}" found.')
 
     # Update "main" workflow
     workflow = search_workflows(ncc_location, ncc_token, campaign_name)
     if workflow != {}:
-        if csat_campaign != {} and campaign != {}:
+        if "_id" in csat_campaign and "callerId" in campaign and tenant_id != "":
             states = workflow["states"]
             for key, value in enumerate(states):
                 if workflow["states"][value]["name"] == "End State":
@@ -198,6 +332,51 @@ def set_up_csat_survey(
             ["featuresetup"],
         )
         logging.warning(f'Workflow "{campaign_name}" not found for updating.')
+
+    # Create CSAT report
+    csat_report = search_reports(
+        ncc_location,
+        ncc_token,
+        f"{campaign_name} - CSAT",
+    )
+    if csat_report == {}:
+        if csat_survey != {} and csat_campaign != {}:
+            csat_report = create_csat_report(
+                ncc_location,
+                ncc_token,
+                f"{campaign_name} - CSAT",
+                "today",
+                csat_survey,
+                csat_campaign,
+            )
+            if csat_report != {}:
+                logging.info(f'Report "{campaign_name} - CSAT" created')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Report Creation Failed",
+                    f'Report "{campaign_name} - CSAT" not created.',
+                    ["featuresetup"],
+                )
+                logging.error(f'Report "{campaign_name} - CSAT" not created.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Report Creation Failed",
+                "Insufficient data to create report.",
+                ["featuresetup"],
+            )
+            logging.warning("Insufficient data to create report.")
+    else:
+        logging.info(f'Report "{campaign_name} - CSAT" already exists.')
 
     duration = datetime.datetime.now() - start_time
     logging.info(f"Duration: {str(duration)}")

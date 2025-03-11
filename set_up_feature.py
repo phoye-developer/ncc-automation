@@ -35,7 +35,7 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                 "normal",
                 "Feature Setup Cancelled",
                 f'User "{username}" cancelled feature setup.',
-                ["inboundcampaignsetup"],
+                ["featuresetup"],
             )
             print()
             print("Operation cancelled.")
@@ -49,9 +49,31 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                 print()
                 print(f'Campaign "{campaign_name}" not found. Please try again.')
                 campaign_name = ""
-            else:
-                if "callerId" in campaign:
-                    campaign_caller_id = campaign["callerId"]
+
+    if cancelled == False:
+
+        # Enter business name
+        business_name = ""
+        while business_name == "":
+            print()
+            business_name = input("Business name: ")
+            if business_name.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Feature Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" feature setup.',
+                    ["featuresetup"],
+                )
+                print()
+                print("Operation cancelled.")
+                cancelled = True
+            elif business_name == "":
+                print()
+                print("Invalid business name.")
 
     if cancelled == False:
 
@@ -75,7 +97,7 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                     "normal",
                     "Feature Setup Cancelled",
                     f'User "{username}" cancelled feature setup for "{campaign_name}" campaign.',
-                    ["inboundcampaignsetup"],
+                    ["featuresetup"],
                 )
                 print("Operation cancelled.")
                 cancelled = True
@@ -86,6 +108,7 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                         ncc_token,
                         username,
                         campaign_name,
+                        business_name,
                     )
                 elif choice == "2":
                     pass
