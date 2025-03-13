@@ -9,7 +9,7 @@ from ncc_survey import *
 from ncc_survey_theme import *
 from ncc_workflow import *
 from ncc_campaign import *
-from ncc_report import *
+from ncc_script import *
 
 
 def set_up_freshdesk_integration(
@@ -442,6 +442,124 @@ def set_up_freshdesk_integration(
             )
             logging.warning(
                 f'Insufficient data to update campaign "{campaign_name}". No survey available for update.'
+            )
+
+        # Create "parse transcription" script
+        parse_transcription_script = search_scripts(
+            ncc_location, ncc_token, "Parse transcriptionMessages"
+        )
+        if parse_transcription_script == {}:
+            parse_transcription_script = create_parse_transcription_script(
+                ncc_location, ncc_token, "Parse transcriptionMessages"
+            )
+            if parse_transcription_script != {}:
+                logging.info('Script "Parse transcriptionMessages" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Script Creation Failed",
+                    f'Script "Parse transcriptionMessages" not created.',
+                    ["integrationsetup"],
+                )
+                logging.error(f'Script "Parse transcriptionMessages" not created.')
+        else:
+            logging.info('Script "Parse transcriptionMessages" already exists.')
+
+        # Create "parse summary" script
+        parse_summary_script = search_scripts(ncc_location, ncc_token, "Parse summary")
+        if parse_summary_script == {}:
+            parse_summary_script = create_parse_summary_script(
+                ncc_location, ncc_token, "Parse summary"
+            )
+            if parse_summary_script != {}:
+                logging.info('Script "Parse summary" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Script Creation Failed",
+                    f'Script "Parse summary" not created.',
+                    ["integrationsetup"],
+                )
+                logging.error(f'Script "Parse summary" not created.')
+        else:
+            logging.info('Script "Parse summary" already exists.')
+
+        # Create "chat ticket" REST API object
+        chat_rest_call = search_rest_calls(
+            ncc_location, ncc_token, f"{campaign_name} - Create Freshdesk Chat Ticket"
+        )
+        if chat_rest_call == {}:
+            chat_rest_call = freshdesk_create_chat_ticket_rest_call(
+                ncc_location,
+                ncc_token,
+                freshdesk_subdomain,
+                freshdesk_api_key,
+                f"{campaign_name} - Create Freshdesk Chat Ticket",
+            )
+            if chat_rest_call != {}:
+                logging.info(
+                    f'REST API object "{campaign_name} - Create Freshdesk Chat Ticket" created.'
+                )
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "REST API Object Creation Failed",
+                    f'REST API object "{campaign_name} - Create Freshdesk Chat Ticket" not created.',
+                    ["integrationsetup"],
+                )
+                logging.error(
+                    f'REST API object "{campaign_name} - Create Freshdesk Chat Ticket" not created.'
+                )
+        else:
+            logging.info(
+                f'REST API object "{campaign_name} - Create Freshdesk Chat Ticket" already exists.'
+            )
+
+        # Create "call ticket" REST API object
+        call_rest_call = search_rest_calls(
+            ncc_location, ncc_token, f"{campaign_name} - Create Freshdesk Call Ticket"
+        )
+        if call_rest_call == {}:
+            call_rest_call = freshdesk_create_call_ticket_rest_call(
+                ncc_location,
+                ncc_token,
+                freshdesk_subdomain,
+                freshdesk_api_key,
+                f"{campaign_name} - Create Freshdesk Call Ticket",
+            )
+            if call_rest_call != {}:
+                logging.info(
+                    f'REST API object "{campaign_name} - Create Freshdesk Call Ticket" created.'
+                )
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "REST API Object Creation Failed",
+                    f'REST API object "{campaign_name} - Create Freshdesk Call Ticket" not created.',
+                    ["integrationsetup"],
+                )
+                logging.error(
+                    f'REST API object "{campaign_name} - Create Freshdesk Call Ticket" not created.'
+                )
+        else:
+            logging.info(
+                f'REST API object "{campaign_name} - Create Freshdesk Call Ticket" already exists.'
             )
 
         duration = datetime.datetime.now() - start_time

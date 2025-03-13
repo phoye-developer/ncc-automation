@@ -155,6 +155,94 @@ def freshdesk_create_search_contacts_rest_call(
     return rest_call
 
 
+def freshdesk_create_chat_ticket_rest_call(
+    ncc_location: str,
+    ncc_token: str,
+    freshdesk_subdomain: str,
+    freshdesk_api_key: str,
+    rest_call_name: str,
+) -> dict:
+    """
+    This function creates a REST API call object to create a "chat" ticket in Freshdesk.
+    """
+    rest_call = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "name": rest_call_name,
+            "description": "",
+            "localizations": {
+                "name": {"en": {"language": "en", "value": rest_call_name}}
+            },
+            "method": "POST",
+            "url": "https://" + freshdesk_subdomain + ".freshdesk.com/api/v2/tickets",
+            "body": '{\r\n    "requester_id": ${workitem.data.contactInfo.id},\r\n    "subject": "$dispositionName{}",\r\n    "status": 5,\r\n    "priority": 1,\r\n    "source": 7,\r\n    "description": "Workitem ID: ${workitem.workitemId}"\r\n}',
+            "authType": "BASIC_AUTH",
+            "authUsername": freshdesk_api_key,
+            "authPassword": "X",
+            "headerParameters": [{"key": "Content-Type", "value": "application/json"}],
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return rest_call
+
+
+def freshdesk_create_call_ticket_rest_call(
+    ncc_location: str,
+    ncc_token: str,
+    freshdesk_subdomain: str,
+    freshdesk_api_key: str,
+    rest_call_name: str,
+) -> dict:
+    """
+    This function creates a REST API call object to create a "call" ticket in Freshdesk.
+    """
+    rest_call = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "name": rest_call_name,
+            "description": "",
+            "localizations": {
+                "name": {"en": {"language": "en", "value": rest_call_name}}
+            },
+            "method": "POST",
+            "url": "https://" + freshdesk_subdomain + ".freshdesk.com/api/v2/tickets",
+            "body": '{\r\n    "requester_id": ${workitem.data.contactInfo.id},\r\n    "subject": "$dispositionName{}",\r\n    "status": 5,\r\n    "priority": 1,\r\n    "source": 3,\r\n    "description": "Workitem ID: ${workitem.workitemId}"\r\n}',
+            "authType": "BASIC_AUTH",
+            "authUsername": freshdesk_api_key,
+            "authPassword": "X",
+            "headerParameters": [{"key": "Content-Type", "value": "application/json"}],
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return rest_call
+
+
 def hubspot_create_search_contacts_rest_call(
     ncc_location: str, ncc_token: str, hubspot_access_token: str, rest_call_name: str
 ) -> dict:

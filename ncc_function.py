@@ -3299,19 +3299,8 @@ def freshdesk_create_search_contacts_function(
                             "properties": {
                                 "description": rest_api_object["name"],
                                 "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
                                 },
                                 "responseVariable": "searchContactsResponse",
                                 "restCallId": rest_api_object["_id"],
@@ -3597,7 +3586,7 @@ def freshdesk_create_search_contacts_function(
                         },
                         {
                             "icon": "icon-transition",
-                            "name": "Transition",
+                            "name": "Not Found",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
@@ -3683,8 +3672,62 @@ def freshdesk_create_search_contacts_function(
                             "icon": "icon-tts",
                         },
                         {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "freshdeskName",
+                                "rightExpression": "workitem.data.searchContactsResponse.body.results[workitem.data.contactCounter - 1].name",
+                                "variableName": "freshdeskName",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741901687319",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "chatName",
+                                "rightExpression": "${workitem.data.context.consumerData.firstName} ${workitem.data.context.consumerData.lastName}",
+                                "variableName": "chatName",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741901687320",
+                            "icon": "icon-save",
+                        },
+                        {
                             "name": "Contact Confirmed",
-                            "description": "Transition to another state",
+                            "description": "InboundCall",
                             "properties": {
                                 "condition": {
                                     "conditionType": "AND",
@@ -3702,13 +3745,53 @@ def freshdesk_create_search_contacts_function(
                                     ],
                                 },
                                 "stateId": "67cfbb0f0f18e3f6055f4671",
-                                "description": "Transition to another state",
+                                "description": "InboundCall",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 11981,
+                                },
                             },
                             "type": "transition",
                             "_selected": False,
                             "transitionId": "refId1741642665464",
+                            "id": "refId1741901687321",
                             "icon": "icon-transition",
-                            "id": "refId1741642665760",
+                        },
+                        {
+                            "name": "Contact Confirmed",
+                            "description": "Chat",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.data.freshdeskName",
+                                            "operator": "==",
+                                            "rightExpression": "workitem.data.chatName",
+                                        },
+                                    ],
+                                },
+                                "stateId": "67cfbb0f0f18e3f6055f4671",
+                                "description": "Chat",
+                                "points": {
+                                    "h": True,
+                                    "r": [],
+                                    "ct": 0,
+                                    "__gohashid": 11982,
+                                },
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "67d350f29b13fa7bb5f08335",
+                            "id": "refId1741901687322",
+                            "icon": "icon-transition",
                         },
                         {
                             "name": "Not Confirmed",

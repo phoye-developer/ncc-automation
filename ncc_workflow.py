@@ -253,10 +253,37 @@ def create_iva_workflow(
                             "icon": "icon-save",
                         },
                         {
+                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (inbound)",
+                                "description": "phone (Chat)",
+                                "rightExpression": "workitem.data.context.consumerData.phone",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741893969929",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (InboundCall or InboundSMS)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -281,15 +308,14 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739934454000",
+                            "id": "refId1741893969877",
                             "icon": "icon-save",
                         },
                         {
-                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (outbound)",
+                                "description": "phone (OutboundCall or OutboundSMS)",
                                 "rightExpression": "workitem.to.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -314,6 +340,8 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": True,
+                            "id": "refId1741893969878",
+                            "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
@@ -1798,10 +1826,37 @@ def create_non_iva_dtmf_workflow(
                         "icon": "icon-save",
                     },
                     {
+                        "icon": "icon-save",
                         "name": "Save Variable",
                         "description": "",
                         "properties": {
-                            "description": "phone (inbound)",
+                            "description": "phone (Chat)",
+                            "rightExpression": "workitem.data.context.consumerData.phone",
+                            "variableName": "phone",
+                            "asObject": False,
+                            "dlpOption": False,
+                            "wfmOption": False,
+                            "dashboard": False,
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'Chat'",
+                                    }
+                                ],
+                            },
+                        },
+                        "type": "savevariable",
+                        "_selected": False,
+                        "id": "refId1741893969929",
+                    },
+                    {
+                        "name": "Save Variable",
+                        "description": "",
+                        "properties": {
+                            "description": "phone (InboundCall or InboundSMS)",
                             "rightExpression": "workitem.from.slice(-10)",
                             "variableName": "phone",
                             "asObject": False,
@@ -1826,15 +1881,14 @@ def create_non_iva_dtmf_workflow(
                         },
                         "type": "savevariable",
                         "_selected": False,
-                        "id": "refId1739934454000",
+                        "id": "refId1741893969877",
                         "icon": "icon-save",
                     },
                     {
-                        "icon": "icon-save",
                         "name": "Save Variable",
                         "description": "",
                         "properties": {
-                            "description": "phone (outbound)",
+                            "description": "phone (OutboundCall or OutboundSMS)",
                             "rightExpression": "workitem.to.slice(-10)",
                             "variableName": "phone",
                             "asObject": False,
@@ -1859,6 +1913,8 @@ def create_non_iva_dtmf_workflow(
                         },
                         "type": "savevariable",
                         "_selected": True,
+                        "id": "refId1741893969878",
+                        "icon": "icon-save",
                     },
                     {
                         "name": "Save Variable",
@@ -5245,10 +5301,37 @@ def create_direct_line_workflow(
                             "icon": "icon-save",
                         },
                         {
+                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (inbound)",
+                                "description": "phone (Chat)",
+                                "rightExpression": "workitem.data.context.consumerData.phone",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741893969929",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (InboundCall or InboundSMS)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -5273,15 +5356,14 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739934454000",
+                            "id": "refId1741893969877",
                             "icon": "icon-save",
                         },
                         {
-                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (outbound)",
+                                "description": "phone (OutboundCall or OutboundSMS)",
                                 "rightExpression": "workitem.to.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -5306,6 +5388,8 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": True,
+                            "id": "refId1741893969878",
+                            "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
