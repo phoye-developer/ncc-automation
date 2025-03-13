@@ -3130,6 +3130,803 @@ def create_acd_callback_function(
     return function
 
 
+def freshdesk_create_search_contacts_function(
+    ncc_location: str,
+    ncc_token: str,
+    function_name: str,
+    rest_api_object: dict,
+) -> dict:
+    """
+    This function creates an NCC function.
+    """
+    function = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "states": {
+                "67cfb65a4d6519faf54bd6f6": {
+                    "category": "Standard",
+                    "campaignStateId": "67cfb65a4d6519faf54bd6f6",
+                    "actions": [
+                        {
+                            "icon": "icon-functionreturn",
+                            "name": "Return To Workflow",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                            "type": "functionreturn",
+                            "_selected": False,
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67cfb65a4d6519faf54bd6f6",
+                    "_id": "67cfb65a4d6519faf54bd6f6",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "-134 173",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "false",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1741642665222",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "false",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1741642665223",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactCounter",
+                                "rightExpression": "1",
+                                "variableName": "contactCounter",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactInfo",
+                                "rightExpression": "",
+                                "variableName": "contactInfo",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Search Contacts",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67cfb69d0112b32f30a43122",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67cfb66bf65d2aa3356737c7",
+                            "_selected": False,
+                            "id": "refId1741642665224",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Search Contacts", "id": "67cfb66bf65d2aa3356737c7"}
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "-56 -70",
+                },
+                "67cfb69d0112b32f30a43122": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb69d0112b32f30a43122",
+                    "name": "Search Contacts",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-api",
+                            "name": "Execute REST Call",
+                            "description": rest_api_object["name"],
+                            "properties": {
+                                "description": rest_api_object["name"],
+                                "condition": {
+                                    "conditionType": "OR",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundSMS'",
+                                        },
+                                    ],
+                                },
+                                "responseVariable": "searchContactsResponse",
+                                "restCallId": rest_api_object["_id"],
+                                "expansions": {
+                                    "restCallId": {"name": rest_api_object["name"]}
+                                },
+                                "_working": False,
+                            },
+                            "type": "restapi",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "API Success",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.searchContactsResponse.httpStatus",
+                                            "operator": "==",
+                                            "rightExpression": "200",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67cfb70e7e0703d9e33004d8",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665126",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "API Failure",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67cfb7151b4fedf6a7b429c3",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1741642665137",
+                        },
+                    ],
+                    "_id": "67cfb69d0112b32f30a43122",
+                    "key": "67cfb69d0112b32f30a43122",
+                    "location": "291 106",
+                    "transitions": [
+                        {"name": "API Success", "id": "refId1741642665126"},
+                        {"name": "API Failure", "id": "refId1741642665137"},
+                    ],
+                },
+                "67cfb70e7e0703d9e33004d8": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb70e7e0703d9e33004d8",
+                    "name": "API Success",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "totalContacts",
+                                "rightExpression": "workitem.data.searchContactsResponse.body.total",
+                                "variableName": "totalContacts",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                            "id": "refId1741642665596",
+                            "icon": "icon-save",
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactFound",
+                                "rightExpression": "true",
+                                "variableName": "contactFound",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.totalContacts",
+                                            "operator": ">=",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "name": "Check Counter",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "workitem.data.totalContacts >= 1",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.totalContacts",
+                                            "operator": ">=",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67cfb86a2811a1f5bd39a96d",
+                                "points": {
+                                    "h": True,
+                                    "r": [
+                                        {
+                                            "b": 957.9088253046659,
+                                            "k": 251.67869363632997,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 967.9088253046659,
+                                            "k": 251.67869363632997,
+                                            "h": True,
+                                        },
+                                        {"b": 964, "k": 251.67869363632997, "h": True},
+                                        {"b": 964, "k": 251.67869363632997, "h": True},
+                                        {
+                                            "b": 1417.957878757905,
+                                            "k": 251.67869363632997,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 1417.957878757905,
+                                            "k": 309.12003637394196,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 1417.957878757905,
+                                            "k": 319.12003637394196,
+                                            "h": True,
+                                        },
+                                    ],
+                                    "ct": 7,
+                                    "__gohashid": 67814,
+                                },
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665199",
+                            "id": "refId1741642665597",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "No Contacts Found",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67cfb873e63d3f3da573b1b9",
+                                "points": {
+                                    "h": True,
+                                    "r": [
+                                        {
+                                            "b": 957.9088253046659,
+                                            "k": 295.67869363632997,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 967.9088253046659,
+                                            "k": 295.67869363632997,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 967.9088253046659,
+                                            "k": 295.67869363632997,
+                                            "h": True,
+                                        },
+                                        {"b": 967.9088253046659, "k": 356, "h": True},
+                                        {"b": 1106.1409073462237, "k": 356, "h": True},
+                                        {
+                                            "b": 1106.1409073462237,
+                                            "k": 413.3404318208033,
+                                            "h": True,
+                                        },
+                                        {
+                                            "b": 1106.1409073462237,
+                                            "k": 423.3404318208033,
+                                            "h": True,
+                                        },
+                                    ],
+                                    "ct": 7,
+                                    "__gohashid": 67815,
+                                },
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665210",
+                            "id": "refId1741642665598",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67cfb70e7e0703d9e33004d8",
+                    "key": "67cfb70e7e0703d9e33004d8",
+                    "location": "874.9088253046659 256.7946871360858",
+                    "transitions": [
+                        {"name": "Check Counter", "id": "refId1741642665199"},
+                        {"name": "No Contacts Found", "id": "refId1741642665210"},
+                    ],
+                },
+                "67cfb7151b4fedf6a7b429c3": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb7151b4fedf6a7b429c3",
+                    "name": "API Failure",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1741642665147",
+                        }
+                    ],
+                    "_id": "67cfb7151b4fedf6a7b429c3",
+                    "key": "67cfb7151b4fedf6a7b429c3",
+                    "location": "552.8707792484727 364.0265643195703",
+                    "transitions": [{"name": "End State", "id": "refId1741642665147"}],
+                },
+                "67cfb86a2811a1f5bd39a96d": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb86a2811a1f5bd39a96d",
+                    "name": "Check Counter",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "Confirm Contact",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.contactCounter",
+                                            "operator": "<=",
+                                            "rightExpression": "workitem.data.totalContacts",
+                                        }
+                                    ],
+                                },
+                                "stateId": "67cfb93552684a06d24ccba6",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665300",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "Transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67cfb955b628baea4070e847",
+                            },
+                            "type": "transition",
+                            "_selected": True,
+                            "transitionId": "refId1741642665311",
+                        },
+                    ],
+                    "_id": "67cfb86a2811a1f5bd39a96d",
+                    "key": "67cfb86a2811a1f5bd39a96d",
+                    "location": "1417.957878757905 405.5040428741861",
+                    "transitions": [
+                        {"name": "Confirm Contact", "id": "refId1741642665300"},
+                        {"name": "Transition", "id": "refId1741642665311"},
+                    ],
+                },
+                "67cfb873e63d3f3da573b1b9": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb873e63d3f3da573b1b9",
+                    "name": "No Contacts Found",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1741642665220",
+                        }
+                    ],
+                    "_id": "67cfb873e63d3f3da573b1b9",
+                    "key": "67cfb873e63d3f3da573b1b9",
+                    "location": "1106.1409073462237 487.7244383210475",
+                    "transitions": [{"name": "End State", "id": "refId1741642665220"}],
+                },
+                "67cfb93552684a06d24ccba6": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb93552684a06d24ccba6",
+                    "name": "Confirm Contact",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "description": "If your name is...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">If your name is ${workitem.data.searchContactsResponse.body.results[workitem.data.contactCounter - 1].name}, press 1. Otherwise, press 2.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "3",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": False,
+                            "id": "refId1741642665759",
+                            "icon": "icon-tts",
+                        },
+                        {
+                            "name": "Contact Confirmed",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "==",
+                                            "rightExpression": "'1'",
+                                        },
+                                    ],
+                                },
+                                "stateId": "67cfbb0f0f18e3f6055f4671",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665464",
+                            "icon": "icon-transition",
+                            "id": "refId1741642665760",
+                        },
+                        {
+                            "name": "Not Confirmed",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67cfbb1c3cb246eb5ce75a54",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1741642665475",
+                            "icon": "icon-transition",
+                            "id": "refId1741642665761",
+                        },
+                    ],
+                    "_id": "67cfb93552684a06d24ccba6",
+                    "key": "67cfb93552684a06d24ccba6",
+                    "location": "1974.6197442961402 532.1773901490435",
+                    "transitions": [
+                        {"name": "Contact Confirmed", "id": "refId1741642665464"},
+                        {"name": "Not Confirmed", "id": "refId1741642665475"},
+                    ],
+                },
+                "67cfb955b628baea4070e847": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfb955b628baea4070e847",
+                    "name": "Not Found",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1741642665321",
+                        }
+                    ],
+                    "_id": "67cfb955b628baea4070e847",
+                    "key": "67cfb955b628baea4070e847",
+                    "location": "1669.1825542487413 636.5988184158443",
+                    "transitions": [{"name": "End State", "id": "refId1741642665321"}],
+                },
+                "67cfbb0f0f18e3f6055f4671": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfbb0f0f18e3f6055f4671",
+                    "name": "Contact Confirmed",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactConfirmed",
+                                "rightExpression": "true",
+                                "variableName": "contactConfirmed",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactInfo",
+                                "rightExpression": "workitem.data.searchContactsResponse.body.results[workitem.data.contactCounter - 1]",
+                                "variableName": "contactInfo",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Convert Text into Audio using Google's Text-To-Speech",
+                            "properties": {
+                                "description": "Thank you for confirming.",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for confirming.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1741642665552",
+                        },
+                    ],
+                    "_id": "67cfbb0f0f18e3f6055f4671",
+                    "key": "67cfbb0f0f18e3f6055f4671",
+                    "location": "2561.513976682441 669.3344612963004",
+                    "transitions": [{"name": "End State", "id": "refId1741642665552"}],
+                },
+                "67cfbb1c3cb246eb5ce75a54": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67cfbb1c3cb246eb5ce75a54",
+                    "name": "Not Confirmed",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-save",
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "contactCounter",
+                                "rightExpression": "workitem.data.contactCounter + 1",
+                                "variableName": "contactCounter",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": True,
+                        },
+                        {
+                            "name": "Check Counter",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "Check Counter",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1741642665485",
+                            "id": "refId1741642665529",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "67cfbb1c3cb246eb5ce75a54",
+                    "key": "67cfbb1c3cb246eb5ce75a54",
+                    "location": "2240.1365573077373 735.1555722560262",
+                    "transitions": [
+                        {"name": "Check Counter", "id": "refId1741642665485"}
+                    ],
+                },
+            },
+            "showInDashboardOption": False,
+            "name": function_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/function/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            function = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return function
+
+
 def delete_function(ncc_location: str, ncc_token: str, function_id: str) -> bool:
     """
     This function deletes an NCC function with the specified function ID.

@@ -8,6 +8,7 @@ from ncc_workflow import *
 from ncc_function import *
 from ncc_campaign import *
 from ncc_survey import *
+from ncc_rest_call import *
 from ncc_classification import *
 from ncc_scorecard import *
 from ncc_report import *
@@ -244,6 +245,42 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
             )
             logging.warning(
                 f'No surveys with campaign name "{campaign_name}" found for deletion.'
+            )
+
+        # Delete REST API objects
+        rest_calls = search_campaign_rest_calls(ncc_location, ncc_token, campaign_name)
+        if len(rest_calls) > 0:
+            for rest_call in rest_calls:
+                success = delete_rest_call(ncc_location, ncc_token, rest_call["_id"])
+                if success:
+                    logging.info(f'REST API Object "{rest_call["name"]}" deleted.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "REST API Object Teardown Failed",
+                        f'REST API object "{rest_call["name"]}" not deleted.',
+                        ["campaignteardown"],
+                    )
+                    logging.warning(
+                        f'REST API object "{rest_call["name"]}" not deleted.'
+                    )
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "REST API Object Teardown Failed",
+                f'No REST API objects with campaign name "{campaign_name}" found for deletion.',
+                ["campaignteardown"],
+            )
+            logging.warning(
+                f'No REST API objects with campaign name "{campaign_name}" found for deletion.'
             )
 
         # Delete classifications

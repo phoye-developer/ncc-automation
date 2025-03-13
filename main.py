@@ -5,6 +5,7 @@ from set_up_inbound_campaign import *
 from set_up_agent import *
 from set_up_supervisor import *
 from set_up_feature import *
+from set_up_integration import *
 from tear_down_campaign import *
 
 
@@ -16,9 +17,10 @@ def display_main_menu():
     print("2. Set up agent")
     print("3. Set up supervisor")
     print("4. Set up feature")
-    print("5. Tear down campaign")
-    print("6. Logout")
-    print("7. Exit")
+    print("5. Set up integration")
+    print("6. Tear down campaign")
+    print("7. Logout")
+    print("8. Exit")
     print()
 
 
@@ -56,7 +58,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "7":
+            while choice != "8":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
@@ -114,12 +116,24 @@ def main():
                         username,
                         "info",
                         "normal",
+                        "Integration Setup Started",
+                        f'User "{username}" started integration setup.',
+                        ["integrationsetup"],
+                    )
+                    set_up_integration(ncc_location, ncc_token, username)
+                elif choice == "6":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
                         "Campaign Teardown Started",
                         f'User "{username}" started campaign teardown.',
                         ["campaignteardown"],
                     )
                     tear_down_campaign(ncc_location, ncc_token, username)
-                elif choice == "6":
+                elif choice == "7":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,
@@ -134,7 +148,7 @@ def main():
                     authenticated = False
                     print()
                     break
-                elif choice == "7":
+                elif choice == "8":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,
@@ -145,7 +159,6 @@ def main():
                         f'User "{username}" exited the application.',
                         ["exitapplication"],
                     )
-                    pass
                 else:
                     print()
                     print("Invalid choice.")

@@ -235,6 +235,32 @@ def create_csat_campaign(
     return campaign
 
 
+def update_campaign(
+    ncc_location: str,
+    ncc_token: str,
+    campaign_id: str,
+    campaign: dict,
+) -> bool:
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(campaign)
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
+
+
 def assign_address_to_campaign(
     ncc_location: str, ncc_token: str, campaign_address: str, campaign_id: str
 ) -> bool:

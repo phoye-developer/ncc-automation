@@ -3,6 +3,36 @@ import urllib.parse
 import json
 
 
+def get_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> dict:
+    """
+    This function fetches a list of REST API call objects in Nextiva Contact Center (NCC).
+    """
+    rest_calls = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/restcall",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    rest_calls.append(result)
+    except:
+        pass
+    conn.close()
+    return rest_calls
+
+
 def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> dict:
     """
     This function searches for an existing REST API call object with the same name as the intended new REST API call object.
@@ -30,6 +60,95 @@ def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) ->
                     if result["name"] == rest_call_name:
                         rest_call = result
                         break
+    except:
+        pass
+    conn.close()
+    return rest_call
+
+
+def search_campaign_rest_calls(
+    ncc_location: str, ncc_token: str, campaign_name: str
+) -> list:
+    """
+    This function searches for existing REST API objects in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
+    """
+    rest_calls = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    url_encoded_name = urllib.parse.quote(campaign_name)
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/restcall?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if str(result["name"]).startswith(campaign_name):
+                        rest_calls.append(result)
+    except:
+        pass
+    conn.close()
+    return rest_calls
+
+
+def freshdesk_create_search_contacts_rest_call(
+    ncc_location: str,
+    ncc_token: str,
+    freshdesk_subdomain: str,
+    freshdesk_api_key: str,
+    rest_call_name: str,
+) -> dict:
+    """
+    This function creates a REST API call object to search for contacts in Freshdesk.
+    """
+    rest_call = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "name": rest_call_name,
+            "description": "Searches for contacts in Freshdesk using a 10-digit phone number",
+            "localizations": {
+                "name": {
+                    "en": {
+                        "language": "en",
+                        "value": rest_call_name,
+                    }
+                },
+                "description": {
+                    "en": {
+                        "language": "en",
+                        "value": "Searches for contacts in Freshdesk using a 10-digit phone number",
+                    }
+                },
+            },
+            "method": "GET",
+            "url": "https://"
+            + freshdesk_subdomain
+            + '.freshdesk.com/api/v2/search/contacts?query="mobile:${workitem.data.phone} OR phone:${workitem.data.phone}"',
+            "authType": "BASIC_AUTH",
+            "authUsername": freshdesk_api_key,
+            "authPassword": "X",
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/restcall/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            rest_call = json.loads(data)
     except:
         pass
     conn.close()
