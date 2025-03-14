@@ -1223,7 +1223,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             logging.info('Service type "GENERATIVE_AI" already exists.')
         else:
             if tenant_id != "":
-                gen_ai_service = create_gen_ai_service(
+                gen_ai_service = create_html_gen_ai_service(
                     ncc_location,
                     ncc_token,
                     "Google - Generative AI",

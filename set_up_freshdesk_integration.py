@@ -7,6 +7,7 @@ from ncc_rest_call import *
 from ncc_function import *
 from ncc_survey import *
 from ncc_survey_theme import *
+from ncc_service import *
 from ncc_workflow import *
 from ncc_campaign import *
 from ncc_script import *
@@ -218,6 +219,7 @@ def set_up_freshdesk_integration(
                     rest_call,
                 )
                 if function != {}:
+                    tenant_id = function["tenantId"]
                     logging.info(
                         f'Function "{campaign_name} - Search Freshdesk Contacts" created.'
                     )
@@ -250,6 +252,7 @@ def set_up_freshdesk_integration(
                     f'Insufficient data to create Function "{campaign_name} - Search Freshdesk Contacts".'
                 )
         else:
+            tenant_id = function["tenantId"]
             logging.info(
                 f'Function "{campaign_name} - Search Freshdesk Contacts" already exists.'
             )
@@ -316,11 +319,11 @@ def set_up_freshdesk_integration(
                         "warning",
                         "normal",
                         "Survey Creation Failed",
-                        f'Insufficient data to create Survey "{campaign_name} - User - Freshdesk". No survey theme ID in survey "{campaign_name} - User".',
+                        f'Insufficient data to create survey "{campaign_name} - User - Freshdesk". No survey theme ID in survey "{campaign_name} - User".',
                         ["integrationsetup"],
                     )
                     logging.warning(
-                        f'Insufficient data to create Survey "{campaign_name} - User - Freshdesk". No survey theme ID in survey "{campaign_name} - User".'
+                        f'Insufficient data to create survey "{campaign_name} - User - Freshdesk". No survey theme ID in survey "{campaign_name} - User".'
                     )
             else:
                 post_datadog_event(
@@ -330,16 +333,59 @@ def set_up_freshdesk_integration(
                     "warning",
                     "normal",
                     "Survey Creation Failed",
-                    f'Insufficient data to create Survey "{campaign_name} - User - Freshdesk". Existing survey "{campaign_name} - User" not found.',
+                    f'Insufficient data to create survey "{campaign_name} - User - Freshdesk". Existing survey "{campaign_name} - User" not found.',
                     ["integrationsetup"],
                 )
                 logging.warning(
-                    f'Insufficient data to create Survey "{campaign_name} - User - Freshdesk". Existing survey "{campaign_name} - User" not found.'
+                    f'Insufficient data to create survey "{campaign_name} - User - Freshdesk". Existing survey "{campaign_name} - User" not found.'
                 )
         else:
             logging.info(
                 f'User survey "{campaign_name} - User - Freshdesk" already exists.'
             )
+
+        # Create GenAI service
+        service = search_services_by_name(
+            ncc_location, ncc_token, "Generative AI - Plain Text"
+        )
+        if service == {}:
+            if tenant_id != "":
+                service = create_plain_text_gen_ai_service(
+                    ncc_location,
+                    ncc_token,
+                    "Generative AI - Plain Text",
+                    f"thrio-prod-{tenant_id}",
+                )
+                if service != {}:
+                    logging.info('Service "Generative AI - Plain Text" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Creation Failed",
+                        'Service "Generative AI - Plain Text" not created.',
+                        ["integrationsetup"],
+                    )
+                    logging.error('Service "Generative AI - Plain Text" not created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Service Creation Failed",
+                    'Insufficient data to create service "Generative AI - Plain Text". Tenant ID not available.',
+                    ["integrationsetup"],
+                )
+                logging.warning(
+                    'Insufficient data to create service "Generative AI - Plain Text". Tenant ID not available.'
+                )
+        else:
+            logging.info('Service "Generative AI - Plain Text" already exists.')
 
         # Update workflow
         workflow = search_workflows(ncc_location, ncc_token, campaign_name)
@@ -449,6 +495,22 @@ def set_up_freshdesk_integration(
                     ["integrationsetup"],
                 )
                 logging.warning(f'No "surveyId" field in campaign "{campaign_name}".')
+            if "generativeAIServiceId" in campaign:
+                campaign["generativeAIServiceId"] = service["_id"]
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Campaign Update Warning",
+                    f'No "generativeAIServiceId" field in campaign "{campaign_name}".',
+                    ["integrationsetup"],
+                )
+                logging.warning(
+                    f'No "generativeAIServiceId" field in campaign "{campaign_name}".'
+                )
             success = update_campaign(
                 ncc_location, ncc_token, campaign["_id"], campaign
             )

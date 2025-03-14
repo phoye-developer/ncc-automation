@@ -34,7 +34,7 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
     campaign_name = ""
     while campaign_name == "":
         print()
-        campaign_name = input("Campaign name: ")
+        campaign_name = input("Campaign prefix: ")
         if campaign_name.lower() == "cancel":
             post_datadog_event(
                 dd_api_key,
