@@ -10,6 +10,7 @@ from ncc_survey_theme import *
 from ncc_workflow import *
 from ncc_campaign import *
 from ncc_script import *
+from ncc_disposition import *
 
 
 def set_up_freshdesk_integration(
@@ -122,6 +123,42 @@ def set_up_freshdesk_integration(
                     categories = general_categories + retail_categories
                 elif choice == "6":
                     categories = general_categories + pubsec_categories
+                else:
+                    choice = ""
+                    print("Invalid choice.")
+                    print()
+
+    if cancelled == False:
+
+        # Select logging option
+        add_logging = False
+        choice = ""
+        while choice == "":
+            print("Add logging to all dispositions?")
+            print("--------------------------------")
+            print("1. Yes")
+            print("2. No")
+            print()
+            choice = input("Command: ")
+            print()
+            if choice.lower() == "cancel":
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Integration Setup Cancelled",
+                    f'User "{username}" cancelled "{campaign_name}" integration setup.',
+                    ["integrationsetup"],
+                )
+                print("Operation cancelled.")
+                cancelled = True
+            else:
+                if choice == "1":
+                    add_logging = True
+                elif choice == "2":
+                    pass
                 else:
                     choice = ""
                     print("Invalid choice.")
@@ -561,6 +598,109 @@ def set_up_freshdesk_integration(
             logging.info(
                 f'REST API object "{campaign_name} - Create Freshdesk Call Ticket" already exists.'
             )
+
+        # Create Freshdesk ticket function
+        function = search_functions(
+            ncc_location, ncc_token, f"{campaign_name} - Create Freshdesk Ticket"
+        )
+        if function == {}:
+            if chat_rest_call != {} and call_rest_call != {}:
+                function = freshdesk_create_ticket_function(
+                    ncc_location,
+                    ncc_token,
+                    f"{campaign_name} - Create Freshdesk Ticket",
+                    parse_summary_script,
+                    chat_rest_call,
+                    call_rest_call,
+                )
+                if function != {}:
+                    logging.info(
+                        f'Function "{campaign_name} - Create Freshdesk Ticket" created.'
+                    )
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        f'Function "{campaign_name} - Create Freshdesk Ticket" not created.',
+                        ["integrationsetup"],
+                    )
+                    logging.error(
+                        f'Function "{campaign_name} - Create Freshdesk Ticket" not created.'
+                    )
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Function Creation Failed",
+                    f'Insufficient data to create function "{campaign_name} - Create Freshdesk Ticket".',
+                    ["integrationsetup"],
+                )
+                logging.warning(
+                    f'Insufficient data to create function "{campaign_name} - Create Freshdesk Ticket".'
+                )
+        else:
+            logging.info(
+                f'Function "{campaign_name} - Create Freshdesk Ticket" already exists.'
+            )
+
+        # Add logging to dispositions
+        if add_logging == True:
+            if function != {}:
+                dispositions = get_dispositions(ncc_location, ncc_token)
+                if len(dispositions) > 0:
+                    for disposition in dispositions:
+                        success = assign_function_to_dispositon(
+                            ncc_location, ncc_token, function["_id"], disposition["_id"]
+                        )
+                        if success:
+                            logging.info(
+                                f'Disposition "{disposition["name"]}" updated.'
+                            )
+                        else:
+                            post_datadog_event(
+                                dd_api_key,
+                                dd_application_key,
+                                username,
+                                "error",
+                                "normal",
+                                "Disposition Update Failed",
+                                f'Disposition "{disposition["name"]}" not updated.',
+                                ["integrationsetup"],
+                            )
+                            logging.error(
+                                f'Disposition "{disposition["name"]}" not updated.'
+                            )
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "warning",
+                        "normal",
+                        "Disposition Update Failed",
+                        f"No dispositions found.",
+                        ["integrationsetup"],
+                    )
+                    logging.warning(f"No dispositions found.")
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Disposition Update Failed",
+                    f"Insufficient data to update dispositions.",
+                    ["integrationsetup"],
+                )
+                logging.warning(f"Insufficient data to update dispositions.")
 
         duration = datetime.datetime.now() - start_time
         logging.info(f"Duration: {str(duration)}")
