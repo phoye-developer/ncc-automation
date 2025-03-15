@@ -1,4 +1,6 @@
 authentication_info.py
+test.py
+test_results.py
 __pycache__/*
 build/*
 dist/*
