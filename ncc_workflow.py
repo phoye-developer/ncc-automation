@@ -1572,6 +1572,26 @@ def create_iva_workflow(
                             "_selected": True,
                         },
                         {
+                            "icon": "icon-timer",
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": 10,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "starttimer",
+                            "_selected": True,
+                        },
+                        {
                             "icon": "icon-tts",
                             "name": "Synthesize Text via Google TTS",
                             "description": "Thank you for contacting...",
