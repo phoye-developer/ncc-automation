@@ -84,7 +84,6 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
             print("Please select a feature.")
             print("------------------------")
             print("1. CSAT Survey via SMS Text")
-            print("2. SMS Text on Abandoned Call")
             print()
             choice = input("Command: ")
             print()
@@ -110,8 +109,6 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
                         campaign_name,
                         business_name,
                     )
-                elif choice == "2":
-                    pass
                 else:
                     choice = ""
                     print("Invalid choice.")
