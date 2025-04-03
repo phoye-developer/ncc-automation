@@ -131,6 +131,68 @@ def create_get_queue_id_script(
     return script
 
 
+def create_parse_summary_script(
+    ncc_location: str, ncc_token: str, script_name: str
+) -> dict:
+    """
+    This function creates a script to parse the AI summary returned by Google Gemini.
+    """
+    script = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
+            "name": script_name,
+            "content": 'summary = "";\n\nif (workitem.summary)\n{\n    summary = workitem.summary;\n    //summary = summary.replace(/\\n|\\r/g, "\\\\n");\n    summary = summary.replace(/\\n|\\r|[*]|[#]/g, "").trim();\n}\n\nsummary;',
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/script/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            script = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return script
+
+
+def create_parse_transcription_script(
+    ncc_location: str, ncc_token: str, script_name: str
+) -> dict:
+    """
+    This function creates a script to parse the transcription returned by Deepgram.
+    """
+    script = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
+            "content": 'var transcript = "";\n\nif (workitem.transcriptionMessages)\n{\n    const transcriptionMessages = workitem.transcriptionMessages;\n    \n    var i = 0;\n    while (transcriptionMessages[i]) {\n        var type = transcriptionMessages[i].type;\n        var textMsg = transcriptionMessages[i].textMsg;\n        if (type == "CLIENT")\n        {\n            transcript += "CLIENT: " + textMsg + "\\\\n";\n        } else {\n            transcript += "USER: " + textMsg + "\\\\n";\n        }\n        i++;\n    }\n}\ntranscript;',
+            "name": script_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/script/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            script = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return script
+
+
 def delete_script(ncc_location: str, ncc_token: str, script_id: str) -> bool:
     """
     This function deletes a script with the specified script ID.

@@ -11,12 +11,41 @@ def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    conn.request("GET", f"/data/api/types/workflow/{workflow_id}", payload, headers)
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        workflow = json.loads(data)
+    try:
+        conn.request("GET", f"/data/api/types/workflow/{workflow_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
     return workflow
+
+
+def get_workflows(ncc_location: str, ncc_token: str) -> list:
+    """
+    This function fetches a list of workflows in Nextiva Contact Center (NCC).
+    """
+    workflows = []
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    try:
+        conn.request("GET", f"/data/api/types/workflow", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    workflows.append(result)
+    except:
+        pass
+    conn.close()
+    return workflows
 
 
 def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> dict:
@@ -28,23 +57,26 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_workflow_name = urllib.parse.quote(workflow_name)
-    conn.request(
-        "GET",
-        f"/data/api/types/workflow?q={url_encoded_workflow_name}",
-        payload,
-        headers,
-    )
-    res = conn.getresponse()
-    if res.status == 200:
-        data = res.read().decode("utf-8")
-        json_data = json.loads(data)
-        total = json_data["total"]
-        if total > 0:
-            results = json_data["objects"]
-            for result in results:
-                if result["name"] == workflow_name:
-                    workflow = result
-                    break
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/workflow?q={url_encoded_workflow_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == workflow_name:
+                        workflow = result
+                        break
+    except:
+        pass
     conn.close()
     return workflow
 
@@ -221,10 +253,37 @@ def create_iva_workflow(
                             "icon": "icon-save",
                         },
                         {
+                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (inbound)",
+                                "description": "phone (Chat)",
+                                "rightExpression": "workitem.data.context.consumerData.phone",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741893969929",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (InboundCall or InboundSMS)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -249,15 +308,14 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739934454000",
+                            "id": "refId1741893969877",
                             "icon": "icon-save",
                         },
                         {
-                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (outbound)",
+                                "description": "phone (OutboundCall or OutboundSMS)",
                                 "rightExpression": "workitem.to.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -282,6 +340,8 @@ def create_iva_workflow(
                             },
                             "type": "savevariable",
                             "_selected": True,
+                            "id": "refId1741893969878",
+                            "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
@@ -348,6 +408,52 @@ def create_iva_workflow(
                             "icon": "icon-transition",
                         },
                         {
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
@@ -383,7 +489,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11894720280f716c36bdf",
                     "name": "Search Contacts",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Execute Function",
@@ -513,7 +618,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b35410f937347fe9aee",
                     "name": "Survey",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -542,26 +646,24 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b3a4492457796ee0690",
                     "name": "Chat",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
+                            "icon": "icon-ai-message",
                             "name": "Chat Message Consumer",
-                            "description": "Thank you for contacting...",
+                            "description": "",
                             "properties": {
-                                "description": "Thank you for contacting...",
+                                "description": "In a few words...",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
                                 "from": "workitem.data.companyName",
-                                "message": "Thank you for contacting ${workitem.data.companyName}. In a few words, what can I help you with today?",
+                                "message": "In a few words, what can I help you with today?",
                                 "messageType": "BOT",
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1739600226829",
+                            "_selected": True,
                         },
                         {
                             "icon": "icon-transition",
@@ -590,24 +692,7 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b424881f97a86b2640f",
                     "name": "InboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "icon": "icon-tts",
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                        },
                         {
                             "icon": "icon-dialogflow",
                             "name": "Transfer to Dialogflow",
@@ -648,7 +733,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b4990b64c67bfb0e882",
                     "name": "InboundSMS",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-save",
@@ -697,7 +781,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11bac9255944444f52b95",
                     "name": "Webhook",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Wait Chat Message",
@@ -987,7 +1070,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11d83f4a104689291447f",
                     "name": "FollowUp",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1064,7 +1146,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11daace899acb3e0d1c38",
                     "name": "ConnectAgent",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1272,7 +1353,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-tts",
@@ -1413,7 +1493,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bcd53e2b4d33bf671ba610",
                     "name": "TakeAction",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-function",
@@ -1456,7 +1535,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bd02ee8a738c4befeec93a",
                     "name": "Goodbye",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1480,6 +1558,26 @@ def create_iva_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-timer",
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": 10,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "starttimer",
                             "_selected": True,
                         },
                         {
@@ -1533,7 +1631,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bea3b642b196ca21fb0623",
                     "name": "Email",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -1755,10 +1852,37 @@ def create_non_iva_dtmf_workflow(
                         "icon": "icon-save",
                     },
                     {
+                        "icon": "icon-save",
                         "name": "Save Variable",
                         "description": "",
                         "properties": {
-                            "description": "phone (inbound)",
+                            "description": "phone (Chat)",
+                            "rightExpression": "workitem.data.context.consumerData.phone",
+                            "variableName": "phone",
+                            "asObject": False,
+                            "dlpOption": False,
+                            "wfmOption": False,
+                            "dashboard": False,
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'Chat'",
+                                    }
+                                ],
+                            },
+                        },
+                        "type": "savevariable",
+                        "_selected": False,
+                        "id": "refId1741893969929",
+                    },
+                    {
+                        "name": "Save Variable",
+                        "description": "",
+                        "properties": {
+                            "description": "phone (InboundCall or InboundSMS)",
                             "rightExpression": "workitem.from.slice(-10)",
                             "variableName": "phone",
                             "asObject": False,
@@ -1783,15 +1907,14 @@ def create_non_iva_dtmf_workflow(
                         },
                         "type": "savevariable",
                         "_selected": False,
-                        "id": "refId1739934454000",
+                        "id": "refId1741893969877",
                         "icon": "icon-save",
                     },
                     {
-                        "icon": "icon-save",
                         "name": "Save Variable",
                         "description": "",
                         "properties": {
-                            "description": "phone (outbound)",
+                            "description": "phone (OutboundCall or OutboundSMS)",
                             "rightExpression": "workitem.to.slice(-10)",
                             "variableName": "phone",
                             "asObject": False,
@@ -1816,6 +1939,8 @@ def create_non_iva_dtmf_workflow(
                         },
                         "type": "savevariable",
                         "_selected": True,
+                        "id": "refId1741893969878",
+                        "icon": "icon-save",
                     },
                     {
                         "name": "Save Variable",
@@ -1883,6 +2008,52 @@ def create_non_iva_dtmf_workflow(
                         "icon": "icon-transition",
                     },
                     {
+                        "icon": "icon-ai-message",
+                        "name": "Chat Message Consumer",
+                        "description": "Thank you for contacting...",
+                        "properties": {
+                            "description": "Thank you for contacting...",
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'Chat'",
+                                    }
+                                ],
+                            },
+                            "from": "workitem.data.companyName",
+                            "message": "Thank you for contacting ${workitem.data.companyName}.",
+                            "messageType": "BOT",
+                            "options": [],
+                        },
+                        "type": "chatmessageconsumer",
+                        "_selected": True,
+                    },
+                    {
+                        "icon": "icon-tts",
+                        "name": "Synthesize Text via Google TTS",
+                        "description": "Thank you for contacting...",
+                        "properties": {
+                            "description": "Thank you for contacting...",
+                            "voiceName": "en-US-Wavenet-J",
+                            "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'InboundCall'",
+                                    }
+                                ],
+                            },
+                        },
+                        "type": "googletts",
+                        "_selected": True,
+                    },
+                    {
                         "name": "Search Contacts",
                         "type": "transition",
                         "description": "Transition to another state",
@@ -1918,7 +2089,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11894720280f716c36bdf",
                 "name": "Search Contacts",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "name": "Execute Function",
@@ -2070,7 +2240,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b35410f937347fe9aee",
                 "name": "Survey",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -2099,27 +2268,7 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b3a4492457796ee0690",
                 "name": "Chat",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
-                    {
-                        "name": "Chat Message Consumer",
-                        "description": "Thank you for contacting...",
-                        "properties": {
-                            "description": "Thank you for contacting...",
-                            "condition": {
-                                "conditionType": "NONE",
-                                "expressions": [{"operator": "=="}],
-                            },
-                            "from": "workitem.data.companyName",
-                            "message": "Thank you for contacting ${workitem.data.companyName}.",
-                            "messageType": "BOT",
-                            "options": [],
-                        },
-                        "type": "chatmessageconsumer",
-                        "_selected": True,
-                        "id": "refId1739600229945",
-                        "icon": "icon-ai-message",
-                    },
                     {
                         "icon": "icon-save",
                         "name": "Save Variable",
@@ -2169,14 +2318,13 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b424881f97a86b2640f",
                 "name": "InboundCall",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-tts",
                         "name": "Play Collect Google TTS",
-                        "description": "Thank you for contacting...",
+                        "description": "DTMF menu",
                         "properties": {
-                            "description": "Thank you for contacting...",
+                            "description": "DTMF menu",
                             "voiceName": "en-US-Wavenet-J",
                             "voiceGender": "male",
                             "text": "",
@@ -2221,7 +2369,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b4990b64c67bfb0e882",
                 "name": "InboundSMS",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -2250,7 +2397,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11daace899acb3e0d1c38",
                 "name": "ConnectAgent",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "name": "Chat Message Consumer",
@@ -2432,7 +2578,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11dbf1fac7db53c1d0210",
                 "name": "HoldQueue",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-tts",
@@ -2570,7 +2715,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b552f294171b486a3d1b7a",
                 "name": "OutboundCall",
                 "description": "Newly Created State",
-                "tenantId": "nextivase2",
                 "actions": [
                     {
                         "name": "Save Variable",
@@ -2622,7 +2766,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67bea5bba2c3472a0f1cfba2",
                 "name": "Email",
                 "description": "Newly Created State",
-                "tenantId": "nextivase2",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -2652,7 +2795,7 @@ def create_non_iva_dtmf_workflow(
     }
 
     if vertical == "general":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">For sales, press 1. For customer service, press 2. For billing, press 3. For technical support, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3001,7 +3144,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "hc":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To refill a prescription, press 1. To schedule, reschedule, or cancel an appointment, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3350,7 +3493,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "finserv":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To apply for a new credit card, press 1. To apply for a new loan, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To apply for a new credit card, press 1. To apply for a new loan, press 2. To open a new checking or savings account, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -3780,7 +3923,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "insurance":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To sign up for a new policy, or to make changes to an existing policy, press 1. To file a new claim, or check the status of an existing claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To sign up for a new policy, or to make changes to an existing policy, press 1. To file a new claim, or check the status of an existing claim, press 2. For billing, press 3. For customer service, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -4129,7 +4272,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "retail":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. For order inquiries, press 1. For stock availability, press 2. To exchange an item, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">For order inquiries, press 1. For stock availability, press 2. To exchange an item, press 3. For billing, press 4. For customer service, press 5. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -4559,7 +4702,7 @@ def create_non_iva_dtmf_workflow(
             },
         ]
     elif vertical == "pubsec":
-        inbound_call_menu = '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}. To report a pothole, press 1. To report an abandoned vehicle, press 2. To report a missed trash pickup, press 3. For billing, press 4. Otherwise, please stay on the line.</prosody>'
+        inbound_call_menu = '<prosody pitch="-2st">To report a pothole, press 1. To report an abandoned vehicle, press 2. To report a missed trash pickup, press 3. For billing, press 4. Otherwise, please stay on the line.</prosody>'
         chat_variables = [
             {
                 "icon": "icon-save",
@@ -5028,11 +5171,9 @@ def create_direct_line_workflow(
             "maxActions": 10000,
             "localizations": {
                 "name": {"en": {"language": "en", "value": workflow_name}},
-                "description": {
-                    "en": {"language": "en", "value": "Non-IVA, DTMF workflow"}
-                },
+                "description": {"en": {"language": "en", "value": "Direct workflow"}},
             },
-            "description": "Non-IVA, DTMF workflow",
+            "description": "Direct workflow",
             "states": {
                 "67b1186f5510d9081ac8e32b": {
                     "category": "Standard",
@@ -5177,10 +5318,37 @@ def create_direct_line_workflow(
                             "icon": "icon-save",
                         },
                         {
+                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (inbound)",
+                                "description": "phone (Chat)",
+                                "rightExpression": "workitem.data.context.consumerData.phone",
+                                "variableName": "phone",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "id": "refId1741893969929",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "phone (InboundCall or InboundSMS)",
                                 "rightExpression": "workitem.from.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -5205,15 +5373,14 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": False,
-                            "id": "refId1739934454000",
+                            "id": "refId1741893969877",
                             "icon": "icon-save",
                         },
                         {
-                            "icon": "icon-save",
                             "name": "Save Variable",
                             "description": "",
                             "properties": {
-                                "description": "phone (outbound)",
+                                "description": "phone (OutboundCall or OutboundSMS)",
                                 "rightExpression": "workitem.to.slice(-10)",
                                 "variableName": "phone",
                                 "asObject": False,
@@ -5238,6 +5405,8 @@ def create_direct_line_workflow(
                             },
                             "type": "savevariable",
                             "_selected": True,
+                            "id": "refId1741893969878",
+                            "icon": "icon-save",
                         },
                         {
                             "icon": "icon-save",
@@ -5304,6 +5473,52 @@ def create_direct_line_workflow(
                             "icon": "icon-transition",
                         },
                         {
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Chat'",
+                                        }
+                                    ],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "Thank you for contacting ${workitem.data.companyName}.",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Synthesize Text via Google TTS",
+                            "description": "Thank you for contacting...",
+                            "properties": {
+                                "description": "Thank you for contacting...",
+                                "voiceName": "en-US-Wavenet-J",
+                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "googletts",
+                            "_selected": True,
+                        },
+                        {
                             "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
@@ -5339,7 +5554,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11894720280f716c36bdf",
                     "name": "Search Contacts",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Execute Function",
@@ -5587,7 +5801,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b35410f937347fe9aee",
                     "name": "Survey",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -5616,27 +5829,7 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b3a4492457796ee0690",
                     "name": "Chat",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "name": "Chat Message Consumer",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "from": "workitem.data.companyName",
-                                "message": "Thank you for contacting ${workitem.data.companyName}.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": True,
-                            "id": "refId1739600229945",
-                            "icon": "icon-ai-message",
-                        },
                         {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
@@ -5668,25 +5861,7 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b424881f97a86b2640f",
                     "name": "InboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
-                        {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600229678",
-                        },
                         {
                             "name": "ConnectAgent",
                             "description": "Transition to another state",
@@ -5718,7 +5893,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b4990b64c67bfb0e882",
                     "name": "InboundSMS",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -5749,7 +5923,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11daace899acb3e0d1c38",
                     "name": "ConnectAgent",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Chat Message Consumer",
@@ -5933,7 +6106,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-tts",
@@ -6075,7 +6247,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b80e6253218fc5093deb5c",
                     "name": "OutboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-survey",
@@ -6127,7 +6298,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67bea6ccb1b61fed3ca6b744",
                     "name": "Email",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -6172,6 +6342,198 @@ def create_direct_line_workflow(
         pass
     conn.close()
     return workflow
+
+
+def create_csat_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_name: str,
+) -> dict:
+    """
+    This function creates a workflow in Nextiva Contact Center (NCC).
+    """
+    workflow = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "maxActions": 10000,
+            "localizations": {
+                "name": {"en": {"language": "en", "value": workflow_name}}
+            },
+            "states": {
+                "67c22a297a298cbb08ad55a2": {
+                    "category": "Standard",
+                    "campaignStateId": "67c22a297a298cbb08ad55a2",
+                    "actions": [
+                        {
+                            "category": "Action",
+                            "title": "Terminate",
+                            "name": "Terminate",
+                            "type": "terminate",
+                            "description": "Terminate",
+                            "icon": "./assets/svg/icon-terminate",
+                            "svg": "",
+                            "color": "#FFFFFF",
+                            "fig": "Rectangle",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                }
+                            },
+                        }
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "67c22a297a298cbb08ad55a2",
+                    "_id": "67c22a297a298cbb08ad55a2",
+                    "description": "End State",
+                    "name": "End State",
+                    "location": "239.35924999999997 130.09825",
+                    "transitions": [],
+                },
+                "start-state": {
+                    "category": "Begin",
+                    "campaignStateId": "start-state",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "Survey",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'Survey'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "Survey",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740775771533",
+                        },
+                        {
+                            "name": "Start",
+                            "type": "transition",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67c22a297a298cbb08ad55a2",
+                                "name": "Start",
+                                "description": "Transition to another state",
+                            },
+                            "transitionId": "67c22e1c291f8bcc46061363",
+                            "_selected": False,
+                            "icon": "icon-transition",
+                            "id": "refId1740775771522",
+                        },
+                    ],
+                    "transitions": [
+                        {"name": "Survey", "id": "refId1740775771533"},
+                        {"name": "Start", "id": "67c22e1c291f8bcc46061363"},
+                    ],
+                    "objectType": "campaignstate",
+                    "key": "start-state",
+                    "_id": "start-state",
+                    "description": "Begin State",
+                    "name": "Begin State",
+                    "location": "0 0",
+                },
+                "67c22dfd63bdfe58b65e30cd": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "67c22dfd63bdfe58b65e30cd",
+                    "name": "Survey",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "icon": "icon-timer",
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": "300",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "starttimer",
+                            "_selected": False,
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "End State",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "End State",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": True,
+                            "transitionId": "refId1740775771520",
+                        },
+                    ],
+                    "_id": "67c22dfd63bdfe58b65e30cd",
+                    "key": "67c22dfd63bdfe58b65e30cd",
+                    "location": "420.1982499999998 -89.70224999999994",
+                    "transitions": [{"name": "End State", "id": "refId1740775771520"}],
+                },
+            },
+            "finalWorkitemStateId": "67c22a297a298cbb08ad55a2",
+            "finalUserStateId": "67c22a297a298cbb08ad55a2",
+            "name": workflow_name,
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/workflow/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            workflow = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return workflow
+
+
+def update_workflow(
+    ncc_location: str,
+    ncc_token: str,
+    workflow_id: str,
+    workflow: dict,
+) -> bool:
+    """
+    This function updates a workflow with the specified workflow ID.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(workflow)
+    headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/workflow/{workflow_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
 
 
 def delete_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> bool:

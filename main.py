@@ -4,6 +4,8 @@ from datadog import *
 from set_up_inbound_campaign import *
 from set_up_agent import *
 from set_up_supervisor import *
+from set_up_feature import *
+from set_up_integration import *
 from tear_down_campaign import *
 
 
@@ -14,9 +16,11 @@ def display_main_menu():
     print("1. Set up inbound campaign")
     print("2. Set up agent")
     print("3. Set up supervisor")
-    print("4. Tear down campaign")
-    print("5. Logout")
-    print("6. Exit")
+    print("4. Set up feature")
+    print("5. Set up integration")
+    print("6. Tear down campaign")
+    print("7. Logout")
+    print("8. Exit")
     print()
 
 
@@ -31,7 +35,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v1.0.0")
+    print("NCC Automation v2.0.0")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
@@ -54,7 +58,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "6":
+            while choice != "8":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
@@ -100,12 +104,36 @@ def main():
                         username,
                         "info",
                         "normal",
+                        "Feature Setup Started",
+                        f'User "{username}" started feature setup.',
+                        ["featuresetup"],
+                    )
+                    set_up_feature(ncc_location, ncc_token, username)
+                elif choice == "5":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
+                        "Integration Setup Started",
+                        f'User "{username}" started integration setup.',
+                        ["integrationsetup"],
+                    )
+                    set_up_integration(ncc_location, ncc_token, username)
+                elif choice == "6":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
                         "Campaign Teardown Started",
                         f'User "{username}" started campaign teardown.',
                         ["campaignteardown"],
                     )
                     tear_down_campaign(ncc_location, ncc_token, username)
-                elif choice == "5":
+                elif choice == "7":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,
@@ -120,7 +148,7 @@ def main():
                     authenticated = False
                     print()
                     break
-                elif choice == "6":
+                elif choice == "8":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,
@@ -131,7 +159,6 @@ def main():
                         f'User "{username}" exited the application.',
                         ["exitapplication"],
                     )
-                    pass
                 else:
                     print()
                     print("Invalid choice.")

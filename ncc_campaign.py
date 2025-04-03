@@ -197,6 +197,70 @@ def create_campaign(
     return campaign
 
 
+def create_csat_campaign(
+    ncc_location: str,
+    ncc_token: str,
+    campaign_name: str,
+    workflow: dict,
+    csat_survey: dict,
+) -> dict:
+    """
+    This function creates a campaign with the specified name.
+    """
+    campaign = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {
+                "name": {"en": {"language": "en", "value": campaign_name}}
+            },
+            "name": campaign_name,
+            "workflowId": workflow["_id"],
+            "preSurveyId": csat_survey["_id"],
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/campaign/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            campaign = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return campaign
+
+
+def update_campaign(
+    ncc_location: str,
+    ncc_token: str,
+    campaign_id: str,
+    campaign: dict,
+) -> bool:
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(campaign)
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request(
+            "PATCH", f"/data/api/types/campaign/{campaign_id}", payload, headers
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
+
+
 def assign_address_to_campaign(
     ncc_location: str, ncc_token: str, campaign_address: str, campaign_id: str
 ) -> bool:

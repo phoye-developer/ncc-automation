@@ -245,11 +245,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
 
         # Select PSTN number
         campaign_address = ""
+        campaign_addresses_available = []
         print("Searching for available PSTN numbers...")
         print()
         pstn_numbers = get_pstn_numbers(ncc_location, ncc_token)
         if len(pstn_numbers) > 0:
-            campaign_addresses_available = []
             for index, pstn_number in enumerate(pstn_numbers):
                 success = search_campaigns_by_address(
                     ncc_location, ncc_token, pstn_number["name"]
@@ -878,19 +878,26 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             logging.warning("Insufficient data to create user survey.")
 
         # Create chat survey
-        if survey_theme != {}:
-            chat_survey = search_surveys(
-                ncc_location,
-                ncc_token,
-                f"{campaign_name} - Chat",
-            )
-            if chat_survey == {}:
+        chat_survey = search_surveys(
+            ncc_location,
+            ncc_token,
+            f"{campaign_name} - Chat",
+        )
+        if chat_survey == {}:
+            if survey_theme != {}:
+                chat_queues = []
+                for (
+                    key,
+                    value,
+                ) in queues_to_assign.items():
+                    chat_queues.append(value)
                 chat_survey = create_chat_survey(
                     ncc_location,
                     ncc_token,
                     f"{campaign_name} - Chat",
                     options,
                     survey_theme,
+                    chat_queues,
                 )
                 if chat_survey != {}:
                     logging.info(f'Survey "{campaign_name} - Chat" created.')
@@ -907,19 +914,19 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     )
                     logging.error(f'Survey "{campaign_name} - Chat" not created.')
             else:
-                logging.info(f'Survey "{campaign_name} - Chat" already exists.')
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "warning",
+                    "normal",
+                    "Survey Creation Failed",
+                    "Insufficient data to create chat survey.",
+                    ["inboundcampaignsetup"],
+                )
+                logging.warning("Insufficient data to create chat survey.")
         else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Survey Creation Failed",
-                "Insufficient data to create chat survey.",
-                ["inboundcampaignsetup"],
-            )
-            logging.warning("Insufficient data to create chat survey.")
+            logging.info(f'Survey "{campaign_name} - Chat" already exists.')
 
         # Create QM survey
         if survey_theme != {}:
@@ -1216,7 +1223,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             logging.info('Service type "GENERATIVE_AI" already exists.')
         else:
             if tenant_id != "":
-                gen_ai_service = create_gen_ai_service(
+                gen_ai_service = create_html_gen_ai_service(
                     ncc_location,
                     ncc_token,
                     "Google - Generative AI",
@@ -1730,7 +1737,7 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         else:
             logging.info('Script "Get queueId" already exists.')
 
-        # Create workflow
+        # Create "main" workflow
         workflow = search_workflows(
             ncc_location,
             ncc_token,
@@ -1903,7 +1910,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                 campaign["_id"],
             )
             if success:
-                logging.info(f'PSTN number "{campaign_address}" assigned to campaign.')
+                logging.info(
+                    f'PSTN number "{campaign_address}" assigned to campaign "{campaign_name}".'
+                )
             else:
                 post_datadog_event(
                     dd_api_key,
@@ -1912,11 +1921,11 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     "error",
                     "normal",
                     "Campaign Address Assignment Failed",
-                    f'PSTN number "{campaign_address}" not assigned to campaign.',
+                    f'PSTN number "{campaign_address}" not assigned to campaign "{campaign_name}".',
                     ["inboundcampaignsetup"],
                 )
                 logging.error(
-                    f'PSTN number "{campaign_address}" not assigned to campaign.'
+                    f'PSTN number "{campaign_address}" not assigned to campaign "{campaign_name}".'
                 )
 
         # Update chat survey campaign ID
