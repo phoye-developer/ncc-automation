@@ -651,6 +651,24 @@ def create_iva_workflow(
                     "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
+                            "icon": "icon-ai-message",
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "description": "In a few words...",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "In a few words, what can I help you with today?",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": True,
+                        },
+                        {
                             "icon": "icon-transition",
                             "name": "Webhook",
                             "description": "Transition to another state",
