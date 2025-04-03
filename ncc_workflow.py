@@ -489,7 +489,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11894720280f716c36bdf",
                     "name": "Search Contacts",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Execute Function",
@@ -619,7 +618,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b35410f937347fe9aee",
                     "name": "Survey",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -648,7 +646,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b3a4492457796ee0690",
                     "name": "Chat",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -695,7 +692,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b424881f97a86b2640f",
                     "name": "InboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-dialogflow",
@@ -737,7 +733,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11b4990b64c67bfb0e882",
                     "name": "InboundSMS",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-save",
@@ -786,7 +781,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11bac9255944444f52b95",
                     "name": "Webhook",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Wait Chat Message",
@@ -1076,7 +1070,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11d83f4a104689291447f",
                     "name": "FollowUp",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1153,7 +1146,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11daace899acb3e0d1c38",
                     "name": "ConnectAgent",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1361,7 +1353,6 @@ def create_iva_workflow(
                     "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-tts",
@@ -1502,7 +1493,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bcd53e2b4d33bf671ba610",
                     "name": "TakeAction",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-function",
@@ -1545,7 +1535,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bd02ee8a738c4befeec93a",
                     "name": "Goodbye",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-ai-message",
@@ -1642,7 +1631,6 @@ def create_iva_workflow(
                     "campaignStateId": "67bea3b642b196ca21fb0623",
                     "name": "Email",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -2101,7 +2089,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11894720280f716c36bdf",
                 "name": "Search Contacts",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "name": "Execute Function",
@@ -2253,7 +2240,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b35410f937347fe9aee",
                 "name": "Survey",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -2282,7 +2268,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b3a4492457796ee0690",
                 "name": "Chat",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-save",
@@ -2333,7 +2318,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b424881f97a86b2640f",
                 "name": "InboundCall",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-tts",
@@ -2385,7 +2369,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11b4990b64c67bfb0e882",
                 "name": "InboundSMS",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -2414,7 +2397,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11daace899acb3e0d1c38",
                 "name": "ConnectAgent",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "name": "Chat Message Consumer",
@@ -2596,7 +2578,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b11dbf1fac7db53c1d0210",
                 "name": "HoldQueue",
                 "description": "Newly Created State",
-                "tenantId": "nextivaretaildemo",
                 "actions": [
                     {
                         "icon": "icon-tts",
@@ -2734,7 +2715,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67b552f294171b486a3d1b7a",
                 "name": "OutboundCall",
                 "description": "Newly Created State",
-                "tenantId": "nextivase2",
                 "actions": [
                     {
                         "name": "Save Variable",
@@ -2786,7 +2766,6 @@ def create_non_iva_dtmf_workflow(
                 "campaignStateId": "67bea5bba2c3472a0f1cfba2",
                 "name": "Email",
                 "description": "Newly Created State",
-                "tenantId": "nextivase2",
                 "actions": [
                     {
                         "icon": "icon-transition",
@@ -5575,7 +5554,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11894720280f716c36bdf",
                     "name": "Search Contacts",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Execute Function",
@@ -5823,7 +5801,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b35410f937347fe9aee",
                     "name": "Survey",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -5852,7 +5829,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b3a4492457796ee0690",
                     "name": "Chat",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "ConnectAgent",
@@ -5885,7 +5861,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b424881f97a86b2640f",
                     "name": "InboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "ConnectAgent",
@@ -5918,7 +5893,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11b4990b64c67bfb0e882",
                     "name": "InboundSMS",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -5949,7 +5923,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11daace899acb3e0d1c38",
                     "name": "ConnectAgent",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "name": "Chat Message Consumer",
@@ -6133,7 +6106,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b11dbf1fac7db53c1d0210",
                     "name": "HoldQueue",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-tts",
@@ -6275,7 +6247,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67b80e6253218fc5093deb5c",
                     "name": "OutboundCall",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-survey",
@@ -6327,7 +6298,6 @@ def create_direct_line_workflow(
                     "campaignStateId": "67bea6ccb1b61fed3ca6b744",
                     "name": "Email",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "icon": "icon-transition",
@@ -6482,7 +6452,6 @@ def create_csat_workflow(
                     "campaignStateId": "67c22dfd63bdfe58b65e30cd",
                     "name": "Survey",
                     "description": "Newly Created State",
-                    "tenantId": "nextivaretaildemo",
                     "actions": [
                         {
                             "icon": "icon-timer",
