@@ -385,6 +385,27 @@ def create_iva_workflow(
                             "id": "refId1739600227615",
                         },
                         {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "nextState",
+                                "rightExpression": "Webhook",
+                                "variableName": "nextState",
+                                "asObject": False,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1746218700282",
+                        },
+                        {
                             "name": "Survey",
                             "description": "Transition to another state",
                             "properties": {
@@ -1509,19 +1530,21 @@ def create_iva_workflow(
                             "_selected": True,
                         },
                         {
-                            "icon": "icon-transition",
-                            "name": "Webhook",
+                            "name": "nextState",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateName": "Webhook",
+                                "stateName": "workitem.data.nextState",
+                                "description": "Transition to another state",
                             },
                             "type": "transitionbyname",
                             "_selected": False,
-                            "transitionId": "refId1740420824069",
+                            "transitionId": "refId1746218700262",
+                            "icon": "icon-transition",
+                            "id": "refId1746218700326",
                         },
                     ],
                     "_id": "67bcd53e2b4d33bf671ba610",
