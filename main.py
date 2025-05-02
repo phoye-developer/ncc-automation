@@ -35,7 +35,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v2.0.0")
+    print("NCC Automation v2.1.0")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
