@@ -353,6 +353,34 @@ def create_plain_text_gen_ai_service(
     return service
 
 
+def update_enable_service(
+    ncc_location: str, ncc_token: str, ncc_service_id: str
+) -> dict:
+    """
+    This function updates a Nextiva Contact Center (NCC) service to update the service.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "enabled": True
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("PATCH", f"/data/api/types/service/{ncc_service_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
+
+
 def delete_service(ncc_location: str, ncc_token: str, service_id: str) -> bool:
     """
     This function deletes a service with the specified service ID.

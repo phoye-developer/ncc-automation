@@ -1163,6 +1163,24 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         )
         if media_service != {}:
             logging.info('Service type "MEDIA" already exists.')
+            if media_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, media_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{media_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{media_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Service "{media_service["name"]}" not enabled.')
         else:
             media_service = create_media_service(
                 ncc_location,
@@ -1192,6 +1210,24 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         )
         if tts_service != {}:
             logging.info('Service type "TEXT_TO_SPEECH" already exists.')
+            if tts_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, tts_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{tts_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{tts_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Service "{tts_service["name"]}" not enabled.')
         else:
             tts_service = create_tts_service(
                 ncc_location,
@@ -1221,6 +1257,24 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         )
         if gen_ai_service != {}:
             logging.info('Service type "GENERATIVE_AI" already exists.')
+            if gen_ai_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, gen_ai_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{gen_ai_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{gen_ai_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Service "{gen_ai_service["name"]}" not enabled.')
         else:
             if tenant_id != "":
                 gen_ai_service = create_html_gen_ai_service(
@@ -1266,6 +1320,24 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         )
         if transcription_service != {}:
             logging.info('Service type "TRANSCRIPTION" already exists.')
+            if transcription_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, transcription_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{transcription_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{transcription_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Service "{transcription_service["name"]}" not enabled.')
         else:
             if deepgram_api_key != "":
                 transcription_service = create_transcription_service(
@@ -1311,6 +1383,24 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         )
         if real_time_transcription_service != {}:
             logging.info('Service type "REALTIME_ANALYSIS" already exists.')
+            if real_time_transcription_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, real_time_transcription_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{real_time_transcription_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{real_time_transcription_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Service "{real_time_transcription_service["name"]}" not enabled.')
         else:
             if deepgram_api_key != "":
                 real_time_transcription_service = (
