@@ -6,6 +6,7 @@ from set_up_agent import *
 from set_up_supervisor import *
 from set_up_feature import *
 from set_up_integration import *
+from set_up_chat_survey_link import *
 from tear_down_campaign import *
 
 
@@ -18,9 +19,10 @@ def display_main_menu():
     print("3. Set up supervisor")
     print("4. Set up feature")
     print("5. Set up integration")
-    print("6. Tear down campaign")
-    print("7. Logout")
-    print("8. Exit")
+    print("6. Set up chat survey link")
+    print("7. Tear down campaign")
+    print("8. Logout")
+    print("9. Exit")
     print()
 
 
@@ -35,7 +37,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v2.0.0")
+    print("NCC Automation v2.1.0")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
@@ -58,7 +60,7 @@ def main():
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
             choice = ""
-            while choice != "8":
+            while choice != "9":
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
@@ -128,12 +130,24 @@ def main():
                         username,
                         "info",
                         "normal",
+                        "Chat Survey Link Setup Started",
+                        f'User "{username}" started chat survey link setup.',
+                        ["chatsurveylinksetup"],
+                    )
+                    set_up_chat_survey_link(ncc_location, ncc_token, username)
+                elif choice == "7":
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "info",
+                        "normal",
                         "Campaign Teardown Started",
                         f'User "{username}" started campaign teardown.',
                         ["campaignteardown"],
                     )
                     tear_down_campaign(ncc_location, ncc_token, username)
-                elif choice == "7":
+                elif choice == "8":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,
@@ -148,7 +162,7 @@ def main():
                     authenticated = False
                     print()
                     break
-                elif choice == "8":
+                elif choice == "9":
                     post_datadog_event(
                         dd_api_key,
                         dd_application_key,

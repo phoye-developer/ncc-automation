@@ -276,7 +276,7 @@ def create_html_gen_ai_service(
                 {"key": "project", "value": ncc_project_id},
                 {"key": "location", "value": "us-central1"},
                 {"key": "publisher", "value": "google"},
-                {"key": "model", "value": "gemini-1.0-pro"},
+                {"key": "model", "value": "gemini-2.0-flash-001"},
                 {
                     "key": "content",
                     "value": "Your input is the conversation transcript below. The conversation includes a customer and an agent. For this conversation, I'd like you to generate a short, HTML summary that meets the following criteria:  Headline: Briefly capture the essence of the conversation in a single sentence. Sentiment: Identify the overall sentiment of the customer and the agent throughout the conversation. Use separate bullets for each. Bullet Points: Summarize the key points of the conversation using HTML bullet points. The entire summary must be in HTML format. Please do not return the summary in markdown format. An example of the format of the response can be <html><head><title>...</title></head><body><h1>...</h1><h2>Headline:</h2><p>...</p><h2>Sentiment:</h2><ul><li><b>Customer:</b>...</li><li><b>Agent:</b>...</li></ul><h2>Key Points:</h2><ul><li>...</li><li>...</li><li>...</li><li>...</li></ul></body></html>",
@@ -329,7 +329,7 @@ def create_plain_text_gen_ai_service(
                 {"key": "project", "value": ncc_project_id},
                 {"key": "location", "value": "us-central1"},
                 {"key": "publisher", "value": "google"},
-                {"key": "model", "value": "gemini-1.0-pro"},
+                {"key": "model", "value": "gemini-2.0-flash-001"},
                 {
                     "key": "content",
                     "value": "Your input is the conversation transcript below. The conversation includes a customer and an agent. For this conversation, I'd like you to generate a one-paragraph summary that meets the following criteria: Briefly capture the essence of the conversation in a single sentence. Identify the overall sentiment of the customer and the agent, respectively, throughout the conversation. Summarize the key points of the conversation. The entire summary must be in plain text. DO NOT INCLUDE MARKDOWN IN THE SUMMARY, AND DO NOT INCLUDE QUOTATION MARKS IN THE SUMMARY.",
@@ -351,6 +351,34 @@ def create_plain_text_gen_ai_service(
         pass
     conn.close()
     return service
+
+
+def update_enable_service(
+    ncc_location: str, ncc_token: str, ncc_service_id: str
+) -> dict:
+    """
+    This function updates a Nextiva Contact Center (NCC) service to update the service.
+    """
+    success = False
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "enabled": True
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("PATCH", f"/data/api/types/service/{ncc_service_id}", payload, headers)
+        res = conn.getresponse()
+        if res.status == 200:
+            success = True
+    except:
+        pass
+    conn.close()
+    return success
 
 
 def delete_service(ncc_location: str, ncc_token: str, service_id: str) -> bool:
