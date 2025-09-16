@@ -801,128 +801,6 @@ def create_iva_workflow(
                     "description": "Newly Created State",
                     "actions": [
                         {
-                            "name": "Wait Chat Message",
-                            "description": "",
-                            "properties": {
-                                "timeoutDuration": 3600000,
-                                "stateId": "67b1186f5510d9081ac8e32b",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "waitforchatmessage",
-                            "_selected": False,
-                            "id": "refId1739600228033",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Message Bot",
-                            "description": "",
-                            "properties": {
-                                "description": "Chat",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                                "message": "$V.workitem.currentChatMessage.textMsg",
-                                "event": "",
-                            },
-                            "type": "chatmessagebot",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1739600228034",
-                        },
-                        {
-                            "name": "SMS Wait For Messages",
-                            "description": "",
-                            "properties": {
-                                "timeoutDuration": 3600000,
-                                "stateId": "67b1186f5510d9081ac8e32b",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.smsCounter",
-                                            "operator": ">",
-                                            "rightExpression": "1",
-                                        },
-                                    ],
-                                },
-                            },
-                            "type": "smswaitformessage",
-                            "_selected": False,
-                            "id": "refId1739600228035",
-                            "icon": "icon-timer",
-                        },
-                        {
-                            "name": "Message Bot",
-                            "description": "",
-                            "properties": {
-                                "description": "InboundSMS",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                                "message": "$V.workitem.currentSMSMessage.textMsg",
-                                "event": "",
-                            },
-                            "type": "chatmessagebot",
-                            "_selected": False,
-                            "icon": "icon-ai-message",
-                            "id": "refId1739600228036",
-                        },
-                        {
-                            "name": "Save Variable",
-                            "description": "",
-                            "properties": {
-                                "description": "smsCounter",
-                                "rightExpression": "workitem.data.smsCounter + 1",
-                                "variableName": "smsCounter",
-                                "asObject": True,
-                                "dlpOption": False,
-                                "wfmOption": False,
-                                "dashboard": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "savevariable",
-                            "_selected": False,
-                            "icon": "icon-save",
-                            "id": "refId1739600228037",
-                        },
-                        {
                             "name": "Wait for messages",
                             "description": "",
                             "properties": {
@@ -935,33 +813,6 @@ def create_iva_workflow(
                             "_selected": False,
                             "id": "refId1739600228047",
                             "icon": "icon-ai-message",
-                        },
-                        {
-                            "icon": "icon-transition",
-                            "name": "Chat or InboundSMS Action",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "OR",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        },
-                                    ],
-                                },
-                                "stateName": "workitem.chatBotResponse.action",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "67b1220e628aee17f5928472",
-                            "id": "refId1739600228096",
                         },
                         {
                             "icon": "icon-transition",
@@ -989,10 +840,6 @@ def create_iva_workflow(
                     "key": "67b11bac9255944444f52b95",
                     "location": "1095.232082041558 763.2564039101042",
                     "transitions": [
-                        {
-                            "name": "Chat or InboundSMS Action",
-                            "id": "67b1220e628aee17f5928472",
-                        },
                         {"name": "InboundCall Action", "id": "refId1739600228115"},
                     ],
                 },
