@@ -1442,50 +1442,6 @@ def create_iva_workflow(
                     "location": "1710.5859782839211 639.5535706670023",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
                 },
-                "67bcd53e2b4d33bf671ba610": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "67bcd53e2b4d33bf671ba610",
-                    "name": "TakeAction",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "icon": "icon-function",
-                            "name": "Execute Function",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "functionExpression": "workitem.data.functionId",
-                            },
-                            "type": "function",
-                            "_selected": True,
-                        },
-                        {
-                            "name": "nextState",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "workitem.data.nextState",
-                                "description": "Transition to another state",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1746218700262",
-                            "icon": "icon-transition",
-                            "id": "refId1746218700326",
-                        },
-                    ],
-                    "_id": "67bcd53e2b4d33bf671ba610",
-                    "key": "67bcd53e2b4d33bf671ba610",
-                    "location": "1377.2676533950016 165.8574496311703",
-                    "transitions": [{"name": "Webhook", "id": "refId1740420824069"}],
-                },
                 "67bd02ee8a738c4befeec93a": {
                     "category": "Standard",
                     "objectType": "campaignstate",
