@@ -1741,25 +1741,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - ACD Callback",
         )
         if acd_callback_function == {}:
-            acd_callback_function = create_acd_callback_function(
+            acd_callback_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - ACD Callback",
+                "ACD Callback",
             )
-            if acd_callback_function != {}:
-                logging.info(f'Function "{campaign_name} - ACD Callback" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - ACD Callback" not created.',
-                    ["inboundcampaignsetup"],
+            if acd_callback_function == {}:
+                acd_callback_function = create_acd_callback_function(
+                    ncc_location,
+                    ncc_token,
+                    "ACD Callback",
                 )
-                logging.error(f'Function "{campaign_name} - ACD Callback" not created.')
+                if acd_callback_function != {}:
+                    logging.info('Function "ACD Callback" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "ACD Callback" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Function "ACD Callback" not created.')
+            else:
+                logging.info('Function "ACD Callback" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
