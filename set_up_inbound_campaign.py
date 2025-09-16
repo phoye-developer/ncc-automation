@@ -1629,25 +1629,35 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Two Way Chat",
         )
         if two_way_chat_function == {}:
-            two_way_chat_function = create_two_way_chat_function(
+            two_way_chat_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Two Way Chat",
+                "Two Way Chat with Translation",
             )
-            if two_way_chat_function != {}:
-                logging.info(f'Function "{campaign_name} - Two Way Chat" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Two Way Chat" not created.',
-                    ["inboundcampaignsetup"],
+            if two_way_chat_function == {}:
+                two_way_chat_function = create_two_way_chat_function(
+                    ncc_location,
+                    ncc_token,
+                    "Two Way Chat with Translation",
                 )
-                logging.error(f'Function "{campaign_name} - Two Way Chat" not created.')
+                if two_way_chat_function != {}:
+                    logging.info('Function "Two Way Chat with Translation" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "Two Way Chat with Translation" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        'Function "Two Way Chat with Translation" not created.'
+                    )
+            else:
+                logging.info('Function "Two Way Chat with Translation" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way Chat" already exists.')
 
