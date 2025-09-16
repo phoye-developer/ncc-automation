@@ -937,29 +937,6 @@ def create_iva_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
-                            "name": "FollowUp",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "description": "Transition to another state",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.data.hasAllParameters",
-                                            "operator": "==",
-                                            "rightExpression": "false",
-                                        }
-                                    ],
-                                },
-                                "stateName": "FollowUp",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": True,
-                            "transitionId": "refId1740431837457",
-                            "id": "refId1740431837493",
-                            "icon": "icon-transition",
-                        },
-                        {
                             "icon": "icon-transition",
                             "name": "Chat or InboundSMS Action",
                             "description": "Transition to another state",
@@ -1018,82 +995,6 @@ def create_iva_workflow(
                         },
                         {"name": "InboundCall Action", "id": "refId1739600228115"},
                     ],
-                },
-                "67b11d83f4a104689291447f": {
-                    "category": "Standard",
-                    "objectType": "campaignstate",
-                    "campaignStateId": "67b11d83f4a104689291447f",
-                    "name": "FollowUp",
-                    "description": "Newly Created State",
-                    "actions": [
-                        {
-                            "icon": "icon-ai-message",
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                                "from": "workitem.data.companyName",
-                                "message": "$V.workitem.chatBotResponse.text[0]",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": True,
-                        },
-                        {
-                            "icon": "icon-ai-message",
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "message": "$V.workitem.chatBotResponse.text[0]",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                        },
-                        {
-                            "name": "Webhook",
-                            "description": "Transition to another state",
-                            "properties": {
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "stateName": "Webhook",
-                                "description": "Transition to another state",
-                            },
-                            "type": "transitionbyname",
-                            "_selected": False,
-                            "transitionId": "refId1739600227224",
-                            "icon": "icon-transition",
-                            "id": "refId1739600228385",
-                        },
-                    ],
-                    "_id": "67b11d83f4a104689291447f",
-                    "key": "67b11d83f4a104689291447f",
-                    "location": "1378.6929147598528 315.9038660630413",
-                    "transitions": [{"name": "Webhook", "id": "refId1739600227224"}],
                 },
                 "67b11daace899acb3e0d1c38": {
                     "category": "Standard",
