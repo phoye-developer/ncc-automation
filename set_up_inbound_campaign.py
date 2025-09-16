@@ -1337,7 +1337,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         f'Service "{transcription_service["name"]}" not enabled.',
                         ["inboundcampaignsetup"],
                     )
-                    logging.error(f'Service "{transcription_service["name"]}" not enabled.')
+                    logging.error(
+                        f'Service "{transcription_service["name"]}" not enabled.'
+                    )
         else:
             if deepgram_api_key != "":
                 transcription_service = create_transcription_service(
@@ -1388,7 +1390,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     ncc_location, ncc_token, real_time_transcription_service["_id"]
                 )
                 if success:
-                    logging.info(f'Service "{real_time_transcription_service["name"]}" enabled.')
+                    logging.info(
+                        f'Service "{real_time_transcription_service["name"]}" enabled.'
+                    )
                 else:
                     post_datadog_event(
                         dd_api_key,
@@ -1400,7 +1404,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         f'Service "{real_time_transcription_service["name"]}" not enabled.',
                         ["inboundcampaignsetup"],
                     )
-                    logging.error(f'Service "{real_time_transcription_service["name"]}" not enabled.')
+                    logging.error(
+                        f'Service "{real_time_transcription_service["name"]}" not enabled.'
+                    )
         else:
             if deepgram_api_key != "":
                 real_time_transcription_service = (
@@ -1698,27 +1704,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - ACD Voicemail",
         )
         if acd_voicemail_function == {}:
-            acd_voicemail_function = create_acd_voicemail_function(
+            acd_voicemail_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - ACD Voicemail",
+                "ACD Voicemail",
             )
-            if acd_voicemail_function != {}:
-                logging.info(f'Function "{campaign_name} - ACD Voicemail" created.')
+            if acd_voicemail_function == {}:
+                acd_voicemail_function = create_acd_voicemail_function(
+                    ncc_location,
+                    ncc_token,
+                    "ACD Voicemail",
+                )
+                if acd_voicemail_function != {}:
+                    logging.info('Function "ACD Voicemail" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "ACD Voicemail" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Function "ACD Voicemail" not created.')
             else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - ACD Voicemail" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error(
-                    f'Function "{campaign_name} - ACD Voicemail" not created.'
-                )
+                logging.info('Function "ACD Voicemail" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - ACD Voicemail" already exists.')
 
