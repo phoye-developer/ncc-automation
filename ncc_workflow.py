@@ -93,9 +93,6 @@ def create_iva_workflow(
     prompt: dict,
     acd_voicemail_function: dict,
     acd_callback_function: dict,
-    get_function_id_script: dict,
-    get_queue_id_script: dict,
-    check_has_all_parameters_script: dict,
 ) -> dict:
     """
     This function creates a workflow in Nextiva Contact Center (NCC) for use as an Intelligent Virtual Agent (IVA).
@@ -940,29 +937,6 @@ def create_iva_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": check_has_all_parameters_script["name"],
-                                "scriptId": check_has_all_parameters_script["_id"],
-                                "variableName": "hasAllParameters",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "scriptId": {
-                                        "name": check_has_all_parameters_script["name"]
-                                    }
-                                },
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": False,
-                            "id": "refId1740431837492",
-                            "icon": "icon-script",
-                        },
-                        {
                             "name": "FollowUp",
                             "description": "Transition to another state",
                             "properties": {
@@ -984,46 +958,6 @@ def create_iva_workflow(
                             "transitionId": "refId1740431837457",
                             "id": "refId1740431837493",
                             "icon": "icon-transition",
-                        },
-                        {
-                            "icon": "icon-script",
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": get_function_id_script["name"],
-                                "scriptId": get_function_id_script["_id"],
-                                "variableName": "functionId",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "scriptId": {"name": get_function_id_script["name"]}
-                                },
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": True,
-                        },
-                        {
-                            "icon": "icon-script",
-                            "name": "Execute Script",
-                            "description": "",
-                            "properties": {
-                                "description": get_queue_id_script["name"],
-                                "scriptId": get_queue_id_script["_id"],
-                                "variableName": "queueId",
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                                "expansions": {
-                                    "scriptId": {"name": get_queue_id_script["name"]}
-                                },
-                                "_working": False,
-                            },
-                            "type": "script",
-                            "_selected": True,
                         },
                         {
                             "icon": "icon-transition",

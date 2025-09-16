@@ -1791,82 +1791,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
 
-        # Create Check hasAllParameters script
-        check_has_all_parameters_script = search_scripts(
-            ncc_location, ncc_token, "Check hasAllParameters"
-        )
-        if check_has_all_parameters_script == {}:
-            check_has_all_parameters_script = create_check_has_all_parameters_script(
-                ncc_location, ncc_token, "Check hasAllParameters"
-            )
-            if check_has_all_parameters_script != {}:
-                logging.info('Script "Check hasAllParameters" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Check hasAllParameters" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Check hasAllParameters" not created.')
-        else:
-            logging.info('Script "Check hasAllParameters" already exists.')
-
-        # Create Get functionId script
-        get_function_id_script = search_scripts(
-            ncc_location, ncc_token, "Get functionId"
-        )
-        if get_function_id_script == {}:
-            get_function_id_script = create_get_function_id_script(
-                ncc_location, ncc_token, "Get functionId"
-            )
-            if get_function_id_script != {}:
-                logging.info('Script "Get functionId" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Get functionId" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Get functionId" not created.')
-        else:
-            logging.info('Script "Get functionId" already exists.')
-
-        # Create Get queueId script
-        get_queue_id_script = search_scripts(ncc_location, ncc_token, "Get queueId")
-        if get_queue_id_script == {}:
-            get_queue_id_script = create_get_queue_id_script(
-                ncc_location,
-                ncc_token,
-                "Get queueId",
-                queues_to_assign["Customer Service"],
-            )
-            if get_queue_id_script != {}:
-                logging.info('Script "Get queueId" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Get queueId" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Get queueId" not created.')
-        else:
-            logging.info('Script "Get queueId" already exists.')
-
         # Create "main" workflow
         workflow = search_workflows(
             ncc_location,
@@ -1883,9 +1807,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                 and prompt != {}
                 and chat_survey != {}
                 and user_survey != {}
-                and get_function_id_script != {}
-                and get_queue_id_script != {}
-                and check_has_all_parameters_script != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1900,9 +1821,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         prompt,
                         acd_voicemail_function,
                         acd_callback_function,
-                        get_function_id_script,
-                        get_queue_id_script,
-                        check_has_all_parameters_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
                     workflow = create_non_iva_dtmf_workflow(
