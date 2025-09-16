@@ -1668,25 +1668,35 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Two Way SMS",
         )
         if two_way_sms_function == {}:
-            two_way_sms_function = create_two_way_sms_function(
+            two_way_sms_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Two Way SMS",
+                "Two Way SMS with Translation",
             )
-            if two_way_sms_function != {}:
-                logging.info(f'Function "{campaign_name} - Two Way SMS" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Two Way SMS" not created.',
-                    ["inboundcampaignsetup"],
+            if two_way_sms_function == {}:
+                two_way_sms_function = create_two_way_sms_function(
+                    ncc_location,
+                    ncc_token,
+                    "Two Way SMS with Translation",
                 )
-                logging.error(f'Function "{campaign_name} - Two Way SMS" not created.')
+                if two_way_sms_function != {}:
+                    logging.info('Function "Two Way SMS with Translation" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "Two Way SMS with Translation" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        'Function "Two Way SMS with Translation" not created.'
+                    )
+            else:
+                logging.info('Function "Two Way SMS with Translation" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
 
