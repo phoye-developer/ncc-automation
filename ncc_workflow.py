@@ -833,54 +833,6 @@ def create_iva_workflow(
                     "description": "Newly Created State",
                     "actions": [
                         {
-                            "icon": "icon-ai-message",
-                            "name": "Chat Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                                "from": "workitem.data.companyName",
-                                "message": "Please wait while I transfer you to an agent who can assist you.",
-                                "messageType": "BOT",
-                                "options": [],
-                            },
-                            "type": "chatmessageconsumer",
-                            "_selected": False,
-                        },
-                        {
-                            "icon": "icon-ai-message",
-                            "name": "SMS Message Consumer",
-                            "description": "",
-                            "properties": {
-                                "description": "Please wait...",
-                                "message": "Please wait while I transfer you to an agent who can assist you.",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundSMS'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "smsmessageconsumer",
-                            "_selected": False,
-                        },
-                        {
                             "icon": "icon-timer",
                             "name": "Start Timer",
                             "description": "",
