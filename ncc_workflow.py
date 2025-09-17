@@ -806,10 +806,15 @@ def create_iva_workflow(
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'InboundCall'",
-                                        }
+                                        },
+                                        {
+                                            "leftExpression": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                            "operator": "!=",
+                                            "rightExpression": "'FollowUp'",
+                                        },
                                     ],
                                 },
-                                "stateName": "workitem.data.botWebhookRequest.queryResult.action",
+                                "stateName": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
                             },
                             "type": "transitionbyname",
                             "_selected": True,
