@@ -685,24 +685,24 @@ def create_iva_workflow(
                         },
                         {
                             "icon": "icon-transition",
-                            "name": "Webhook",
+                            "name": "Chat IVA",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "67b11bac9255944444f52b95",
+                                "stateName": "Chat IVA",
                             },
-                            "type": "transition",
+                            "type": "transitionbyname",
                             "_selected": True,
-                            "transitionId": "refId1739600226839",
+                            "transitionId": "refId1758064484666",
                         },
                     ],
                     "_id": "67b11b3a4492457796ee0690",
                     "key": "67b11b3a4492457796ee0690",
-                    "location": "631.2642848004028 236.06753202443764",
-                    "transitions": [{"name": "Webhook", "id": "refId1739600226839"}],
+                    "location": "631.1006997298108 221.82400319465438",
+                    "transitions": [{"name": "Chat IVA", "id": "refId1758064484666"}],
                 },
                 "67b11b424881f97a86b2640f": {
                     "category": "Standard",
@@ -1314,6 +1314,111 @@ def create_iva_workflow(
                     "location": "631.1252797552795 768.2636496590599",
                     "transitions": [
                         {"name": "ConnectAgent", "id": "refId1740544930881"}
+                    ],
+                },
+                "68c9e821c657fd9e2c8e050a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "68c9e821c657fd9e2c8e050a",
+                    "name": "Chat IVA",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "name": "Wait Chat Message",
+                            "description": "",
+                            "properties": {
+                                "timeoutDuration": -1,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "waitforchatmessage",
+                            "_selected": False,
+                            "id": "refId1758064484670",
+                            "icon": "icon-timer",
+                        },
+                        {
+                            "name": "Message Bot",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "message": "$V.workitem.currentChatMessage.textMsg",
+                            },
+                            "type": "chatmessagebot",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1758064484671",
+                        },
+                        {
+                            "name": "Chat Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "from": "workitem.data.companyName",
+                                "message": "workitem.data.botWebhookRequest.messages[0].text.redactedText[0]",
+                                "messageType": "BOT",
+                                "options": [],
+                            },
+                            "type": "chatmessageconsumer",
+                            "_selected": False,
+                            "icon": "icon-ai-message",
+                            "id": "refId1758064484672",
+                        },
+                        {
+                            "name": "Tag Value",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                            "operator": "!=",
+                                            "rightExpression": "'FollowUp'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1758058835384",
+                            "id": "refId1758064484673",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Loop",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "Chat IVA",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1758064484628",
+                            "icon": "icon-transition",
+                            "id": "refId1758064484674",
+                        },
+                    ],
+                    "_id": "68c9e821c657fd9e2c8e050a",
+                    "key": "68c9e821c657fd9e2c8e050a",
+                    "location": "1029.3208677134674 87.20253601459416",
+                    "transitions": [
+                        {"name": "Tag Value", "id": "refId1758058835384"},
+                        {"name": "Loop", "id": "refId1758064484628"},
                     ],
                 },
             },
