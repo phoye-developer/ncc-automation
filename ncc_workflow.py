@@ -773,25 +773,27 @@ def create_iva_workflow(
                             "_selected": False,
                         },
                         {
-                            "icon": "icon-transition",
-                            "name": "Webhook",
+                            "name": "SMS IVA",
                             "description": "Transition to another state",
                             "properties": {
+                                "description": "Transition to another state",
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "stateId": "67b11bac9255944444f52b95",
+                                "stateName": "SMS IVA",
                             },
-                            "type": "transition",
-                            "_selected": True,
-                            "transitionId": "refId1739600226894",
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1758064484803",
+                            "icon": "icon-transition",
+                            "id": "refId1758064484806",
                         },
                     ],
                     "_id": "67b11b4990b64c67bfb0e882",
                     "key": "67b11b4990b64c67bfb0e882",
                     "location": "631.2642848004031 588.219037051561",
-                    "transitions": [{"name": "Webhook", "id": "refId1739600226894"}],
+                    "transitions": [{"name": "SMS IVA", "id": "refId1758064484803"}],
                 },
                 "67b11bac9255944444f52b95": {
                     "category": "Standard",
@@ -1322,7 +1324,6 @@ def create_iva_workflow(
                     "campaignStateId": "68c9e821c657fd9e2c8e050a",
                     "name": "Chat IVA",
                     "description": "Newly Created State",
-                    "tenantId": "nextivase2",
                     "actions": [
                         {
                             "name": "Wait Chat Message",
@@ -1419,6 +1420,145 @@ def create_iva_workflow(
                     "transitions": [
                         {"name": "Tag Value", "id": "refId1758058835384"},
                         {"name": "Loop", "id": "refId1758064484628"},
+                    ],
+                },
+                "68c9f22451feedbeaf70558a": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "68c9f22451feedbeaf70558a",
+                    "name": "SMS IVA",
+                    "description": "Newly Created State",
+                    "actions": [
+                        {
+                            "name": "SMS Wait For Messages",
+                            "description": "",
+                            "properties": {
+                                "timeoutDuration": 3600000,
+                                "stateId": "67b1186f5510d9081ac8e32b",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "==",
+                                            "leftExpression": "workitem.data.smsCounter",
+                                            "rightExpression": "1",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "smswaitformessage",
+                            "_selected": False,
+                            "id": "refId1758064484908",
+                            "icon": "icon-timer",
+                        },
+                        {
+                            "name": "Message Bot",
+                            "description": "",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "message": "$V.workitem.currentSMSMessage.textMsg",
+                                "event": "",
+                            },
+                            "type": "chatmessagebot",
+                            "_selected": False,
+                            "id": "refId1758064484909",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "SMS Message Consumer",
+                            "description": "",
+                            "properties": {
+                                "message": "workitem.data.botWebhookRequest.messages[0].text.redactedText[0]",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "smsmessageconsumer",
+                            "_selected": False,
+                            "id": "refId1758064484910",
+                            "icon": "icon-ai-message",
+                        },
+                        {
+                            "name": "Save Variable",
+                            "description": "",
+                            "properties": {
+                                "description": "smsCounter",
+                                "rightExpression": "workitem.data.smsCounter + 1",
+                                "variableName": "smsCounter",
+                                "asObject": True,
+                                "dlpOption": False,
+                                "wfmOption": False,
+                                "dashboard": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "savevariable",
+                            "_selected": False,
+                            "icon": "icon-save",
+                            "id": "refId1758064484911",
+                        },
+                        {
+                            "name": "Tag Value",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                            "operator": "!=",
+                                            "rightExpression": "'FollowUp'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "68c9f2e28c19a30ac822e07e",
+                            "id": "refId1758064484912",
+                            "icon": "icon-transition",
+                        },
+                        {
+                            "name": "Loop",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "description": "Transition to another state",
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "\\",
+                                            "operator": "!=",
+                                            "rightExpression": "'FollowUp'",
+                                        }
+                                    ],
+                                },
+                                "stateName": "SMS IVA",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1758064484728",
+                            "id": "refId1758064484913",
+                            "icon": "icon-transition",
+                        },
+                    ],
+                    "_id": "68c9f22451feedbeaf70558a",
+                    "key": "68c9f22451feedbeaf70558a",
+                    "location": "1254.0308932467733 87.0396786493547",
+                    "transitions": [
+                        {"name": "Tag Value", "id": "68c9f2e28c19a30ac822e07e"},
+                        {"name": "Loop", "id": "refId1758064484728"},
                     ],
                 },
             },
