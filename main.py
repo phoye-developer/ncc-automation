@@ -42,9 +42,10 @@ def main():
     print("Please log in. Your password will not display on the screen.")
     print()
     while not authenticated:
+        login_site = input("Login site: ")
         username = input("Username: ")
         password = getpass.getpass(prompt="Password: ", stream=None)
-        auth_info = get_ncc_token(username, password)
+        auth_info = get_ncc_token(login_site, username, password)
         if auth_info:
             post_datadog_event(
                 dd_api_key,
