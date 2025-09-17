@@ -4,7 +4,9 @@ from datadog import *
 from ncc_campaign import *
 
 
-def set_up_chat_survey_link(ncc_location: str, ncc_token: str, username: str):
+def set_up_chat_survey_link(
+    host: str, ncc_location: str, ncc_token: str, username: str
+):
     """
     This function creates a URL link to a website that hosts a Nextiva Contact Center (NCC) chat survey.
     """
@@ -92,7 +94,7 @@ def set_up_chat_survey_link(ncc_location: str, ncc_token: str, username: str):
                         ["chatsurveylinksetup"],
                     )
                     print(
-                        f'Link: https://enterprise-demos.com/{choice}?tenantId={campaign["tenantId"]}&campaignId={campaign["_id"]}'
+                        f'Link: https://enterprise-demos.com/{choice}?host={host}&tenantId={campaign["tenantId"]}&campaignId={campaign["_id"]}'
                     )
                 else:
                     choice = ""

@@ -135,7 +135,9 @@ def main():
                         f'User "{username}" started chat survey link setup.',
                         ["chatsurveylinksetup"],
                     )
-                    set_up_chat_survey_link(ncc_location, ncc_token, username)
+                    set_up_chat_survey_link(
+                        login_site, ncc_location, ncc_token, username
+                    )
                 elif choice == "7":
                     post_datadog_event(
                         dd_api_key,
