@@ -450,28 +450,6 @@ def create_iva_workflow(
                             "_selected": True,
                         },
                         {
-                            "icon": "icon-tts",
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName}.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "googletts",
-                            "_selected": True,
-                        },
-                        {
                             "name": "Search Contacts",
                             "type": "transition",
                             "description": "Transition to another state",
