@@ -1439,7 +1439,7 @@ def create_iva_workflow(
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
-                                            "operator": "==",
+                                            "operator": "!=",
                                             "leftExpression": "workitem.data.smsCounter",
                                             "rightExpression": "1",
                                         }
