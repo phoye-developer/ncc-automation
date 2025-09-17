@@ -879,6 +879,26 @@ def create_iva_workflow(
                             "_selected": False,
                         },
                         {
+                            "icon": "icon-timer",
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": "8",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'InboundCall'",
+                                        }
+                                    ],
+                                },
+                            },
+                            "type": "starttimer",
+                            "_selected": False,
+                        },
+                        {
                             "name": "Retrieve the call",
                             "description": "",
                             "properties": {
@@ -899,29 +919,6 @@ def create_iva_workflow(
                             "id": "refId1739600228216",
                         },
                         {
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Convert Text into Audio using Google's Text-To-Speech",
-                            "properties": {
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Please wait while I transfer you to an agent who can assist you.</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
-                                        {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        }
-                                    ],
-                                },
-                                "description": "Please wait...",
-                            },
-                            "type": "googletts",
-                            "_selected": False,
-                            "icon": "icon-tts",
-                            "id": "refId1739600228217",
-                        },
-                        {
                             "name": "Enter Queue from Expression",
                             "description": "",
                             "properties": {
@@ -937,7 +934,7 @@ def create_iva_workflow(
                                 },
                             },
                             "type": "enterqueuefromexpression",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1739600228218",
                             "icon": "icon-enterqueues",
                         },
