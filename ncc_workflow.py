@@ -1199,49 +1199,33 @@ def create_iva_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
-                            "icon": "icon-timer",
                             "name": "Start Timer",
                             "description": "",
                             "properties": {
                                 "timeoutInSeconds": 10,
                                 "condition": {
-                                    "conditionType": "AND",
+                                    "conditionType": "OR",
                                     "expressions": [
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'Chat'",
-                                        }
-                                    ],
-                                },
-                            },
-                            "type": "starttimer",
-                            "_selected": True,
-                        },
-                        {
-                            "icon": "icon-tts",
-                            "name": "Synthesize Text via Google TTS",
-                            "description": "Thank you for contacting...",
-                            "properties": {
-                                "description": "Thank you for contacting...",
-                                "voiceName": "en-US-Wavenet-J",
-                                "text": '<prosody pitch="-2st">Thank you for contacting ${workitem.data.companyName} and have a great day!</prosody>',
-                                "condition": {
-                                    "conditionType": "AND",
-                                    "expressions": [
+                                        },
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'InboundCall'",
-                                        }
+                                        },
                                     ],
                                 },
                             },
-                            "type": "googletts",
+                            "type": "starttimer",
                             "_selected": False,
+                            "id": "refId1758127571178",
+                            "icon": "icon-timer",
                         },
                         {
                             "name": "End State",
