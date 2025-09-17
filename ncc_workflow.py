@@ -795,30 +795,27 @@ def create_iva_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
-                            "icon": "icon-transition",
-                            "name": "InboundCall Action",
+                            "name": "Tag Value",
                             "description": "Transition to another state",
                             "properties": {
                                 "condition": {
-                                    "conditionType": "AND",
+                                    "conditionType": "NONE",
                                     "expressions": [
                                         {
-                                            "leftExpression": "workitem.type",
-                                            "operator": "==",
-                                            "rightExpression": "'InboundCall'",
-                                        },
-                                        {
-                                            "leftExpression": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                            "leftExpression": "",
                                             "operator": "!=",
-                                            "rightExpression": "'FollowUp'",
-                                        },
+                                            "rightExpression": "",
+                                        }
                                     ],
                                 },
                                 "stateName": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                "description": "Transition to another state",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
-                            "transitionId": "refId1739600228115",
+                            "_selected": False,
+                            "transitionId": "68cafbf349abe8246b1000f2",
+                            "id": "refId1758127572229",
+                            "icon": "icon-transition",
                         },
                     ],
                     "_id": "67b11bac9255944444f52b95",
