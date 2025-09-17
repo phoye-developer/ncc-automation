@@ -1158,24 +1158,42 @@ def create_iva_workflow(
                             "properties": {
                                 "timeoutInSeconds": 10,
                                 "condition": {
-                                    "conditionType": "OR",
+                                    "conditionType": "AND",
                                     "expressions": [
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'Chat'",
-                                        },
+                                        }
+                                    ],
+                                },
+                                "description": "Chat",
+                            },
+                            "type": "starttimer",
+                            "_selected": False,
+                            "id": "refId1758127572757",
+                            "icon": "icon-timer",
+                        },
+                        {
+                            "name": "Start Timer",
+                            "description": "",
+                            "properties": {
+                                "timeoutInSeconds": "5",
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
                                         {
                                             "leftExpression": "workitem.type",
                                             "operator": "==",
                                             "rightExpression": "'InboundCall'",
-                                        },
+                                        }
                                     ],
                                 },
+                                "description": "InboundCall",
                             },
                             "type": "starttimer",
                             "_selected": False,
-                            "id": "refId1758127571178",
+                            "id": "refId1758127572792",
                             "icon": "icon-timer",
                         },
                         {
