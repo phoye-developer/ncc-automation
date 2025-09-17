@@ -42,7 +42,10 @@ def main():
     print("Please log in. Your password will not display on the screen.")
     print()
     while not authenticated:
-        login_site = input("Login site: ")
+        default_login_site = "login.thrio.io"
+        login_site = input(f"Login site (default: {default_login_site}): ")
+        if not login_site:
+            login_site = default_login_site
         username = input("Username: ")
         password = getpass.getpass(prompt="Password: ", stream=None)
         auth_info = get_ncc_token(login_site, username, password)
