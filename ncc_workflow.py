@@ -837,7 +837,7 @@ def create_iva_workflow(
                             "name": "Start Timer",
                             "description": "",
                             "properties": {
-                                "timeoutInSeconds": "8",
+                                "timeoutInSeconds": "3",
                                 "condition": {
                                     "conditionType": "AND",
                                     "expressions": [
