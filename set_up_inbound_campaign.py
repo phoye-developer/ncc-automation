@@ -1448,6 +1448,55 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     'Insufficient data to create service type "TRANSCRIPTION".'
                 )
 
+        # Create translation service
+        translation_service = search_services(
+            ncc_location,
+            ncc_token,
+            "TRANSLATION",
+        )
+        if translation_service != {}:
+            logging.info('Service type "TRANSLATION" already exists.')
+            if translation_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, translation_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{translation_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{translation_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        f'Service "{translation_service["name"]}" not enabled.'
+                    )
+        else:
+            translation_service = create_translation_service(
+                ncc_location,
+                ncc_token,
+                "Translation Service",
+            )
+            if translation_service != {}:
+                logging.info('Service type "TRANSLATION" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Service Creation Failed",
+                    'Service type "TRANSLATION" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Service type "TRANSLATION" not created.')
+
         # Create classifications
         classifications_to_assign = []
         for classification in classifications:

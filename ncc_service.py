@@ -353,6 +353,43 @@ def create_plain_text_gen_ai_service(
     return service
 
 
+def create_translation_service(
+    ncc_location: str, ncc_token: str, ncc_service_name: str
+) -> dict:
+    """
+    This function creates an NCC TRANSLATION service with the specified name.
+    """
+    service = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = json.dumps(
+        {
+            "localizations": {
+                "name": {"en": {"language": "en", "value": f"{ncc_service_name}"}}
+            },
+            "description": f"{ncc_service_name}",
+            "type": "TRANSLATION",
+            "enabled": True,
+            "objectType": "service",
+            "provider": "GOOGLE",
+            "name": f"{ncc_service_name}",
+        }
+    )
+    headers = {
+        "Authorization": ncc_token,
+        "Content-Type": "application/json",
+    }
+    try:
+        conn.request("POST", "/data/api/types/service/", payload, headers)
+        res = conn.getresponse()
+        if res.status == 201:
+            data = res.read().decode("utf-8")
+            service = json.loads(data)
+    except:
+        pass
+    conn.close()
+    return service
+
+
 def update_enable_service(
     ncc_location: str, ncc_token: str, ncc_service_id: str
 ) -> dict:
@@ -361,17 +398,15 @@ def update_enable_service(
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "enabled": True
-        }
-    )
+    payload = json.dumps({"enabled": True})
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
     try:
-        conn.request("PATCH", f"/data/api/types/service/{ncc_service_id}", payload, headers)
+        conn.request(
+            "PATCH", f"/data/api/types/service/{ncc_service_id}", payload, headers
+        )
         res = conn.getresponse()
         if res.status == 200:
             success = True
