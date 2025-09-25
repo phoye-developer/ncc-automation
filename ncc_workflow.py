@@ -1392,7 +1392,7 @@ def create_iva_workflow(
                             },
                             "type": "smswaitformessage",
                             "_selected": False,
-                            "id": "refId1758064484908",
+                            "id": "refId1758672835669",
                             "icon": "icon-timer",
                         },
                         {
@@ -1408,26 +1408,22 @@ def create_iva_workflow(
                             },
                             "type": "chatmessagebot",
                             "_selected": False,
-                            "id": "refId1758064484909",
+                            "id": "refId1758672835670",
                             "icon": "icon-ai-message",
                         },
                         {
-                            "name": "SMS Message Consumer",
+                            "name": "Forward Bot Message to Consumer",
                             "description": "",
                             "properties": {
-                                "message": "workitem.data.botWebhookRequest.messages[0].text.redactedText[0]",
-                                "toAddress": "workitem.from",
-                                "fromAddress": "workitem.to",
-                                "createNewWorkitem": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                },
+                                }
                             },
-                            "type": "smsmessageconsumer",
+                            "type": "smsforwardbotmessagetoconsumer",
                             "_selected": False,
-                            "id": "refId1758064484910",
-                            "icon": "icon-ai-message",
+                            "icon": "icon-mail-forward",
+                            "id": "refId1758672835671",
                         },
                         {
                             "name": "Save Variable",
@@ -1448,10 +1444,10 @@ def create_iva_workflow(
                             "type": "savevariable",
                             "_selected": False,
                             "icon": "icon-save",
-                            "id": "refId1758064484911",
+                            "id": "refId1758672835672",
                         },
                         {
-                            "name": "Tag Value",
+                            "name": "nextState",
                             "description": "Transition to another state",
                             "properties": {
                                 "description": "Transition to another state",
@@ -1459,18 +1455,18 @@ def create_iva_workflow(
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
-                                            "leftExpression": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                            "leftExpression": "workitem.chatBotResponse.parameters.nextState",
                                             "operator": "!=",
-                                            "rightExpression": "'FollowUp'",
+                                            "rightExpression": "null",
                                         }
                                     ],
                                 },
-                                "stateName": "workitem.data.botWebhookRequest.fulfillmentInfo.tag",
+                                "stateName": "workitem.chatBotResponse.parameters.nextState.string",
                             },
                             "type": "transitionbyname",
                             "_selected": False,
                             "transitionId": "68c9f2e28c19a30ac822e07e",
-                            "id": "refId1758064484912",
+                            "id": "refId1758672835673",
                             "icon": "icon-transition",
                         },
                         {
@@ -1499,9 +1495,9 @@ def create_iva_workflow(
                     ],
                     "_id": "68c9f22451feedbeaf70558a",
                     "key": "68c9f22451feedbeaf70558a",
-                    "location": "1254.0308932467733 87.0396786493547",
+                    "location": "1159.2325174108068 156.51594302040465",
                     "transitions": [
-                        {"name": "Tag Value", "id": "68c9f2e28c19a30ac822e07e"},
+                        {"name": "nextState", "id": "68c9f2e28c19a30ac822e07e"},
                         {"name": "Loop", "id": "refId1758064484728"},
                     ],
                 },
