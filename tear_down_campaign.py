@@ -180,40 +180,6 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
                 f'No workflows with campaign name "{campaign_name}" found for deletion.'
             )
 
-        # Delete functions
-        functions = search_campaign_functions(ncc_location, ncc_token, campaign_name)
-        if len(functions) > 0:
-            for function in functions:
-                success = delete_function(ncc_location, ncc_token, function["_id"])
-                if success:
-                    logging.info(f'Function "{function["name"]}" deleted.')
-                else:
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "error",
-                        "normal",
-                        "Function Teardown Failed",
-                        f'Function "{function["name"]}" not deleted.',
-                        ["campaignteardown"],
-                    )
-                    logging.error(f'Function "{function["name"]}" not deleted.')
-        else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Function Teardown Failed",
-                f'No functions with campaign name "{campaign_name}" found for deletion.',
-                ["campaignteardown"],
-            )
-            logging.warning(
-                f'No functions with campaign name "{campaign_name}" found for deletion.'
-            )
-
         # Delete surveys
         surveys = search_campaign_surveys(ncc_location, ncc_token, campaign_name)
         if len(surveys) > 0:
