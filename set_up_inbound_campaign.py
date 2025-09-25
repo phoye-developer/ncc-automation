@@ -1687,27 +1687,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Search Contacts",
         )
         if search_contacts_function == {}:
-            search_contacts_function = create_search_contacts_function(
+            search_contacts_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Search Contacts",
+                "Search Contacts",
             )
-            if search_contacts_function != {}:
-                logging.info(f'Function "{campaign_name} - Search Contacts" created.')
+            if search_contacts_function == {}:
+                search_contacts_function = create_search_contacts_function(
+                    ncc_location,
+                    ncc_token,
+                    "Search Contacts",
+                )
+                if search_contacts_function != {}:
+                    logging.info('Function "Search Contacts" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        f'Function "Search Contacts" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Function "Search Contacts" not created.')
             else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Search Contacts" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error(
-                    f'Function "{campaign_name} - Search Contacts" not created.'
-                )
+                logging.info('Function "Search Contacts" already exists.')
         else:
             logging.info(
                 f'Function "{campaign_name} - Search Contacts" already exists.'
