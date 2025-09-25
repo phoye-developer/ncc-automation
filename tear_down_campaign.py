@@ -59,6 +59,7 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
         start_time = datetime.datetime.now()
 
         logging.info("Starting...")
+
         # Delete campaigns
         campaigns_to_delete = []
         campaigns = get_campaigns(ncc_location, ncc_token)
@@ -281,80 +282,6 @@ def tear_down_campaign(ncc_location: str, ncc_token: str, username: str):
             )
             logging.warning(
                 f'No REST API objects with campaign name "{campaign_name}" found for deletion.'
-            )
-
-        # Delete classifications
-        classifications = search_campaign_classifications(
-            ncc_location, ncc_token, campaign_name
-        )
-        if len(classifications) > 0:
-            for classification in classifications:
-                success = delete_classification(
-                    ncc_location, ncc_token, classification["_id"]
-                )
-                if success:
-                    logging.info(f'Classification "{classification["name"]}" deleted.')
-                else:
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "error",
-                        "normal",
-                        "Classification Teardown Failed",
-                        f'Classification "{classification["name"]}" not deleted.',
-                        ["campaignteardown"],
-                    )
-                    logging.error(
-                        f'Classification "{classification["name"]}" not deleted.'
-                    )
-        else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Classification Teardown Failed",
-                f'No classifications with campaign name "{campaign_name}" found for deletion.',
-                ["campaignteardown"],
-            )
-            logging.warning(
-                f'No classifications with campaign name "{campaign_name}" found for deletion.'
-            )
-
-        # Delete scorecards
-        scorecards = search_campaign_scorecards(ncc_location, ncc_token, campaign_name)
-        if len(scorecards) > 0:
-            for scorecard in scorecards:
-                success = delete_scorecard(ncc_location, ncc_token, scorecard["_id"])
-                if success:
-                    logging.info(f'Scorecard "{scorecard["name"]}" deleted.')
-                else:
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "error",
-                        "normal",
-                        "Scorecard Teardown Failed",
-                        f'Scorecard "{scorecard["name"]}" not deleted.',
-                        ["campaignteardown"],
-                    )
-                    logging.error(f'Scorecard "{scorecard["name"]}" not deleted.')
-        else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Scorecard Teardown Failed",
-                f'No scorecard with campaign name "{campaign_name}" found for deletion.',
-                ["campaignteardown"],
-            )
-            logging.warning(
-                f'No scorecard with campaign name "{campaign_name}" found for deletion.'
             )
 
         # Delete reports
