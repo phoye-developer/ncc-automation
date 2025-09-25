@@ -1036,13 +1036,13 @@ def create_iva_workflow(
                                     "conditionType": "AND",
                                     "expressions": [
                                         {
-                                            "operator": "==",
+                                            "operator": "!=",
                                             "leftExpression": "workitem.digits",
                                             "rightExpression": "'1'",
                                         },
                                         {
                                             "leftExpression": "workitem.digits",
-                                            "operator": "==",
+                                            "operator": "!=",
                                             "rightExpression": "'2'",
                                         },
                                     ],
@@ -2469,8 +2469,19 @@ def create_non_iva_dtmf_workflow(
                             "timeoutInSeconds": "1",
                             "dlpOption": False,
                             "condition": {
-                                "conditionType": "NONE",
-                                "expressions": [{"operator": "=="}],
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "operator": "!=",
+                                        "leftExpression": "workitem.digits",
+                                        "rightExpression": "'1'",
+                                    },
+                                    {
+                                        "leftExpression": "workitem.digits",
+                                        "operator": "!=",
+                                        "rightExpression": "'2'",
+                                    },
+                                ],
                             },
                         },
                         "type": "googlettscollect",
@@ -5997,8 +6008,19 @@ def create_direct_line_workflow(
                                 "timeoutInSeconds": "1",
                                 "dlpOption": False,
                                 "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "operator": "!=",
+                                            "leftExpression": "workitem.digits",
+                                            "rightExpression": "'1'",
+                                        },
+                                        {
+                                            "leftExpression": "workitem.digits",
+                                            "operator": "!=",
+                                            "rightExpression": "'2'",
+                                        },
+                                    ],
                                 },
                             },
                             "type": "googlettscollect",
