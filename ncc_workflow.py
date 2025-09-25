@@ -994,7 +994,7 @@ def create_iva_workflow(
                             "properties": {
                                 "loop": 1,
                                 "numberDigits": 1,
-                                "promptId": "6261a7ca399bc2244d354090",
+                                "promptId": prompt["_id"],
                                 "terminationKey": "#",
                                 "timeoutInSeconds": "1",
                                 "dlpOption": False,
@@ -1013,14 +1013,12 @@ def create_iva_workflow(
                                         },
                                     ],
                                 },
-                                "expansions": {
-                                    "promptId": {"name": "music accoustic1"}
-                                },
+                                "expansions": {"promptId": {"name": prompt["name"]}},
                                 "_working": False,
                             },
                             "type": "playdigits",
                             "_selected": False,
-                            "id": "refId1758127573070",
+                            "id": "refId1740283338201",
                             "icon": "icon-playdigits",
                         },
                         {
@@ -2426,26 +2424,6 @@ def create_non_iva_dtmf_workflow(
                 "description": "Newly Created State",
                 "actions": [
                     {
-                        "icon": "icon-tts",
-                        "name": "Play Collect Google TTS",
-                        "description": "Play Collect using Text-To-Speech",
-                        "properties": {
-                            "voiceName": "en-US-Wavenet-J",
-                            "voiceGender": "male",
-                            "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
-                            "numberDigits": 1,
-                            "terminationKey": "#",
-                            "timeoutInSeconds": "1",
-                            "dlpOption": False,
-                            "condition": {
-                                "conditionType": "NONE",
-                                "expressions": [{"operator": "=="}],
-                            },
-                        },
-                        "type": "googlettscollect",
-                        "_selected": True,
-                    },
-                    {
                         "name": "Play & Collect Digits",
                         "description": "",
                         "properties": {
@@ -2474,9 +2452,29 @@ def create_non_iva_dtmf_workflow(
                             "_working": False,
                         },
                         "type": "playdigits",
-                        "_selected": True,
+                        "_selected": False,
                         "id": "refId1740283338201",
                         "icon": "icon-playdigits",
+                    },
+                    {
+                        "icon": "icon-tts",
+                        "name": "Play Collect Google TTS",
+                        "description": "Play Collect using Text-To-Speech",
+                        "properties": {
+                            "voiceName": "en-US-Wavenet-J",
+                            "voiceGender": "male",
+                            "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
+                            "numberDigits": 1,
+                            "terminationKey": "#",
+                            "timeoutInSeconds": "1",
+                            "dlpOption": False,
+                            "condition": {
+                                "conditionType": "NONE",
+                                "expressions": [{"operator": "=="}],
+                            },
+                        },
+                        "type": "googlettscollect",
+                        "_selected": False,
                     },
                     {
                         "name": "Execute Function",
@@ -5954,26 +5952,6 @@ def create_direct_line_workflow(
                     "description": "Newly Created State",
                     "actions": [
                         {
-                            "icon": "icon-tts",
-                            "name": "Play Collect Google TTS",
-                            "description": "Play Collect using Text-To-Speech",
-                            "properties": {
-                                "voiceName": "en-US-Wavenet-J",
-                                "voiceGender": "male",
-                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
-                                "numberDigits": 1,
-                                "terminationKey": "#",
-                                "timeoutInSeconds": "1",
-                                "dlpOption": False,
-                                "condition": {
-                                    "conditionType": "NONE",
-                                    "expressions": [{"operator": "=="}],
-                                },
-                            },
-                            "type": "googlettscollect",
-                            "_selected": True,
-                        },
-                        {
                             "name": "Play & Collect Digits",
                             "description": "",
                             "properties": {
@@ -6002,9 +5980,29 @@ def create_direct_line_workflow(
                                 "_working": False,
                             },
                             "type": "playdigits",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1740283338201",
                             "icon": "icon-playdigits",
+                        },
+                        {
+                            "icon": "icon-tts",
+                            "name": "Play Collect Google TTS",
+                            "description": "Play Collect using Text-To-Speech",
+                            "properties": {
+                                "voiceName": "en-US-Wavenet-J",
+                                "voiceGender": "male",
+                                "text": '<prosody pitch="-2st">To leave a voicemail, press 1. To request a callback, press 2. Otherwise, please stay on the line.</prosody>',
+                                "numberDigits": 1,
+                                "terminationKey": "#",
+                                "timeoutInSeconds": "1",
+                                "dlpOption": False,
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                            },
+                            "type": "googlettscollect",
+                            "_selected": False,
                         },
                         {
                             "name": "Execute Function",
