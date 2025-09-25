@@ -14,6 +14,7 @@ from ncc_supervisor_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_classification import *
+from ncc_ai_prompt import *
 from ncc_scorecard import *
 from ncc_scorecard_classification import *
 from ncc_campaign_scorecard import *
@@ -1503,19 +1504,17 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             result = search_classifications(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - {classification["name"]}",
+                f"{classification["name"]}",
             )
             if result == {}:
                 result = create_classification(
                     ncc_location,
                     ncc_token,
-                    f"{campaign_name} - {classification["name"]}",
+                    f"{classification["name"]}",
                     classification["data"],
                 )
                 if result != {}:
-                    logging.info(
-                        f'Classification "{campaign_name} - {classification["name"]}" created.'
-                    )
+                    logging.info(f'Classification "{classification["name"]}" created.')
                     classifications_to_assign.append(result)
                 else:
                     post_datadog_event(
@@ -1525,32 +1524,32 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         "error",
                         "normal",
                         "Classification Creation Failed",
-                        f'Classification "{campaign_name} - {classification["name"]}" not created.',
+                        f'Classification "{classification["name"]}" not created.',
                         ["inboundcampaignsetup"],
                     )
                     logging.error(
-                        f'Classification "{campaign_name} - {classification["name"]}" not created.'
+                        f'Classification "{classification["name"]}" not created.'
                     )
             else:
                 logging.info(
-                    f'Classification "{campaign_name} - {classification["name"]}" already exists.'
+                    f'Classification "{classification["name"]}" already exists.'
                 )
                 classifications_to_assign.append(result)
 
-        # Create scorecard
-        scorecard = search_scorecards(
+        # Create AI prompt
+        ai_prompt = search_ai_prompts(
             ncc_location,
             ncc_token,
-            campaign_name,
+            "ISDC Prompt",
         )
-        if scorecard == {}:
-            scorecard = create_scorecard(
+        if ai_prompt == {}:
+            ai_prompt = create_ai_prompt(
                 ncc_location,
                 ncc_token,
-                campaign_name,
+                general_ai_prompt,
             )
-            if scorecard != {}:
-                logging.info(f'Scorecard "{campaign_name}" created.')
+            if ai_prompt != {}:
+                logging.info('AI Prompt "ISDC Prompt" created.')
             else:
                 post_datadog_event(
                     dd_api_key,
@@ -1558,13 +1557,56 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     username,
                     "error",
                     "normal",
-                    "Scorecard Creation Failed",
-                    f'Scorecard "{campaign_name}" not created.',
+                    "AI Prompt Creation Failed",
+                    'AI Prompt "ISDC Prompt" not created.',
                     ["inboundcampaignsetup"],
                 )
-                logging.error(f'Scorecard "{campaign_name}" not created.')
+                logging.error('AI Prompt "ISDC Prompt" not created.')
         else:
-            logging.info(f'Scorecard "{campaign_name}" already exists.')
+            logging.info('AI Prompt "ISDC Prompt" already exists.')
+
+        # Create scorecard
+        if ai_prompt != {}:
+            scorecard = search_scorecards(
+                ncc_location,
+                ncc_token,
+                "Conduct Rules ISDC",
+            )
+            if scorecard == {}:
+                scorecard = create_scorecard(
+                    ncc_location,
+                    ncc_token,
+                    "Conduct Rules ISDC",
+                    ai_prompt["_id"],
+                )
+                if scorecard != {}:
+                    logging.info('Scorecard "Conduct Rules ISDC" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Scorecard Creation Failed",
+                        'Scorecard "Conduct Rules ISDC" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Scorecard "Conduct Rules ISDC" not created.')
+            else:
+                logging.info('Scorecard "Conduct Rules ISDC" already exists.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Scorecard Creation Failed",
+                "Insufficient data to create scorecard.",
+                ["inboundcampaignsetup"],
+            )
+            logging.warning("Insufficient data to create scorecard.")
 
         # Assign classifications to scorecard
         if scorecard != {}:

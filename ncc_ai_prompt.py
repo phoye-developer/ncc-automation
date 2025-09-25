@@ -3,19 +3,18 @@ import urllib.parse
 import json
 
 
-def search_scorecards(ncc_location: str, ncc_token: str, scorecard_name: str) -> dict:
+def get_ai_prompts(ncc_location: str, ncc_token: str) -> dict:
     """
-    This function searches for an existing scorecard with the same name as the intended new scorecard.
+    This function fetches a list of AI prompts in Nextiva Contact Center (NCC).
     """
-    scorecard = {}
+    ai_prompts = []
     conn = http.client.HTTPSConnection(ncc_location)
     payload = ""
     headers = {"Authorization": ncc_token}
-    url_encoded_name = urllib.parse.quote(scorecard_name)
     try:
         conn.request(
             "GET",
-            f"/data/api/types/scorecard?q={url_encoded_name}",
+            f"/data/api/types/aiprompt",
             payload,
             headers,
         )
@@ -27,85 +26,72 @@ def search_scorecards(ncc_location: str, ncc_token: str, scorecard_name: str) ->
             if total > 0:
                 results = json_data["objects"]
                 for result in results:
-                    if result["name"] == scorecard_name:
-                        scorecard = result
+                    ai_prompts.append(result)
+    except:
+        pass
+    conn.close()
+    return ai_prompts
+
+
+def search_ai_prompts(ncc_location: str, ncc_token: str, ai_prompt_name: str) -> dict:
+    """
+    This function searches for an existing AI prompt with the same name as the intended new AI prompt.
+    """
+    ai_prompt = {}
+    conn = http.client.HTTPSConnection(ncc_location)
+    payload = ""
+    headers = {"Authorization": ncc_token}
+    url_encoded_name = urllib.parse.quote(ai_prompt_name)
+    try:
+        conn.request(
+            "GET",
+            f"/data/api/types/aiprompt?q={url_encoded_name}",
+            payload,
+            headers,
+        )
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read().decode("utf-8")
+            json_data = json.loads(data)
+            total = json_data["total"]
+            if total > 0:
+                results = json_data["objects"]
+                for result in results:
+                    if result["name"] == ai_prompt_name:
+                        ai_prompt = result
                         break
     except:
         pass
     conn.close()
-    return scorecard
+    return ai_prompt
 
 
-def search_campaign_scorecards(
-    ncc_location: str, ncc_token: str, campaign_name: str
-) -> dict:
+def create_ai_prompt(ncc_location: str, ncc_token: str, ai_prompt_body: dict) -> dict:
     """
-    This function searches for existing scorecards in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
+    This function creates a AI prompt with a specified name.
     """
-    scorecards = []
+    ai_prompt = {}
     conn = http.client.HTTPSConnection(ncc_location)
-    payload = ""
-    headers = {"Authorization": ncc_token}
-    url_encoded_name = urllib.parse.quote(campaign_name)
-    try:
-        conn.request(
-            "GET",
-            f"/data/api/types/scorecard?q={url_encoded_name}",
-            payload,
-            headers,
-        )
-        res = conn.getresponse()
-        if res.status == 200:
-            data = res.read().decode("utf-8")
-            json_data = json.loads(data)
-            total = json_data["total"]
-            if total > 0:
-                results = json_data["objects"]
-                for result in results:
-                    if str(result["name"]).startswith(campaign_name):
-                        scorecards.append(result)
-    except:
-        pass
-    conn.close()
-    return scorecards
-
-
-def create_scorecard(
-    ncc_location: str, ncc_token: str, scorecard_name: str, ai_prompt_id: str
-) -> dict:
-    """
-    This function creates a scorecard with a specified name.
-    """
-    scorecard = {}
-    conn = http.client.HTTPSConnection(ncc_location)
-    payload = json.dumps(
-        {
-            "localizations": {
-                "name": {"en": {"language": "en", "value": scorecard_name}}
-            },
-            "name": scorecard_name,
-            "aiPromptId": ai_prompt_id,
-        }
-    )
+    payload = json.dumps(ai_prompt_body)
     headers = {
         "Authorization": ncc_token,
         "Content-Type": "application/json",
     }
     try:
-        conn.request("POST", "/data/api/types/scorecard/", payload, headers)
+        conn.request("POST", "/data/api/types/aiprompt/", payload, headers)
         res = conn.getresponse()
         if res.status == 201:
             data = res.read().decode("utf-8")
-            scorecard = json.loads(data)
+            ai_prompt = json.loads(data)
     except:
         pass
     conn.close()
-    return scorecard
+    return ai_prompt
 
 
-def delete_scorecard(ncc_location: str, ncc_token: str, scorecard_id: str) -> bool:
+def delete_ai_prompt(ncc_location: str, ncc_token: str, ai_prompt_id: str) -> bool:
     """
-    This function deletes a scorecard with the specified scorecard ID.
+    This function deletes a AI prompt with the specified AI prompt ID.
     """
     success = False
     conn = http.client.HTTPSConnection(ncc_location)
@@ -113,7 +99,7 @@ def delete_scorecard(ncc_location: str, ncc_token: str, scorecard_id: str) -> bo
     headers = {"Authorization": ncc_token}
     try:
         conn.request(
-            "DELETE", f"/data/api/types/scorecard/{scorecard_id}", payload, headers
+            "DELETE", f"/data/api/types/aiprompt/{ai_prompt_id}", payload, headers
         )
         res = conn.getresponse()
         if res.status == 204:
