@@ -2066,6 +2066,59 @@ def create_non_iva_dtmf_workflow(
                         "_selected": False,
                         "transitionId": "refId1740544930979",
                     },
+                    {
+                        "name": "OutboundSMS",
+                        "description": "Transition to another state",
+                        "properties": {
+                            "condition": {
+                                "conditionType": "AND",
+                                "expressions": [
+                                    {
+                                        "leftExpression": "workitem.type",
+                                        "operator": "==",
+                                        "rightExpression": "'OutboundSMS'",
+                                    }
+                                ],
+                            },
+                            "stateId": "68d7182ab80eb28dfa50512e",
+                            "points": {
+                                "h": True,
+                                "r": [
+                                    {
+                                        "b": 248.88010230206072,
+                                        "k": 179.06268728179117,
+                                        "h": False,
+                                    },
+                                    {
+                                        "b": 258.8801023020607,
+                                        "k": 179.06268728179117,
+                                        "h": False,
+                                    },
+                                    {"b": 260, "k": 179.06268728179117, "h": False},
+                                    {"b": 260, "k": 860, "h": False},
+                                    {"b": 468.9006442254572, "k": 860, "h": False},
+                                    {
+                                        "b": 468.9006442254572,
+                                        "k": 896.4268845492538,
+                                        "h": False,
+                                    },
+                                    {
+                                        "b": 468.9006442254572,
+                                        "k": 906.4268845492538,
+                                        "h": False,
+                                    },
+                                ],
+                                "ct": 7,
+                                "__gohashid": 17582,
+                            },
+                            "description": "Transition to another state",
+                        },
+                        "type": "transition",
+                        "_selected": False,
+                        "transitionId": "68d7186c7a23e767eeca8102",
+                        "icon": "icon-transition",
+                        "id": "refId1758920143976",
+                    },
                 ],
                 "_id": "67b11894720280f716c36bdf",
                 "key": "67b11894720280f716c36bdf",
@@ -2076,6 +2129,7 @@ def create_non_iva_dtmf_workflow(
                     {"name": "InboundSMS", "id": "refId1739600227203"},
                     {"name": "OutboundCall", "id": "refId1739934453995"},
                     {"name": "Email", "id": "refId1740544930979"},
+                    {"name": "OutboundSMS", "id": "68d7186c7a23e767eeca8102"},
                 ],
             },
             "67b11b35410f937347fe9aee": {
@@ -2413,7 +2467,7 @@ def create_non_iva_dtmf_workflow(
                 ],
                 "_id": "67b11daace899acb3e0d1c38",
                 "key": "67b11daace899acb3e0d1c38",
-                "location": "768.7933111586822 1146.522875177372",
+                "location": "791.3069179211823 1323.8175284320598",
                 "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
             },
             "67b11dbf1fac7db53c1d0210": {
@@ -2561,7 +2615,7 @@ def create_non_iva_dtmf_workflow(
                 ],
                 "_id": "67b11dbf1fac7db53c1d0210",
                 "key": "67b11dbf1fac7db53c1d0210",
-                "location": "1020.8849386524496 1327.8145390205887",
+                "location": "1043.3985454149497 1505.1091922752764",
                 "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
             },
             "67b552f294171b486a3d1b7a": {
@@ -2642,6 +2696,35 @@ def create_non_iva_dtmf_workflow(
                 "key": "67bea5bba2c3472a0f1cfba2",
                 "location": "468.9006442254572 970.810891049498",
                 "transitions": [{"name": "ConnectAgent", "id": "refId1740544931138"}],
+            },
+            "68d7182ab80eb28dfa50512e": {
+                "category": "Standard",
+                "objectType": "campaignstate",
+                "campaignStateId": "68d7182ab80eb28dfa50512e",
+                "name": "OutboundSMS",
+                "description": "Newly Created State",
+                "tenantId": "nextivase2",
+                "actions": [
+                    {
+                        "icon": "icon-transition",
+                        "name": "ConnectAgent",
+                        "description": "Transition to another state",
+                        "properties": {
+                            "condition": {
+                                "conditionType": "NONE",
+                                "expressions": [{"operator": "=="}],
+                            },
+                            "stateId": "67b11daace899acb3e0d1c38",
+                        },
+                        "type": "transition",
+                        "_selected": False,
+                        "transitionId": "refId1758920143958",
+                    }
+                ],
+                "_id": "68d7182ab80eb28dfa50512e",
+                "key": "68d7182ab80eb28dfa50512e",
+                "location": "468.7715040025346 1157.567399968898",
+                "transitions": [{"name": "ConnectAgent", "id": "refId1758920143958"}],
             },
         },
         "finalWorkitemStateId": "67b1186f5510d9081ac8e32b",
