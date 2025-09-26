@@ -132,7 +132,7 @@ def create_iva_workflow(
                                 "description": "Create ACD Voicemail",
                             },
                             "type": "acdvmfromexpression",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1723818900554",
                             "icon": "icon-directconnect",
                         },
@@ -205,7 +205,7 @@ def create_iva_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Save Variable",
@@ -336,7 +336,7 @@ def create_iva_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1741893969878",
                             "icon": "icon-save",
                         },
@@ -358,7 +358,7 @@ def create_iva_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Save Variable",
@@ -447,7 +447,7 @@ def create_iva_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Search Contacts",
@@ -573,7 +573,7 @@ def create_iva_workflow(
                                 "stateId": "67b11b4990b64c67bfb0e882",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600227203",
                         },
                         {
@@ -594,7 +594,7 @@ def create_iva_workflow(
                                 "stateId": "67bea3b642b196ca21fb0623",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740544930914",
                         },
                     ],
@@ -627,7 +627,7 @@ def create_iva_workflow(
                                 "stateName": "End State",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226811",
                         }
                     ],
@@ -659,7 +659,7 @@ def create_iva_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "icon": "icon-transition",
@@ -673,7 +673,7 @@ def create_iva_workflow(
                                 "stateName": "Chat IVA",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1758064484666",
                         },
                     ],
@@ -714,7 +714,7 @@ def create_iva_workflow(
                                 "stateId": "67b11bac9255944444f52b95",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
                         },
                     ],
@@ -1108,7 +1108,7 @@ def create_iva_workflow(
                                 "_working": False,
                             },
                             "type": "function",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1739600228575",
                         },
                         {
@@ -1251,7 +1251,7 @@ def create_iva_workflow(
                                 "stateName": "ConnectAgent",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740544930881",
                         }
                     ],
@@ -1578,7 +1578,7 @@ def create_non_iva_dtmf_workflow(
                             "description": "Create ACD Voicemail",
                         },
                         "type": "acdvmfromexpression",
-                        "_selected": True,
+                        "_selected": False,
                         "id": "refId1723818900554",
                         "icon": "icon-directconnect",
                     },
@@ -1651,7 +1651,7 @@ def create_non_iva_dtmf_workflow(
                             },
                         },
                         "type": "savevariable",
-                        "_selected": True,
+                        "_selected": False,
                     },
                     {
                         "name": "Save Variable",
@@ -1782,7 +1782,7 @@ def create_non_iva_dtmf_workflow(
                             },
                         },
                         "type": "savevariable",
-                        "_selected": True,
+                        "_selected": False,
                         "id": "refId1741893969878",
                         "icon": "icon-save",
                     },
@@ -1873,7 +1873,7 @@ def create_non_iva_dtmf_workflow(
                             "options": [],
                         },
                         "type": "chatmessageconsumer",
-                        "_selected": True,
+                        "_selected": False,
                     },
                     {
                         "icon": "icon-tts",
@@ -1895,7 +1895,7 @@ def create_non_iva_dtmf_workflow(
                             },
                         },
                         "type": "googletts",
-                        "_selected": True,
+                        "_selected": False,
                     },
                     {
                         "name": "Search Contacts",
@@ -2042,7 +2042,7 @@ def create_non_iva_dtmf_workflow(
                             "stateId": "67b552f294171b486a3d1b7a",
                         },
                         "type": "transition",
-                        "_selected": True,
+                        "_selected": False,
                         "transitionId": "refId1739934453995",
                     },
                     {
@@ -2063,7 +2063,7 @@ def create_non_iva_dtmf_workflow(
                             "stateId": "67bea5bba2c3472a0f1cfba2",
                         },
                         "type": "transition",
-                        "_selected": True,
+                        "_selected": False,
                         "transitionId": "refId1740544930979",
                     },
                 ],
@@ -2097,7 +2097,7 @@ def create_non_iva_dtmf_workflow(
                             "stateName": "End State",
                         },
                         "type": "transitionbyname",
-                        "_selected": True,
+                        "_selected": False,
                         "transitionId": "refId1739600226811",
                     }
                 ],
@@ -2182,7 +2182,7 @@ def create_non_iva_dtmf_workflow(
                             },
                         },
                         "type": "googlettscollect",
-                        "_selected": True,
+                        "_selected": False,
                     },
                     {
                         "name": "ConnectAgent",
@@ -2226,7 +2226,7 @@ def create_non_iva_dtmf_workflow(
                             "stateId": "67b11daace899acb3e0d1c38",
                         },
                         "type": "transition",
-                        "_selected": True,
+                        "_selected": False,
                         "transitionId": "refId1739600229655",
                     }
                 ],
@@ -2263,7 +2263,7 @@ def create_non_iva_dtmf_workflow(
                             "options": [],
                         },
                         "type": "chatmessageconsumer",
-                        "_selected": True,
+                        "_selected": False,
                         "icon": "icon-ai-message",
                         "id": "refId1739600229770",
                     },
@@ -2588,7 +2588,7 @@ def create_non_iva_dtmf_workflow(
                             },
                         },
                         "type": "savevariable",
-                        "_selected": True,
+                        "_selected": False,
                         "id": "refId1739934455752",
                         "icon": "icon-save",
                     },
@@ -2634,7 +2634,7 @@ def create_non_iva_dtmf_workflow(
                             "stateId": "67b11daace899acb3e0d1c38",
                         },
                         "type": "transition",
-                        "_selected": True,
+                        "_selected": False,
                         "transitionId": "refId1740544931138",
                     }
                 ],
@@ -2702,7 +2702,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -3051,7 +3051,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -3400,7 +3400,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -3427,7 +3427,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -3830,7 +3830,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -4179,7 +4179,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -4206,7 +4206,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -4609,7 +4609,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -4636,7 +4636,7 @@ def create_non_iva_dtmf_workflow(
                     },
                 },
                 "type": "savevariable",
-                "_selected": True,
+                "_selected": False,
                 "id": "refId1739749451080",
             },
             {
@@ -5055,7 +5055,7 @@ def create_direct_line_workflow(
                                 "description": "Create ACD Voicemail",
                             },
                             "type": "acdvmfromexpression",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1723818900554",
                             "icon": "icon-directconnect",
                         },
@@ -5128,7 +5128,7 @@ def create_direct_line_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Save Variable",
@@ -5259,7 +5259,7 @@ def create_direct_line_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                             "id": "refId1741893969878",
                             "icon": "icon-save",
                         },
@@ -5281,7 +5281,7 @@ def create_direct_line_workflow(
                                 },
                             },
                             "type": "savevariable",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Save Variable",
@@ -5349,7 +5349,7 @@ def create_direct_line_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "icon": "icon-tts",
@@ -5371,7 +5371,7 @@ def create_direct_line_workflow(
                                 },
                             },
                             "type": "googletts",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "Search Contacts",
@@ -5614,7 +5614,7 @@ def create_direct_line_workflow(
                                 "stateId": "67b80e6253218fc5093deb5c",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740106542563",
                         },
                         {
@@ -5635,8 +5635,29 @@ def create_direct_line_workflow(
                                 "stateId": "67bea6ccb1b61fed3ca6b744",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740544931036",
+                        },
+                        {
+                            "icon": "icon-transition",
+                            "name": "OutboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "68d7114766b31902e3ebc111",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1758920143843",
                         },
                     ],
                     "_id": "67b11894720280f716c36bdf",
@@ -5648,6 +5669,7 @@ def create_direct_line_workflow(
                         {"name": "InboundSMS", "id": "refId1739600227203"},
                         {"name": "OutboundCall", "id": "refId1740106542563"},
                         {"name": "Email", "id": "refId1740544931036"},
+                        {"name": "OutboundSMS", "id": "refId1758920143843"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -5669,7 +5691,7 @@ def create_direct_line_workflow(
                                 "stateName": "End State",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226811",
                         }
                     ],
@@ -5729,7 +5751,7 @@ def create_direct_line_workflow(
                                 "description": "Transition to another state",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600226869",
                             "icon": "icon-transition",
                             "id": "refId1739600229680",
@@ -5761,7 +5783,7 @@ def create_direct_line_workflow(
                                 "stateId": "67b11daace899acb3e0d1c38",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1739600229655",
                         }
                     ],
@@ -5800,7 +5822,7 @@ def create_direct_line_workflow(
                                 "options": [],
                             },
                             "type": "chatmessageconsumer",
-                            "_selected": True,
+                            "_selected": False,
                             "icon": "icon-ai-message",
                             "id": "refId1739600229770",
                         },
@@ -5952,7 +5974,7 @@ def create_direct_line_workflow(
                     ],
                     "_id": "67b11daace899acb3e0d1c38",
                     "key": "67b11daace899acb3e0d1c38",
-                    "location": "800.1809064054271 1135.923371969924",
+                    "location": "800.1809064054271 1304.3867183282998",
                     "transitions": [{"name": "HoldQueue", "id": "refId1739600227355"}],
                 },
                 "67b11dbf1fac7db53c1d0210": {
@@ -6104,7 +6126,7 @@ def create_direct_line_workflow(
                     ],
                     "_id": "67b11dbf1fac7db53c1d0210",
                     "key": "67b11dbf1fac7db53c1d0210",
-                    "location": "1052.2725338991945 1317.2150358131405",
+                    "location": "1052.2725338991945 1485.6783821715164",
                     "transitions": [{"name": "Loop", "id": "refId1739600227365"}],
                 },
                 "67b80e6253218fc5093deb5c": {
@@ -6131,7 +6153,7 @@ def create_direct_line_workflow(
                                 "_working": False,
                             },
                             "type": "assignsurvey",
-                            "_selected": True,
+                            "_selected": False,
                         },
                         {
                             "name": "ConnectAgent",
@@ -6177,7 +6199,7 @@ def create_direct_line_workflow(
                                 "stateId": "67b11daace899acb3e0d1c38",
                             },
                             "type": "transition",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740544931001",
                         }
                     ],
@@ -6186,6 +6208,37 @@ def create_direct_line_workflow(
                     "location": "472.8361694567607 949.8124110619559",
                     "transitions": [
                         {"name": "ConnectAgent", "id": "refId1740544931001"}
+                    ],
+                },
+                "68d7114766b31902e3ebc111": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "68d7114766b31902e3ebc111",
+                    "name": "OutboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateId": "67b11daace899acb3e0d1c38",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "refId1758920143807",
+                        }
+                    ],
+                    "_id": "68d7114766b31902e3ebc111",
+                    "key": "68d7114766b31902e3ebc111",
+                    "location": "470.9057281089773 1124.731867146721",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1758920143807"}
                     ],
                 },
             },
@@ -6279,7 +6332,7 @@ def create_csat_workflow(
                                 "stateName": "Survey",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740775771533",
                         },
                         {
@@ -6345,7 +6398,7 @@ def create_csat_workflow(
                                 "stateName": "End State",
                             },
                             "type": "transitionbyname",
-                            "_selected": True,
+                            "_selected": False,
                             "transitionId": "refId1740775771520",
                         },
                     ],
