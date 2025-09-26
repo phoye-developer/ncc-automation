@@ -597,6 +597,29 @@ def create_iva_workflow(
                             "_selected": False,
                             "transitionId": "refId1740544930914",
                         },
+                        {
+                            "name": "OutboundSMS",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "AND",
+                                    "expressions": [
+                                        {
+                                            "leftExpression": "workitem.type",
+                                            "operator": "==",
+                                            "rightExpression": "'OutboundSMS'",
+                                        }
+                                    ],
+                                },
+                                "stateId": "68d71e4df7ebc23974cb8554",
+                                "description": "Transition to another state",
+                            },
+                            "type": "transition",
+                            "_selected": False,
+                            "transitionId": "68d71e73ae6320b9f30ca637",
+                            "icon": "icon-transition",
+                            "id": "refId1758920144049",
+                        },
                     ],
                     "_id": "67b11894720280f716c36bdf",
                     "key": "67b11894720280f716c36bdf",
@@ -606,6 +629,7 @@ def create_iva_workflow(
                         {"name": "InboundCall", "id": "refId1739600227163"},
                         {"name": "InboundSMS", "id": "refId1739600227203"},
                         {"name": "Email", "id": "refId1740544930914"},
+                        {"name": "OutboundSMS", "id": "68d71e73ae6320b9f30ca637"},
                     ],
                 },
                 "67b11b35410f937347fe9aee": {
@@ -962,12 +986,6 @@ def create_iva_workflow(
                                 },
                                 "stateId": "67b11dbf1fac7db53c1d0210",
                                 "description": "Transition to another state",
-                                "points": {
-                                    "h": True,
-                                    "r": [],
-                                    "ct": 0,
-                                    "__gohashid": 115203,
-                                },
                             },
                             "type": "transition",
                             "_selected": False,
@@ -1497,6 +1515,37 @@ def create_iva_workflow(
                     "transitions": [
                         {"name": "nextState", "id": "68c9f2e28c19a30ac822e07e"},
                         {"name": "Loop", "id": "refId1758064484728"},
+                    ],
+                },
+                "68d71e4df7ebc23974cb8554": {
+                    "category": "Standard",
+                    "objectType": "campaignstate",
+                    "campaignStateId": "68d71e4df7ebc23974cb8554",
+                    "name": "OutboundSMS",
+                    "description": "Newly Created State",
+                    "tenantId": "nextivase2",
+                    "actions": [
+                        {
+                            "icon": "icon-transition",
+                            "name": "ConnectAgent",
+                            "description": "Transition to another state",
+                            "properties": {
+                                "condition": {
+                                    "conditionType": "NONE",
+                                    "expressions": [{"operator": "=="}],
+                                },
+                                "stateName": "ConnectAgent",
+                            },
+                            "type": "transitionbyname",
+                            "_selected": False,
+                            "transitionId": "refId1758920144042",
+                        }
+                    ],
+                    "_id": "68d71e4df7ebc23974cb8554",
+                    "key": "68d71e4df7ebc23974cb8554",
+                    "location": "631.7603469371909 950.2954424117092",
+                    "transitions": [
+                        {"name": "ConnectAgent", "id": "refId1758920144042"}
                     ],
                 },
             },
