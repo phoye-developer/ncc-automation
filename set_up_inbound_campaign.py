@@ -14,6 +14,7 @@ from ncc_supervisor_queue import *
 from ncc_survey_theme import *
 from ncc_survey import *
 from ncc_classification import *
+from ncc_ai_prompt import *
 from ncc_scorecard import *
 from ncc_scorecard_classification import *
 from ncc_campaign_scorecard import *
@@ -1337,7 +1338,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         f'Service "{transcription_service["name"]}" not enabled.',
                         ["inboundcampaignsetup"],
                     )
-                    logging.error(f'Service "{transcription_service["name"]}" not enabled.')
+                    logging.error(
+                        f'Service "{transcription_service["name"]}" not enabled.'
+                    )
         else:
             if deepgram_api_key != "":
                 transcription_service = create_transcription_service(
@@ -1388,7 +1391,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     ncc_location, ncc_token, real_time_transcription_service["_id"]
                 )
                 if success:
-                    logging.info(f'Service "{real_time_transcription_service["name"]}" enabled.')
+                    logging.info(
+                        f'Service "{real_time_transcription_service["name"]}" enabled.'
+                    )
                 else:
                     post_datadog_event(
                         dd_api_key,
@@ -1400,7 +1405,9 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         f'Service "{real_time_transcription_service["name"]}" not enabled.',
                         ["inboundcampaignsetup"],
                     )
-                    logging.error(f'Service "{real_time_transcription_service["name"]}" not enabled.')
+                    logging.error(
+                        f'Service "{real_time_transcription_service["name"]}" not enabled.'
+                    )
         else:
             if deepgram_api_key != "":
                 real_time_transcription_service = (
@@ -1442,25 +1449,72 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     'Insufficient data to create service type "TRANSCRIPTION".'
                 )
 
+        # Create translation service
+        translation_service = search_services(
+            ncc_location,
+            ncc_token,
+            "TRANSLATION",
+        )
+        if translation_service != {}:
+            logging.info('Service type "TRANSLATION" already exists.')
+            if translation_service["enabled"] == False:
+                success = update_enable_service(
+                    ncc_location, ncc_token, translation_service["_id"]
+                )
+                if success:
+                    logging.info(f'Service "{translation_service["name"]}" enabled.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Service Update Failed",
+                        f'Service "{translation_service["name"]}" not enabled.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        f'Service "{translation_service["name"]}" not enabled.'
+                    )
+        else:
+            translation_service = create_translation_service(
+                ncc_location,
+                ncc_token,
+                "Translation Service",
+            )
+            if translation_service != {}:
+                logging.info('Service type "TRANSLATION" created.')
+            else:
+                post_datadog_event(
+                    dd_api_key,
+                    dd_application_key,
+                    username,
+                    "error",
+                    "normal",
+                    "Service Creation Failed",
+                    'Service type "TRANSLATION" not created.',
+                    ["inboundcampaignsetup"],
+                )
+                logging.error('Service type "TRANSLATION" not created.')
+
         # Create classifications
         classifications_to_assign = []
         for classification in classifications:
             result = search_classifications(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - {classification["name"]}",
+                f"{classification["name"]}",
             )
             if result == {}:
                 result = create_classification(
                     ncc_location,
                     ncc_token,
-                    f"{campaign_name} - {classification["name"]}",
+                    f"{classification["name"]}",
                     classification["data"],
                 )
                 if result != {}:
-                    logging.info(
-                        f'Classification "{campaign_name} - {classification["name"]}" created.'
-                    )
+                    logging.info(f'Classification "{classification["name"]}" created.')
                     classifications_to_assign.append(result)
                 else:
                     post_datadog_event(
@@ -1470,32 +1524,32 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         "error",
                         "normal",
                         "Classification Creation Failed",
-                        f'Classification "{campaign_name} - {classification["name"]}" not created.',
+                        f'Classification "{classification["name"]}" not created.',
                         ["inboundcampaignsetup"],
                     )
                     logging.error(
-                        f'Classification "{campaign_name} - {classification["name"]}" not created.'
+                        f'Classification "{classification["name"]}" not created.'
                     )
             else:
                 logging.info(
-                    f'Classification "{campaign_name} - {classification["name"]}" already exists.'
+                    f'Classification "{classification["name"]}" already exists.'
                 )
                 classifications_to_assign.append(result)
 
-        # Create scorecard
-        scorecard = search_scorecards(
+        # Create AI prompt
+        ai_prompt = search_ai_prompts(
             ncc_location,
             ncc_token,
-            campaign_name,
+            "ISDC Prompt",
         )
-        if scorecard == {}:
-            scorecard = create_scorecard(
+        if ai_prompt == {}:
+            ai_prompt = create_ai_prompt(
                 ncc_location,
                 ncc_token,
-                campaign_name,
+                general_ai_prompt,
             )
-            if scorecard != {}:
-                logging.info(f'Scorecard "{campaign_name}" created.')
+            if ai_prompt != {}:
+                logging.info('AI Prompt "ISDC Prompt" created.')
             else:
                 post_datadog_event(
                     dd_api_key,
@@ -1503,13 +1557,56 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                     username,
                     "error",
                     "normal",
-                    "Scorecard Creation Failed",
-                    f'Scorecard "{campaign_name}" not created.',
+                    "AI Prompt Creation Failed",
+                    'AI Prompt "ISDC Prompt" not created.',
                     ["inboundcampaignsetup"],
                 )
-                logging.error(f'Scorecard "{campaign_name}" not created.')
+                logging.error('AI Prompt "ISDC Prompt" not created.')
         else:
-            logging.info(f'Scorecard "{campaign_name}" already exists.')
+            logging.info('AI Prompt "ISDC Prompt" already exists.')
+
+        # Create scorecard
+        if ai_prompt != {}:
+            scorecard = search_scorecards(
+                ncc_location,
+                ncc_token,
+                "Conduct Rules ISDC",
+            )
+            if scorecard == {}:
+                scorecard = create_scorecard(
+                    ncc_location,
+                    ncc_token,
+                    "Conduct Rules ISDC",
+                    ai_prompt["_id"],
+                )
+                if scorecard != {}:
+                    logging.info('Scorecard "Conduct Rules ISDC" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Scorecard Creation Failed",
+                        'Scorecard "Conduct Rules ISDC" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Scorecard "Conduct Rules ISDC" not created.')
+            else:
+                logging.info('Scorecard "Conduct Rules ISDC" already exists.')
+        else:
+            post_datadog_event(
+                dd_api_key,
+                dd_application_key,
+                username,
+                "warning",
+                "normal",
+                "Scorecard Creation Failed",
+                "Insufficient data to create scorecard.",
+                ["inboundcampaignsetup"],
+            )
+            logging.warning("Insufficient data to create scorecard.")
 
         # Assign classifications to scorecard
         if scorecard != {}:
@@ -1590,27 +1687,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Search Contacts",
         )
         if search_contacts_function == {}:
-            search_contacts_function = create_search_contacts_function(
+            search_contacts_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Search Contacts",
+                "Search Contacts",
             )
-            if search_contacts_function != {}:
-                logging.info(f'Function "{campaign_name} - Search Contacts" created.')
+            if search_contacts_function == {}:
+                search_contacts_function = create_search_contacts_function(
+                    ncc_location,
+                    ncc_token,
+                    "Search Contacts",
+                )
+                if search_contacts_function != {}:
+                    logging.info('Function "Search Contacts" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        f'Function "Search Contacts" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(f'Function "Search Contacts" not created.')
             else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Search Contacts" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error(
-                    f'Function "{campaign_name} - Search Contacts" not created.'
-                )
+                logging.info('Function "Search Contacts" already exists.')
         else:
             logging.info(
                 f'Function "{campaign_name} - Search Contacts" already exists.'
@@ -1623,25 +1726,35 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Two Way Chat",
         )
         if two_way_chat_function == {}:
-            two_way_chat_function = create_two_way_chat_function(
+            two_way_chat_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Two Way Chat",
+                "Two Way Chat with Translation",
             )
-            if two_way_chat_function != {}:
-                logging.info(f'Function "{campaign_name} - Two Way Chat" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Two Way Chat" not created.',
-                    ["inboundcampaignsetup"],
+            if two_way_chat_function == {}:
+                two_way_chat_function = create_two_way_chat_function(
+                    ncc_location,
+                    ncc_token,
+                    "Two Way Chat with Translation",
                 )
-                logging.error(f'Function "{campaign_name} - Two Way Chat" not created.')
+                if two_way_chat_function != {}:
+                    logging.info('Function "Two Way Chat with Translation" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "Two Way Chat with Translation" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        'Function "Two Way Chat with Translation" not created.'
+                    )
+            else:
+                logging.info('Function "Two Way Chat with Translation" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way Chat" already exists.')
 
@@ -1652,25 +1765,35 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - Two Way SMS",
         )
         if two_way_sms_function == {}:
-            two_way_sms_function = create_two_way_sms_function(
+            two_way_sms_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - Two Way SMS",
+                "Two Way SMS with Translation",
             )
-            if two_way_sms_function != {}:
-                logging.info(f'Function "{campaign_name} - Two Way SMS" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - Two Way SMS" not created.',
-                    ["inboundcampaignsetup"],
+            if two_way_sms_function == {}:
+                two_way_sms_function = create_two_way_sms_function(
+                    ncc_location,
+                    ncc_token,
+                    "Two Way SMS with Translation",
                 )
-                logging.error(f'Function "{campaign_name} - Two Way SMS" not created.')
+                if two_way_sms_function != {}:
+                    logging.info('Function "Two Way SMS with Translation" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "Two Way SMS with Translation" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error(
+                        'Function "Two Way SMS with Translation" not created.'
+                    )
+            else:
+                logging.info('Function "Two Way SMS with Translation" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - Two Way SMS" already exists.')
 
@@ -1698,27 +1821,33 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - ACD Voicemail",
         )
         if acd_voicemail_function == {}:
-            acd_voicemail_function = create_acd_voicemail_function(
+            acd_voicemail_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - ACD Voicemail",
+                "ACD Voicemail",
             )
-            if acd_voicemail_function != {}:
-                logging.info(f'Function "{campaign_name} - ACD Voicemail" created.')
+            if acd_voicemail_function == {}:
+                acd_voicemail_function = create_acd_voicemail_function(
+                    ncc_location,
+                    ncc_token,
+                    "ACD Voicemail",
+                )
+                if acd_voicemail_function != {}:
+                    logging.info('Function "ACD Voicemail" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "ACD Voicemail" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Function "ACD Voicemail" not created.')
             else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - ACD Voicemail" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error(
-                    f'Function "{campaign_name} - ACD Voicemail" not created.'
-                )
+                logging.info('Function "ACD Voicemail" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - ACD Voicemail" already exists.')
 
@@ -1729,103 +1858,35 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
             f"{campaign_name} - ACD Callback",
         )
         if acd_callback_function == {}:
-            acd_callback_function = create_acd_callback_function(
+            acd_callback_function = search_functions(
                 ncc_location,
                 ncc_token,
-                f"{campaign_name} - ACD Callback",
+                "ACD Callback",
             )
-            if acd_callback_function != {}:
-                logging.info(f'Function "{campaign_name} - ACD Callback" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Function Creation Failed",
-                    f'Function "{campaign_name} - ACD Callback" not created.',
-                    ["inboundcampaignsetup"],
+            if acd_callback_function == {}:
+                acd_callback_function = create_acd_callback_function(
+                    ncc_location,
+                    ncc_token,
+                    "ACD Callback",
                 )
-                logging.error(f'Function "{campaign_name} - ACD Callback" not created.')
+                if acd_callback_function != {}:
+                    logging.info('Function "ACD Callback" created.')
+                else:
+                    post_datadog_event(
+                        dd_api_key,
+                        dd_application_key,
+                        username,
+                        "error",
+                        "normal",
+                        "Function Creation Failed",
+                        'Function "ACD Callback" not created.',
+                        ["inboundcampaignsetup"],
+                    )
+                    logging.error('Function "ACD Callback" not created.')
+            else:
+                logging.info('Function "ACD Callback" already exists.')
         else:
             logging.info(f'Function "{campaign_name} - ACD Callback" already exists.')
-
-        # Create Check hasAllParameters script
-        check_has_all_parameters_script = search_scripts(
-            ncc_location, ncc_token, "Check hasAllParameters"
-        )
-        if check_has_all_parameters_script == {}:
-            check_has_all_parameters_script = create_check_has_all_parameters_script(
-                ncc_location, ncc_token, "Check hasAllParameters"
-            )
-            if check_has_all_parameters_script != {}:
-                logging.info('Script "Check hasAllParameters" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Check hasAllParameters" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Check hasAllParameters" not created.')
-        else:
-            logging.info('Script "Check hasAllParameters" already exists.')
-
-        # Create Get functionId script
-        get_function_id_script = search_scripts(
-            ncc_location, ncc_token, "Get functionId"
-        )
-        if get_function_id_script == {}:
-            get_function_id_script = create_get_function_id_script(
-                ncc_location, ncc_token, "Get functionId"
-            )
-            if get_function_id_script != {}:
-                logging.info('Script "Get functionId" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Get functionId" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Get functionId" not created.')
-        else:
-            logging.info('Script "Get functionId" already exists.')
-
-        # Create Get queueId script
-        get_queue_id_script = search_scripts(ncc_location, ncc_token, "Get queueId")
-        if get_queue_id_script == {}:
-            get_queue_id_script = create_get_queue_id_script(
-                ncc_location,
-                ncc_token,
-                "Get queueId",
-                queues_to_assign["Customer Service"],
-            )
-            if get_queue_id_script != {}:
-                logging.info('Script "Get queueId" created.')
-            else:
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "error",
-                    "normal",
-                    "Script Creation Failed",
-                    'Script "Get queueId" not created.',
-                    ["inboundcampaignsetup"],
-                )
-                logging.error('Script "Get queueId" not created.')
-        else:
-            logging.info('Script "Get queueId" already exists.')
 
         # Create "main" workflow
         workflow = search_workflows(
@@ -1843,9 +1904,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                 and prompt != {}
                 and chat_survey != {}
                 and user_survey != {}
-                and get_function_id_script != {}
-                and get_queue_id_script != {}
-                and check_has_all_parameters_script != {}
             ):
                 if workflow_type == "iva":
                     workflow = create_iva_workflow(
@@ -1860,9 +1918,6 @@ def set_up_inbound_campaign(ncc_location: str, ncc_token: str, username: str):
                         prompt,
                         acd_voicemail_function,
                         acd_callback_function,
-                        get_function_id_script,
-                        get_queue_id_script,
-                        check_has_all_parameters_script,
                     )
                 elif workflow_type == "non_iva_dtmf":
                     workflow = create_non_iva_dtmf_workflow(

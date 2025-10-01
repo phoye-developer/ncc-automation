@@ -182,6 +182,7 @@ pubsec_dispositions = []
 
 user_profiles = ["Agent", "Supervisor", "Administrator"]
 
+# Queues
 general_queues = [
     {
         "blended": False,
@@ -3467,49 +3468,66 @@ post_call_phone_survey_function_body = {
 general_classifications = [
     {
         "data": [
-            "thank you for calling",
-            "thanks for calling",
-            "thank you for contacting",
-            "thanks for contacting",
+            "The classificationId is ISDC Integrity. Analyze how the agent addressed the conversation. Provide a score (1 = Poor, 4 = Excellent) for the following:  Did the agent maintain integrity in their responses, avoiding misleading statements or evasive behavior?"
         ],
-        "name": "Opening",
+        "name": "Conduct Rules ISDC Integrity",
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Conduct Rules ISDC Integrity"}},
+            "description": {"en": {"language": "en", "value": "INTEGRITY"}},
+        },
     },
     {
         "data": [
-            "have a great day",
-            "take care",
-            "enjoy the rest of your day",
-            "have a good one",
+            "The classificationId is ISDC  Skill. Analyze how the agent addressed the conversation. Provide a score (1 = Poor, 4 = Excellent) for the following:  Did the agent demonstrate mastery of relevant knowledge on the subject at hand?  "
         ],
-        "name": "Closing",
+        "name": "Conduct Rules ISDC Skill",
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Conduct Rules ISDC Skill"}},
+            "description": {"en": {"language": "en", "value": "SKILL"}},
+        },
+    },
+    {
+        "data": [
+            "The classificationId is ISDC Diligence. Analyze how the agent addressed the conversation. Provide a score (1 = Poor, 4 = Excellent) for the following:  Did the agent exercise with care and precision  by proposing actionable solutions or alternatives to resolve the issue? "
+        ],
+        "name": "Conduct Rules ISDC Diligence",
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Conduct Rules ISDC Diligence"}},
+            "description": {"en": {"language": "en", "value": "DILIGENCE"}},
+        },
+    },
+    {
+        "data": [
+            "The classificationId is ISDC Care. Analyze how the agent addressed the conversation. Provide a score (1 = Poor, 4 = Excellent) for the following:  Did the agent work towards doing what's right for the customer and act in a way that upholds the best interests of the customer?"
+        ],
+        "name": "Conduct Rules ISDC Care",
+        "localizations": {
+            "name": {"en": {"language": "en", "value": "Conduct Rules ISDC Care"}},
+            "description": {"en": {"language": "en", "value": "CARE"}},
+        },
     },
 ]
-hc_classifications = [
-    {
-        "data": [
-            "I need to verify your date of birth",
-            "tell me your date of birth",
-            "provide your date of birth",
-            "may I have your date of birth",
-        ],
-        "name": "Verification",
-    }
-]
-finserv_classifications = [
-    {
-        "data": [
-            "I need to verify your security PIN",
-            "tell me your security PIN",
-            "provide your security PIN",
-            "may I have your security PIN",
-        ],
-        "name": "Verification",
-    }
-]
+hc_classifications = []
+finserv_classifications = []
 insurance_classifications = []
 retail_classifications = []
 pubsec_classifications = []
 
+# AI prompt
+general_ai_prompt = {
+    "content": 'Your input is a JSON list of objects where each object has two fields: classificationId and data.\r\nThe classificationId field identifies the object.\r\nThe data field is a list of object. Each object in the data field is a string.\r\nReturn a JSON list of objects where each object has two fields: the first field is the "classificationId" from the original JSON list and the second field is a field called "result".\r\nIf the score from the transcript assessment is equal to 1 return the result field as false. If the score from the transcript assessment is 2 or above return the result field as true.',
+    "name": "ISDC Prompt",
+    "localizations": {"name": {"en": {"language": "en", "value": "ISDC Prompt"}}},
+    "parameters": [
+        {"key": "location", "value": "us-central1"},
+        {"key": "model", "value": "gemini-2.5-pro"},
+        {"key": "temperature", "value": "0"},
+        {"key": "maxOutputTokens", "value": "8192"},
+        {"key": "topP", "value": "1.0"},
+    ],
+}
+
+# Templates
 general_templates = [
     {
         "localizations": {
@@ -3562,6 +3580,7 @@ insurance_templates = []
 retail_templates = []
 pubsec_templates = []
 
+# Topics
 general_topics = [
     "Refund Requests",
     "Data Privacy",
@@ -3578,6 +3597,7 @@ finserv_topics = []
 insurance_topics = ["Policy and Coverage Issues", "Claim Issues"]
 retail_topics = []
 pubsec_topics = []
+
 
 general_reports = [
     {

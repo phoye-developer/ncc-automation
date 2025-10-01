@@ -37,14 +37,18 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v2.1.0")
+    print("NCC Automation v2.2.0")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
     while not authenticated:
+        default_login_site = "login.thrio.io"
+        login_site = input(f"Login site (default: {default_login_site}): ")
+        if not login_site:
+            login_site = default_login_site
         username = input("Username: ")
         password = getpass.getpass(prompt="Password: ", stream=None)
-        auth_info = get_ncc_token(username, password)
+        auth_info = get_ncc_token(login_site, username, password)
         if auth_info:
             post_datadog_event(
                 dd_api_key,
@@ -134,7 +138,9 @@ def main():
                         f'User "{username}" started chat survey link setup.',
                         ["chatsurveylinksetup"],
                     )
-                    set_up_chat_survey_link(ncc_location, ncc_token, username)
+                    set_up_chat_survey_link(
+                        login_site, ncc_location, ncc_token, username
+                    )
                 elif choice == "7":
                     post_datadog_event(
                         dd_api_key,

@@ -3,12 +3,12 @@ import base64
 import json
 
 
-def get_ncc_token(ncc_username: str, ncc_password: str) -> str:
+def get_ncc_token(login_site: str, ncc_username: str, ncc_password: str) -> str:
     """
     This function fetches a token from Nextiva Contact Center (NCC).
     """
     json_data = False
-    conn = http.client.HTTPSConnection("login.thrio.com")
+    conn = http.client.HTTPSConnection(login_site)
     payload = ""
     string_to_encode = f"{ncc_username}:{ncc_password}"
     encoded_bytes = base64.b64encode(string_to_encode.encode("utf-8"))
