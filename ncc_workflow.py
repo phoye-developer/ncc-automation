@@ -721,7 +721,8 @@ def create_iva_workflow(
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                }
+                                },
+                                "fromAddress": "workitem.from"
                             },
                             "type": "transfertodialogflow",
                             "_selected": False,
