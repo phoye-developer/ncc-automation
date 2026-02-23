@@ -1325,7 +1325,7 @@ def create_iva_workflow(
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
                                 },
-                                "from": "KPMG",
+                                "from": business_name,
                                 "description": "Forward BOT response to consumer",
                             },
                             "type": "chatforwardbotresponseconsumer",
@@ -1428,18 +1428,22 @@ def create_iva_workflow(
                             "icon": "icon-ai-message",
                         },
                         {
-                            "name": "Forward Bot Message to Consumer",
+                            "name": "SMS Message Consumer",
                             "description": "",
                             "properties": {
+                                "message": "workitem.chatBotResponse.text[0]",
+                                "toAddress": "workitem.from",
+                                "fromAddress": "workitem.to",
+                                "createNewWorkitem": False,
                                 "condition": {
                                     "conditionType": "NONE",
                                     "expressions": [{"operator": "=="}],
-                                }
+                                },
                             },
-                            "type": "smsforwardbotmessagetoconsumer",
-                            "_selected": False,
-                            "icon": "icon-mail-forward",
-                            "id": "refId1758672835671",
+                            "type": "smsmessageconsumer",
+                            "_selected": True,
+                            "icon": "icon-ai-message",
+                            "id": "refId1768534674649",
                         },
                         {
                             "name": "Save Variable",
