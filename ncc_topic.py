@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_topics(ncc_location: str, ncc_token: str) -> list:
     This function searches for a list of topics present in Nextiva Contact Center (NCC).
     """
     topics = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -38,7 +40,8 @@ def search_topics(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
     This function searches for an existing topic with the same name as the intended new topic.
     """
     topic = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(topic_name)
@@ -71,7 +74,8 @@ def create_topic(ncc_location: str, ncc_token: str, topic_name: str) -> dict:
     This function creates a topic with a specified name.
     """
     topic = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"name": topic_name})
     headers = {
         "Authorization": ncc_token,
@@ -96,7 +100,8 @@ def update_topic_users(
     This function updates the list of users assigned to a topic in Nextiva Contact Center (NCC).
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"users": users})
     headers = {
         "Authorization": ncc_token,
@@ -118,7 +123,8 @@ def delete_topic(ncc_location: str, ncc_token: str, topic_id: str) -> bool:
     This function deletes a topic with the specified topic ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

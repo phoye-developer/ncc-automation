@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def search_prompts(ncc_location: str, ncc_token: str, prompt_name: str) -> dict:
     This function searches for an existing prompt in Nextiva Contact Center (NCC).
     """
     prompt = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(prompt_name)

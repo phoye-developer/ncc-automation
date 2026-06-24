@@ -1,6 +1,5 @@
 import getpass
 from authentication import *
-from datadog import *
 from set_up_inbound_campaign import *
 from set_up_agent import *
 from set_up_supervisor import *
@@ -37,7 +36,7 @@ def main():
     print("See www.nextiva.com for details.")
     print("*****************************************************")
     print()
-    print("NCC Automation v2.2.3")
+    print("NCC Automation v2.2.4")
     print()
     print("Please log in. Your password will not display on the screen.")
     print()
@@ -50,16 +49,6 @@ def main():
         password = getpass.getpass(prompt="Password: ", stream=None)
         auth_info = get_ncc_token(login_site, username, password)
         if auth_info:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "success",
-                "normal",
-                "Login Successful",
-                f'User "{username}" logged in.',
-                ["login"],
-            )
             authenticated = True
             ncc_location = auth_info["location"].replace("https://", "")
             ncc_token = auth_info["token"]
@@ -68,131 +57,32 @@ def main():
                 display_main_menu()
                 choice = input("Command: ")
                 if choice == "1":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Inbound Campaign Setup Started",
-                        f'User "{username}" started inbound campaign setup.',
-                        ["inboundcampaignsetup"],
-                    )
                     set_up_inbound_campaign(ncc_location, ncc_token, username)
                 elif choice == "2":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Agent Setup Started",
-                        f'User "{username}" started agent setup.',
-                        ["agentsetup"],
-                    )
                     set_up_agent(ncc_location, ncc_token, username)
                 elif choice == "3":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Supervisor Setup Started",
-                        f'User "{username}" started supervisor setup.',
-                        ["supervisorsetup"],
-                    )
                     set_up_supervisor(ncc_location, ncc_token, username)
                 elif choice == "4":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Feature Setup Started",
-                        f'User "{username}" started feature setup.',
-                        ["featuresetup"],
-                    )
                     set_up_feature(ncc_location, ncc_token, username)
                 elif choice == "5":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Integration Setup Started",
-                        f'User "{username}" started integration setup.',
-                        ["integrationsetup"],
-                    )
                     set_up_integration(ncc_location, ncc_token, username)
                 elif choice == "6":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Chat Survey Link Setup Started",
-                        f'User "{username}" started chat survey link setup.',
-                        ["chatsurveylinksetup"],
-                    )
                     set_up_chat_survey_link(
                         login_site, ncc_location, ncc_token, username
                     )
                 elif choice == "7":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Campaign Teardown Started",
-                        f'User "{username}" started campaign teardown.',
-                        ["campaignteardown"],
-                    )
                     tear_down_campaign(ncc_location, ncc_token, username)
                 elif choice == "8":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Logout",
-                        f'User "{username}" logged out.',
-                        ["logout"],
-                    )
                     auth_info = ""
                     authenticated = False
                     print()
                     break
                 elif choice == "9":
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "info",
-                        "normal",
-                        "Exit Application",
-                        f'User "{username}" exited the application.',
-                        ["exitapplication"],
-                    )
+                    pass
                 else:
                     print()
                     print("Invalid choice.")
         else:
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Login Failed",
-                f'User "{username}" tried unsuccessfully to log in.',
-                ["login"],
-            )
             print()
             print("Authentication failed. Please try again.")
             print()

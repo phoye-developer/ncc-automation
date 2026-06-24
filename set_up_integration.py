@@ -1,6 +1,5 @@
 import logging
 from authentication_info import *
-from datadog import *
 from ncc_campaign import *
 from set_up_freshdesk_integration import *
 
@@ -27,16 +26,6 @@ def set_up_integration(ncc_location: str, ncc_token: str, username: str):
         print()
         campaign_name = input("Campaign name: ")
         if campaign_name.lower() == "cancel":
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Integration Setup Cancelled",
-                f'User "{username}" cancelled integration setup.',
-                ["integrationsetup"],
-            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -63,16 +52,6 @@ def set_up_integration(ncc_location: str, ncc_token: str, username: str):
             choice = input("Command: ")
             if choice.lower() == "cancel":
                 print()
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "warning",
-                    "normal",
-                    "Integration Setup Cancelled",
-                    f'User "{username}" cancelled integration setup for "{campaign_name}" campaign.',
-                    ["integrationsetup"],
-                )
                 print("Operation cancelled.")
                 cancelled = True
             else:

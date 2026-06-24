@@ -1,6 +1,5 @@
 import logging
 from authentication_info import *
-from datadog import *
 from ncc_campaign import *
 
 
@@ -28,16 +27,6 @@ def set_up_chat_survey_link(
         print()
         campaign_name = input("Campaign name: ")
         if campaign_name.lower() == "cancel":
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Chat Survey Link Setup Cancelled",
-                f'User "{username}" cancelled chat survey link setup for "{campaign_name}" campaign.',
-                ["chatsurveylinksetup"],
-            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -69,30 +58,10 @@ def set_up_chat_survey_link(
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "warning",
-                    "normal",
-                    "Chat Survey Link Setup Cancelled",
-                    f'User "{username}" cancelled chat survey link setup for "{campaign_name}" campaign.',
-                    ["chatsurveylinksetup"],
-                )
                 print("Operation cancelled.")
                 cancelled = True
             else:
                 if choice in ["1", "2", "3", "4", "5", "6"]:
-                    post_datadog_event(
-                        dd_api_key,
-                        dd_application_key,
-                        username,
-                        "success",
-                        "normal",
-                        "Chat Survey Link Setup Successful",
-                        f'User "{username}" set up chat survey link for "{campaign_name}" campaign.',
-                        ["chatsurveylinksetup"],
-                    )
                     print(
                         f'Link: https://enterprise-demos.com/{choice}?host={host}&tenantId={campaign["tenantId"]}&campaignId={campaign["_id"]}'
                     )

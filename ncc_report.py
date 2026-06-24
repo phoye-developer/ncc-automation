@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_reports(ncc_location: str, ncc_token: str) -> list:
     This function searches for an existing report with the same name as the intended new report.
     """
     reports = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -38,7 +40,8 @@ def search_reports(ncc_location: str, ncc_token: str, report_name: str) -> dict:
     This function searches for an existing report with the same name as the intended new report.
     """
     report = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(report_name)
@@ -71,7 +74,8 @@ def create_report(ncc_location: str, ncc_token: str, report_body: dict) -> dict:
     This function creates a report with a specified name.
     """
     report = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(report_body)
     headers = {
         "Authorization": ncc_token,
@@ -101,7 +105,8 @@ def create_csat_report(
     This function creates a report with a specified name.
     """
     report = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "scheduleCsvSeparator": "",
@@ -180,7 +185,8 @@ def delete_report(ncc_location: str, ncc_token: str, report_id: str) -> bool:
     This function deletes a report with the specified report ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 from config import *
@@ -9,7 +10,8 @@ def search_functions(ncc_location: str, ncc_token: str, function_name: str) -> d
     This function searches for an existing Nextiva Contact Center (NCC) function with the specified name.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(function_name)
@@ -44,7 +46,8 @@ def search_campaign_functions(
     This function searches for existing Nextiva Contact Center (NCC) functions that begin with the name of an NCC campaign.
     """
     functions = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -76,7 +79,8 @@ def create_function(ncc_location: str, ncc_token: str, function_body: dict) -> d
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(function_body)
     headers = {
         "Authorization": ncc_token,
@@ -101,7 +105,8 @@ def create_search_contacts_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "states": {
@@ -301,7 +306,8 @@ def create_two_way_chat_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": function_name,
@@ -1164,7 +1170,8 @@ def create_two_way_sms_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": function_name,
@@ -2062,7 +2069,8 @@ def create_acd_voicemail_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -2646,7 +2654,8 @@ def create_acd_callback_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -3135,7 +3144,8 @@ def freshdesk_create_search_contacts_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "states": {
@@ -4017,7 +4027,8 @@ def freshdesk_create_ticket_function(
     This function creates an NCC function.
     """
     function = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "description": "",
@@ -4304,7 +4315,8 @@ def delete_function(ncc_location: str, ncc_token: str, function_id: str) -> bool
     This function deletes an NCC function with the specified function ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

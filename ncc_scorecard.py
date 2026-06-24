@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def search_scorecards(ncc_location: str, ncc_token: str, scorecard_name: str) ->
     This function searches for an existing scorecard with the same name as the intended new scorecard.
     """
     scorecard = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(scorecard_name)
@@ -43,7 +45,8 @@ def search_campaign_scorecards(
     This function searches for existing scorecards in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
     """
     scorecards = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -77,7 +80,8 @@ def create_scorecard(
     This function creates a scorecard with a specified name.
     """
     scorecard = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -108,7 +112,8 @@ def delete_scorecard(ncc_location: str, ncc_token: str, scorecard_id: str) -> bo
     This function deletes a scorecard with the specified scorecard ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

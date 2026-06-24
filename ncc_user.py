@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_users(ncc_location: str, ncc_token: str, user_profile_id: str) -> list:
     This function fetches a list of users present on the Nextiva Contact Center (NCC) tenant.
     """
     users = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -36,7 +38,8 @@ def search_users(
     This function searches for an existing user with the same username as the intended new user.
     """
     user = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(first_name)
@@ -79,7 +82,8 @@ def create_user(
     This function creates a new user in Nextiva Contact Center (NCC).
     """
     user = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "recordingAnalysisPercentage": 100,
@@ -169,7 +173,8 @@ def delete_user(ncc_location: str, ncc_token: str, user_id: str) -> bool:
     This function deletes a user with the specified user ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

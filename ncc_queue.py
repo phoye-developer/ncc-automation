@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_queues(ncc_location: str, ncc_token: str) -> list:
     This function fetches a list of queues present in Nextiva Contact Center (NCC).
     """
     queues = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -38,7 +40,8 @@ def search_queues(ncc_location: str, ncc_token: str, queue_name: str) -> dict:
     This function searches for an existing queue with the same name as the intended new queue.
     """
     queue = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(queue_name)
@@ -71,7 +74,8 @@ def create_queue(ncc_location: str, ncc_token: str, queue_body: dict) -> dict:
     This function creates a queue with the specified name.
     """
     queue = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(queue_body)
     headers = {
         "Authorization": ncc_token,
@@ -94,7 +98,8 @@ def delete_queue(ncc_location: str, ncc_token: str, queue_id: str) -> bool:
     This function deletes a queue with the specified queue ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

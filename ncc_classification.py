@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -10,7 +11,8 @@ def search_classifications(
     This function searches for an existing classification in Nextiva Contact Center (NCC) with the same name as the intended new classification.
     """
     classification = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(classification_name)
@@ -45,7 +47,8 @@ def search_campaign_classifications(
     This function searches for classifications in Nextiva Contact Center (NCC) whose name begins with the name of the specified campaign.
     """
     classifications = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -82,7 +85,8 @@ def create_classification(
     This function creates a classification in Nextiva Contact Center (NCC).
     """
     classification = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "data": classification_data,
@@ -115,7 +119,8 @@ def delete_classification(
     This function deletes a classification with the specified classification ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

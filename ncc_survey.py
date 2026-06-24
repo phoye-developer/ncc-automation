@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_survey(ncc_location: str, ncc_token: str, survey_id: str) -> list:
     This function fetches the details of a survey present on the Nextiva Contact Center (NCC) tenant.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -28,7 +30,8 @@ def search_surveys(ncc_location: str, ncc_token: str, survey_name: str) -> dict:
     This function searches for an existing survey with the same name as the intended new survey.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(survey_name)
@@ -63,7 +66,8 @@ def search_campaign_surveys(
     This function searches for existing surveys in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
     """
     surveys = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -101,7 +105,8 @@ def create_survey(
     This function creates a survey with a specified name.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     survey_body["localizations"]["name"]["en"]["value"] = survey_name
     survey_body["surveythemeId"] = survey_theme["_id"]
     survey_body["expansions"]["surveythemeId"]["localizations"]["name"]["en"][
@@ -135,7 +140,8 @@ def create_user_survey(
     This function creates a survey with a specified name.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "hideSurveyBoxShadown": False,
@@ -609,7 +615,8 @@ def freshdesk_create_user_survey(
     This function creates a survey with a specified name.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "hideSurveyBoxShadown": False,
@@ -1098,7 +1105,8 @@ def create_chat_survey(
     This function creates a survey with a specified name.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "hideSurveyBoxShadown": False,
@@ -2348,7 +2356,8 @@ def create_csat_survey(
     This function creates a survey with a specified name.
     """
     survey = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "hideSurveyBoxShadown": False,
@@ -2848,7 +2857,8 @@ def update_chat_survey_campaign_id(
     success = False
     survey = get_survey(ncc_location, ncc_token, survey_id)
     if survey != {}:
-        conn = http.client.HTTPSConnection(ncc_location)
+        context = ssl._create_unverified_context()
+        conn = http.client.HTTPSConnection(ncc_location, context=context)
         survey["layout"]["elements"][1]["elements"][3]["elements"][0]["properties"][
             "campaignId"
         ] = campaign_id
@@ -2881,7 +2891,8 @@ def delete_survey(ncc_location: str, ncc_token: str, survey_id: str) -> bool:
     This function deletes a survey with the specified survey ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

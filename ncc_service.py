@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def search_services(ncc_location: str, ncc_token: str, service_type: str) -> dic
     This function searches for an existing service with the same type as the intended new service.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     conn.request(
@@ -42,7 +44,8 @@ def search_services_by_name(
     This function searches for an existing service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(service_name)
@@ -79,7 +82,8 @@ def create_media_service(
     This function creates a Nextiva Contact Center (NCC) MEDIA service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -116,7 +120,8 @@ def create_transcription_service(
     This function creates a Nextiva Contact Center (NCC) TRANSCRIPTION service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "apiKey": deepgram_api_key,
@@ -166,7 +171,8 @@ def create_real_time_transcription_service(
     This function creates a Nextiva Contact Center (NCC) REALTIME_ANALYSIS service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "apiKey": deepgram_api_key,
@@ -219,7 +225,8 @@ def create_tts_service(
     This function creates an NCC TEXT_TO_SPEECH service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -254,7 +261,8 @@ def create_html_gen_ai_service(
     This function creates an NCC GENERATIVE_AI service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -307,7 +315,8 @@ def create_plain_text_gen_ai_service(
     This function creates an NCC GENERATIVE_AI service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -360,7 +369,8 @@ def create_translation_service(
     This function creates an NCC TRANSLATION service with the specified name.
     """
     service = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -397,7 +407,8 @@ def update_enable_service(
     This function updates a Nextiva Contact Center (NCC) service to update the service.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"enabled": True})
     headers = {
         "Authorization": ncc_token,
@@ -421,7 +432,8 @@ def delete_service(ncc_location: str, ncc_token: str, service_id: str) -> bool:
     This function deletes a service with the specified service ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

@@ -1,6 +1,5 @@
 import logging
 from authentication_info import *
-from datadog import *
 from ncc_campaign import *
 from set_up_csat_survey import *
 
@@ -27,16 +26,6 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
         print()
         campaign_name = input("Campaign name: ")
         if campaign_name.lower() == "cancel":
-            post_datadog_event(
-                dd_api_key,
-                dd_application_key,
-                username,
-                "warning",
-                "normal",
-                "Feature Setup Cancelled",
-                f'User "{username}" cancelled feature setup.',
-                ["featuresetup"],
-            )
             print()
             print("Operation cancelled.")
             cancelled = True
@@ -58,16 +47,6 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
             print()
             business_name = input("Business name: ")
             if business_name.lower() == "cancel":
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "warning",
-                    "normal",
-                    "Feature Setup Cancelled",
-                    f'User "{username}" cancelled "{campaign_name}" feature setup.',
-                    ["featuresetup"],
-                )
                 print()
                 print("Operation cancelled.")
                 cancelled = True
@@ -88,16 +67,6 @@ def set_up_feature(ncc_location: str, ncc_token: str, username: str):
             choice = input("Command: ")
             print()
             if choice.lower() == "cancel":
-                post_datadog_event(
-                    dd_api_key,
-                    dd_application_key,
-                    username,
-                    "warning",
-                    "normal",
-                    "Feature Setup Cancelled",
-                    f'User "{username}" cancelled feature setup for "{campaign_name}" campaign.',
-                    ["featuresetup"],
-                )
                 print("Operation cancelled.")
                 cancelled = True
             else:

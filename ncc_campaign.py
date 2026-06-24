@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_campaigns(ncc_location: str, ncc_token: str) -> list:
     This function searches for a list of the campaigns in Nextiva Contact Center (NCC).
     """
     campaigns = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -40,7 +42,8 @@ def search_campaigns_by_name(
     This function searches for an existing campaign with the specified name.
     """
     campaign = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -75,7 +78,8 @@ def search_campaigns_by_address(
     This function searches for an existing campaign with the specified address.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -121,7 +125,8 @@ def create_campaign(
     This function creates a campaign with the specified name.
     """
     campaign = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "realtimeAnalysisServiceId": [real_time_transcription_service_id],
@@ -208,7 +213,8 @@ def create_csat_campaign(
     This function creates a campaign with the specified name.
     """
     campaign = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -242,7 +248,8 @@ def update_campaign(
     campaign: dict,
 ) -> bool:
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(campaign)
     headers = {
         "Authorization": ncc_token,
@@ -265,7 +272,8 @@ def assign_address_to_campaign(
     ncc_location: str, ncc_token: str, campaign_address: str, campaign_id: str
 ) -> bool:
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"addresses": [campaign_address]})
     headers = {
         "Authorization": ncc_token,
@@ -288,7 +296,8 @@ def assign_survey_to_campaign(
     ncc_location: str, ncc_token: str, survey_id: str, campaign_id: str
 ) -> bool:
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"surveyId": survey_id})
     headers = {
         "Authorization": ncc_token,
@@ -312,7 +321,8 @@ def delete_campaign(ncc_location: str, ncc_token: str, campaign_id: str) -> bool
     This function deletes a campaign with the specified campaign ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

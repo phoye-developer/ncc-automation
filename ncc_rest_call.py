@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) -> di
     This function fetches a list of REST API call objects in Nextiva Contact Center (NCC).
     """
     rest_calls = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -38,7 +40,8 @@ def search_rest_calls(ncc_location: str, ncc_token: str, rest_call_name: str) ->
     This function searches for an existing REST API call object with the same name as the intended new REST API call object.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(rest_call_name)
@@ -73,7 +76,8 @@ def search_campaign_rest_calls(
     This function searches for existing REST API objects in Nextiva Contact Center (NCC) whose name begins with the specified campaign name.
     """
     rest_calls = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(campaign_name)
@@ -111,7 +115,8 @@ def freshdesk_create_search_contacts_rest_call(
     This function creates a REST API call object to search for contacts in Freshdesk.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -166,7 +171,8 @@ def freshdesk_create_chat_ticket_rest_call(
     This function creates a REST API call object to create a "chat" ticket in Freshdesk.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -210,7 +216,8 @@ def freshdesk_create_call_ticket_rest_call(
     This function creates a REST API call object to create a "call" ticket in Freshdesk.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -250,7 +257,8 @@ def hubspot_create_search_contacts_rest_call(
     This function creates a REST API call object to search for contacts in HubSpot.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -307,7 +315,8 @@ def hubspot_create_activity_rest_call(
     This function creates a REST API call object to create an activity in HubSpot.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -368,7 +377,8 @@ def zendesk_create_search_contacts_rest_call(
     This function creates a REST API call object to search for contacts in Zendesk.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -422,7 +432,8 @@ def zendesk_create_ticket_rest_call(
     This function creates a REST API call object to create a ticket in Zendesk.
     """
     rest_call = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "name": rest_call_name,
@@ -471,7 +482,8 @@ def delete_rest_call(ncc_location: str, ncc_token: str, rest_call_id: str) -> bo
     This function deletes a REST API call object with the specified ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
