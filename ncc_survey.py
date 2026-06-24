@@ -2858,7 +2858,7 @@ def update_chat_survey_campaign_id(
     survey = get_survey(ncc_location, ncc_token, survey_id)
     if survey != {}:
         context = ssl._create_unverified_context()
-    conn = http.client.HTTPSConnection(ncc_location, context=context)
+        conn = http.client.HTTPSConnection(ncc_location, context=context)
         survey["layout"]["elements"][1]["elements"][3]["elements"][0]["properties"][
             "campaignId"
         ] = campaign_id
