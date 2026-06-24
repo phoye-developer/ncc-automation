@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -9,7 +10,8 @@ def search_campaign_dispositions(
     This function searches for a specified disposition ID in the campaigndispositions objects.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -43,7 +45,8 @@ def create_campaign_disposition(
     This function assigns a disposition code to a campaign.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "campaignId": campaign_id,

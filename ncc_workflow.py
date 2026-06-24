@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> dict:
     This function fetches the details for a specific workflow.
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -28,7 +30,8 @@ def get_workflows(ncc_location: str, ncc_token: str) -> list:
     This function fetches a list of workflows in Nextiva Contact Center (NCC).
     """
     workflows = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -53,7 +56,8 @@ def search_workflows(ncc_location: str, ncc_token: str, workflow_name: str) -> d
     This function searches for an existing workflow with the same name as the intended new workflow.
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_workflow_name = urllib.parse.quote(workflow_name)
@@ -98,7 +102,8 @@ def create_iva_workflow(
     This function creates a workflow in Nextiva Contact Center (NCC) for use as an Intelligent Virtual Agent (IVA).
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "maxActions": 10000,
@@ -1596,7 +1601,8 @@ def create_non_iva_dtmf_workflow(
     This function creates a workflow in Nextiva Contact Center (NCC) that uses a DTMF menu.
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     workflow_body = {
         "maxActions": 10000,
         "localizations": {
@@ -5127,7 +5133,8 @@ def create_direct_line_workflow(
     This function creates a workflow in Nextiva Contact Center (NCC).
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "maxActions": 10000,
@@ -6285,7 +6292,8 @@ def create_csat_workflow(
     This function creates a workflow in Nextiva Contact Center (NCC).
     """
     workflow = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "maxActions": 10000,
@@ -6452,7 +6460,8 @@ def update_workflow(
     This function updates a workflow with the specified workflow ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(workflow)
     headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
     try:
@@ -6473,7 +6482,8 @@ def delete_workflow(ncc_location: str, ncc_token: str, workflow_id: str) -> bool
     This function deletes a workflow with the specified workflow ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

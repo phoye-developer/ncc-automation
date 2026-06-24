@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_survey_theme(ncc_location: str, ncc_token: str, survey_theme_id: str) ->
     This function fetches the details for an existing survey theme in Nextiva Contact Center (NCC).
     """
     survey_theme = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -35,7 +37,8 @@ def search_survey_themes(
     This function searches for an existing survey theme with the same name as the intended new survey theme.
     """
     survey_theme = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(survey_theme_name)
@@ -70,7 +73,8 @@ def create_survey_theme(
     This function creates a new survey theme in Nextiva Contact Center (NCC).
     """
     survey_theme = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {
@@ -141,7 +145,8 @@ def delete_survey_theme(
     This function deletes a survey theme with the specified survey theme ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

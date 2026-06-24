@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_ai_prompts(ncc_location: str, ncc_token: str) -> dict:
     This function fetches a list of AI prompts in Nextiva Contact Center (NCC).
     """
     ai_prompts = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -38,7 +40,8 @@ def search_ai_prompts(ncc_location: str, ncc_token: str, ai_prompt_name: str) ->
     This function searches for an existing AI prompt with the same name as the intended new AI prompt.
     """
     ai_prompt = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(ai_prompt_name)
@@ -71,7 +74,8 @@ def create_ai_prompt(ncc_location: str, ncc_token: str, ai_prompt_body: dict) ->
     This function creates a AI prompt with a specified name.
     """
     ai_prompt = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(ai_prompt_body)
     headers = {
         "Authorization": ncc_token,
@@ -94,7 +98,8 @@ def delete_ai_prompt(ncc_location: str, ncc_token: str, ai_prompt_id: str) -> bo
     This function deletes a AI prompt with the specified AI prompt ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

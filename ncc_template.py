@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def search_templates(ncc_location: str, ncc_token: str, template_name: str) -> d
     This function searches for an existing template in Nextiva Contact Center (NCC) with the same name as the intended new template.
     """
     template = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(template_name)
@@ -45,7 +47,8 @@ def create_template(
     This function creates a template in Nextiva Contact Center (NCC).
     """
     template = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(template_body)
     headers = {
         "Authorization": ncc_token,
@@ -68,7 +71,8 @@ def delete_template(ncc_location: str, ncc_token: str, template_id: str) -> bool
     This function deletes a template with the specified template ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

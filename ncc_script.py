@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def search_scripts(ncc_location: str, ncc_token: str, script_name: str) -> dict:
     This function searches for an existing script with the same name as the intended new script.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(script_name)
@@ -43,7 +45,8 @@ def create_check_has_all_parameters_script(
     This function creates a script to check whether all required paramaters have been collected by Google Dialogflow.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
@@ -74,7 +77,8 @@ def create_get_function_id_script(
     This function creates a script to get the functionId parameter returned by Google Dialogflow.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
@@ -105,7 +109,8 @@ def create_get_queue_id_script(
     This function creates a script to get the queueId parameter returned by Google Dialogflow.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
@@ -138,7 +143,8 @@ def create_parse_summary_script(
     This function creates a script to parse the AI summary returned by Google Gemini.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
@@ -169,7 +175,8 @@ def create_parse_transcription_script(
     This function creates a script to parse the transcription returned by Deepgram.
     """
     script = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "localizations": {"name": {"en": {"language": "en", "value": script_name}}},
@@ -198,7 +205,8 @@ def delete_script(ncc_location: str, ncc_token: str, script_id: str) -> bool:
     This function deletes a script with the specified script ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

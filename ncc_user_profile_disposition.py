@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -9,7 +10,8 @@ def search_user_profile_dispositions(
     This function searches for a specified disposition ID in the userprofiledisposition objects.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -43,7 +45,8 @@ def create_user_profile_disposition(
     This function assigns a user profile to a disposition.
     """
     user_profile_disposition = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "userprofileId": user_profile_id,

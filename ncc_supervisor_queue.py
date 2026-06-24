@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -9,7 +10,8 @@ def search_supervisor_queues(
     This function searches for a specified queue ID in the supervisorqueue objects.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -43,7 +45,8 @@ def create_supervisor_queue(
     This function assigns a supervisor to a queue.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "userId": supervisor_id,

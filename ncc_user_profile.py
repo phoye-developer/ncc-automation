@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -9,7 +10,8 @@ def search_user_profiles(
     This function searches for an existing user profile in Nextiva Contact Center (NCC).
     """
     user_profile = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

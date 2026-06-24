@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import urllib.parse
 import json
 
@@ -8,7 +9,8 @@ def get_dispositions(ncc_location: str, ncc_token: str) -> dict:
     This function fetches a list of dispositions in Nextiva Contact Center (NCC).
     """
     dispositions = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -40,7 +42,8 @@ def search_dispositions(
     This function searches for an existing disposition with the same name as the intended new disposition.
     """
     disposition = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     url_encoded_name = urllib.parse.quote(disposition_name)
@@ -75,7 +78,8 @@ def create_disposition(
     This function creates a disposition with a specified name.
     """
     disposition = {}
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(disposition_body)
     headers = {
         "Authorization": ncc_token,
@@ -97,7 +101,8 @@ def assign_rest_call_to_dispositon(
     ncc_location: str, ncc_token: str, rest_call_id: str, disposition_id: str
 ) -> bool:
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"restcallId": rest_call_id})
     headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
     try:
@@ -117,7 +122,8 @@ def assign_function_to_dispositon(
     ncc_location: str, ncc_token: str, function_id: str, disposition_id: str
 ) -> bool:
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps({"functionId": function_id})
     headers = {"Authorization": ncc_token, "Content-Type": "application/json"}
     try:
@@ -138,7 +144,8 @@ def delete_disposition(ncc_location: str, ncc_token: str, disposition_id: str) -
     This function deletes a disposition with the specified disposition ID.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:

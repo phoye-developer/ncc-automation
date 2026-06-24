@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -9,7 +10,8 @@ def search_supervisor_users(
     This function searches for a specified user ID in the supervisorusers objects.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
@@ -43,7 +45,8 @@ def create_supervisor_user(
     This function assigns a supervisor to a user.
     """
     success = False
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = json.dumps(
         {
             "supervisorId": supervisor_id,

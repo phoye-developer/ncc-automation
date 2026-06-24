@@ -1,4 +1,5 @@
 import http.client
+import ssl
 import json
 
 
@@ -7,7 +8,8 @@ def get_pstn_numbers(ncc_location: str, ncc_token: str) -> list:
     This function gets a list of PSTN numbers present on the Nextiva Contact Center (NCC) tenant.
     """
     pstn_numbers = []
-    conn = http.client.HTTPSConnection(ncc_location)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection(ncc_location, context=context)
     payload = ""
     headers = {"Authorization": ncc_token}
     try:
